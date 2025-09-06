@@ -3,7 +3,7 @@ import BottomNavigation from "./BottomNavigation";
 
 function Layout() {
   return (
-    <div className="relative">
+    <div className="relative h-full bg-red-500">
       <Outlet />
       <BottomNavigation />
     </div>
