@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import BottomNavigation from "./BottomNavigation";
+import BottomNavigation from "@/components/BottomNavigation";
 
 function Layout() {
   return (
