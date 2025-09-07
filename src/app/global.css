@@ -2,6 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Hakgyoansim Dunggeunmiso OTF";
+  src: url("/assets/fonts/Hakgyoansim Dunggeunmiso OTF R.otf")
+    format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Hakgyoansim Dunggeunmiso OTF";
+  src: url("/assets/fonts/Hakgyoansim Dunggeunmiso OTF B.otf")
+    format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("/assets/fonts/Inter-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/assets/fonts/Inter-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+}
+
 @layer utilities {
   .title-inter {
     font-family: "Inter", sans-serif;
@@ -15,17 +44,18 @@
     font-weight: 400;
     line-height: 1.35;
   }
+
   .title-hak {
     font-family: "Hakgyoansim Dunggeunmiso OTF", sans-serif;
     font-size: 20px;
-    font-weight: 900;
+    font-weight: 700;
     line-height: 1.2;
   }
 
   .body-hak {
     font-family: "Hakgyoansim Dunggeunmiso OTF", sans-serif;
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 700;
     line-height: 1.35;
   }
   .subtitle {
