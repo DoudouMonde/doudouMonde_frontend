@@ -1,2 +1,2 @@
-export * from "../../app/Layout";
+export * from "../../apps/Layout";
 export * from "./BottomNavigation";

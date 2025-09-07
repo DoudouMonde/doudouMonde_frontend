@@ -1,5 +1,4 @@
-import AppRouter from "@/app/AppRouter";
-import QueryClientProvider from "@/app/QueryClientProvider";
+import { AppRouter, QueryClientProvider } from "@/apps";
 
 function App() {
   return (
