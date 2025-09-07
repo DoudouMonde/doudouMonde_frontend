@@ -1,9 +1,14 @@
+import { useNavigate } from "react-router-dom";
 import { LandingPage } from "@/domains/playroom/components";
+import { PATH } from "@/shared/constants";
 
 function Playroom() {
+  const navigate = useNavigate();
+
   const handleStart = () => {
     console.log("놀이방 시작!");
-    // TODO: 실제 놀이방 로직으로 이동
+    // 공연선택 페이지로 이동
+    navigate(PATH.PERFORMANCE_SELECTION);
   };
 
   const handleSkip = () => {

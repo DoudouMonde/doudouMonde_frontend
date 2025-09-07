@@ -68,13 +68,14 @@ const Calendar: React.FC<CalendarProps> = ({
 
   return (
     <div className={`w-[289px] h-[340px] ${className}`}>
-      <div className="relative w-full h-full bg-white/50 border border-[#8C8C8C] rounded-[20px] overflow-hiddens ">
+      {/* 테두리 색을 제대로 설정했는데 왜 더 진해보이지? */}
+      <div className="relative w-full h-full bg-white/50 border border-secondary-100/30 rounded-[20px] overflow-hidden">
         {/* Header with navigation */}
         <div className="flex justify-between items-center px-6 py-5">
           {/* Left arrow */}
           <button
             onClick={handlePreviousMonth}
-            className="w-6 h-6 flex items-center justify-center text-[#8C8C8C] hover:text-black transition-colors"
+            className="flex justify-center items-center w-6 h-6 transition-colors text-secondary-100 hover:text-black"
             aria-label="이전 달"
           >
             <svg
@@ -134,7 +135,7 @@ const Calendar: React.FC<CalendarProps> = ({
             {dayNames.map((day) => (
               <div
                 key={day}
-                className="text-center text-sm font-medium text-[#8C8C8C] py-2"
+                className="py-2 text-sm font-medium text-center text-black-100"
               >
                 {day}
               </div>
@@ -148,15 +149,13 @@ const Calendar: React.FC<CalendarProps> = ({
                 key={index}
                 onClick={() => handleDateClick(calendarDate.date)}
                 className={`
-                  w-8 h-8 text-sm rounded-full flex items-center justify-center transition-colors
+                  w-8 h-8 text-sm body-noto rounded-full flex items-center justify-center transition-colors
                   ${
                     !calendarDate.isCurrentMonth
-                      ? "text-gray-300"
-                      : calendarDate.isToday
-                      ? "bg-[#8C8C8C] text-white font-semibold"
+                      ? "text-secondary-100"
                       : calendarDate.isSelected
-                      ? "bg-blue-500 text-white font-semibold"
-                      : "text-black hover:bg-gray-100"
+                      ? "bg-green-100 text-gray-100 font-black"
+                      : "text-black-100 "
                   }
                 `}
               >

@@ -1,5 +1,6 @@
 import React from "react";
 import { LandingPageProps, ActionButtonProps } from "../types";
+import { PlayingCardsIcon } from "@/assets/icons";
 
 const ActionButton: React.FC<ActionButtonProps> = ({
   onClick,
@@ -24,7 +25,24 @@ const ActionButton: React.FC<ActionButtonProps> = ({
     </button>
   );
 };
+/**API 호출하는 방법 */
+// const [recommendedPerformanceList, setRecommendedPerformanceList] = useState<
+//   PerformanceItem[]
+// >([]);
 
+// useEffect(
+//   function initializeRecommendedPerformanceList() {
+
+//     const fetchRecommendedPerformanceList = async () => {
+//       // const { contents: recommendedPerformances } =
+//       const recommendedPerformances =
+//         await performanceApi.getRecommendedPerformanceList(selectedChild.id);
+//       setRecommendedPerformanceList(recommendedPerformances);
+//     };
+
+//     fetchRecommendedPerformanceList();
+//   },
+// );
 const LandingPage: React.FC<LandingPageProps> = ({
   onStart,
   onSkip,
@@ -33,7 +51,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
   return (
     <div className={`overflow-hidden relative w-full h-screen`}>
       {/* Background Image */}
-
+      {/* <PlayingCardsIcon className="w-10 h-10 text-green-100" /> */}
       {/* Main Content Area */}
       <div className="relative pt-[64px]">
         {/* 나무 이미지 */}
@@ -47,7 +65,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
         <div className="flex absolute top-0 z-20 flex-col gap-0 items-center translate-y-full">
           {/* Speech Bubble */}
-          <div className="bg-white/70 backdrop-blur-sm rounded-[40px] p-6 shadow-[0px_0px_12px_0px_rgba(255,246,165,1)]">
+          <div className="bg-white/70 backdrop-blur-sm rounded-[40px] w-full p-6 shadow-[0px_0px_12px_0px_rgba(255,246,165,1)]">
             <p className="text-center text-black text-base font-normal leading-[1.21] tracking-[-0.04em] font-['Inter']">
               안녕 서아야!
               <br />
@@ -68,7 +86,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
             />
 
             {/* Action Buttons */}
-            <div className="flex flex-col gap-4 items-end pb-8">
+            <div className="flex flex-col gap-4 items-end pb-8 mt-20">
               <ActionButton onClick={onStart || (() => {})}>좋아</ActionButton>
               <ActionButton onClick={onSkip || (() => {})}>
                 다음에 할래

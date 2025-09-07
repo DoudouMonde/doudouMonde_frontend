@@ -4,6 +4,7 @@ import Home from "@/pages/Home";
 import Playroom from "@/pages/Playroom";
 import Favorites from "@/pages/Favorites";
 import MyPage from "@/pages/MyPage";
+import ChildAndDateSelection from "@/pages/ChildAndDateSelection";
 import { Layout } from "@/app";
 
 const router = createBrowserRouter([
@@ -18,6 +19,11 @@ const router = createBrowserRouter([
       {
         path: "playroom",
         element: <Playroom />,
+      },
+
+      {
+        path: "child-date-selection",
+        element: <ChildAndDateSelection />,
       },
       {
         path: "favorites",

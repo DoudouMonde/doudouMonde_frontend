@@ -147,7 +147,7 @@ export function BottomNavigation() {
               >
                 {item.icon(isSelected)}
               </CustomTabBarButton>
-              <p className="text-green-100 body-inter">{item.title}</p>
+              <p className="text-green-100">{item.title}</p>
             </Link>
           );
         })}

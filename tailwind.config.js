@@ -51,6 +51,19 @@ export default {
         100: "#ECECEB",
         200: "#FFFFFF",
       },
+      primary: {
+        100: "#404040",
+      },
+
+      secondary: {
+        100: "#8C8C8C",
+      },
+      tertiary: {
+        100: "#D9D9D9",
+      },
+      black: {
+        100: "#000000",
+      },
     },
   },
   plugins: [],

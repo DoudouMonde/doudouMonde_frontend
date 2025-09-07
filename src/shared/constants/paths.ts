@@ -1,6 +1,8 @@
 export const PATH = {
   HOME: "/home",
   PLAYROOM: "/playroom",
+  PERFORMANCE_SELECTION: "/performance-selection",
+  CHILD_DATE_SELECTION: "/child-date-selection",
   WISHLIST: "/wishlist",
   PROFILE: "/profile",
   PERFORMANCE_DETAIL: (performanceId: number) =>
