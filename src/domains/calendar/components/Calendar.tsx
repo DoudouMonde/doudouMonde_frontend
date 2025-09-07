@@ -68,9 +68,9 @@ const Calendar: React.FC<CalendarProps> = ({
 
   return (
     <div className={`w-[289px] h-[340px] ${className}`}>
-      <div className="relative w-full h-full bg-white/50 border border-[#8C8C8C] rounded-[20px] overflow-hidden">
+      <div className="relative w-full h-full bg-white/50 border border-[#8C8C8C] rounded-[20px] overflow-hiddens ">
         {/* Header with navigation */}
-        <div className="flex items-center justify-between px-6 py-5">
+        <div className="flex justify-between items-center px-6 py-5">
           {/* Left arrow */}
           <button
             onClick={handlePreviousMonth}

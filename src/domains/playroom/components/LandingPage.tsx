@@ -28,16 +28,16 @@ const ActionButton: React.FC<ActionButtonProps> = ({
 const LandingPage: React.FC<LandingPageProps> = ({
   onStart,
   onSkip,
-  className = "",
+  // className = "",
 }) => {
   return (
-    <div className={`relative w-full h-screen overflow-hidden  ${className}`}>
+    <div className={`overflow-hidden relative w-full h-screen`}>
       {/* Background Image */}
 
       {/* Main Content Area */}
       <div className="relative z-10 pt-[64px] px-5 h-full flex flex-col">
         {/* 나무 이미지 */}
-        <div className="flex justify-center items-start pt-8 z-20 w-full">
+        <div className="flex z-20 justify-center items-start pt-8 w-full">
           <img
             src="/assets/characters/treeEx.png"
             alt="나무 이미지"
@@ -59,7 +59,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col items-center gap-4 pb-8">
+        <div className="flex flex-col gap-4 items-center pb-8">
           <ActionButton onClick={onStart || (() => {})}>좋아</ActionButton>
           <ActionButton onClick={onSkip || (() => {})}>
             다음에 할래
