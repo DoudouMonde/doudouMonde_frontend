@@ -16,7 +16,6 @@ function CustomTabBarButton({
   accessibilityLabel,
   children,
   isSelected,
-  href,
 }: CustomTabBarButtonProps) {
   const [isPressed, setIsPressed] = useState(false);
 
@@ -100,9 +99,9 @@ export function BottomNavigation() {
       title: "놀이방",
       icon: (isSelected: boolean) =>
         isSelected ? (
-          <IoGameController size={24} color={COLORS.PRIMARY} />
+          <i className="fi fi-rr-home" />
         ) : (
-          <IoGameControllerOutline size={24} color={COLORS.SECONDARY} />
+          <i className="fi fi-rr-home" />
         ),
     },
     {
@@ -111,9 +110,9 @@ export function BottomNavigation() {
       title: "찜",
       icon: (isSelected: boolean) =>
         isSelected ? (
-          <IoHeart size={24} color={COLORS.PRIMARY} />
+          <i className="fi fi-rr-home" />
         ) : (
-          <IoHeartOutline size={24} color={COLORS.SECONDARY} />
+          <i className="fi fi-rr-home" />
         ),
     },
     {
@@ -122,9 +121,9 @@ export function BottomNavigation() {
       title: "마이",
       icon: (isSelected: boolean) =>
         isSelected ? (
-          <IoPerson size={24} color={COLORS.PRIMARY} />
+          <i className="fi fi-rr-home" />
         ) : (
-          <IoPersonOutline size={24} color={COLORS.SECONDARY} />
+          <i className="fi fi-rr-home" />
         ),
     },
   ];
