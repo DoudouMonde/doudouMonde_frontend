@@ -6,6 +6,7 @@ import Favorites from "@/pages/Favorites";
 import MyPage from "@/pages/MyPage";
 import ChildAndDateSelection from "@/pages/ChildAndDateSelection";
 import ReviewWriting from "@/pages/ReviewWriting";
+import VoiceReview from "@/pages/VoiceReview";
 import { Layout } from "@/app";
 
 const router = createBrowserRouter([
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "review-writing",
         element: <ReviewWriting />,
+      },
+      {
+        path: "voice-review",
+        element: <VoiceReview />,
       },
       {
         path: "favorites",

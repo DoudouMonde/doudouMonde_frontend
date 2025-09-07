@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavigationButtons } from "@/shared/components";
 import { Calendar, PlayingCardsIcon } from "@/assets/icons";
+import { PATH } from "@/shared/constants";
 
 const ReviewWriting: React.FC = () => {
   const navigate = useNavigate();
@@ -35,8 +36,8 @@ const ReviewWriting: React.FC = () => {
 
   const handleNext = () => {
     console.log("후기 작성 완료:", { reviewText, uploadedImages });
-    // 다음 단계로 이동 (예: 완료 페이지)
-    // navigate(PATH.NEXT_PAGE);
+    // VoiceReview 페이지로 이동
+    navigate(PATH.VOICE_REVIEW);
   };
 
   const isFormValid =

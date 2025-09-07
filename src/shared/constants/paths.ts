@@ -4,6 +4,7 @@ export const PATH = {
   PERFORMANCE_SELECTION: "/performance-selection",
   CHILD_DATE_SELECTION: "/child-date-selection",
   REVIEW_WRITING: "/review-writing",
+  VOICE_REVIEW: "/voice-review",
   WISHLIST: "/wishlist",
   PROFILE: "/profile",
   PERFORMANCE_DETAIL: (performanceId: number) =>
