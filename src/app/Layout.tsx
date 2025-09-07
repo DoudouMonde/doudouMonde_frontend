@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { BottomNavigation } from "@/shared/components";
 
-function Layout() {
+export function Layout() {
   return (
     <div className="relative px-6 h-full min-h-full">
       <main className="pb-[72px] w-full">
@@ -11,5 +11,3 @@ function Layout() {
     </div>
   );
 }
-
-export default Layout;
