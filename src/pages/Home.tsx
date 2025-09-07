@@ -54,9 +54,6 @@ const HomeScreen = () => {
   return (
     <div>
       <div className="flex-1">
-        <i className="fi fi-rr-home" />
-        <i className="fi fi-rr-user" />
-        <i className="fa-solid fa-restroom" />
         {/* 로고 */}
         <div className="items-center pt-4 pb-6">
           <p className="text-2xl font-bold text-black">두두몽드</p>

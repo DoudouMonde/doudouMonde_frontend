@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import { COLORS } from "../shared/constants/colors";
+import { COLORS } from "@/shared/constants/colors";
 
 interface CustomTabBarButtonProps {
   onPress: () => void;
@@ -79,7 +79,7 @@ function CustomTabBarButton({
   );
 }
 
-export default function BottomNavigation() {
+export function BottomNavigation() {
   const location = useLocation();
 
   const tabItems = [
@@ -89,9 +89,9 @@ export default function BottomNavigation() {
       title: "홈",
       icon: (isSelected: boolean) =>
         isSelected ? (
-          <IoHome size={24} color={COLORS.PRIMARY} />
+          <i className="fi fi-rr-home" />
         ) : (
-          <IoHomeOutline size={24} color={COLORS.SECONDARY} />
+          <i className="fi fi-rr-home" />
         ),
     },
     {
