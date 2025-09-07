@@ -3,8 +3,10 @@ import { BottomNavigation } from "@/shared/components";
 
 function Layout() {
   return (
-    <div className="relative px-6 h-full min-h-full bg-red-500">
-      <Outlet />
+    <div className="relative px-6 h-full min-h-full">
+      <main className="pb-[72px] border-2 ">
+        <Outlet />
+      </main>
       <BottomNavigation />
     </div>
   );
