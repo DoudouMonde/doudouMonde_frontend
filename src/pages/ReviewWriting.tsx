@@ -13,6 +13,16 @@ const ReviewWriting: React.FC = () => {
     null,
     null,
   ]);
+  const [selectedDate, setSelectedDate] = useState<string>("");
+
+  // localStorage에서 선택된 날짜와 아이들 불러오기
+  React.useEffect(() => {
+    const savedDate = localStorage.getItem("selectedDate");
+    if (savedDate) {
+      const date = new Date(savedDate);
+      setSelectedDate(date.toLocaleDateString("ko-KR"));
+    }
+  }, []);
 
   const handleImageUpload = (index: number, file: File) => {
     const newImages = [...uploadedImages];
@@ -50,14 +60,14 @@ const ReviewWriting: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col mb-6">
           <h1 className="mb-4 title-inter">후기 입력</h1>
-          <div className="w-20">
+          <div className="w-auto min-w-20">
             <div className="flex gap-1 items-center">
               <PlayingCardsIcon className="w-[13px] h-[13px]" />
               <p>공연이름</p>
             </div>
             <div className="flex gap-1 items-center">
-              <Calendar className="w-[13px] h-[13px]" />
-              <p>선택날짜</p>
+              <Calendar className="w-[13px] h-[13px] flex-shrink-0" />
+              <p className="whitespace-nowrap">{selectedDate || "선택날짜"}</p>
             </div>
           </div>
         </div>

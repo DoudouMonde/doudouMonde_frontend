@@ -59,6 +59,14 @@ const Calendar: React.FC<CalendarProps> = ({
   };
 
   const handleDateClick = (date: Date) => {
+    const today = new Date();
+    today.setHours(23, 59, 59, 999); // 오늘의 끝 시간으로 설정
+
+    // 오늘보다 미래 날짜는 선택할 수 없음
+    if (date > today) {
+      return;
+    }
+
     setSelectedDate(date);
     onDateChange?.(date);
   };
@@ -144,24 +152,33 @@ const Calendar: React.FC<CalendarProps> = ({
 
           {/* Calendar grid */}
           <div className="grid grid-cols-7 gap-1">
-            {calendarDates.map((calendarDate, index) => (
-              <button
-                key={index}
-                onClick={() => handleDateClick(calendarDate.date)}
-                className={`
-                  w-8 h-8 text-sm body-noto rounded-full flex items-center justify-center transition-colors
-                  ${
-                    !calendarDate.isCurrentMonth
-                      ? "text-secondary-100"
-                      : calendarDate.isSelected
-                      ? "bg-green-100 text-gray-100 font-black"
-                      : "text-black-100 "
-                  }
-                `}
-              >
-                {calendarDate.date.getDate()}
-              </button>
-            ))}
+            {calendarDates.map((calendarDate, index) => {
+              const today = new Date();
+              today.setHours(23, 59, 59, 999);
+              const isFutureDate = calendarDate.date > today;
+
+              return (
+                <button
+                  key={index}
+                  onClick={() => handleDateClick(calendarDate.date)}
+                  disabled={isFutureDate}
+                  className={`
+                    w-8 h-8 text-sm body-noto rounded-full flex items-center justify-center transition-colors
+                    ${
+                      !calendarDate.isCurrentMonth
+                        ? "text-secondary-100"
+                        : isFutureDate
+                        ? "text-gray-300 cursor-not-allowed"
+                        : calendarDate.isSelected
+                        ? "bg-green-100 text-gray-100 font-black"
+                        : "text-black-100 hover:bg-gray-100"
+                    }
+                  `}
+                >
+                  {calendarDate.date.getDate()}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>

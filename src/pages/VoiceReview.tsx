@@ -13,6 +13,16 @@ const VoiceReview: React.FC = () => {
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [recordedAudio, setRecordedAudio] = useState<Blob | null>(null);
   const [recordingDuration, setRecordingDuration] = useState<number>(0);
+  const [selectedDate, setSelectedDate] = useState<string>("");
+
+  // localStorage에서 선택된 날짜와 아이들 불러오기
+  React.useEffect(() => {
+    const savedDate = localStorage.getItem("selectedDate");
+    if (savedDate) {
+      const date = new Date(savedDate);
+      setSelectedDate(date.toLocaleDateString("ko-KR"));
+    }
+  }, []);
 
   const handleStartRecording = () => {
     setIsRecording(true);
@@ -51,14 +61,14 @@ const VoiceReview: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col mb-6">
           <h1 className="mb-4 title-inter">후기 입력</h1>
-          <div className="w-20">
+          <div className="w-auto min-w-20">
             <div className="flex gap-1 items-center">
               <PlayingCardsIcon className="w-[13px] h-[13px]" />
               <p>공연이름</p>
             </div>
             <div className="flex gap-1 items-center">
-              <Calendar className="w-[13px] h-[13px]" />
-              <p>선택날짜</p>
+              <Calendar className="w-[13px] h-[13px] flex-shrink-0" />
+              <p className="whitespace-nowrap">{selectedDate || "선택날짜"}</p>
             </div>
           </div>
         </div>
@@ -90,8 +100,7 @@ const VoiceReview: React.FC = () => {
                   className={`flex justify-center items-center w-16 h-16 rounded-full transition-all duration-200 ${
                     isRecording
                       ? "bg-red-500 animate-pulse hover:bg-red-600"
-                      : "hover:bg-green-200"
-                  }`}
+                      : ""}`}
                 >
                   {isRecording ? <RecordStop /> : <RecordStart />}
                 </button>
@@ -104,7 +113,7 @@ const VoiceReview: React.FC = () => {
               </div>
             ) : (
               <div className="flex flex-col items-center">
-                <div className="flex justify-center items-center mb-4 w-24 h-24 bg-green-100 rounded-full">
+                <div className="flex justify-center items-center mb-4 w-24 h-24 rounded-full">
                   <RecordStop />
                 </div>
                 <p className="mb-4 text-gray-600 body-inter">
@@ -122,7 +131,7 @@ const VoiceReview: React.FC = () => {
                       // 재생 로직
                       console.log("재생");
                     }}
-                    className="px-4 py-2 text-white bg-green-100 rounded-lg transition-colors hover:bg-green-200"
+                    className="px-4 py-2 text-white rounded-lg transition-colors"
                   >
                     재생
                   </button>
