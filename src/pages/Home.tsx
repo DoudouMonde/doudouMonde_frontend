@@ -5,7 +5,7 @@ import { performanceApi } from "@/domains/performance/apis";
 import PerformanceCard from "@/domains/performance/components/PerformanceCard";
 import { PerformanceItem } from "@/domains/performance/types";
 import { PATH } from "@/shared/constants/paths";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const HomeScreen = () => {
@@ -54,6 +54,9 @@ const HomeScreen = () => {
   return (
     <div>
       <div className="flex-1">
+        <i className="fi fi-rr-home" />
+        <i className="fi fi-rr-user" />
+        <i className="fa-solid fa-restroom" />
         {/* 로고 */}
         <div className="items-center pt-4 pb-6">
           <p className="text-2xl font-bold text-black">두두몽드</p>
@@ -75,7 +78,6 @@ const HomeScreen = () => {
             />
           ))}
         </div>
-
         {/*  장르별 공연 섹션 */}
         <div className="mb-8">
           <p className="mb-4 text-[17px] font-normal text-black">
@@ -91,7 +93,6 @@ const HomeScreen = () => {
             ))}
           </div>
         </div>
-
         {/*  지역 인기 공연 섹션 */}
         {/* <View className="mb-8">
           <Text className="mb-4 text-[17px] font-normal text-black">

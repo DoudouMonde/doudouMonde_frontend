@@ -1,9 +1,10 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import Layout from "@/app/Layout";
 import Home from "@/pages/Home";
 import Playroom from "@/pages/Playroom";
 import Favorites from "@/pages/Favorites";
 import MyPage from "@/pages/MyPage";
-import Layout from "@/components/Layout";
 
 const router = createBrowserRouter([
   {

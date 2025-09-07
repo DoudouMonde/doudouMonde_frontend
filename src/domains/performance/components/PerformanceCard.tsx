@@ -32,9 +32,8 @@ export default function PerformanceCard({ performance, onPress }: Props) {
       <p className="relative">
         {/* 포스터 */}
         <img
-          src={{ uri: performance.postUrl }}
+          src={performance.postUrl}
           className="w-[124px] h-[177px] bg-gray-100 rounded-lg"
-          resizeMode="cover"
         />
 
         {/* 시설 아이콘 오버레이 */}
