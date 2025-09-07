@@ -5,6 +5,8 @@ export default {
     extend: {
       fontFamily: {
         pretendard: ["var(--font-pretendard)"],
+        inter: ["Inter", "sans-serif"],
+        hak: ["Hakgyoansim Dunggeunmiso OTF", "sans-serif"],
       },
       animation: {
         "loading-spin": "loading-spin 2.0333s linear infinite",

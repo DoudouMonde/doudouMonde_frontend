@@ -56,7 +56,7 @@ const HomeScreen = () => {
       <div className="flex-1">
         {/* 로고 */}
         <div className="items-center pt-4 pb-6">
-          <p className="text-2xl font-bold text-black">두두몽드</p>
+          <p className="text-2xl text-black title-hak">두두몽드</p>
         </div>
         {/* 검색바 */}
         <input
