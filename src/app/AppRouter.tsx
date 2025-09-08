@@ -4,6 +4,7 @@ import Home from "@/pages/Home";
 import Playroom from "@/pages/Playroom";
 import Favorites from "@/pages/Favorites";
 import MyPage from "@/pages/MyPage";
+import SelectPerformance from "@/pages/SelectPerformance";
 import ChildAndDateSelection from "@/pages/ChildAndDateSelection";
 import ReviewWriting from "@/pages/ReviewWriting";
 import VoiceReview from "@/pages/VoiceReview";
@@ -22,7 +23,10 @@ const router = createBrowserRouter([
         path: "playroom",
         element: <Playroom />,
       },
-
+      {
+        path: "select-performance",
+        element: <SelectPerformance />,
+      },
       {
         path: "child-date-selection",
         element: <ChildAndDateSelection />,

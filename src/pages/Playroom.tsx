@@ -8,7 +8,7 @@ function Playroom() {
   const handleStart = () => {
     console.log("놀이방 시작!");
     // 공연선택 페이지로 이동
-    navigate(PATH.PERFORMANCE_SELECTION);
+    navigate(PATH.SELECT_PERFORMANCE);
   };
 
   const handleSkip = () => {

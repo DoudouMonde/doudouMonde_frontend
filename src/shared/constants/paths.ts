@@ -1,7 +1,7 @@
 export const PATH = {
   HOME: "/home",
   PLAYROOM: "/playroom",
-  PERFORMANCE_SELECTION: "/performance-selection",
+  SELECT_PERFORMANCE: "/select-performance",
   CHILD_DATE_SELECTION: "/child-date-selection",
   REVIEW_WRITING: "/review-writing",
   VOICE_REVIEW: "/voice-review",
