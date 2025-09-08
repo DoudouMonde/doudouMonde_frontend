@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Calendar from "@/domains/calendar/components/Calendar";
 import { NavigationButtons } from "@/shared/components";
+import { RadioTrue, RadioFalse } from "@/assets/icons";
+import { PATH } from "@/shared/constants";
 
 const ChildAndDateSelection: React.FC = () => {
   const navigate = useNavigate();
@@ -59,38 +61,34 @@ const ChildAndDateSelection: React.FC = () => {
     // localStorage에 선택된 아이들 저장
     localStorage.setItem("selectedChildren", JSON.stringify(selectedChildren));
     // ReviewWriting 페이지로 이동
-    navigate("/review-writing");
+    navigate(PATH.REVIEW_WRITING);
   };
 
   return (
-    // 원래는 gray200인데 잘 안보여서 임시로 beige로 한 거임
-    <div className="flex min-h-screen bg-gray-200/70 rounded-[40px] mt-20">
+    <div className="flex min-h-screen rounded-[40px] mt-20">
       {/* Main Content */}
       <div className="p-6 w-full">
-        {/* 아이 선택 섹션 -> 여긴 라디오 선택으로 만들기 */}
+        {/* 아이 선택 섹션 */}
         <div className="">
-          <h2 className="mb-4 title-inter">아이 선택</h2>
-          <div className="">
+          <h2 className="mb-5 title-inter">아이 선택</h2>
+          <div className="space-y-3">
             {children.map((child) => (
               <div
                 key={child.id}
                 onClick={() => handleChildSelect(child.id)}
-                className={`p-3 rounded-[12px] cursor-pointer transition-all duration-200 hover:bg-white/40 ${
-                  selectedChildren.includes(child.id)
-                    ? "bg-green-100/50 border-2 border-green-100"
-                    : "bg-white/20 border-2 border-transparent"
-                }`}
+                className=" transition-all duration-200 cursor-pointer rounded-[16px]"
               >
-                <div className="flex gap-2 items-center">
-                  <span
-                    className={`body-inter ${
-                      selectedChildren.includes(child.id)
-                        ? "text-green-100 font-bold"
-                        : "text-black-100"
-                    }`}
-                  >
-                    {child.name}
-                  </span>
+                <div className="flex gap-4 items-center">
+                  {/* 선택 표시 */}
+                  {selectedChildren.includes(child.id) ? (
+                    <RadioTrue className="w-6 h-6" />
+                  ) : (
+                    <RadioFalse className="w-6 h-6" />
+                  )}
+                  {/* 아이 이름만 표시 */}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="body-inter">{child.name}</h3>
+                  </div>
                 </div>
               </div>
             ))}

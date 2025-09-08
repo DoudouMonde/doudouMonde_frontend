@@ -1,0 +1,24 @@
+import { Outlet } from "react-router-dom";
+import { BottomNavigation } from "@/shared/components";
+
+export function PlayroomLayout() {
+  return (
+    <div
+      className="relative px-6 h-full min-h-full"
+      style={{
+        backgroundImage: "url('/assets/images/playroom/backgroundImg.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <div className="absolute inset-0 bg-gray-200/10"></div>
+      <main className="pb-[72px] w-full relative z-10">
+        <Outlet />
+      </main>
+      <div className="relative z-10">
+        <BottomNavigation />
+      </div>
+    </div>
+  );
+}

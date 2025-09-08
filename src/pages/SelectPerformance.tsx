@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavigationButtons, SearchInput } from "@/shared/components";
 import { RadioTrue, RadioFalse } from "@/assets/icons";
+import { PATH } from "@/shared/constants";
 
 import {
   SingleSelectGroup,
@@ -54,12 +55,12 @@ const SelectPerformance: React.FC = () => {
     if (selectedPerformance) {
       console.log("선택된 공연:", selectedPerformance);
       // ChildAndDateSelection 페이지로 이동
-      navigate("/child-date-selection");
+      navigate(PATH.CHILD_DATE_SELECTION);
     }
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-200/70 rounded-[40px] mt-20">
+    <div className="flex min-h-screen rounded-[40px] mt-20">
       {/* Main Content */}
       <div className="p-6 w-full">
         <div className="flex flex-col gap-4">

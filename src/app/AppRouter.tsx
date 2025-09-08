@@ -9,6 +9,7 @@ import ChildAndDateSelection from "@/pages/ChildAndDateSelection";
 import ReviewWriting from "@/pages/ReviewWriting";
 import VoiceReview from "@/pages/VoiceReview";
 import { Layout } from "@/app";
+import { PlayroomLayout } from "@/app/PlayroomLayout";
 
 const router = createBrowserRouter([
   {
@@ -20,7 +21,21 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "playroom",
+        path: "favorites",
+        element: <Favorites />,
+      },
+      {
+        path: "mypage",
+        element: <MyPage />,
+      },
+    ],
+  },
+  {
+    path: "/playroom",
+    element: <PlayroomLayout />,
+    children: [
+      {
+        index: true,
         element: <Playroom />,
       },
       {
@@ -38,14 +53,6 @@ const router = createBrowserRouter([
       {
         path: "voice-review",
         element: <VoiceReview />,
-      },
-      {
-        path: "favorites",
-        element: <Favorites />,
-      },
-      {
-        path: "mypage",
-        element: <MyPage />,
       },
     ],
   },

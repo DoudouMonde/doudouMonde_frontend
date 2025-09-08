@@ -54,7 +54,7 @@ const ReviewWriting: React.FC = () => {
     reviewText.trim().length > 0 && uploadedImages.some((img) => img !== null);
 
   return (
-    <div className="flex min-h-screen bg-gray-200/70 rounded-[40px] mt-20">
+    <div className="flex min-h-screen rounded-[40px] mt-20">
       {/* Main Content */}
       <div className="p-6 w-full">
         {/* Header */}
