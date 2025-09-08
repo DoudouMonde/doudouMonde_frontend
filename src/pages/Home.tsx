@@ -6,14 +6,13 @@ import PerformanceCard from "@/domains/performance/components/PerformanceCard";
 import { PerformanceItem } from "@/domains/performance/types";
 import { MultiSelectGroup, SingleSelectGroup } from "@/shared/components";
 import { MultiRadio } from "@/shared/components/Radio";
-import { RadioUI } from "@/shared/components/Radio/RadioUI";
 import { SingleRadio } from "@/shared/components/Radio/SingleRadio";
+import { SearchInput } from "@/shared/components/SearchInput";
 import { PATH } from "@/shared/constants/paths";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const HomeScreen = () => {
-  const [searchQuery, setSearchQuery] = useState("");
   const [recommendedPerformanceList, setRecommendedPerformanceList] = useState<
     PerformanceItem[]
   >([]);
@@ -51,7 +50,7 @@ const HomeScreen = () => {
   );
   const [selectedRadio, setSelectedRadio] = useState<number>(1);
   const [selectedMulti, setSelectedMulti] = useState<number[]>([1]);
-
+  const [searchText, setSearchText] = useState<string>("");
   //TODO: 아이목록 조회시 지역, 성향불러오기 and 공연API, 공연상세 API 추가
   if (!selectedChild) {
     return;
@@ -64,14 +63,13 @@ const HomeScreen = () => {
           <p className="text-2xl text-black title-hak">두두몽드</p>
         </div>
         {/* 검색바 */}
-        <input
-          placeholder="공연, 장소, 배우를 검색해보세요"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
+
         {/* 아이 선택 */}
-        <RadioUI checked={true} />
-        <RadioUI checked={false} />
+        <SearchInput
+          placeholder="다른 텍스트 검색..."
+          onSearch={(value) => setSearchText(value)}
+          value={searchText}
+        />
         <SingleSelectGroup
           selectedValue={selectedRadio}
           onChange={(value) => setSelectedRadio(value as number)}
