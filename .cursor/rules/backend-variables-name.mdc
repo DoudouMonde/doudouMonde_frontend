@@ -1,0 +1,243 @@
+---
+alwaysApply: true
+---
+
+# CRM 백엔드 프로젝트 변수명 정리
+
+## 1. 기본 엔티티 필드명
+
+### 공통 필드
+
+- `id` - 기본 키
+- `storeId` - 매장 ID
+- `createdAt` - 생성일시
+- `updatedAt` - 수정일시
+
+### Customer (고객)
+
+- `name` - 고객명
+- `phoneNumber` - 전화번호
+- `email` - 이메일
+- `mbti` - MBTI
+- `birthday` - 생일
+- `customerGrade` - 고객 등급
+
+### Staff (직원)
+
+- `email` - 이메일
+- `plandarEmail` - 플랜더 이메일
+- `name` - 이름
+- `nickname` - 닉네임
+- `selfIntroduce` - 자기소개
+- `gender` - 성별
+- `phone` - 전화번호
+- `birthday` - 생일
+- `mbti` - MBTI
+- `bankName` - 은행명
+- `accountHolder` - 예금주
+- `accountNumber` - 계좌번호
+- `joinDate` - 입사일
+
+### Message (메시지)
+
+- `title` - 제목
+- `contents` - 내용
+- `isTemporarily` - 임시저장 여부
+- `isAdvertising` - 광고성 여부
+- `messageType` - 메시지 타입
+- `messageStatus` - 메시지 상태
+- `reservationDate` - 예약일시
+- `sendDate` - 발송일시
+
+### Coupon (쿠폰)
+
+- `name` - 쿠폰명
+- `description` - 설명
+- `couponType` - 쿠폰 타입
+- `couponBenefitType` - 쿠폰 혜택 타입
+- `couponStatus` - 쿠폰 상태
+- `imageUrl` - 이미지 URL
+- `originalFilename` - 원본 파일명
+- `discountRate` - 할인율
+- `amount` - 금액
+- `startDate` - 시작일
+- `endDate` - 종료일
+- `maxDiscountPrice` - 최대 할인 금액
+- `minPaymentPrice` - 최소 결제 금액
+
+### Menu (메뉴)
+
+- `type` - 타입
+- `name` - 메뉴명
+- `isDelete` - 삭제 여부
+- `exposureOrders` - 노출 순서
+
+### Point (포인트)
+
+- `pointType` - 포인트 타입
+- `balance` - 잔액
+- `customer` - 고객
+
+### VanSetting (카드단말기 설정)
+
+- `vanCode` - 밴사 코드
+- `usedMultiPad` - 멀티패드 사용 여부
+- `portNumber` - 포트 번호
+- `portSpeed` - 포트 속도
+- `businessNumber` - 사업자 번호
+- `connectionMode` - 연동 방법
+- `terminalNumber` - 단말기 번호
+- `printCustomerInfoYn` - 고객 정보 출력 여부
+- `printCustomerSalesYn` - 고객 매출 출력 여부
+- `treatmentSalesPrintCount` - 시술 매출 출력 건수
+- `productSalesPrintCount` - 판매 매출 출력 건수
+- `printForStoreYn` - 매장 보관용 출력 여부
+- `printForCustomerYn` - 고객용 출력 여부
+- `printHeadOfficeNameYn` - 본사명 출력 여부
+- `printRemainingPointsYn` - 잔여 포인트 출력 여부
+- `footerMessage` - 하단 문구
+
+### VanPayment (카드결제)
+
+- `vanDeviceType` - 결제기기구분
+- `vCode` - 밴사 코드
+- `approvedDate` - 승인일시
+- `approvalStatus` - 승인구분
+- `paymentType` - 결제구분
+- `approvalNumber` - 승인번호
+- `cardName` - 카드이름
+- `cardCompany` - 카드사
+- `acquirerCompany` - 매입사
+- `amount` - 결제 금액
+- `installments` - 할부 개월수
+- `termId` - 단말기 번호
+- `billNumber` - 전표 번호
+- `merchantNumber` - 카드사 가맹번호
+- `tradePoint` - 적립 사용 포인트
+- `useablePoint` - 가용 포인트
+- `savePoint` - 누적 포인트
+- `ppcardBalance` - 선불카드 잔액
+
+### Call (통화)
+
+- `callStatus` - 통화 상태
+- `incomingType` - 수신 타입
+- `date` - 통화일시
+- `caller` - 발신자
+- `callee` - 수신자
+- `customer` - 고객
+
+### StoreInfo (매장 정보)
+
+- `startTime` - 시작 시간
+- `endTime` - 종료 시간
+- `memo` - 메모
+
+## 2. DTO 변수명
+
+### Request DTO
+
+- `name` - 이름/명칭
+- `description` - 설명
+- `condition` - 조건
+- `value` - 값
+- `categoryId` - 카테고리 ID
+- `price` - 가격
+- `requiredTime` - 소요 시간
+- `naverLinkYn` - 네이버 연동 여부
+- `checkIn` - 체크인 노출
+- `usedLimitDate` - 사용기한
+- `discountRate` - 할인율
+- `addSavePrice` - 추가 적립금
+- `deductedType` - 차감 타입
+- `note` - 유의사항
+
+### Response DTO
+
+- `salonScheduleId` - 살롱 스케줄 ID
+- `title` - 제목
+- `startDate` - 시작일
+- `startTime` - 시작시간
+- `endDate` - 종료일
+- `endTime` - 종료시간
+- `staffNames` - 직원명 목록
+- `salonScheduleType` - 살롱 스케줄 타입
+- `repeatType` - 반복 타입
+- `repeatStatus` - 반복 상태
+- `repeatTypeName` - 반복 타입명
+- `repeatName` - 반복명
+- `memo` - 메모
+
+## 3. 상수(Enum) 변수명
+
+### 상태 관련
+
+- `SUCCESS` - 성공
+- `FAIL` - 실패
+- `PENDING` - 대기
+- `COMPLETED` - 완료
+- `CANCELLED` - 취소
+- `ACTIVE` - 활성
+- `INACTIVE` - 비활성
+
+### 타입 관련
+
+- `SMS` - SMS
+- `EMAIL` - 이메일
+- `PUSH` - 푸시
+- `COSMETIC` - 시술
+- `PACKAGE` - 패키지
+- `DISCOUNT` - 할인
+- `CUSTOM` - 커스텀
+
+### 성별
+
+- `MALE` - 남성
+- `FEMALE` - 여성
+
+### MBTI
+
+- `INTJ`, `INTP`, `ENTJ`, `ENTP` 등 16가지 MBTI 타입
+
+## 4. 네이밍 컨벤션
+
+프로젝트는 네이버 코딩 컨벤션을 따르며:
+
+- **클래스명**: PascalCase (예: `CustomerService`)
+- **메서드명**: camelCase (예: `getCustomerInfo`)
+- **변수명**: camelCase (예: `customerName`)
+- **상수명**: UPPER_SNAKE_CASE (예: `MAX_RETRY_COUNT`)
+- **패키지명**: lowercase (예: `com.huuimcompany.crmbackend`)
+
+## 5. 주요 도메인별 변수 패턴
+
+### 고객 관리
+
+- `customer*` - 고객 관련
+- `*Grade` - 등급 관련
+- `*Group` - 그룹 관련
+
+### 결제/포인트
+
+- `*Amount` - 금액 관련
+- `*Price` - 가격 관련
+- `*Point` - 포인트 관련
+- `*Payment` - 결제 관련
+
+### 메시지/알림
+
+- `*Message` - 메시지 관련
+- `*Notification` - 알림 관련
+- `*Send` - 발송 관련
+
+### 스케줄/예약
+
+- `*Schedule` - 스케줄 관련
+- `*Reservation` - 예약 관련
+- `*Date` - 날짜 관련
+- `*Time` - 시간 관련
+  description:
+  globs:
+  alwaysApply: false
+
+---

@@ -4,6 +4,7 @@ import { ChildItem } from "@/domains/child/types";
 import { performanceApi } from "@/domains/performance/apis";
 import PerformanceCard from "@/domains/performance/components/PerformanceCard";
 import { PerformanceItem } from "@/domains/performance/types";
+import { RadioUI } from "@/shared/components/Radio/RadioUI";
 import { PATH } from "@/shared/constants/paths";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -65,6 +66,8 @@ const HomeScreen = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         {/* 아이 선택 */}
+        <RadioUI checked={true} />
+        <RadioUI checked={false} />
         <div>
           {children.map((child) => (
             <ChildProfile

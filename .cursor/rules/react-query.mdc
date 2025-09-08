@@ -1,0 +1,234 @@
+---
+description: React-Query 파일 작성시 일관된 규칙
+globs:
+  - 'src/**/queries/**/*.ts'
+alwaysApply: false
+language: ko
+intent:
+  - 'React-Query 파일 작성시 일관된 규칙'
+---
+
+## 🔑 1. QueryKeys 템플릿
+
+```typescript
+// queryKeys.ts
+export const queryKeys = {
+  [queryKeys.ENTITY, entityId]: '[queryKeys.ENTITY, entityId]',
+  [ENTITY_UPPER]_LIST: '[ENTITY_UPPER]_LIST',
+} as const;
+```
+
+---
+
+## 📤 2. Fetch Query 템플릿
+
+### 2-1. 단일 엔티티 조회 (with ID)
+
+```typescript
+// useFetch[Entity]Query.ts
+import { UseQueryOptions, useQuery } from '@tanstack/react-query';
+
+import { [entityApi] } from '../_apis/[entityApi]';
+import [EntityResponse] from '../_apis/dto/[EntityResponse]';
+import [EntityModel] from '../_models/[EntityModel]';
+import { queryKeys } from './queryKeys';
+
+export function useFetch[Entity]Query(
+  [entityId]: number,
+  queryOptions?: Omit<
+    UseQueryOptions<[EntityResponse], Error, [EntityModel]>,
+    'queryKey' | 'queryFn'
+  >,
+) {
+  return useQuery({
+    queryKey: [queryKeys.[ENTITY_KEY], [entityId]],
+    queryFn: () => [entityApi].get[Entity]([entityId]),
+    select: (data) => new [EntityModel](data),
+    ...queryOptions,
+  });
+}
+```
+
+### 2-2. 리스트 조회 (with 페이지네이션/필터)
+
+```typescript
+// useFetch[Entity]sQuery.ts 또는 useFetch[Entity]ListQuery.ts
+import { UseQueryOptions, useQuery } from '@tanstack/react-query';
+import { PaginatedData } from 'src/types/pagination';
+
+import { [EntityResponse] } from '../_apis/dto/[EntityResponse]';
+import { Fetch[Entity]Params, [entityApi] } from '../_apis/[entityApi]';
+import [EntityModel] from '../_models/[EntityModel]';
+import { queryKeys } from './queryKeys';
+
+export function useFetch[Entity]sQuery(
+  params: Fetch[Entity]Params,
+  queryOptions?: Omit<
+    UseQueryOptions<
+      PaginatedData<[EntityResponse]>,
+      Error,
+      PaginatedData<[EntityModel]>
+    >,
+    'queryKey' | 'queryFn'
+  >,
+) {
+  return useQuery({
+    queryKey: [
+      queryKeys.[ENTITY_LIST_KEY],
+      params.page,
+      params.searchText,
+      params.[filterParam],
+    ],
+    queryFn: async () => await [entityApi].get[Entity]s(params),
+    select: (data) => ({
+      ...data,
+      content: data.content.map((item) => new [EntityModel](item)),
+    }),
+    ...queryOptions,
+  });
+}
+```
+
+### 2-3. 단순 리스트 조회 (페이지네이션 없음)
+
+```typescript
+// useFetch[Entity]sQuery.ts
+import { UseQueryOptions, useQuery } from '@tanstack/react-query';
+
+import { [entityApi] } from '../_apis/[entityApi]';
+import [EntityResponse] from '../_apis/dto/[EntityResponse]';
+import [EntityModel] from '../_models/[EntityModel]';
+import { queryKeys } from './queryKeys';
+
+export function useFetch[Entity]sQuery(
+  queryOptions?: Omit<
+    UseQueryOptions<[EntityResponse][], Error, [EntityModel][]>,
+    'queryKey' | 'queryFn'
+  >,
+) {
+  return useQuery({
+    queryKey: [queryKeys.[ENTITY_KEY]],
+    queryFn: () => [entityApi].get[Entity]s(),
+    select: (data) => data.map((item) => new [EntityModel](item)),
+    ...queryOptions,
+  });
+}
+```
+
+---
+
+## ✏️ 3. Create Mutation 템플릿
+
+### 3-1. 간단한 Create (Model 직접 사용)
+
+```typescript
+// useCreate[Entity]Mutation.ts
+import { UseMutationOptions, useMutation } from '@tanstack/react-query';
+
+import { [entityApi] } from '../_apis/[entityApi]';
+import Create[Entity]Request from '../_apis/dto/Create[Entity]Request';
+import [EntityModel] from '../_models/[EntityModel]';
+
+export const useCreate[Entity]Mutation = (
+  mutationOptions?: Omit<
+    UseMutationOptions<{ data: number }, Error, [EntityModel]>,
+    'mutationFn'
+  >,
+) => {
+  return useMutation({
+    mutationFn: (data: [EntityModel]) => [entityApi].create[Entity](data.toDTO()),
+    ...mutationOptions,
+  });
+};
+```
+
+## 🗑️ 5. Delete Mutation 템플릿
+
+### 5-1. 단순 Delete
+
+```typescript
+// useDelete[Entity]Mutation.ts
+import { UseMutationOptions, useMutation } from '@tanstack/react-query';
+
+import { [entityApi] } from '../_apis/[entityApi]';
+
+export const useDelete[Entity]Mutation = (
+  mutationOptions?: Omit<
+    UseMutationOptions<unknown, Error, number>,
+    'mutationFn'
+  >,
+) => {
+  return useMutation({
+    mutationFn: ([entityId]: number) => [entityApi].delete[Entity]([entityId]),
+    ...mutationOptions,
+  });
+};
+```
+
+---
+
+## 🚀 6. 사용 예시
+
+### Query 사용
+
+```typescript
+// 컴포넌트에서 사용
+const { data: customer } = useFetchCustomerQuery(customerId, {
+  enabled: !!customerId,
+  staleTime: 5 * 60 * 1000, // 5분
+});
+
+const { data: customers } = useFetchCustomersQuery(
+  { page: 1, searchText: '', grade: 'VIP' },
+  {
+    onSuccess: (data) => {
+      console.log('고객 목록 조회 성공:', data);
+    },
+  },
+);
+```
+
+### Mutation 사용 (외부 주입 패턴)
+
+```typescript
+// 컴포넌트에서 사용
+const createCustomerMutation = useCreateCustomerMutation({
+  onSuccess: (response) => {
+    queryClient.invalidateQueries({
+      queryKey: [queryKeys.CUSTOMERS],
+    });
+    toast.success('고객이 등록되었습니다.');
+  },
+  onError: (error) => {
+    console.error('고객 등록 실패:', error);
+    toast.error('고객 등록에 실패했습니다.');
+  },
+});
+
+const handleSubmit = (data: CustomerModel) => {
+  createCustomerMutation.mutate(data);
+};
+```
+
+---
+
+## 📝 7. 핵심 변경사항
+
+### QueryKey 패턴
+
+- **단일 조회**: `[queryKeys.ENTITY, entityId]` - ID를 포함하여 캐시 구분
+
+### 타입 안전성
+
+- `Omit<UseQueryOptions, 'queryKey' | 'queryFn'>` - 핵심 함수는 제외하고 옵션만 주입
+- `Omit<UseMutationOptions, 'mutationFn'>` - mutationFn은 내부에서 관리
+
+### DTO ↔ Model 변환
+
+- **Query**: `select` 함수에서 Response → Model 변환
+
+### 외부 주입 패턴
+
+- `onSuccess`, `onError` 등은 컴포넌트에서 주입
+- Query/Mutation 로직과 UI 로직 분리
+- 재사용성과 테스트 용이성 향상
