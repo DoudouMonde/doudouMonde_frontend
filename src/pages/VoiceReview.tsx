@@ -7,6 +7,7 @@ import {
   RecordStart,
   RecordStop,
 } from "@/assets/icons";
+import { PATH } from "@/shared/constants";
 
 const VoiceReview: React.FC = () => {
   const navigate = useNavigate();
@@ -14,17 +15,23 @@ const VoiceReview: React.FC = () => {
   const [recordedAudio, setRecordedAudio] = useState<Blob | null>(null);
   const [recordingDuration, setRecordingDuration] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState<string>("");
+  const [selectedPerformance, setSelectedPerformance] = useState<any>(null);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
     null
   );
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
 
-  // localStorage에서 선택된 날짜와 아이들 불러오기
+  // localStorage에서 선택된 날짜, 아이들, 공연 정보 불러오기
   React.useEffect(() => {
     const savedDate = localStorage.getItem("selectedDate");
     if (savedDate) {
       const date = new Date(savedDate);
       setSelectedDate(date.toLocaleDateString("ko-KR"));
+    }
+
+    const savedPerformance = localStorage.getItem("selectedPerformance");
+    if (savedPerformance) {
+      setSelectedPerformance(JSON.parse(savedPerformance));
     }
   }, []);
 
@@ -148,10 +155,13 @@ const VoiceReview: React.FC = () => {
 
       // if (response.ok) {
       //   console.log("음성 후기 업로드 성공");
-      //   navigate("/next-page");
+      //   navigate(PATH.CHARACTER_CREATION);
       // } else {
       //   console.error("업로드 실패");
       // }
+
+      // 상상친구 만들기 페이지로 이동
+      navigate(PATH.CHARACTER_CREATION);
 
       // 임시로 콘솔에 FormData 내용 출력
       console.log("=== FormData 내용 ===");
@@ -169,16 +179,18 @@ const VoiceReview: React.FC = () => {
   const isFormValid = recordedAudio !== null;
 
   return (
-    <div className="flex min-h-screen bg-gray-200/70 rounded-[40px] mt-20">
+    <div className="flex min-h-screen">
       {/* Main Content */}
-      <div className="p-6 w-full">
+      <div className="p-6 w-full bg-gray-200/70 rounded-[40px] mt-20 mb-24">
         {/* Header */}
         <div className="flex flex-col mb-6">
           <h1 className="mb-4 title-inter">후기 입력</h1>
           <div className="w-auto min-w-20">
             <div className="flex gap-1 items-center">
               <PlayingCardsIcon className="w-[13px] h-[13px]" />
-              <p>공연이름</p>
+              <p>
+                {selectedPerformance ? selectedPerformance.title : "공연이름"}
+              </p>
             </div>
             <div className="flex gap-1 items-center">
               <Calendar className="w-[13px] h-[13px] flex-shrink-0" />

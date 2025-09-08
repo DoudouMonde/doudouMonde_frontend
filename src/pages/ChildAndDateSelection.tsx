@@ -65,9 +65,9 @@ const ChildAndDateSelection: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen rounded-[40px] mt-20">
+    <div className="flex min-h-screen">
       {/* Main Content */}
-      <div className="p-6 w-full">
+      <div className="p-6 w-full bg-gray-200/70 rounded-[40px] mt-20 mb-24">
         {/* 아이 선택 섹션 */}
         <div className="">
           <h2 className="mb-5 title-inter">아이 선택</h2>

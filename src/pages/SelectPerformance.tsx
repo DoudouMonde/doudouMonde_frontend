@@ -53,16 +53,29 @@ const SelectPerformance: React.FC = () => {
 
   const handleNext = () => {
     if (selectedPerformance) {
-      console.log("선택된 공연:", selectedPerformance);
+      // 선택된 공연 정보 찾기
+      const selectedPerformanceData = performances.find(
+        (p) => p.id === selectedPerformance
+      );
+
+      if (selectedPerformanceData) {
+        // localStorage에 선택된 공연 정보 저장
+        localStorage.setItem(
+          "selectedPerformance",
+          JSON.stringify(selectedPerformanceData)
+        );
+        console.log("선택된 공연:", selectedPerformanceData);
+      }
+
       // ChildAndDateSelection 페이지로 이동
       navigate(PATH.CHILD_DATE_SELECTION);
     }
   };
 
   return (
-    <div className="flex min-h-screen rounded-[40px] mt-20">
+    <div className="flex min-h-screen">
       {/* Main Content */}
-      <div className="p-6 w-full">
+      <div className="p-6 w-full bg-gray-200/70 rounded-[40px] mt-20 mb-24">
         <div className="flex flex-col gap-4">
           <h2 className="title-inter">공연 선택</h2>
           <p className="mb-4 subtitle text-secondary-100">

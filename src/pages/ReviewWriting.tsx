@@ -14,13 +14,19 @@ const ReviewWriting: React.FC = () => {
     null,
   ]);
   const [selectedDate, setSelectedDate] = useState<string>("");
+  const [selectedPerformance, setSelectedPerformance] = useState<any>(null);
 
-  // localStorage에서 선택된 날짜와 아이들 불러오기
+  // localStorage에서 선택된 날짜, 아이들, 공연 정보 불러오기
   React.useEffect(() => {
     const savedDate = localStorage.getItem("selectedDate");
     if (savedDate) {
       const date = new Date(savedDate);
       setSelectedDate(date.toLocaleDateString("ko-KR"));
+    }
+
+    const savedPerformance = localStorage.getItem("selectedPerformance");
+    if (savedPerformance) {
+      setSelectedPerformance(JSON.parse(savedPerformance));
     }
   }, []);
 
@@ -54,16 +60,18 @@ const ReviewWriting: React.FC = () => {
     reviewText.trim().length > 0 && uploadedImages.some((img) => img !== null);
 
   return (
-    <div className="flex min-h-screen rounded-[40px] mt-20">
+    <div className="flex min-h-screen">
       {/* Main Content */}
-      <div className="p-6 w-full">
+      <div className="p-6 w-full bg-gray-200/70 rounded-[40px] mt-20 mb-24">
         {/* Header */}
         <div className="flex flex-col mb-6">
           <h1 className="mb-4 title-inter">후기 입력</h1>
           <div className="w-auto min-w-20">
             <div className="flex gap-1 items-center">
               <PlayingCardsIcon className="w-[13px] h-[13px]" />
-              <p>공연이름</p>
+              <p>
+                {selectedPerformance ? selectedPerformance.title : "공연이름"}
+              </p>
             </div>
             <div className="flex gap-1 items-center">
               <Calendar className="w-[13px] h-[13px] flex-shrink-0" />
@@ -133,16 +141,16 @@ const ReviewWriting: React.FC = () => {
         {/* 후기 텍스트 섹션 */}
         <div className="mb-8">
           <h2 className="mb-4 title-inter">메모</h2>
-          <div className="bg-white/60 backdrop-blur-sm rounded-[16px] p-4 border border-secondary-100/30">
+          <div className="backdrop-blur-sm rounded-[16px] p-4 border border-secondary-100/30">
             <textarea
               value={reviewText}
               onChange={handleTextChange}
               placeholder="오랫동안 추억할 수 있게 간단한 메모를 남겨주세요."
-              className="w-full h-20 placeholder-gray-400 text-gray-700 bg-transparent border-none outline-none resize-none body-inter"
+              className="w-full h-20 text-gray-700 bg-transparent border-none outline-none resize-none body-inter"
               maxLength={500}
             />
             <div className="flex justify-end mt-2">
-              <span className="text-sm text-gray-400">
+              <span className="text-sm text-black-100">
                 {reviewText.length}/500
               </span>
             </div>

@@ -8,6 +8,7 @@ import SelectPerformance from "@/pages/SelectPerformance";
 import ChildAndDateSelection from "@/pages/ChildAndDateSelection";
 import ReviewWriting from "@/pages/ReviewWriting";
 import VoiceReview from "@/pages/VoiceReview";
+import CharacterCreation from "@/pages/CharacterCreation";
 import { Layout } from "@/app";
 import { PlayroomLayout } from "@/app/PlayroomLayout";
 
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "voice-review",
         element: <VoiceReview />,
+      },
+      {
+        path: "character-creation",
+        element: <CharacterCreation />,
       },
     ],
   },

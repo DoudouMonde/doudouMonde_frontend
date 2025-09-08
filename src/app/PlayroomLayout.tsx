@@ -12,7 +12,7 @@ export function PlayroomLayout() {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="absolute inset-0 bg-gray-200/10"></div>
+      <div className="absolute inset-0 bg-gray-200/40"></div>
       <main className="pb-[72px] w-full relative z-10">
         <Outlet />
       </main>
