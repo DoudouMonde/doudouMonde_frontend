@@ -6,7 +6,6 @@ import { GamepadIcon, HeartIcon, HomeIcon, UserIcon } from "@/assets/icons";
 
 interface CustomTabBarButtonProps {
   onPress: () => void;
-  accessibilityLabel: string;
   children: React.ReactNode;
   isSelected: boolean;
   href: string;
@@ -14,7 +13,6 @@ interface CustomTabBarButtonProps {
 
 function CustomTabBarButton({
   onPress,
-  accessibilityLabel,
   children,
   isSelected,
 }: CustomTabBarButtonProps) {
@@ -54,7 +52,7 @@ function CustomTabBarButton({
               color: isSelected ? COLORS.PRIMARY : COLORS.SECONDARY,
             }}
           >
-            {accessibilityLabel}
+            {children}
           </span>
         </div>
       </div>
@@ -141,7 +139,7 @@ export function BottomNavigation() {
               style={{ textDecoration: "none" }}
             >
               <CustomTabBarButton
-                onClick={() => {}}
+                onPress={() => {}}
                 isSelected={isSelected}
                 href={item.path}
               >

@@ -1,6 +1,5 @@
 import React from "react";
 import { LandingPageProps, ActionButtonProps } from "../types";
-import { PlayingCardsIcon } from "@/assets/icons";
 
 const ActionButton: React.FC<ActionButtonProps> = ({
   onClick,

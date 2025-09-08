@@ -14,6 +14,10 @@ const VoiceReview: React.FC = () => {
   const [recordedAudio, setRecordedAudio] = useState<Blob | null>(null);
   const [recordingDuration, setRecordingDuration] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState<string>("");
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
+    null
+  );
+  const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
 
   // localStorage에서 선택된 날짜와 아이들 불러오기
   React.useEffect(() => {
@@ -24,32 +28,142 @@ const VoiceReview: React.FC = () => {
     }
   }, []);
 
-  const handleStartRecording = () => {
-    setIsRecording(true);
-    setRecordingDuration(0);
-    // 실제 녹음 로직은 여기에 구현
-    console.log("녹음 시작");
+  // 컴포넌트 언마운트 시 정리
+  React.useEffect(() => {
+    return () => {
+      if (mediaRecorder && isRecording) {
+        mediaRecorder.stop();
+      }
+    };
+  }, [mediaRecorder, isRecording]);
+
+  const handleStartRecording = async () => {
+    try {
+      // 마이크 권한 요청
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+      const recorder = new MediaRecorder(stream);
+      const chunks: Blob[] = [];
+
+      recorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          chunks.push(event.data);
+        }
+      };
+
+      recorder.onstop = () => {
+        const audioBlob = new Blob(chunks, { type: "audio/wav" });
+        setRecordedAudio(audioBlob);
+        setAudioChunks(chunks);
+
+        // 스트림 정리
+        stream.getTracks().forEach((track) => track.stop());
+      };
+
+      recorder.start();
+      setMediaRecorder(recorder);
+      setIsRecording(true);
+      setRecordingDuration(0);
+
+      // 녹음 시간 카운터
+      const timer = setInterval(() => {
+        setRecordingDuration((prev) => prev + 1);
+      }, 1000);
+
+      // 컴포넌트 언마운트 시 타이머 정리
+      return () => clearInterval(timer);
+    } catch (error) {
+      console.error("녹음 시작 실패:", error);
+      alert("마이크 권한이 필요합니다.");
+    }
   };
 
   const handleStopRecording = () => {
-    setIsRecording(false);
-    // 실제 녹음 중지 로직은 여기에 구현
-    console.log("녹음 중지");
+    if (mediaRecorder && isRecording) {
+      mediaRecorder.stop();
+      setIsRecording(false);
+    }
   };
 
   const handleDeleteRecording = () => {
     setRecordedAudio(null);
     setRecordingDuration(0);
+    setAudioChunks([]);
+  };
+
+  const handlePlayRecording = () => {
+    if (recordedAudio) {
+      const audio = new Audio(URL.createObjectURL(recordedAudio));
+      audio.play();
+    }
+  };
+
+  const createFormData = () => {
+    if (!recordedAudio) return null;
+
+    const formData = new FormData();
+
+    // 오디오 파일 추가
+    const audioFile = new File([recordedAudio], "voice-review.wav", {
+      type: "audio/wav",
+    });
+    formData.append("audioFile", audioFile);
+
+    // 메타데이터 추가
+    formData.append("duration", recordingDuration.toString());
+    formData.append("recordedAt", new Date().toISOString());
+
+    // 선택된 날짜와 아이들 정보 추가
+    const selectedDate = localStorage.getItem("selectedDate");
+    const selectedChildren = localStorage.getItem("selectedChildren");
+
+    if (selectedDate) {
+      formData.append("selectedDate", selectedDate);
+    }
+    if (selectedChildren) {
+      formData.append("selectedChildren", selectedChildren);
+    }
+
+    return formData;
   };
 
   const handlePrevious = () => {
     navigate(-1); // 브라우저 히스토리에서 이전 페이지로 이동
   };
 
-  const handleNext = () => {
-    console.log("음성 후기 완료:", { recordedAudio, recordingDuration });
-    // 다음 단계로 이동 (예: 완료 페이지)
-    // navigate(PATH.NEXT_PAGE);
+  const handleNext = async () => {
+    if (!recordedAudio) return;
+
+    try {
+      const formData = createFormData();
+      if (!formData) return;
+
+      console.log("FormData 생성 완료:", formData);
+
+      // 백엔드로 전송 (실제 API 호출)
+      // const response = await fetch('/api/voice-review', {
+      //   method: 'POST',
+      //   body: formData
+      // });
+
+      // if (response.ok) {
+      //   console.log("음성 후기 업로드 성공");
+      //   navigate("/next-page");
+      // } else {
+      //   console.error("업로드 실패");
+      // }
+
+      // 임시로 콘솔에 FormData 내용 출력
+      console.log("=== FormData 내용 ===");
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
+      }
+
+      // 다음 단계로 이동
+      // navigate(PATH.NEXT_PAGE);
+    } catch (error) {
+      console.error("음성 후기 처리 중 오류:", error);
+    }
   };
 
   const isFormValid = recordedAudio !== null;
@@ -127,11 +241,8 @@ const VoiceReview: React.FC = () => {
                     다시 녹음
                   </button>
                   <button
-                    onClick={() => {
-                      // 재생 로직
-                      console.log("재생");
-                    }}
-                    className="px-4 py-2 text-white rounded-lg transition-colors"
+                    onClick={handlePlayRecording}
+                    className="px-4 py-2 text-white bg-green-100 rounded-lg transition-colors hover:bg-green-200"
                   >
                     재생
                   </button>
