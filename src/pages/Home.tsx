@@ -4,7 +4,10 @@ import { ChildItem } from "@/domains/child/types";
 import { performanceApi } from "@/domains/performance/apis";
 import PerformanceCard from "@/domains/performance/components/PerformanceCard";
 import { PerformanceItem } from "@/domains/performance/types";
+import { MultiSelectGroup, SingleSelectGroup } from "@/shared/components";
+import { MultiRadio } from "@/shared/components/Radio";
 import { RadioUI } from "@/shared/components/Radio/RadioUI";
+import { SingleRadio } from "@/shared/components/Radio/SingleRadio";
 import { PATH } from "@/shared/constants/paths";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -46,12 +49,13 @@ const HomeScreen = () => {
     },
     [children]
   );
+  const [selectedRadio, setSelectedRadio] = useState<number>(1);
+  const [selectedMulti, setSelectedMulti] = useState<number[]>([1]);
 
   //TODO: 아이목록 조회시 지역, 성향불러오기 and 공연API, 공연상세 API 추가
   if (!selectedChild) {
     return;
   }
-
   return (
     <div>
       <div className="flex-1">
@@ -68,6 +72,22 @@ const HomeScreen = () => {
         {/* 아이 선택 */}
         <RadioUI checked={true} />
         <RadioUI checked={false} />
+        <SingleSelectGroup
+          selectedValue={selectedRadio}
+          onChange={(value) => setSelectedRadio(value as number)}
+        >
+          <SingleRadio value={1} label="1" />
+          <SingleRadio value={2} label="2" />
+          <SingleRadio value={3} label="3" />
+        </SingleSelectGroup>
+        <MultiSelectGroup
+          selectedValues={selectedMulti}
+          onChange={(value) => setSelectedMulti(value as number[])}
+        >
+          <MultiRadio value={1} label="1" />
+          <MultiRadio value={2} label="2" />
+          <MultiRadio value={3} label="3" />
+        </MultiSelectGroup>
         <div>
           {children.map((child) => (
             <ChildProfile
