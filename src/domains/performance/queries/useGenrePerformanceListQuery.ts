@@ -7,9 +7,12 @@ import {
 import { queryKeys } from "@/shared/apis";
 import { Genre } from "@/shared/types";
 
-export function usePerformanceListByGenreQuery(
+export function useGenrePerformanceListQuery(
   genre: Genre,
-  queryOptions?: UseQueryOptions<PerformanceListResponse, Error>
+  queryOptions?: Omit<
+    UseQueryOptions<PerformanceListResponse, Error>,
+    "queryKey" | "queryFn"
+  >
 ) {
   return useQuery({
     queryKey: [queryKeys.PERFORMANCE_LIST],

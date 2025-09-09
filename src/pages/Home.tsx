@@ -1,21 +1,21 @@
 import ChildProfile from "@/domains/child/components/ChildProfile";
 import { useChildListQuery } from "@/domains/child/queries/useChildListQuery";
 import { ChildItem } from "@/domains/child/types";
-import { performanceApi } from "@/domains/performance/apis";
 import PerformanceCard from "@/domains/performance/components/PerformanceCard";
-import { PerformanceItem } from "@/domains/performance/types";
-import { MultiSelectGroup, SingleSelectGroup } from "@/shared/components";
-import { MultiRadio } from "@/shared/components/Radio";
-import { SingleRadio } from "@/shared/components/Radio/SingleRadio";
+import {
+  useGenrePerformanceListQuery,
+  useRewardPerformanceListQuery,
+  useSidoPerformanceListQuery,
+} from "@/domains/performance/queries";
+
 import { SearchInput } from "@/shared/components/SearchInput";
 import { PATH } from "@/shared/constants/paths";
+import { getGenreLabel, getSidoLabel } from "@/shared/services";
+import { Genre, Sido } from "@/shared/types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const HomeScreen = () => {
-  const [recommendedPerformanceList, setRecommendedPerformanceList] = useState<
-    PerformanceItem[]
-  >([]);
   const navigate = useNavigate();
 
   const handlePerformancePress = (performanceId: number) => {
@@ -25,21 +25,17 @@ const HomeScreen = () => {
     useChildListQuery();
   const [selectedChild, setSelectedChild] = useState<ChildItem | null>(null);
 
-  useEffect(
-    function initializeRecommendedPerformanceList() {
-      if (!selectedChild) return;
+  const { data: { contents: genrePerformanceList } = { contents: [] } } =
+    useGenrePerformanceListQuery(selectedChild?.genre ?? Genre.PLAY, {
+      enabled: !!selectedChild,
+    });
+  const { data: { contents: sidoPerformanceList } = { contents: [] } } =
+    useSidoPerformanceListQuery(selectedChild?.sido ?? Sido.SEOUL, {
+      enabled: !!selectedChild,
+    });
 
-      const fetchRecommendedPerformanceList = async () => {
-        // const { contents: recommendedPerformances } =
-        const recommendedPerformances =
-          await performanceApi.getRecommendedPerformanceList(selectedChild.id);
-        setRecommendedPerformanceList(recommendedPerformances);
-      };
-
-      fetchRecommendedPerformanceList();
-    },
-    [selectedChild]
-  );
+  const { data: { contents: rewardPerformanceList } = { contents: [] } } =
+    useRewardPerformanceListQuery();
 
   useEffect(
     function initializeSelectedChild() {
@@ -48,45 +44,26 @@ const HomeScreen = () => {
     },
     [children]
   );
-  const [selectedRadio, setSelectedRadio] = useState<number>(1);
-  const [selectedMulti, setSelectedMulti] = useState<number[]>([1]);
+
   const [searchText, setSearchText] = useState<string>("");
-  //TODO: 아이목록 조회시 지역, 성향불러오기 and 공연API, 공연상세 API 추가
+
   if (!selectedChild) {
     return;
   }
   return (
-    <div>
-      <div className="flex-1">
-        {/* 로고 */}
-        <div className="items-center pt-4 pb-6">
-          <p className="text-2xl text-black title-hak">두두몽드</p>
-        </div>
-        {/* 검색바 */}
-
-        {/* 아이 선택 */}
+    <div className="flex-1">
+      <header className="flex fixed z-10 flex-row items-center h-16 bg-gray-200">
+        <p className="text-2xl text-black title-hak">두두몽드</p>
         <SearchInput
           placeholder="다른 텍스트 검색..."
           onSearch={(value) => setSearchText(value)}
           value={searchText}
         />
-        <SingleSelectGroup
-          selectedValue={selectedRadio}
-          onChange={(value) => setSelectedRadio(value as number)}
-        >
-          <SingleRadio value={1} label="1" />
-          <SingleRadio value={2} label="2" />
-          <SingleRadio value={3} label="3" />
-        </SingleSelectGroup>
-        <MultiSelectGroup
-          selectedValues={selectedMulti}
-          onChange={(value) => setSelectedMulti(value as number[])}
-        >
-          <MultiRadio value={1} label="1" />
-          <MultiRadio value={2} label="2" />
-          <MultiRadio value={3} label="3" />
-        </MultiSelectGroup>
-        <div>
+      </header>
+
+      {/* 아이 선택 */}
+      <div className="flex flex-col gap-10 pt-[76px]">
+        <nav className="flex flex-row gap-4">
           {children.map((child) => (
             <ChildProfile
               key={child.id}
@@ -95,42 +72,56 @@ const HomeScreen = () => {
               onClick={setSelectedChild}
             />
           ))}
+        </nav>
+
+        <div className="flex flex-col gap-12">
+          {/*  장르별 공연 섹션 */}
+          <section className="flex flex-col gap-2">
+            <h2 className="text-black title-hak">
+              👩‍👧 {getGenreLabel(selectedChild.genre)}를 좋아하는{" "}
+              {selectedChild?.name}를 위해!
+            </h2>
+            <ul>
+              {genrePerformanceList.map((genrePerformance) => (
+                <PerformanceCard
+                  key={genrePerformance.performanceId}
+                  performance={genrePerformance}
+                  onPress={handlePerformancePress}
+                />
+              ))}
+            </ul>
+          </section>
+
+          {/*  지역별 공연 섹션 */}
+          <section className="flex flex-col gap-2">
+            <h2 className="text-black title-hak">
+              👩‍👧 {getSidoLabel(selectedChild.sido)} 지역 인기 공연이에요
+            </h2>
+            <ul>
+              {sidoPerformanceList.map((sidoPerformance) => (
+                <PerformanceCard
+                  key={sidoPerformance.performanceId}
+                  performance={sidoPerformance}
+                  onPress={handlePerformancePress}
+                />
+              ))}
+            </ul>
+          </section>
+
+          {/*  수상을 받은 공연 섹션 */}
+          <section className="flex flex-col gap-2">
+            <h2 className="text-black title-hak">수상 받은 공연이에요</h2>
+            <ul>
+              {rewardPerformanceList.map((rewardPerformance) => (
+                <PerformanceCard
+                  key={rewardPerformance.performanceId}
+                  performance={rewardPerformance}
+                  onPress={handlePerformancePress}
+                />
+              ))}
+            </ul>
+          </section>
         </div>
-        {/*  장르별 공연 섹션 */}
-        <div className="mb-8">
-          <p className="mb-4 text-[17px] font-normal text-black">
-            👩‍👧 인기캐릭터를 좋아하는 {selectedChild?.name}를 위해!
-          </p>
-          <div>
-            {recommendedPerformanceList?.map((recommendedPerformance) => (
-              <PerformanceCard
-                key={recommendedPerformance.performanceId}
-                performance={recommendedPerformance}
-                onPress={handlePerformancePress}
-              />
-            ))}
-          </div>
-        </div>
-        {/*  지역 인기 공연 섹션 */}
-        {/* <View className="mb-8">
-          <Text className="mb-4 text-[17px] font-normal text-black">
-            🌟 {getSidoLabel(selectedChild?.sido)} 지역 인기 공연이에요
-          </Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={true}
-            contentContainerStyle={{ paddingLeft: 7 }}
-          >
-            {seoulPerformances.map((item) => (
-              <PerformanceCard
-                key={item.id}
-                performance={item}
-                onPress={handlePerformancePress}
-              />
-            ))}
-          </ScrollView>
-        </View> */}
-        {/* Bottom Spacing */}
       </div>
     </div>
   );

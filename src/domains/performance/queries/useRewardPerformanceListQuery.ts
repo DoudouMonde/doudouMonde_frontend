@@ -7,7 +7,10 @@ import {
 import { queryKeys } from "@/shared/apis";
 
 export function useRewardPerformanceListQuery(
-  queryOptions?: UseQueryOptions<PerformanceListResponse, Error>
+  queryOptions?: Omit<
+    UseQueryOptions<PerformanceListResponse, Error>,
+    "queryKey" | "queryFn"
+  >
 ) {
   return useQuery({
     queryKey: [queryKeys.PERFORMANCE_LIST],

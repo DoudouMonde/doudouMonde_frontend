@@ -1,4 +1,5 @@
 import { FacilityIcon, PerformanceItem } from "@/domains/performance/types";
+import { getSidoLabel } from "@/shared/services/address";
 
 // Props 타입
 type Props = {
@@ -23,11 +24,10 @@ const renderFacilityIcon = (facility: FacilityIcon) => {
   );
 };
 export default function PerformanceCard({ performance, onPress }: Props) {
-  console.log("performance", performance);
   return (
-    <div
+    <li
       onClick={() => onPress(performance.performanceId)}
-      className="mr-4 w-[124px]"
+      className="w-[124px]"
     >
       <p className="relative">
         {/* 포스터 */}
@@ -56,12 +56,12 @@ export default function PerformanceCard({ performance, onPress }: Props) {
       {/* 제목과 위치 */}
       <div className="px-1 mt-2">
         <p className="text-[10px] font-semibold text-neutral-gray-400 mb-1 font-inter">
-          {performance.location}
+          {getSidoLabel(performance.sido)}
         </p>
         <p className="text-[12px] font-semibold text-black font-inter leading-[14.5px]">
           {performance.performanceName}
         </p>
       </div>
-    </div>
+    </li>
   );
 }

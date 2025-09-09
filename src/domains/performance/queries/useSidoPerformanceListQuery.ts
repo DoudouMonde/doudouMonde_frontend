@@ -9,7 +9,10 @@ import { Sido } from "@/shared/types";
 
 export function useSidoPerformanceListQuery(
   sido: Sido,
-  queryOptions?: UseQueryOptions<PerformanceListResponse, Error>
+  queryOptions?: Omit<
+    UseQueryOptions<PerformanceListResponse, Error>,
+    "queryKey" | "queryFn"
+  >
 ) {
   return useQuery({
     queryKey: [queryKeys.PERFORMANCE_LIST],
