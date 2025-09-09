@@ -51,8 +51,8 @@ const HomeScreen = () => {
     return;
   }
   return (
-    <div className="flex-1">
-      <header className="flex fixed z-10 flex-row items-center h-16 bg-gray-200">
+    <div>
+      <header className="flex fixed left-0 z-10 flex-row justify-center items-center w-full h-16 bg-gray-200 border-2">
         <p className="text-2xl text-black title-hak">두두몽드</p>
         <SearchInput
           placeholder="다른 텍스트 검색..."
@@ -63,7 +63,7 @@ const HomeScreen = () => {
 
       {/* 아이 선택 */}
       <div className="flex flex-col gap-10 pt-[76px]">
-        <nav className="flex flex-row gap-4">
+        <ul className="flex flex-row gap-4">
           {children.map((child) => (
             <ChildProfile
               key={child.id}
@@ -72,7 +72,7 @@ const HomeScreen = () => {
               onClick={setSelectedChild}
             />
           ))}
-        </nav>
+        </ul>
 
         <div className="flex flex-col gap-12">
           {/*  장르별 공연 섹션 */}

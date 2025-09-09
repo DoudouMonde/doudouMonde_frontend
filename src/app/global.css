@@ -79,6 +79,19 @@
   }
 }
 
+/* 리스트 기본 스타일 제거 */
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  margin: 0;
+  padding: 0;
+}
+
 html,
 body,
 #root {
