@@ -6,9 +6,10 @@ export type PerformanceItem = {
   performanceName: string;
   postUrl: string;
   sido: Sido;
-  playRoom: boolean;
-  nursingRoom: boolean;
-  disableRestRoom: boolean;
+
+  hasPlayRoom: boolean;
+  hasNursingRoom: boolean;
+  hasRestRoom: boolean;
 };
 
 // 시설 아이콘 타입

@@ -1,3 +1,4 @@
+import { BabyIcon, BearIcon, RestroomIcon } from "@/assets/icons";
 import { FacilityIcon, PerformanceItem } from "@/domains/performance/types";
 import { getSidoLabel } from "@/shared/services/address";
 
@@ -24,43 +25,44 @@ const renderFacilityIcon = (facility: FacilityIcon) => {
   );
 };
 export default function PerformanceCard({ performance, onPress }: Props) {
+  console.log(performance);
   return (
     <li
       onClick={() => onPress(performance.performanceId)}
-      className="w-[124px]"
+      className="w-[124px] flex flex-col gap-2"
     >
-      <p className="relative">
-        {/* 포스터 */}
+      {/* 포스터 */}
+      <div className="w-[124px] h-[177px] rounded-xl relative">
         <img
           src={performance.postUrl}
-          className="w-[124px] h-[177px] bg-gray-100 rounded-lg"
+          alt={performance.performanceName + "이미지"}
+          className="w-full h-full"
         />
-
-        {/* 시설 아이콘 오버레이 */}
-        {performance.playRoom ||
-          performance.nursingRoom ||
-          (performance.disableRestRoom && (
-            <div className="absolute right-0 bottom-0 left-0">
-              {/* 배경 */}
-              <div className="h-[21px] bg-neutral-gray-600 rounded-b-lg" />
-              {/* 아이콘들 */}
-              <div className="absolute top-1 left-2 flex-row">
-                {/* {performance.facilities.map((facility) =>
-                  renderFacilityIcon(facility)
-                )} */}
-              </div>
+        <div className="flex absolute bottom-0 left-0 gap-1 items-center px-2 py-2 w-full h-6 rounded-b-xl bg-secondary-100">
+          {performance.hasRestRoom && (
+            <div className="flex justify-center items-center w-4 h-4">
+              <RestroomIcon className="w-full h-full text-yellow-100" />
             </div>
-          ))}
-      </p>
+          )}
+          {performance.hasNursingRoom && (
+            <div className="flex justify-center items-center w-4 h-4">
+              <BabyIcon className="w-full h-full text-yellow-100" />
+            </div>
+          )}
+          {performance.hasPlayRoom && (
+            <div className="flex justify-center items-center w-4 h-[14px]">
+              <BearIcon className="w-full h-full text-yellow-100" />
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* 제목과 위치 */}
-      <div className="px-1 mt-2">
-        <p className="text-[10px] font-semibold text-neutral-gray-400 mb-1 font-inter">
+      <div className="flex flex-col">
+        <p className="subtitle text-secondary-100">
           {getSidoLabel(performance.sido)}
         </p>
-        <p className="text-[12px] font-semibold text-black font-inter leading-[14.5px]">
-          {performance.performanceName}
-        </p>
+        <p className="body-inter">{performance.performanceName}</p>
       </div>
     </li>
   );
