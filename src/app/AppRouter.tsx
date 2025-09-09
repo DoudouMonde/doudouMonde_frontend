@@ -9,6 +9,7 @@ import ChildAndDateSelection from "@/pages/ChildAndDateSelection";
 import ReviewWriting from "@/pages/ReviewWriting";
 import VoiceReview from "@/pages/VoiceReview";
 import CharacterCreation from "@/pages/CharacterCreation";
+import CharacterPreview from "@/pages/CharacterPreview";
 import { Layout } from "@/app";
 import { PlayroomLayout } from "@/app/PlayroomLayout";
 
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: "character-creation",
         element: <CharacterCreation />,
+      },
+      {
+        path: "character-preview",
+        element: <CharacterPreview />,
       },
     ],
   },
