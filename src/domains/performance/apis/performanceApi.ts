@@ -6,13 +6,13 @@ import { Genre, Sido } from "@/shared/types";
 export const performanceApi = {
   getPerformanceDetail: async (performanceId: number) => {
     const response = await apiRequester.get<PerformanceDetail>(
-      `/api/v1/performances/${performanceId}`
+      `/v1/performances/${performanceId}`
     );
     return response.data;
   },
   getGenrePerformanceList: async (genre: Genre) => {
     const response = await apiRequester.get<PerformanceListResponse>(
-      `/api/v1/performances`,
+      `/v1/performances`,
       {
         params: {
           genre,
@@ -23,7 +23,7 @@ export const performanceApi = {
   },
   getSidoPerformanceList: async (sido: Sido) => {
     const response = await apiRequester.get<PerformanceListResponse>(
-      `/api/v1/performances`,
+      `/v1/performances`,
       {
         params: {
           sido,
@@ -34,7 +34,7 @@ export const performanceApi = {
   },
   getRewardPerformanceList: async () => {
     const response = await apiRequester.get<PerformanceListResponse>(
-      `/api/v1/performances`,
+      `/v1/performances`,
       {
         params: {
           isReward: true,
