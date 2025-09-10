@@ -13,7 +13,8 @@ function Playroom() {
 
   const handleSkip = () => {
     console.log("다음에 하기");
-    // TODO: 메인 페이지로 이동하거나 다른 로직
+    // 리뷰 목록 페이지로 이동
+    navigate("/playroom/reviews");
   };
 
   return (

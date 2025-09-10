@@ -52,6 +52,20 @@ export const reviewApi = {
     return response.data;
   },
 
+  // 멤버의 모든 리뷰 조회
+  getMemberReviews: async (): Promise<ReviewResponse[]> => {
+    console.log("=== getMemberReviews API 요청 ===");
+    console.log("요청 URL:", "/v1/member/reviews");
+    console.log(
+      "전체 URL:",
+      `${apiRequester.defaults.baseURL}/v1/member/reviews`
+    );
+
+    const response = await apiRequester.get("/v1/member/reviews");
+    console.log("응답 성공:", response.status);
+    return response.data;
+  },
+
   // 단일 리뷰 조회
   getReview: async (reviewId: number): Promise<ReviewResponse> => {
     const response = await apiRequester.get(`/v1/reviews/${reviewId}`);
