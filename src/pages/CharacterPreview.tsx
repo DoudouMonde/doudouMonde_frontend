@@ -175,11 +175,7 @@ const CharacterPreview: React.FC = () => {
             imageBlob.type
           );
 
-          formData.append(
-            `imageFiles`,
-            imageBlob,
-            `image_${index}_${image.name}`
-          );
+          formData.append(`images`, imageBlob, `image_${index}_${image.name}`);
         });
         console.log(
           `${validImages.length}개의 이미지 파일이 FormData에 추가되었습니다.`
