@@ -15,7 +15,7 @@ import { Genre, Sido } from "@/shared/types";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const HomeScreen = () => {
+export const HomePage = () => {
   const navigate = useNavigate();
 
   const handlePerformancePress = (performanceId: number) => {
@@ -130,5 +130,3 @@ const HomeScreen = () => {
     </div>
   );
 };
-
-export default HomeScreen;

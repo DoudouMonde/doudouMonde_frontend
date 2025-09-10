@@ -1,17 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavigationButtons, SearchInput } from "@/shared/components";
-import { RadioTrue, RadioFalse } from "@/assets/icons";
 import { PATH } from "@/shared/constants";
 
-import {
-  SingleSelectGroup,
-  SingleSelectItem,
-} from "@/shared/components/SingleSelect";
+import { SingleSelectGroup } from "@/shared/components/SingleSelect";
+import { SingleRadio } from "@/shared/components/Radio";
 
-const SelectPerformance: React.FC = () => {
+export const SelectPerformancePage = () => {
   const navigate = useNavigate();
-  const [selectedPerformance, setSelectedPerformance] = useState<number | null>(
+  const [selectedPerformance, setSelectedPerformance] = useState<number>(
     1 // 더미 데이터: 첫 번째 공연이 선택된 상태로 시작
   );
 
@@ -99,28 +96,16 @@ const SelectPerformance: React.FC = () => {
           </h2>
           <div className="space-y-3">
             <SingleSelectGroup
+              className="flex flex-col gap-4"
               selectedValue={selectedPerformance}
               onChange={(value) => setSelectedPerformance(value as number)}
             >
               {performances.map((performance) => (
-                <SingleSelectItem key={performance.id} value={performance.id}>
-                  <div
-                    className={`p-4 transition-all duration-200 cursor-pointer rounded-[16px] }`}
-                  >
-                    <div className="flex gap-4 items-center">
-                      {/* 선택 표시 */}
-                      {selectedPerformance === performance.id ? (
-                        <RadioTrue className="w-6 h-6" />
-                      ) : (
-                        <RadioFalse className="w-6 h-6" />
-                      )}
-                      {/* 공연 이름만 표시 */}
-                      <div className="flex-1 min-w-0">
-                        <h3 className={`body-inter`}>{performance.title}</h3>
-                      </div>
-                    </div>
-                  </div>
-                </SingleSelectItem>
+                <SingleRadio
+                  key={performance.id}
+                  label={performance.title}
+                  value={performance.id}
+                />
               ))}
             </SingleSelectGroup>
           </div>
@@ -138,5 +123,3 @@ const SelectPerformance: React.FC = () => {
     </div>
   );
 };
-
-export default SelectPerformance;

@@ -1,19 +1,21 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Home from "@/pages/Home";
-import Playroom from "@/pages/Playroom";
-import Favorites from "@/pages/Favorites";
-import MyPage from "@/pages/MyPage";
-import SelectPerformance from "@/pages/SelectPerformance";
-import ChildAndDateSelection from "@/pages/ChildAndDateSelection";
-import ReviewWriting from "@/pages/ReviewWriting";
-import VoiceReview from "@/pages/VoiceReview";
-import CharacterCreation from "@/pages/CharacterCreation";
-import CharacterPreview from "@/pages/CharacterPreview";
-import ReviewDetail from "@/pages/ReviewDetail";
-import ReviewList from "@/pages/ReviewList";
 import { PlayroomLayout } from "@/app/PlayroomLayout";
-import { PerformanceDetailPage } from "@/pages";
+import {
+  PerformanceDetailPage,
+  PlayroomPage,
+  FavoritesPage,
+  MyPage,
+  SelectPerformancePage,
+  ChildAndDateSelectionPage,
+  ReviewWritingPage,
+  VoiceReviewPage,
+  CharacterCreationPage,
+  CharacterPreviewPage,
+  ReviewDetailPage,
+  ReviewListPage,
+  HomePage,
+} from "@/pages";
 import { BottomNavigationLayout } from "@/app/layout";
 
 const router = createBrowserRouter([
@@ -23,11 +25,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />,
+        element: <HomePage />,
       },
       {
         path: "favorites",
-        element: <Favorites />,
+        element: <FavoritesPage />,
       },
       {
         path: "mypage",
@@ -46,39 +48,39 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Playroom />,
+        element: <PlayroomPage />,
       },
       {
         path: "select-performance",
-        element: <SelectPerformance />,
+        element: <SelectPerformancePage />,
       },
       {
         path: "child-date-selection",
-        element: <ChildAndDateSelection />,
+        element: <ChildAndDateSelectionPage />,
       },
       {
         path: "review-writing",
-        element: <ReviewWriting />,
+        element: <ReviewWritingPage />,
       },
       {
         path: "voice-review",
-        element: <VoiceReview />,
+        element: <VoiceReviewPage />,
       },
       {
         path: "character-creation",
-        element: <CharacterCreation />,
+        element: <CharacterCreationPage />,
       },
       {
         path: "character-preview",
-        element: <CharacterPreview />,
+        element: <CharacterPreviewPage />,
       },
       {
         path: "reviews",
-        element: <ReviewList />,
+        element: <ReviewListPage />,
       },
       {
         path: "reviews/:reviewId",
-        element: <ReviewDetail />,
+        element: <ReviewDetailPage />,
       },
     ],
   },
