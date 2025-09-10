@@ -116,7 +116,7 @@ export function BottomNavigation() {
 
   return (
     <nav
-      className="fixed bottom-0 left-1/2 z-50 w-full max-w-md transform -translate-x-1/2"
+      className="fixed bottom-0 left-1/2 z-50 w-full transform -translate-x-1/2"
       style={{
         backgroundColor: COLORS.WHITE,
         height: 72,

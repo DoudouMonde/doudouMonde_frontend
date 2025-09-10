@@ -1,91 +1,64 @@
-import { PerformanceDetail } from "@/domains/performance/types";
-import { useState } from "react";
+import { usePerformanceDetailQuery } from "@/domains/performance/queries";
+import { Chip } from "@/shared/components";
+import { toYYYYMMDD, formatCurrency } from "@/shared/utils";
+import { useParams } from "react-router-dom";
 
-type Props = {
-  performance: PerformanceDetail;
-};
+// type Props = {};
 
-export const PerformanceOverview = ({ performance }: Props) => {
-  const performanceInfo = [
-    { label: "장소", value: performance.location },
-    { label: "공연기간", value: performance.period },
-    { label: "공연시간", value: performance.duration },
-    { label: "관람연령", value: performance.ageLimit },
-    { label: "가격", value: performance.prices.join("\n") },
-    { label: "시설정보", value: performance.facilities },
-  ];
-  const [selectedReview, setSelectedReview] = useState<
-    "want" | "watched" | null
-  >(null);
+export const PerformanceOverview = () => {
+  const { performanceId } = useParams();
+  const { data: performanceDetail } = usePerformanceDetailQuery(
+    Number(performanceId)
+  );
+  if (!performanceDetail) {
+    return;
+  }
   return (
-    <div className="px-4 pt-4 pb-5 bg-white/90">
-      {/* 태그 */}
-      {performance.tag && (
-        <div className="absolute top-4 left-6 z-10">
-          <div className="px-1.5 py-0.5 rounded-[10px] border bg-secondary-400 border-gray-300">
-            <p className="text-xs text-black font-inter">{performance.tag}</p>
-          </div>
-        </div>
-      )}
-
-      {/* 제목 */}
-      <div className="text-[16px] font-semibold text-black leading-[22px] mt-7 mb-4 font-noto">
-        {performance.title}
-      </div>
-
-      <div className="flex-row">
+    <div className="flex flex-col gap-4 px-4 pt-4">
+      <section className="flex flex-row gap-4">
         {/* 포스터 */}
-        <div className="mr-4">
+        <div className="min-w-[86px] shadow-md">
           <img
-            src={performance.poster}
-            className="w-[157px] h-[210px] rounded-lg bg-gray-100 shadow-card"
+            src={performanceDetail.posterUrl}
+            className="w-full bg-gray-100 rounded-lg"
           />
         </div>
 
-        {/* 상세 정보 */}
-        <div className="flex-1 pt-0.5">
-          {performanceInfo.map((item, index) => (
-            <div key={index} className="flex-row items-start mb-4">
-              <p className="text-[12px] text-black leading-3 w-9 mr-4 font-noto">
-                {item.label}
-              </p>
-              <p
-                className={`text-[10px] leading-3 flex-1 font-noto ${
-                  item.label === "가격"
-                    ? "text-[#454545] leading-[15px]"
-                    : "text-black leading-3"
-                }`}
-              >
-                {item.value}
-              </p>
-            </div>
-          ))}
+        {/* 상세 설명 */}
+        <div className="flex flex-col justify-between">
+          <div className="flex flex-col gap-2">
+            <Chip variant="filled">차차는 처음 보는 장르예요!</Chip>
+            <h1 className="title-hak">{performanceDetail.performanceName}</h1>
+          </div>
+          <div className="flex gap-3">
+            <Chip variant="outlined">보고싶어요 💖</Chip>
+            <Chip variant="outlined">봤어요 ✅</Chip>
+          </div>
         </div>
-      </div>
+      </section>
 
-      {/* 리뷰 버튼 */}
-      <div className="flex-row gap-1 justify-end mt-4">
-        <div
-          className={`bg-white border-2 border-secondary-500 rounded-[10px] px-3 py-1 w-20 h-5 justify-center items-center ${
-            selectedReview === "want" ? "bg-secondary-500" : ""
-          }`}
-          onClick={() =>
-            setSelectedReview(selectedReview === "want" ? null : "want")
-          }
-        >
-          <p className="text-[10px] text-black font-inter">보고싶어요 💖</p>
-        </div>
-
-        <div
-          className={`bg-white border-2 border-secondary-500 rounded-[10px] px-3 py-1 w-20 h-5 justify-center items-center ${
-            selectedReview === "watched" ? "bg-secondary-500" : ""
-          }`}
-          onClick={() =>
-            setSelectedReview(selectedReview === "watched" ? null : "watched")
-          }
-        >
-          <p className="text-[10px] text-black font-inter">봤어요 ✅</p>
-        </div>
+      <div className="flex flex-col gap-2 w-full">
+        {[
+          { label: "장소", value: performanceDetail.place },
+          {
+            label: "공연기간",
+            value:
+              toYYYYMMDD(performanceDetail.startDate) +
+              "~" +
+              toYYYYMMDD(performanceDetail.endDate),
+          },
+          {
+            label: "공연시간",
+            value: performanceDetail.durationMinutes + "분",
+          },
+          { label: "관람연령", value: performanceDetail.ageLimit },
+          { label: "가격", value: formatCurrency(performanceDetail.price) },
+        ].map((item, index) => (
+          <div key={index} className="flex flex-row gap-8">
+            <p className="w-16 body-inter">{item.label}</p>
+            <p className="body-inter">{item.value}</p>
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ export function BottomNavigationLayout() {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <main className="pb-[72px] w-full">
+      <main className="pb-[72px] w-full flex flex-col items-center">
         <Outlet />
       </main>
       <BottomNavigation />

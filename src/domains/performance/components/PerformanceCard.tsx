@@ -18,7 +18,7 @@ export default function PerformanceCard({ performance, onClick }: Props) {
       {/* 포스터 */}
       <div className="w-[124px] h-[177px] rounded-xl relative">
         <img
-          src={performance.postUrl}
+          src={performance.posterUrl}
           alt={performance.performanceName + "이미지"}
           className="w-full h-full"
         />

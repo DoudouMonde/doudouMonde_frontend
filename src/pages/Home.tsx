@@ -89,6 +89,7 @@ const HomeScreen = () => {
                   <PerformanceCard
                     key={genrePerformance.performanceId}
                     performance={genrePerformance}
+                    onClick={handlePerformancePress}
                   />
                 </Link>
               ))}
@@ -105,7 +106,7 @@ const HomeScreen = () => {
                 <PerformanceCard
                   key={sidoPerformance.performanceId}
                   performance={sidoPerformance}
-                  onPress={handlePerformancePress}
+                  onClick={handlePerformancePress}
                 />
               ))}
             </ul>
@@ -119,7 +120,7 @@ const HomeScreen = () => {
                 <PerformanceCard
                   key={rewardPerformance.performanceId}
                   performance={rewardPerformance}
-                  onPress={handlePerformancePress}
+                  onClick={handlePerformancePress}
                 />
               ))}
             </ul>
