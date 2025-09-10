@@ -22,6 +22,7 @@ import {
   Sad,
   Surprise,
 } from "@/assets/icons/playroom/emotion";
+import * as EmotionCharacters from "@/assets/icons/playroom/storytown/character/emotion";
 import {
   Crwon,
   Flower,
@@ -54,8 +55,8 @@ const CharacterCreation: React.FC = () => {
   // 감정 데이터 배열
   const emotions = [
     { id: "happy", name: "행복", icon: Happy },
-    { id: "exited", name: "신남", icon: Exited },
-    { id: "surprise", name: "놀람", icon: Surprise },
+    { id: "onemore", name: "한번 더", icon: Exited },
+    { id: "surprised", name: "놀람", icon: Surprise },
     { id: "sad", name: "슬픔", icon: Sad },
     { id: "bored", name: "지루함", icon: Bored },
   ];
@@ -80,6 +81,23 @@ const CharacterCreation: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<
     "animal" | "emotion" | "accessory"
   >("animal");
+
+  // 동물과 감정을 조합해서 캐릭터 컴포넌트를 가져오는 함수
+  const getEmotionCharacter = (animal: string, emotion: string) => {
+    const animalName = animal.charAt(0).toUpperCase() + animal.slice(1);
+    const emotionName = emotion.charAt(0).toUpperCase() + emotion.slice(1);
+    const componentName = `${animalName}${emotionName}`;
+
+    // 컴포넌트 이름 매핑 (oneMore -> Onemore)
+    const mappedComponentName = componentName.replace("Onemore", "Onemore");
+
+    return (
+      EmotionCharacters as Record<
+        string,
+        React.ComponentType<{ className?: string }>
+      >
+    )[mappedComponentName];
+  };
 
   const handlePrevious = () => {
     if (currentStep === "accessory") {
@@ -134,6 +152,25 @@ const CharacterCreation: React.FC = () => {
         <div className="flex relative z-10 flex-col items-center">
           <div className="flex justify-center">
             {(() => {
+              console.log("currentStep:", currentStep);
+              console.log("selectedAnimal:", selectedAnimal);
+              console.log("selectedEmotion:", selectedEmotion);
+
+              if (currentStep === "emotion" || currentStep === "accessory") {
+                // 감정 단계에서는 감정이 적용된 캐릭터 표시
+                const EmotionCharacter = getEmotionCharacter(
+                  selectedAnimal,
+                  selectedEmotion
+                );
+                console.log("감정동물:", EmotionCharacter);
+                if (EmotionCharacter) {
+                  return (
+                    <EmotionCharacter className="w-[147px] h-[224px] relative z-20" />
+                  );
+                }
+              }
+
+              // 동물 단계이거나 감정 캐릭터를 찾을 수 없는 경우 기본 동물 표시
               const selectedAnimalData = animals.find(
                 (animal) => animal.id === selectedAnimal
               );

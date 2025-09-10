@@ -139,7 +139,7 @@ const ReviewDetail: React.FC = () => {
   };
 
   const handleGoHome = () => {
-    navigate("/");
+    navigate("/playroom");
   };
 
   if (isLoading) {

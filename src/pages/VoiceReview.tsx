@@ -122,13 +122,15 @@ const VoiceReview: React.FC = () => {
   };
 
   const handleNext = async () => {
-    if (!recordedAudio) return;
-
     try {
-      console.log("음성 후기 완료 - 저장된 오디오:", recordedAudio);
-      console.log("오디오 크기:", recordedAudio.size, "bytes");
-      console.log("녹음 시간:", recordingDuration, "초");
-      console.log("오디오 타입:", recordedAudio.type);
+      if (recordedAudio) {
+        console.log("음성 후기 완료 - 저장된 오디오:", recordedAudio);
+        console.log("오디오 크기:", recordedAudio.size, "bytes");
+        console.log("녹음 시간:", recordingDuration, "초");
+        console.log("오디오 타입:", recordedAudio.type);
+      } else {
+        console.log("음성 녹음 없이 다음 페이지로 이동합니다.");
+      }
 
       // 상상친구 만들기 페이지로 이동 (이미 Zustand store에 저장됨)
       navigate(PATH.CHARACTER_CREATION);
@@ -137,7 +139,8 @@ const VoiceReview: React.FC = () => {
     }
   };
 
-  const isFormValid = recordedAudio !== null;
+  // 음성녹음이 필수가 아니므로 항상 다음 페이지로 이동 가능
+  const isFormValid = true;
 
   return (
     <div className="flex min-h-screen">
@@ -163,7 +166,11 @@ const VoiceReview: React.FC = () => {
 
         {/* 음성 녹음 섹션 */}
         <div className="mb-8">
-          <p className="mb-4 title-inter">음성 메시지 기록</p>
+          <p className="mb-2 title-inter">음성 메시지 기록 (선택사항)</p>
+          <p className="mb-4 text-sm text-gray-600 body-inter">
+            공연에 대한 소감을 음성으로 남겨보세요. 녹음하지 않아도 다음 단계로
+            진행할 수 있습니다.
+          </p>
           <p className="subtitle text-secondary-100">
             아이와 대화를 나누며 자유롭게 음성 기록을 남겨주세요!
           </p>
