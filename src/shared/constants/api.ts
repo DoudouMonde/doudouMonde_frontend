@@ -1,5 +1,4 @@
-// export const SERVER_BASE_URL = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
-export const SERVER_BASE_URL = "http://localhost:8080";
+export const SERVER_BASE_URL = import.meta.env.VITE_SERVER_BASE_URL;
 
 export const END_POINT = {
   // NAVER_LOGIN: (redirectUrl: string) => `/oauth2/authorization/naver?redirect_uri=${redirectUrl}`,

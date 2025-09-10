@@ -9,5 +9,5 @@ export const PATH = {
   WISHLIST: "/wishlist",
   PROFILE: "/profile",
   PERFORMANCE_DETAIL: (performanceId: number) =>
-    `/home/performances/${performanceId}` as const,
+    `/performances/${performanceId}` as const,
 } as const;

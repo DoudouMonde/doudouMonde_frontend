@@ -1,4 +1,4 @@
-import { Gender, Profile, Sido } from "@/shared/types";
+import { Gender, Genre, Profile, Sido } from "@/shared/types";
 
 export type ChildItem = {
   id: number;
@@ -7,4 +7,5 @@ export type ChildItem = {
   gender: Gender;
   profile: Profile;
   sido: Sido;
+  genre: Genre;
 };

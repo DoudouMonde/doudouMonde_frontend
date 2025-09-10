@@ -5,3 +5,4 @@ export * from "./MyPage";
 export * from "./CharacterCreation";
 export * from "./CharacterPreview";
 export * from "./ReviewDetail";
+export * from "./PerformanceDetailPage";

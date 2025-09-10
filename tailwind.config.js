@@ -61,9 +61,7 @@ export default {
       tertiary: {
         100: "#D9D9D9",
       },
-      black: {
-        100: "#000000",
-      },
+      black: "#000000",
     },
   },
   plugins: [],

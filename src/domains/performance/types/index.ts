@@ -1,18 +1,16 @@
-import { Sido } from "@/shared/types";
+import { Genre, Sido } from "@/shared/types";
 
 // 공연 데이터 타입
 export type PerformanceItem = {
   performanceId: number;
   performanceName: string;
-  postUrl: string;
+  posterUrl: string;
   sido: Sido;
-  playRoom: boolean;
-  nursingRoom: boolean;
-  disableRestRoom: boolean;
-};
 
-// 시설 아이콘 타입
-export type FacilityIcon = "restroom" | "baby" | "playroom";
+  hasPlayRoom: boolean;
+  hasNursingRoom: boolean;
+  hasRestRoom: boolean;
+};
 
 // 좌석정보 데이터 타입
 export type SeatsInfo = {
@@ -23,31 +21,26 @@ export type SeatsInfo = {
 
 // 공연 상세 정보 타입
 export type PerformanceDetail = {
-  title: string;
-  poster: string;
-  tag?: string;
-  location: string;
-  period: string;
-  duration: string;
+  performanceName: string;
+  posterUrl: string;
+  place: string;
+  startDate: [number, number, number];
+  endDate: [number, number, number];
+  durationMinutes: number;
   ageLimit: string;
-  prices: string[];
-  facilities: string;
-  hasParking?: boolean;
-  transportInfo?: {
-    publicTransport: {
-      duration: string;
-      image: string;
-    };
-    car: {
-      duration: string;
-      image: string;
-    };
-  };
+  price: number;
+
+  genre: Genre;
+  sido: Sido;
+
+  hasPlayRoom: boolean;
+  hasNursingRoom: boolean;
+  hasRestRoom: boolean;
   nearbyInfo?: NearbyInfo;
   seatsInfo?: SeatsInfo;
 };
 
-export type TabType = "transport" | "seats" | "nearby";
+export type TabType = "transport" | "seats" | "content";
 // 인근 정보 타입
 export type NearbyPlace = {
   name: string;

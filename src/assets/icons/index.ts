@@ -1,3 +1,5 @@
+export { default as BabyIcon } from "./BabyIcon";
+export { default as BearIcon } from "./BearIcon";
 export { default as Calendar } from "./Calendar";
 export { default as GamepadIcon } from "./GamepadIcon";
 export { default as HeartIcon } from "./HeartIcon";
@@ -7,5 +9,6 @@ export { default as RadioFalse } from "./RadioFalse";
 export { default as RadioTrue } from "./RadioTrue";
 export { default as RecordStart } from "./RecordStart";
 export { default as RecordStop } from "./RecordStop";
+export { default as RestroomIcon } from "./RestroomIcon";
 export { default as SearchIcon } from "./SearchIcon";
 export { default as UserIcon } from "./UserIcon";
