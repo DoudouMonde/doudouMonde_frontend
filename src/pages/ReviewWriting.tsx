@@ -70,7 +70,7 @@ const ReviewWriting: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col mb-6">
           <h1 className="mb-4 title-inter">후기 입력</h1>
-          <div className="w-auto min-w-20">
+          <div className="flex flex-col gap-2 w-auto">
             <div className="flex gap-1 items-center">
               <PlayingCardsIcon className="w-[13px] h-[13px]" />
               <p>
@@ -145,12 +145,12 @@ const ReviewWriting: React.FC = () => {
         {/* 후기 텍스트 섹션 */}
         <div className="mb-8">
           <h2 className="mb-4 title-inter">메모</h2>
-          <div className="backdrop-blur-sm rounded-[16px] p-4 border border-secondary-100/30">
+          <div className="backdrop-blur-sm rounded-[20px] p-4 border border-secondary-100/30">
             <textarea
               value={reviewText}
               onChange={handleTextChange}
               placeholder="오랫동안 추억할 수 있게 간단한 메모를 남겨주세요."
-              className="w-full h-20 text-gray-700 bg-transparent border-none outline-none resize-none body-inter"
+              className="w-full h-20 text-gray-700 bg-transparent border-none outline-none resize-none subtitle"
               maxLength={500}
             />
             <div className="flex justify-end mt-2">
@@ -166,7 +166,7 @@ const ReviewWriting: React.FC = () => {
           <NavigationButtons
             onPrevious={handlePrevious}
             onNext={handleNext}
-            isNextDisabled={!isFormValid}
+            isNextDisabled={false}
           />
         </div>
       </div>

@@ -149,7 +149,7 @@ const VoiceReview: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col mb-6">
           <h1 className="mb-4 title-inter">후기 입력</h1>
-          <div className="w-auto min-w-20">
+          <div className="flex flex-col gap-2 w-auto">
             <div className="flex gap-1 items-center">
               <PlayingCardsIcon className="w-[13px] h-[13px]" />
               <p>
@@ -166,17 +166,14 @@ const VoiceReview: React.FC = () => {
 
         {/* 음성 녹음 섹션 */}
         <div className="mb-8">
-          <p className="mb-2 title-inter">음성 메시지 기록 (선택사항)</p>
-          <p className="mb-4 text-sm text-gray-600 body-inter">
-            공연에 대한 소감을 음성으로 남겨보세요. 녹음하지 않아도 다음 단계로
-            진행할 수 있습니다.
-          </p>
+          <p className="mb-2 title-inter">음성 메시지 기록</p>
+
           <p className="subtitle text-secondary-100">
             아이와 대화를 나누며 자유롭게 음성 기록을 남겨주세요!
           </p>
           <p className="subtitle text-secondary-100">
-            예: 오늘 가장 즐거웠던 때는 어제였어? 오늘 가장 마음에 든 캐릭터는
-            누구야?
+            예: 오늘 가장 즐거웠던 때는 어제였어? <hr></hr>오늘 가장 마음에 든
+            캐릭터는 누구야?
           </p>
 
           <div className="bg-white/60 backdrop-blur-sm rounded-[16px] p-6 border border-secondary-100/30 mt-5">

@@ -9,7 +9,7 @@ export function PlayroomLayout() {
         backgroundImage: "url('/assets/images/playroom/backgroundImg.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
+        backgroundRepeat: "repeat",
       }}
     >
       <div className="absolute inset-0 bg-gray-200/40"></div>

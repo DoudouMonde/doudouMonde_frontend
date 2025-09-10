@@ -75,7 +75,7 @@ const Calendar: React.FC<CalendarProps> = ({
   const calendarDates = getCalendarDates(currentDate);
 
   return (
-    <div className={`w-[289px] h-[340px] ${className}`}>
+    <div className={`w-full h-auto ${className}`}>
       {/* 테두리 색을 제대로 설정했는데 왜 더 진해보이지? */}
       <div className="relative w-full h-full bg-white/50 border border-secondary-100/30 rounded-[20px] overflow-hidden">
         {/* Header with navigation */}

@@ -18,7 +18,7 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
   className = "",
 }) => {
   return (
-    <div className={`flex justify-between items-center ${className}`}>
+    <div className={`flex justify-evenly items-center ${className}`}>
       {/* 이전 버튼 */}
       <button
         onClick={onPrevious}
