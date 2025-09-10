@@ -1,23 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavigationButtons } from "@/shared/components";
 import { Calendar, PlayingCardsIcon } from "@/assets/icons";
 import { PATH } from "@/shared/constants";
+import { useReviewStore } from "@/stores/reviewStore";
 
 const ReviewWriting: React.FC = () => {
   const navigate = useNavigate();
-  const [reviewText, setReviewText] = useState<string>("");
-  const [uploadedImages, setUploadedImages] = useState<(File | null)[]>([
-    null,
-    null,
-    null,
-    null,
-  ]);
-  const [selectedDate, setSelectedDate] = useState<string>("");
-  const [selectedPerformance, setSelectedPerformance] = useState<any>(null);
+  const {
+    reviewText,
+    uploadedImages,
+    selectedDate,
+    selectedPerformance,
+    setReviewText,
+    setUploadedImages,
+    setSelectedDate,
+    setSelectedPerformance,
+  } = useReviewStore();
 
   // localStorage에서 선택된 날짜, 아이들, 공연 정보 불러오기
-  React.useEffect(() => {
+  useEffect(() => {
     const savedDate = localStorage.getItem("selectedDate");
     if (savedDate) {
       const date = new Date(savedDate);
@@ -28,11 +30,12 @@ const ReviewWriting: React.FC = () => {
     if (savedPerformance) {
       setSelectedPerformance(JSON.parse(savedPerformance));
     }
-  }, []);
+  }, [setSelectedDate, setSelectedPerformance]);
 
   const handleImageUpload = (index: number, file: File) => {
     const newImages = [...uploadedImages];
     newImages[index] = file;
+    console.log("이미지가 제대로 등록이 되었나 : ", newImages);
     setUploadedImages(newImages);
   };
 
@@ -51,36 +54,9 @@ const ReviewWriting: React.FC = () => {
   };
 
   const handleNext = () => {
-    // console.log("후기 작성 완료:", { reviewText, uploadedImages });
+    console.log("후기 작성 완료:", { reviewText, uploadedImages });
 
-    // 이미지 파일들을 localStorage에 저장
-    const validImages = uploadedImages.filter((img) => img !== null) as File[];
-    if (validImages.length > 0) {
-      // File 객체들을 ArrayBuffer로 변환하여 저장
-      const imagePromises = validImages.map(async (file, index) => {
-        const arrayBuffer = await file.arrayBuffer();
-        return {
-          index,
-          name: file.name,
-          type: file.type,
-          size: file.size,
-          data: Array.from(new Uint8Array(arrayBuffer)),
-        };
-      });
-
-      Promise.all(imagePromises).then((imageData) => {
-        localStorage.setItem("uploadedImages", JSON.stringify(imageData));
-        // console.log(
-        //   "이미지 파일들이 localStorage에 저장되었습니다:",
-        //   imageData
-        // );
-      });
-    }
-
-    // 후기 텍스트도 저장
-    localStorage.setItem("reviewText", reviewText);
-
-    // VoiceReview 페이지로 이동
+    // VoiceReview 페이지로 이동 (이미 Zustand store에 저장됨)
     navigate(PATH.VOICE_REVIEW);
   };
 

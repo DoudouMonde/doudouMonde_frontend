@@ -8,6 +8,7 @@ import {
   CharacterEmotion,
   CharacterAccessories,
 } from "@/domains/review/types/ReviewAddRequest";
+import { useReviewStore } from "@/stores/reviewStore";
 import {
   ChickBody,
   CatBody,
@@ -26,13 +27,17 @@ interface CharacterData {
 const CharacterPreview: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const {
+    reviewText,
+    uploadedImages,
+    recordedAudio,
+    selectedDate,
+    selectedPerformance,
+    characterName,
+    setCharacterName,
+    clearReviewData,
+  } = useReviewStore();
 
-  const [selectedDate, setSelectedDate] = useState<string>("");
-  const [selectedPerformance, setSelectedPerformance] = useState<{
-    id: number;
-    title: string;
-  } | null>(null);
-  const [characterName, setCharacterName] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // CharacterCreation에서 전달받은 데이터
@@ -44,16 +49,8 @@ const CharacterPreview: React.FC = () => {
 
   // localStorage에서 선택된 날짜, 아이들, 공연 정보 불러오기
   React.useEffect(() => {
-    const savedDate = localStorage.getItem("selectedDate");
-    if (savedDate) {
-      const date = new Date(savedDate);
-      setSelectedDate(date.toLocaleDateString("ko-KR"));
-    }
-
-    const savedPerformance = localStorage.getItem("selectedPerformance");
-    if (savedPerformance) {
-      setSelectedPerformance(JSON.parse(savedPerformance));
-    }
+    // 이제 Zustand store에서 데이터를 관리하므로 localStorage는 사용하지 않음
+    // 필요시 여기서 store 초기화 로직을 추가할 수 있음
   }, []);
 
   // 동물 데이터
@@ -134,12 +131,7 @@ const CharacterPreview: React.FC = () => {
     try {
       // 1. 서버에 보낼 JSON 데이터 객체를 생성합니다.
       const reviewData = convertToApiFormat();
-
-      // localStorage에서 후기 텍스트 가져오기
-      const reviewText = localStorage.getItem("reviewText");
-      if (reviewText) {
-        reviewData.content = reviewText;
-      }
+      reviewData.content = reviewText; // Zustand store에서 가져온 후기 텍스트 사용
 
       console.log("전송할 리뷰 데이터 (JSON):", reviewData);
 
@@ -152,75 +144,111 @@ const CharacterPreview: React.FC = () => {
       });
       formData.append("request", reviewBlob);
 
-      // 4. localStorage에서 이미지 파일들을 가져와서 FormData에 추가
-      const uploadedImagesData = localStorage.getItem("uploadedImages");
-      if (uploadedImagesData) {
-        try {
-          const imageDataArray = JSON.parse(uploadedImagesData);
-          imageDataArray.forEach(
-            (
-              imageData: {
-                index: number;
-                name: string;
-                type: string;
-                size: number;
-                data: number[];
-              },
-              index: number
-            ) => {
-              // ArrayBuffer를 Uint8Array로 변환
-              const uint8Array = new Uint8Array(imageData.data);
-              const blob = new Blob([uint8Array], { type: imageData.type });
-              formData.append(
-                `imageFiles`,
-                blob,
-                `image_${index}_${imageData.name}`
-              );
-            }
-          );
+      // 4. Zustand store에서 이미지 파일들을 가져와서 FormData에 추가
+      console.log(
+        "CharacterPreview - uploadedImages from store:",
+        uploadedImages
+      ); //제대로 됨
+      const validImages = uploadedImages.filter(
+        (img) => img !== null
+      ) as File[];
+      console.log("CharacterPreview - validImages:", validImages);
+      console.log("CharacterPreview - validImages.length:", validImages.length);
+
+      if (validImages.length > 0) {
+        // localStorage 방식과 동일하게 Blob으로 변환해서 추가
+        validImages.forEach(async (image, index) => {
           console.log(
-            `${imageDataArray.length}개의 이미지 파일이 FormData에 추가되었습니다.`
+            `CharacterPreview - 이미지 ${index} 처리:`,
+            image.name,
+            image.size,
+            "bytes",
+            image.type
           );
-        } catch (error) {
-          console.error("이미지 파일 데이터 파싱 중 오류:", error);
-        }
+
+          // File을 Blob으로 변환 (이미 File은 Blob을 상속받지만, 명시적으로 변환)
+          const imageBlob = new Blob([image], { type: image.type });
+          console.log(
+            `CharacterPreview - Blob 변환 결과:`,
+            imageBlob.size,
+            "bytes",
+            imageBlob.type
+          );
+
+          formData.append(
+            `imageFiles`,
+            imageBlob,
+            `image_${index}_${image.name}`
+          );
+        });
+        console.log(
+          `${validImages.length}개의 이미지 파일이 FormData에 추가되었습니다.`
+        );
+      } else {
+        console.log("CharacterPreview - 추가할 이미지가 없습니다.");
       }
 
-      // 5. localStorage에서 오디오 파일을 가져와서 FormData에 추가
-      const recordedAudioData = localStorage.getItem("recordedAudio");
-      if (recordedAudioData) {
-        try {
-          const audioData = JSON.parse(recordedAudioData);
-          const uint8Array = new Uint8Array(audioData.data);
-          const audioBlob = new Blob([uint8Array], { type: audioData.type });
-          formData.append("audioFile", audioBlob, audioData.name);
-          console.log("오디오 파일이 FormData에 추가되었습니다.");
-        } catch (error) {
-          console.error("오디오 파일 데이터 파싱 중 오류:", error);
-        }
+      // 5. Zustand store에서 오디오 파일을 가져와서 FormData에 추가
+      if (recordedAudio) {
+        console.log("CharacterPreview에서 받은 오디오:", recordedAudio);
+        console.log("오디오 크기:", recordedAudio.size, "bytes");
+        console.log("오디오 타입:", recordedAudio.type);
+
+        formData.append("audioFile", recordedAudio, "voice-review.wav");
+        console.log("오디오 파일이 FormData에 추가되었습니다.");
       } else {
+        console.log("오디오 파일이 없습니다. 빈 파일을 추가합니다.");
         // 오디오 파일이 없는 경우 빈 파일 추가
         const emptyAudioBlob = new Blob([], { type: "audio/wav" });
         formData.append("audioFile", emptyAudioBlob, "empty_audio.wav");
       }
 
-      // 6. API를 호출할 때, 일반 객체(reviewData)가 아닌 'formData' 객체를 전달합니다.
+      // 6. FormData 내용 확인
+      console.log("=== FormData 내용 확인 ===");
+      console.log("FormData entries:");
+      for (const [key, value] of formData.entries()) {
+        if (
+          value &&
+          typeof value === "object" &&
+          "name" in value &&
+          "size" in value &&
+          "type" in value
+        ) {
+          // File 객체인 경우
+          console.log(
+            `${key}: File(${(value as File).name}, ${
+              (value as File).size
+            } bytes, ${(value as File).type})`
+          );
+        } else if (
+          value &&
+          typeof value === "object" &&
+          "size" in value &&
+          "type" in value
+        ) {
+          // Blob 객체인 경우
+          console.log(
+            `${key}: Blob(${(value as Blob).size} bytes, ${
+              (value as Blob).type
+            })`
+          );
+        } else {
+          console.log(`${key}: ${value}`);
+        }
+      }
+      console.log("=== FormData 확인 완료 ===");
+
+      // 7. API를 호출할 때, 일반 객체(reviewData)가 아닌 'formData' 객체를 전달합니다.
       console.log("FormData 객체를 API로 전송합니다...");
       const reviewId = await reviewApi.addReview(formData);
 
       console.log("리뷰가 성공적으로 등록되었습니다. Review ID:", reviewId);
 
-      // 리뷰 상세 페이지로 이동 (리뷰 ID를 state로 전달)
-      navigate("/playroom/review-detail", {
-        state: {
-          reviewId: reviewId,
-          characterName: characterName,
-          characterData: characterData,
-          selectedPerformance: selectedPerformance,
-          selectedDate: selectedDate,
-          reviewText: reviewText,
-        },
-      });
+      // 리뷰 데이터 초기화
+      clearReviewData();
+
+      // 리뷰 상세 페이지로 이동
+      navigate(`/playroom/reviews/${reviewId}`);
     } catch (error) {
       console.error("리뷰 등록 중 오류가 발생했습니다:", error);
       alert("리뷰 등록 중 오류가 발생했습니다. 다시 시도해주세요.");

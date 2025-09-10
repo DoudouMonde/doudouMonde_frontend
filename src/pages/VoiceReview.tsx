@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavigationButtons } from "@/shared/components";
 import {
@@ -8,23 +8,30 @@ import {
   RecordStop,
 } from "@/assets/icons";
 import { PATH } from "@/shared/constants";
+import { useReviewStore } from "@/stores/reviewStore";
 
 const VoiceReview: React.FC = () => {
   const navigate = useNavigate();
+  const {
+    recordedAudio,
+    recordingDuration,
+    selectedDate,
+    selectedPerformance,
+    setRecordedAudio,
+    setSelectedDate,
+    setSelectedPerformance,
+  } = useReviewStore();
+
+  const [localRecordingDuration, setLocalRecordingDuration] =
+    useState<number>(0);
+
   const [isRecording, setIsRecording] = useState<boolean>(false);
-  const [recordedAudio, setRecordedAudio] = useState<Blob | null>(null);
-  const [recordingDuration, setRecordingDuration] = useState<number>(0);
-  const [selectedDate, setSelectedDate] = useState<string>("");
-  const [selectedPerformance, setSelectedPerformance] = useState<{
-    id: number;
-    title: string;
-  } | null>(null);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
     null
   );
 
   // localStorage에서 선택된 날짜, 아이들, 공연 정보 불러오기
-  React.useEffect(() => {
+  useEffect(() => {
     const savedDate = localStorage.getItem("selectedDate");
     if (savedDate) {
       const date = new Date(savedDate);
@@ -35,7 +42,7 @@ const VoiceReview: React.FC = () => {
     if (savedPerformance) {
       setSelectedPerformance(JSON.parse(savedPerformance));
     }
-  }, []);
+  }, [setSelectedDate, setSelectedPerformance]);
 
   // 컴포넌트 언마운트 시 정리
   React.useEffect(() => {
@@ -62,7 +69,12 @@ const VoiceReview: React.FC = () => {
 
       recorder.onstop = () => {
         const audioBlob = new Blob(chunks, { type: "audio/wav" });
-        setRecordedAudio(audioBlob);
+        console.log("녹음된 오디오 Blob:", audioBlob);
+        console.log("오디오 크기:", audioBlob.size, "bytes");
+        console.log("녹음 시간:", localRecordingDuration, "초");
+
+        setRecordedAudio(audioBlob, localRecordingDuration);
+        console.log("오디오가 Zustand store에 저장되었습니다.");
 
         // 스트림 정리
         stream.getTracks().forEach((track) => track.stop());
@@ -71,11 +83,11 @@ const VoiceReview: React.FC = () => {
       recorder.start();
       setMediaRecorder(recorder);
       setIsRecording(true);
-      setRecordingDuration(0);
+      setLocalRecordingDuration(0);
 
       // 녹음 시간 카운터
       const timer = setInterval(() => {
-        setRecordingDuration((prev) => prev + 1);
+        setLocalRecordingDuration((prev) => prev + 1);
       }, 1000);
 
       // 컴포넌트 언마운트 시 타이머 정리
@@ -94,8 +106,8 @@ const VoiceReview: React.FC = () => {
   };
 
   const handleDeleteRecording = () => {
-    setRecordedAudio(null);
-    setRecordingDuration(0);
+    setRecordedAudio(null, 0);
+    setLocalRecordingDuration(0);
   };
 
   const handlePlayRecording = () => {
@@ -113,20 +125,12 @@ const VoiceReview: React.FC = () => {
     if (!recordedAudio) return;
 
     try {
-      // 오디오 파일을 localStorage에 저장
-      const audioArrayBuffer = await recordedAudio.arrayBuffer();
-      const audioData = {
-        name: "voice-review.wav",
-        type: "audio/wav",
-        size: recordedAudio.size,
-        duration: recordingDuration,
-        data: Array.from(new Uint8Array(audioArrayBuffer)),
-      };
+      console.log("음성 후기 완료 - 저장된 오디오:", recordedAudio);
+      console.log("오디오 크기:", recordedAudio.size, "bytes");
+      console.log("녹음 시간:", recordingDuration, "초");
+      console.log("오디오 타입:", recordedAudio.type);
 
-      localStorage.setItem("recordedAudio", JSON.stringify(audioData));
-      // console.log("오디오 파일이 localStorage에 저장되었습니다:", audioData);
-
-      // 상상친구 만들기 페이지로 이동
+      // 상상친구 만들기 페이지로 이동 (이미 Zustand store에 저장됨)
       navigate(PATH.CHARACTER_CREATION);
     } catch (error) {
       console.error("음성 후기 처리 중 오류:", error);
@@ -183,15 +187,14 @@ const VoiceReview: React.FC = () => {
                   className={`flex justify-center items-center w-16 h-16 rounded-full transition-all duration-200 ${
                     isRecording
                       ? "bg-red-500 animate-pulse hover:bg-red-600"
-                      : ""
-                  }`}
+                      : ""}`}
                 >
                   {isRecording ? <RecordStop /> : <RecordStart />}
                 </button>
                 {isRecording && (
                   <p className="mt-2 text-sm text-gray-500">
-                    녹음 시간: {Math.floor(recordingDuration / 60)}:
-                    {(recordingDuration % 60).toString().padStart(2, "0")}
+                    녹음 시간: {Math.floor(localRecordingDuration / 60)}:
+                    {(localRecordingDuration % 60).toString().padStart(2, "0")}
                   </p>
                 )}
               </div>

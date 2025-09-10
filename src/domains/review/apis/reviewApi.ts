@@ -1,12 +1,25 @@
 import { apiRequester } from "@/shared/apis/axiosInstance";
 import { ReviewAddRequest } from "../types/ReviewAddRequest";
+import { ReviewResponse } from "../types/ReviewResponse";
 
 export const reviewApi = {
   // 리뷰 등록 (FormData)
   addReview: async (formData: FormData) => {
-    // headers 부분을 완전히 제거하면 브라우저가 알아서 올바른 헤더를 생성합니다.
-    const response = await apiRequester.post("/v1/reviews", formData);
-    return response.data;
+    console.log("=== API 요청 시작 ===");
+    console.log("요청 URL:", "/v1/reviews");
+    console.log("FormData 타입:", formData instanceof FormData);
+
+    try {
+      const response = await apiRequester.post("/v1/reviews", formData);
+      console.log("=== API 응답 성공 ===");
+      console.log("응답 상태:", response.status);
+      console.log("응답 데이터:", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("=== API 요청 실패 ===");
+      console.error("에러 상세:", error);
+      throw error;
+    }
   },
 
   // 리뷰 등록 (JSON)
@@ -40,7 +53,7 @@ export const reviewApi = {
   },
 
   // 단일 리뷰 조회
-  getReview: async (reviewId: number) => {
+  getReview: async (reviewId: number): Promise<ReviewResponse> => {
     const response = await apiRequester.get(`/v1/reviews/${reviewId}`);
     return response.data;
   },

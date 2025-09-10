@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { NavigationButtons } from "@/shared/components";
 import { Calendar, PlayingCardsIcon } from "@/assets/icons";
 import {
@@ -7,6 +7,8 @@ import {
   CharacterEmotion,
   CharacterAccessories,
 } from "@/domains/review/types/ReviewAddRequest";
+import { ReviewResponse } from "@/domains/review/types/ReviewResponse";
+import { reviewApi } from "@/domains/review/apis/reviewApi";
 import {
   ChickBody,
   CatBody,
@@ -24,80 +26,82 @@ interface ReviewDetailData {
   performanceTitle: string;
   watchDate: string;
   content: string;
-  images: File[];
-  audioFile: File | null;
+  imageUrls: string[];
+  audioUrl: string | null;
 }
 
 const ReviewDetail: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const { reviewId } = useParams<{ reviewId: string }>();
   const [reviewData, setReviewData] = useState<ReviewDetailData | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // location state에서 리뷰 데이터 가져오기
+  // API에서 리뷰 데이터 가져오기
   useEffect(() => {
-    const locationState = location.state as any;
+    const fetchReviewData = async () => {
+      if (!reviewId) {
+        setError("리뷰 ID가 없습니다.");
+        setIsLoading(false);
+        return;
+      }
 
-    if (locationState) {
-      // CharacterPreview에서 전달받은 데이터 사용
-      const reviewData: ReviewDetailData = {
-        characterName: locationState.characterName || "상상친구",
-        characterType:
-          locationState.characterData?.animal === "chick"
-            ? CharacterType.CHICK
-            : locationState.characterData?.animal === "cat"
-            ? CharacterType.CAT
-            : locationState.characterData?.animal === "dino"
-            ? CharacterType.DINO
-            : locationState.characterData?.animal === "dog"
-            ? CharacterType.DOG
-            : CharacterType.RABBIT,
-        characterEmotion:
-          locationState.characterData?.emotion === "happy"
-            ? CharacterEmotion.HAPPY
-            : locationState.characterData?.emotion === "exited"
-            ? CharacterEmotion.EXITED
-            : locationState.characterData?.emotion === "surprise"
-            ? CharacterEmotion.SURPRISE
-            : locationState.characterData?.emotion === "sad"
-            ? CharacterEmotion.SAD
-            : CharacterEmotion.BORED,
-        characterAccessories:
-          locationState.characterData?.accessory === "crwon"
-            ? CharacterAccessories.CROWN
-            : locationState.characterData?.accessory === "flower"
-            ? CharacterAccessories.FLOWER
-            : locationState.characterData?.accessory === "hat"
-            ? CharacterAccessories.HAT
-            : locationState.characterData?.accessory === "ribbon"
-            ? CharacterAccessories.RIBBON
-            : locationState.characterData?.accessory === "roundGlass"
-            ? CharacterAccessories.ROUND_GLASS
-            : CharacterAccessories.WIZARD_HAT,
-        performanceTitle: locationState.selectedPerformance?.title || "공연명",
-        watchDate:
-          locationState.selectedDate || new Date().toISOString().split("T")[0],
-        content: locationState.reviewText || "후기 내용이 없습니다.",
-        images: [], // 나중에 실제 이미지 데이터로 교체
-        audioFile: null, // 나중에 실제 오디오 데이터로 교체
-      };
-      setReviewData(reviewData);
-    } else {
-      // 기본 데이터 (직접 접근한 경우)
-      const mockReviewData: ReviewDetailData = {
-        characterName: "뽀삐",
-        characterType: CharacterType.CHICK,
-        characterEmotion: CharacterEmotion.HAPPY,
-        characterAccessories: CharacterAccessories.CROWN,
-        performanceTitle: "신데렐라",
-        watchDate: "2024-01-15",
-        content: "정말 재미있었어요! 아이가 너무 좋아했어요.",
-        images: [],
-        audioFile: null,
-      };
-      setReviewData(mockReviewData);
-    }
-  }, [location.state]);
+      try {
+        setIsLoading(true);
+        const response: ReviewResponse = await reviewApi.getReview(
+          parseInt(reviewId)
+        );
+
+        console.log("API 응답 데이터:", response);
+        console.log("watchDate 원본 값:", response.watchDate);
+        console.log("watchDate 타입:", typeof response.watchDate);
+        console.log("imageUrls 원본 값:", response.imageUrls);
+        console.log("imageUrls 타입:", typeof response.imageUrls);
+        console.log("imageUrls 길이:", response.imageUrls?.length);
+
+        // watchDate 처리 - 배열 형태로 오는 경우를 처리
+        let processedWatchDate = response.watchDate;
+        if (Array.isArray(response.watchDate)) {
+          // 배열 형태 [2025, 9, 10, 0, 0]를 문자열로 변환
+          const [year, month, day] = response.watchDate;
+          processedWatchDate = `${year}. ${month}. ${day}.`;
+        } else if (
+          response.watchDate &&
+          typeof response.watchDate === "string"
+        ) {
+          // LocalDateTime 형식 (2025-09-10T00:00:00)을 Date가 인식할 수 있는 형식으로 변환
+          if (
+            response.watchDate.includes("T") &&
+            !response.watchDate.includes("Z")
+          ) {
+            processedWatchDate = response.watchDate + "Z";
+          }
+        }
+
+        const reviewData: ReviewDetailData = {
+          characterName: response.characterName,
+          characterType: response.characterType,
+          characterEmotion: response.characterEmotion,
+          characterAccessories: response.characterAccessories,
+          performanceTitle: "공연명", // TODO: API에서 공연명도 받아오도록 수정 필요
+          watchDate: processedWatchDate,
+          content: response.content,
+          imageUrls: response.imageUrls || [],
+          audioUrl: response.audioUrl,
+        };
+        console.log("reviewData", reviewData);
+        setReviewData(reviewData);
+      } catch (error) {
+        console.error("리뷰 데이터를 불러오는 중 오류가 발생했습니다:", error);
+        setError("리뷰를 불러올 수 없습니다.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchReviewData();
+  }, [reviewId]);
 
   // 동물 데이터
   const animals = [
@@ -122,8 +126,8 @@ const ReviewDetail: React.FC = () => {
 
   // 음성 재생/정지
   const handlePlayAudio = () => {
-    if (reviewData?.audioFile) {
-      const audio = new Audio(URL.createObjectURL(reviewData.audioFile));
+    if (reviewData?.audioUrl) {
+      const audio = new Audio(reviewData.audioUrl);
       audio.play();
       setIsPlaying(true);
       audio.onended = () => setIsPlaying(false);
@@ -138,11 +142,29 @@ const ReviewDetail: React.FC = () => {
     navigate("/");
   };
 
-  if (!reviewData) {
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="text-center">
           <p className="text-lg text-gray-600">리뷰를 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !reviewData) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <p className="mb-4 text-lg text-red-600">
+            {error || "리뷰를 찾을 수 없습니다."}
+          </p>
+          <button
+            onClick={() => navigate("/")}
+            className="px-4 py-2 text-white bg-blue-100 rounded-lg hover:bg-blue-200"
+          >
+            홈으로 돌아가기
+          </button>
         </div>
       </div>
     );
@@ -165,7 +187,7 @@ const ReviewDetail: React.FC = () => {
             <div className="flex gap-1 items-center">
               <Calendar className="w-[13px] h-[13px] flex-shrink-0" />
               <p className="whitespace-nowrap">
-                {new Date(reviewData.watchDate).toLocaleDateString("ko-KR")}
+                {reviewData.watchDate || "날짜 정보 없음"}
               </p>
             </div>
           </div>
@@ -198,15 +220,15 @@ const ReviewDetail: React.FC = () => {
         {/* 등록된 사진 갤러리 */}
         <div className="mb-8">
           <h3 className="mb-4 title-inter">등록된 사진</h3>
-          {reviewData.images.length > 0 ? (
+          {reviewData.imageUrls.length > 0 ? (
             <div className="grid grid-cols-2 gap-4">
-              {reviewData.images.map((image, index) => (
+              {reviewData.imageUrls.map((imageUrl, index) => (
                 <div
                   key={index}
                   className="relative aspect-square bg-white/60 backdrop-blur-sm rounded-[16px] border border-secondary-100/30 overflow-hidden"
                 >
                   <img
-                    src={URL.createObjectURL(image)}
+                    src={imageUrl}
                     alt={`리뷰 사진 ${index + 1}`}
                     className="object-cover w-full h-full"
                   />
@@ -238,7 +260,7 @@ const ReviewDetail: React.FC = () => {
         {/* 음성 파일 재생 */}
         <div className="mb-8">
           <h3 className="mb-4 title-inter">음성 후기</h3>
-          {reviewData.audioFile ? (
+          {reviewData.audioUrl ? (
             <div className="bg-white/60 backdrop-blur-sm rounded-[16px] p-6 border border-secondary-100/30">
               <div className="flex flex-col items-center">
                 <div className="flex justify-center items-center mb-4 w-16 h-16 bg-green-100 rounded-full">

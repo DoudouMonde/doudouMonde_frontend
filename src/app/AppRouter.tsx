@@ -66,7 +66,7 @@ const router = createBrowserRouter([
         element: <CharacterPreview />,
       },
       {
-        path: "review-detail",
+        path: "reviews/:reviewId",
         element: <ReviewDetail />,
       },
     ],
