@@ -19,8 +19,8 @@ export function PerformanceDetailPage() {
 
         <div className="flex flex-col gap-4 w-full bg-gray-200 border-2">
           <Tab activeTab={activeTab}>
-            <Tab.Item value="content">😉 인근정보</Tab.Item>
             <Tab.Item value="transport">🚸 교통정보</Tab.Item>
+            <Tab.Item value="content">😉 인근정보</Tab.Item>
             <Tab.Item value="seats">💺 좌석정보</Tab.Item>
           </Tab>
 
