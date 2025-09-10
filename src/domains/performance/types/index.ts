@@ -40,7 +40,7 @@ export type PerformanceDetail = {
   seatsInfo?: SeatsInfo;
 };
 
-export type TabType = "transport" | "seats" | "nearby";
+export type TabType = "transport" | "seats" | "content";
 // 인근 정보 타입
 export type NearbyPlace = {
   name: string;

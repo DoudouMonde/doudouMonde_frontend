@@ -13,7 +13,7 @@ const tabs = [
 
 export const PerformanceTab = ({ activeTab, onPressTab }: Props) => {
   return (
-    <div className="bg-white">
+    <div className="z-10 bg-white">
       <div className="flex-row gap-4 px-4">
         {tabs.map((tab) => (
           <button
@@ -22,14 +22,7 @@ export const PerformanceTab = ({ activeTab, onPressTab }: Props) => {
             onClick={() => onPressTab(tab.id)}
           >
             <div className="py-3">
-              <p
-                className={`text-[16px] ${
-                  activeTab === tab.id ? "text-black" : "text-black/60"
-                }`}
-                style={{ fontFamily: "Inter" }}
-              >
-                {tab.label}
-              </p>
+              <p className="body-hak">{tab.label}</p>
             </div>
 
             {/* 선택된 탭 인디케이터 */}

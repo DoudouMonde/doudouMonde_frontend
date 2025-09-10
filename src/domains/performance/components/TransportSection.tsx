@@ -1,10 +1,8 @@
 import { PerformanceDetail } from "@/domains/performance/types";
 
-type Props = {
-  performance: PerformanceDetail;
-};
+type Props = {};
 
-export const TransportSection = ({ performance }: Props) => {
+export const TransportSection = ({}: Props) => {
   return (
     <div className="p-4">
       {/* 주차장 태그 */}

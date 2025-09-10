@@ -1,8 +1,6 @@
 import { NearbyInfo, NearbyPlace } from "@/domains/performance/types";
 
-type Props = {
-  nearbyInfo: NearbyInfo;
-};
+type Props = {};
 
 // 유아의자 아이콘 컴포넌트
 const HighChairIcon = () => (
@@ -91,7 +89,7 @@ const Section = ({
   </div>
 );
 
-export const NearbySection = ({ nearbyInfo }: Props) => {
+export const NearbySection = ({}: Props) => {
   return (
     <div className="p-4">
       {/* 아이와 가볼만한 맛집 섹션 */}
