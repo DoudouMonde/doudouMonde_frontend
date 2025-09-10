@@ -10,6 +10,7 @@ import ReviewWriting from "@/pages/ReviewWriting";
 import VoiceReview from "@/pages/VoiceReview";
 import CharacterCreation from "@/pages/CharacterCreation";
 import CharacterPreview from "@/pages/CharacterPreview";
+import ReviewDetail from "@/pages/ReviewDetail";
 import { Layout } from "@/app";
 import { PlayroomLayout } from "@/app/PlayroomLayout";
 
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
       {
         path: "character-preview",
         element: <CharacterPreview />,
+      },
+      {
+        path: "review-detail",
+        element: <ReviewDetail />,
       },
     ],
   },

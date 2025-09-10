@@ -92,15 +92,15 @@ const CharacterCreation: React.FC = () => {
   };
 
   const handleNext = () => {
-    console.log("현재 단계:", currentStep);
+    // console.log("현재 단계:", currentStep);
     if (currentStep === "animal") {
-      console.log("동물 → 감정으로 이동");
+      // console.log("동물 → 감정으로 이동");
       setCurrentStep("emotion");
     } else if (currentStep === "emotion") {
-      console.log("감정 → 악세사리로 이동");
+      // console.log("감정 → 악세사리로 이동");
       setCurrentStep("accessory");
     } else {
-      console.log("상상친구 만들기 완료!");
+      // console.log("상상친구 만들기 완료!");
       // 캐릭터 데이터를 CharacterPreview 페이지로 전달
       navigate("/playroom/character-preview", {
         state: {

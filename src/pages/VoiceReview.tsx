@@ -15,11 +15,13 @@ const VoiceReview: React.FC = () => {
   const [recordedAudio, setRecordedAudio] = useState<Blob | null>(null);
   const [recordingDuration, setRecordingDuration] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState<string>("");
-  const [selectedPerformance, setSelectedPerformance] = useState<any>(null);
+  const [selectedPerformance, setSelectedPerformance] = useState<{
+    id: number;
+    title: string;
+  } | null>(null);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
     null
   );
-  const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
 
   // localStorage에서 선택된 날짜, 아이들, 공연 정보 불러오기
   React.useEffect(() => {
@@ -61,7 +63,6 @@ const VoiceReview: React.FC = () => {
       recorder.onstop = () => {
         const audioBlob = new Blob(chunks, { type: "audio/wav" });
         setRecordedAudio(audioBlob);
-        setAudioChunks(chunks);
 
         // 스트림 정리
         stream.getTracks().forEach((track) => track.stop());
@@ -95,7 +96,6 @@ const VoiceReview: React.FC = () => {
   const handleDeleteRecording = () => {
     setRecordedAudio(null);
     setRecordingDuration(0);
-    setAudioChunks([]);
   };
 
   const handlePlayRecording = () => {
@@ -103,35 +103,6 @@ const VoiceReview: React.FC = () => {
       const audio = new Audio(URL.createObjectURL(recordedAudio));
       audio.play();
     }
-  };
-
-  const createFormData = () => {
-    if (!recordedAudio) return null;
-
-    const formData = new FormData();
-
-    // 오디오 파일 추가
-    const audioFile = new File([recordedAudio], "voice-review.wav", {
-      type: "audio/wav",
-    });
-    formData.append("audioFile", audioFile);
-
-    // 메타데이터 추가
-    formData.append("duration", recordingDuration.toString());
-    formData.append("recordedAt", new Date().toISOString());
-
-    // 선택된 날짜와 아이들 정보 추가
-    const selectedDate = localStorage.getItem("selectedDate");
-    const selectedChildren = localStorage.getItem("selectedChildren");
-
-    if (selectedDate) {
-      formData.append("selectedDate", selectedDate);
-    }
-    if (selectedChildren) {
-      formData.append("selectedChildren", selectedChildren);
-    }
-
-    return formData;
   };
 
   const handlePrevious = () => {
@@ -142,35 +113,21 @@ const VoiceReview: React.FC = () => {
     if (!recordedAudio) return;
 
     try {
-      const formData = createFormData();
-      if (!formData) return;
+      // 오디오 파일을 localStorage에 저장
+      const audioArrayBuffer = await recordedAudio.arrayBuffer();
+      const audioData = {
+        name: "voice-review.wav",
+        type: "audio/wav",
+        size: recordedAudio.size,
+        duration: recordingDuration,
+        data: Array.from(new Uint8Array(audioArrayBuffer)),
+      };
 
-      console.log("FormData 생성 완료:", formData);
-
-      // 백엔드로 전송 (실제 API 호출)
-      // const response = await fetch('/api/voice-review', {
-      //   method: 'POST',
-      //   body: formData
-      // });
-
-      // if (response.ok) {
-      //   console.log("음성 후기 업로드 성공");
-      //   navigate(PATH.CHARACTER_CREATION);
-      // } else {
-      //   console.error("업로드 실패");
-      // }
+      localStorage.setItem("recordedAudio", JSON.stringify(audioData));
+      // console.log("오디오 파일이 localStorage에 저장되었습니다:", audioData);
 
       // 상상친구 만들기 페이지로 이동
       navigate(PATH.CHARACTER_CREATION);
-
-      // 임시로 콘솔에 FormData 내용 출력
-      console.log("=== FormData 내용 ===");
-      for (const [key, value] of formData.entries()) {
-        console.log(`${key}:`, value);
-      }
-
-      // 다음 단계로 이동
-      // navigate(PATH.NEXT_PAGE);
     } catch (error) {
       console.error("음성 후기 처리 중 오류:", error);
     }
@@ -226,7 +183,8 @@ const VoiceReview: React.FC = () => {
                   className={`flex justify-center items-center w-16 h-16 rounded-full transition-all duration-200 ${
                     isRecording
                       ? "bg-red-500 animate-pulse hover:bg-red-600"
-                      : ""}`}
+                      : ""
+                  }`}
                 >
                   {isRecording ? <RecordStop /> : <RecordStart />}
                 </button>

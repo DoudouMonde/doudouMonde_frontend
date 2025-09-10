@@ -51,7 +51,35 @@ const ReviewWriting: React.FC = () => {
   };
 
   const handleNext = () => {
-    console.log("후기 작성 완료:", { reviewText, uploadedImages });
+    // console.log("후기 작성 완료:", { reviewText, uploadedImages });
+
+    // 이미지 파일들을 localStorage에 저장
+    const validImages = uploadedImages.filter((img) => img !== null) as File[];
+    if (validImages.length > 0) {
+      // File 객체들을 ArrayBuffer로 변환하여 저장
+      const imagePromises = validImages.map(async (file, index) => {
+        const arrayBuffer = await file.arrayBuffer();
+        return {
+          index,
+          name: file.name,
+          type: file.type,
+          size: file.size,
+          data: Array.from(new Uint8Array(arrayBuffer)),
+        };
+      });
+
+      Promise.all(imagePromises).then((imageData) => {
+        localStorage.setItem("uploadedImages", JSON.stringify(imageData));
+        // console.log(
+        //   "이미지 파일들이 localStorage에 저장되었습니다:",
+        //   imageData
+        // );
+      });
+    }
+
+    // 후기 텍스트도 저장
+    localStorage.setItem("reviewText", reviewText);
+
     // VoiceReview 페이지로 이동
     navigate(PATH.VOICE_REVIEW);
   };

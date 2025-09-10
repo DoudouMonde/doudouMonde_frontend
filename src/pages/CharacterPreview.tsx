@@ -2,6 +2,12 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { NavigationButtons } from "@/shared/components";
 import { Calendar, PlayingCardsIcon } from "@/assets/icons";
+import { reviewApi } from "@/domains/review/apis/reviewApi";
+import {
+  CharacterType,
+  CharacterEmotion,
+  CharacterAccessories,
+} from "@/domains/review/types/ReviewAddRequest";
 import {
   ChickBody,
   CatBody,
@@ -9,21 +15,6 @@ import {
   DogBody,
   RabbitBody,
 } from "@/assets/icons/playroom/type_body";
-import {
-  Bored,
-  Exited,
-  Happy,
-  Sad,
-  Surprise,
-} from "@/assets/icons/playroom/emotion";
-import {
-  Crwon,
-  Flower,
-  Hat,
-  Ribbon,
-  RoundGlass,
-  WizardHat,
-} from "@/assets/icons/playroom/accessories";
 import { Shadow } from "@/assets/icons/playroom";
 
 interface CharacterData {
@@ -37,7 +28,12 @@ const CharacterPreview: React.FC = () => {
   const location = useLocation();
 
   const [selectedDate, setSelectedDate] = useState<string>("");
-  const [selectedPerformance, setSelectedPerformance] = useState<any>(null);
+  const [selectedPerformance, setSelectedPerformance] = useState<{
+    id: number;
+    title: string;
+  } | null>(null);
+  const [characterName, setCharacterName] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // CharacterCreation에서 전달받은 데이터
   const characterData = (location.state as CharacterData) || {
@@ -69,43 +65,168 @@ const CharacterPreview: React.FC = () => {
     { id: "rabbit", name: "토끼", bodyIcon: RabbitBody },
   ];
 
-  // 감정 데이터
-  const emotions = [
-    { id: "happy", name: "행복", icon: Happy },
-    { id: "exited", name: "신남", icon: Exited },
-    { id: "surprise", name: "놀람", icon: Surprise },
-    { id: "sad", name: "슬픔", icon: Sad },
-    { id: "bored", name: "지루함", icon: Bored },
-  ];
-
-  // 악세사리 데이터
-  const accessories = [
-    { id: "crwon", name: "왕관", icon: Crwon },
-    { id: "flower", name: "꽃", icon: Flower },
-    { id: "hat", name: "모자", icon: Hat },
-    { id: "ribbon", name: "리본", icon: Ribbon },
-    { id: "roundGlass", name: "둥근안경", icon: RoundGlass },
-    { id: "wizardHat", name: "마법사모자", icon: WizardHat },
-  ];
-
   // 선택된 데이터 가져오기
   const selectedAnimal = animals.find(
     (animal) => animal.id === characterData.animal
   );
-  const selectedEmotion = emotions.find(
-    (emotion) => emotion.id === characterData.emotion
-  );
-  const selectedAccessory = accessories.find(
-    (accessory) => accessory.id === characterData.accessory
-  );
+
+  // 캐릭터 데이터를 API 형식으로 변환
+  const convertToApiFormat = () => {
+    const animalToType: Record<string, CharacterType> = {
+      chick: CharacterType.CHICK,
+      cat: CharacterType.CAT,
+      dino: CharacterType.DINO,
+      dog: CharacterType.DOG,
+      rabbit: CharacterType.RABBIT,
+    };
+
+    const emotionToApi: Record<string, CharacterEmotion> = {
+      happy: CharacterEmotion.HAPPY,
+      exited: CharacterEmotion.EXITED,
+      surprise: CharacterEmotion.SURPRISE,
+      sad: CharacterEmotion.SAD,
+      bored: CharacterEmotion.BORED,
+      curios: CharacterEmotion.CURIOUS,
+    };
+
+    const accessoryToApi: Record<string, CharacterAccessories> = {
+      crwon: CharacterAccessories.CROWN,
+      flower: CharacterAccessories.FLOWER,
+      hat: CharacterAccessories.HAT,
+      ribbon: CharacterAccessories.RIBBON,
+      roundGlass: CharacterAccessories.ROUND_GLASS,
+      wizardHat: CharacterAccessories.WIZARD_HAT,
+    };
+
+    return {
+      seenPerformanceId: selectedPerformance?.id || 1, // 기본값 설정
+      watchDate: selectedDate
+        ? new Date(selectedDate).toISOString().slice(0, 19) // "2025-09-08T20:00:00" 형식
+        : new Date().toISOString().slice(0, 19),
+      content: `상상친구 ${characterName}와 함께한 공연 후기입니다.`,
+      characterName: characterName,
+      characterType: animalToType[characterData.animal] || CharacterType.CHICK,
+      characterEmotion:
+        emotionToApi[characterData.emotion] || CharacterEmotion.HAPPY,
+      characterAccessories:
+        accessoryToApi[characterData.accessory] || CharacterAccessories.CROWN,
+    };
+  };
 
   const handlePrevious = () => {
     navigate(-1); // 이전 페이지로 이동
   };
 
-  const handleNext = () => {
-    console.log("캐릭터 생성 완료!");
-    // TODO: 다음 페이지로 이동하거나 완료 처리
+  // CharacterPreview.tsx
+
+  const handleNext = async () => {
+    if (!characterName.trim()) {
+      alert("캐릭터 이름을 입력해주세요.");
+      return;
+    }
+    if (!selectedPerformance) {
+      alert("공연 정보가 없습니다.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // 1. 서버에 보낼 JSON 데이터 객체를 생성합니다.
+      const reviewData = convertToApiFormat();
+
+      // localStorage에서 후기 텍스트 가져오기
+      const reviewText = localStorage.getItem("reviewText");
+      if (reviewText) {
+        reviewData.content = reviewText;
+      }
+
+      console.log("전송할 리뷰 데이터 (JSON):", reviewData);
+
+      // 2. FormData 객체를 새로 생성합니다.
+      const formData = new FormData();
+
+      // 3. JSON 데이터를 'application/json' 타입의 Blob으로 변환하여 'request' 파트에 담습니다.
+      const reviewBlob = new Blob([JSON.stringify(reviewData)], {
+        type: "application/json",
+      });
+      formData.append("request", reviewBlob);
+
+      // 4. localStorage에서 이미지 파일들을 가져와서 FormData에 추가
+      const uploadedImagesData = localStorage.getItem("uploadedImages");
+      if (uploadedImagesData) {
+        try {
+          const imageDataArray = JSON.parse(uploadedImagesData);
+          imageDataArray.forEach(
+            (
+              imageData: {
+                index: number;
+                name: string;
+                type: string;
+                size: number;
+                data: number[];
+              },
+              index: number
+            ) => {
+              // ArrayBuffer를 Uint8Array로 변환
+              const uint8Array = new Uint8Array(imageData.data);
+              const blob = new Blob([uint8Array], { type: imageData.type });
+              formData.append(
+                `imageFiles`,
+                blob,
+                `image_${index}_${imageData.name}`
+              );
+            }
+          );
+          console.log(
+            `${imageDataArray.length}개의 이미지 파일이 FormData에 추가되었습니다.`
+          );
+        } catch (error) {
+          console.error("이미지 파일 데이터 파싱 중 오류:", error);
+        }
+      }
+
+      // 5. localStorage에서 오디오 파일을 가져와서 FormData에 추가
+      const recordedAudioData = localStorage.getItem("recordedAudio");
+      if (recordedAudioData) {
+        try {
+          const audioData = JSON.parse(recordedAudioData);
+          const uint8Array = new Uint8Array(audioData.data);
+          const audioBlob = new Blob([uint8Array], { type: audioData.type });
+          formData.append("audioFile", audioBlob, audioData.name);
+          console.log("오디오 파일이 FormData에 추가되었습니다.");
+        } catch (error) {
+          console.error("오디오 파일 데이터 파싱 중 오류:", error);
+        }
+      } else {
+        // 오디오 파일이 없는 경우 빈 파일 추가
+        const emptyAudioBlob = new Blob([], { type: "audio/wav" });
+        formData.append("audioFile", emptyAudioBlob, "empty_audio.wav");
+      }
+
+      // 6. API를 호출할 때, 일반 객체(reviewData)가 아닌 'formData' 객체를 전달합니다.
+      console.log("FormData 객체를 API로 전송합니다...");
+      const reviewId = await reviewApi.addReview(formData);
+
+      console.log("리뷰가 성공적으로 등록되었습니다. Review ID:", reviewId);
+
+      // 리뷰 상세 페이지로 이동 (리뷰 ID를 state로 전달)
+      navigate("/playroom/review-detail", {
+        state: {
+          reviewId: reviewId,
+          characterName: characterName,
+          characterData: characterData,
+          selectedPerformance: selectedPerformance,
+          selectedDate: selectedDate,
+          reviewText: reviewText,
+        },
+      });
+    } catch (error) {
+      console.error("리뷰 등록 중 오류가 발생했습니다:", error);
+      alert("리뷰 등록 중 오류가 발생했습니다. 다시 시도해주세요.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -162,6 +283,8 @@ const CharacterPreview: React.FC = () => {
         <input
           type="text"
           placeholder="이름을 입력하세요..."
+          value={characterName}
+          onChange={(e) => setCharacterName(e.target.value)}
           className="p-4 mt-5 w-full h-10 subtitle text-gray-700 bg-transparent border border-secondary-100/30 outline-none body-inter rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
         />
 
@@ -170,8 +293,8 @@ const CharacterPreview: React.FC = () => {
           <NavigationButtons
             onPrevious={handlePrevious}
             onNext={handleNext}
-            isNextDisabled={false}
-            nextText="완료"
+            isNextDisabled={isSubmitting || !characterName.trim()}
+            nextText={isSubmitting ? "등록 중..." : "완료"}
           />
         </div>
       </div>

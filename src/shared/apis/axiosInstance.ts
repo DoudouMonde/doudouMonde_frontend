@@ -32,7 +32,10 @@ export const setRequestDefaultHeader = (requestConfig: AxiosRequestConfig) => {
 // };
 
 apiRequester.interceptors.request.use((request) => {
-  setRequestDefaultHeader(request);
+  // FormData인 경우 Content-Type을 설정하지 않음 (브라우저가 자동으로 multipart/form-data로 설정)
+  if (!(request.data instanceof FormData)) {
+    setRequestDefaultHeader(request);
+  }
 
   // setRequestAuthorizationHeader(request);
   return request;
