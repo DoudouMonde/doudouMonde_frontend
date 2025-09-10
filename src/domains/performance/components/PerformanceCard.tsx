@@ -1,34 +1,18 @@
 import { BabyIcon, BearIcon, RestroomIcon } from "@/assets/icons";
-import { FacilityIcon, PerformanceItem } from "@/domains/performance/types";
+import { PerformanceItem } from "@/domains/performance/types";
 import { getSidoLabel } from "@/shared/services/address";
 
 // Props 타입
 type Props = {
   performance: PerformanceItem;
-  onPress: (performanceId: number) => void;
+  onClick?: (performanceId: number) => void;
 };
-// 시설 아이콘 렌더링
-const renderFacilityIcon = (facility: FacilityIcon) => {
-  const iconMap = {
-    restroom: "🚻",
-    baby: "👶",
-    playroom: "🎮",
-  };
 
-  return (
-    <div
-      key={facility}
-      className="w-[18px] h-[14px] bg-secondary-400 rounded-lg mr-1 justify-center items-center"
-    >
-      <p className="text-[8px]">{iconMap[facility]}</p>
-    </div>
-  );
-};
-export default function PerformanceCard({ performance, onPress }: Props) {
+export default function PerformanceCard({ performance, onClick }: Props) {
   console.log(performance);
   return (
     <li
-      onClick={() => onPress(performance.performanceId)}
+      onClick={() => onClick?.(performance.performanceId)}
       className="w-[124px] flex flex-col gap-2"
     >
       {/* 포스터 */}

@@ -12,9 +12,6 @@ export type PerformanceItem = {
   hasRestRoom: boolean;
 };
 
-// 시설 아이콘 타입
-export type FacilityIcon = "restroom" | "baby" | "playroom";
-
 // 좌석정보 데이터 타입
 export type SeatsInfo = {
   seatMapImage: string | { uri: string };

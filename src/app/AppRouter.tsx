@@ -9,13 +9,14 @@ import ChildAndDateSelection from "@/pages/ChildAndDateSelection";
 import ReviewWriting from "@/pages/ReviewWriting";
 import VoiceReview from "@/pages/VoiceReview";
 import CharacterCreation from "@/pages/CharacterCreation";
-import { Layout } from "@/app";
 import { PlayroomLayout } from "@/app/PlayroomLayout";
+import { PerformanceDetailPage } from "@/pages";
+import { BottomNavigationLayout } from "@/app/layout";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: <BottomNavigationLayout />,
     children: [
       {
         index: true,
@@ -29,8 +30,13 @@ const router = createBrowserRouter([
         path: "mypage",
         element: <MyPage />,
       },
+      {
+        path: "performances/:performanceId",
+        element: <PerformanceDetailPage />,
+      },
     ],
   },
+
   {
     path: "/playroom",
     element: <PlayroomLayout />,

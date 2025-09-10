@@ -13,7 +13,7 @@ import { PATH } from "@/shared/constants/paths";
 import { getGenreLabel, getSidoLabel } from "@/shared/services";
 import { Genre, Sido } from "@/shared/types";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const HomeScreen = () => {
   const navigate = useNavigate();
@@ -83,11 +83,14 @@ const HomeScreen = () => {
             </h2>
             <ul>
               {genrePerformanceList.map((genrePerformance) => (
-                <PerformanceCard
-                  key={genrePerformance.performanceId}
-                  performance={genrePerformance}
-                  onPress={handlePerformancePress}
-                />
+                <Link
+                  to={PATH.PERFORMANCE_DETAIL(genrePerformance.performanceId)}
+                >
+                  <PerformanceCard
+                    key={genrePerformance.performanceId}
+                    performance={genrePerformance}
+                  />
+                </Link>
               ))}
             </ul>
           </section>
