@@ -1,5 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LandingPageProps, ActionButtonProps } from "../types";
+import { reviewApi } from "@/domains/review/apis/reviewApi";
+import {
+  StorytownTree0,
+  StorytownTree1,
+  StorytownTree2,
+  StorytownTree3,
+  StorytownTree4,
+  StorytownTree5,
+  StorytownTree6,
+  StorytownTree7,
+  StorytownTree8,
+  StorytownTree9,
+} from "@/assets/icons/playroom/storytown_tree";
 
 const ActionButton: React.FC<ActionButtonProps> = ({
   onClick,
@@ -47,6 +60,39 @@ const LandingPage: React.FC<LandingPageProps> = ({
   onSkip,
   // className = "",
 }) => {
+  const [reviewCount, setReviewCount] = useState(0);
+
+  useEffect(() => {
+    const fetchReviewCount = async () => {
+      try {
+        const reviews = await reviewApi.getMemberReviews();
+        setReviewCount(reviews.length);
+      } catch (error) {
+        console.error("리뷰 개수 조회 실패:", error);
+        setReviewCount(0);
+      }
+    };
+
+    fetchReviewCount();
+  }, []);
+
+  // 리뷰 개수에 맞는 나무 컴포넌트 결정 (최대 9개)
+  const getTreeComponent = (count: number) => {
+    const treeCount = Math.min(count, 9);
+    const treeComponents = [
+      StorytownTree0,
+      StorytownTree1,
+      StorytownTree2,
+      StorytownTree3,
+      StorytownTree4,
+      StorytownTree5,
+      StorytownTree6,
+      StorytownTree7,
+      StorytownTree8,
+      StorytownTree9,
+    ];
+    return treeComponents[treeCount];
+  };
   return (
     <div className={`overflow-hidden relative w-full h-screen`}>
       {/* Background Image */}
@@ -55,16 +101,17 @@ const LandingPage: React.FC<LandingPageProps> = ({
       <div className="relative pt-[64px]">
         {/* 나무 이미지 */}
         <div className="flex z-20 justify-center items-start pt-8 w-full">
-          <img
-            src="/assets/characters/treeEx.png"
-            alt="나무 이미지"
-            className="w-full h-auto object-contain drop-shadow-[0px_0px_5px_rgba(0,0,0.5,0)]"
-          />
+          {(() => {
+            const TreeComponent = getTreeComponent(reviewCount);
+            return (
+              <TreeComponent className="w-full h-auto object-contain drop-shadow-[0px_0px_5px_rgba(0,0,0.5,0)]" />
+            );
+          })()}
         </div>
 
-        <div className="flex absolute top-0 z-20 flex-col gap-0 items-center translate-y-full">
+        <div className="flex absolute inset-x-0 top-0 z-20 flex-col gap-0 justify-center items-center mx-auto translate-y-full">
           {/* Speech Bubble */}
-          <div className="bg-gray-200/70 backdrop-blur-sm rounded-[40px] w-full p-6 shadow-[0px_0px_12px_0px_rgba(255,246,165,1)]">
+          <div className="bg-gray-200/70 backdrop-blur-sm rounded-[40px] w-[80%] p-6 shadow-[0px_0px_12px_0px_rgba(255,246,165,1)]">
             <p className="text-center text-black text-base font-normal leading-[1.21] tracking-[-0.04em] font-['Inter']">
               안녕 서아야!
               <br />
@@ -77,15 +124,15 @@ const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           {/* Character - Doudou */}
-          <div className="flex z-20 gap-0 items-center">
+          <div className="flex z-20 gap-0 justify-evenly items-center w-full">
             <img
               src="/assets/characters/doudou.png"
               alt="두두 캐릭터"
-              className="w-[193px] h-[248px] object-contain drop-shadow-[0px_0px_20px_rgba(100, 100, 100, 0.8)]"
+              className="w-[193px] h-[248px] object-contain drop-shadow-[0px_0px_10px_rgba(202, 255, 133, 0.1)]"
             />
 
             {/* Action Buttons */}
-            <div className="flex flex-col gap-4 items-end pb-8 mt-20">
+            <div className="flex flex-col gap-7 items-end pb-8">
               <ActionButton onClick={onStart || (() => {})}>좋아</ActionButton>
               <ActionButton onClick={onSkip || (() => {})}>
                 다음에 할래
