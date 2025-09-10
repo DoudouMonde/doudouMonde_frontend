@@ -13,10 +13,10 @@ export const TabItem = ({ children, value, className = "" }: Props) => {
 
   return (
     <li
-      className={`px-4 py-3 border-b-[1px] border-b-gray-100 body-hak flex-1 text-center  ${
+      className={`px-4 py-3 border-b-[1px] border-b-gray-100 body-hak flex-1 text-center cursor-pointer ${
         isActive
-          ? "text-black border-b-[4px] border-b-black-100"
-          : "text-secondary-100"
+          ? "text-black bg-white border-b-[#000000] border-b-[4px]"
+          : "bg-gray-200 text-secondary-100"
       } ${className}`}
       onClick={() => setActiveTab(value)}
     >

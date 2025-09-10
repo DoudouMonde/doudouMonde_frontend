@@ -2,16 +2,13 @@ import {
   ContentSection,
   NearbySection,
   PerformanceOverview,
-  PerformanceTab,
   TransportSection,
 } from "@/domains/performance/components";
-import { TabType } from "@/domains/performance/types";
 import { Tab } from "@/shared/components";
 import SwitchCase from "@/shared/components/SwitchCase";
-import { useState } from "react";
 
 export function PerformanceDetailPage() {
-  const [activeTab, setActiveTab] = useState<TabType>("transport");
+  const activeTab = "transport";
   return (
     <div className="flex-1 bg-white">
       <div className="flex-1">
@@ -20,7 +17,7 @@ export function PerformanceDetailPage() {
 
         {/* 탭 메뉴 */}
 
-        <div className="flex flex-col gap-4 w-full">
+        <div className="flex flex-col gap-4 w-full bg-gray-200 border-2">
           <Tab activeTab={activeTab}>
             <Tab.Item value="content">😉 인근정보</Tab.Item>
             <Tab.Item value="transport">🚸 교통정보</Tab.Item>
@@ -33,8 +30,8 @@ export function PerformanceDetailPage() {
               value={activeTab}
               case={{
                 transport: <TransportSection />,
-                seats: <NearbySection />,
-                content: <ContentSection />,
+                // seats: <NearbySection />,
+                // content: <ContentSection />,
               }}
             />
           </div>
