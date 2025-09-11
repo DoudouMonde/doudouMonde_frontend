@@ -12,7 +12,7 @@ export function usePerformanceDetailQuery(
   >
 ) {
   return useQuery({
-    queryKey: [queryKeys.PERFORMANCE_LIST],
+    queryKey: [queryKeys.PERFORMANCE_DETAIL, performanceId],
     queryFn: async () =>
       await performanceApi.getPerformanceDetail(performanceId),
     ...queryOptions,
