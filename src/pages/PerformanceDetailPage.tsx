@@ -8,8 +8,8 @@ import { SwitchCase } from "@/shared/components";
 export const PerformanceDetailPage = () => {
   const activeTab = "transport";
   return (
-    <div className="flex-1 bg-white">
-      <div className="flex-1">
+    <div className="flex flex-col flex-1 items-center w-full bg-white">
+      <div className="flex-1 w-full">
         {/* 공연 정보 */}
         <PerformanceOverview />
 
