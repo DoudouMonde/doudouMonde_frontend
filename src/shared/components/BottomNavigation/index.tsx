@@ -20,7 +20,6 @@ function CustomTabBarButton({
     <button
       onClick={onPress}
       className="flex relative flex-col flex-1 justify-between items-center"
-      role="tab"
       aria-selected={isSelected}
       style={{
         transform: isSelected ? "scale(0.95)" : "scale(1)",

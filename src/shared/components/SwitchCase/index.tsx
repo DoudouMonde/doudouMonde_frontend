@@ -8,7 +8,7 @@ type Props<T extends string | number> = {
   fallback?: React.ReactNode;
 };
 
-export default function SwitchCase<T extends string | number>({
+export function SwitchCase<T extends string | number>({
   value,
   case: cases,
   fallback = null,

@@ -3,7 +3,7 @@ import {
   TransportSection,
 } from "@/domains/performance/components";
 import { Tab } from "@/shared/components";
-import SwitchCase from "@/shared/components/SwitchCase";
+import { SwitchCase } from "@/shared/components";
 
 export const PerformanceDetailPage = () => {
   const activeTab = "transport";
