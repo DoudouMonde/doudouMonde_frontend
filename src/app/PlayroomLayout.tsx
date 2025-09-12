@@ -4,12 +4,13 @@ import { BottomNavigation } from "@/shared/components";
 export function PlayroomLayout() {
   return (
     <div
-      className="relative px-6 h-full min-h-full"
+      className="relative px-6 min-h-screen"
       style={{
         backgroundImage: "url('/assets/images/playroom/backgroundImg.png')",
         backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundPosition: "top left",
         backgroundRepeat: "repeat",
+        backgroundAttachment: "fixed",
       }}
     >
       <div className="absolute inset-0 bg-gray-200/40"></div>
