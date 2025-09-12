@@ -1,5 +1,12 @@
-import { CHILD_PROFILE_URLS } from "@/domains/child/constants";
+import {
+  CatIcon,
+  ChickIcon,
+  DinosaurIcon,
+  DogIcon,
+  RabbitIcon,
+} from "@/assets/icons/profile";
 import { ChildItem } from "@/domains/child/types";
+import { SwitchCase } from "@/shared/components";
 
 // 프로필 이미지 맵
 
@@ -21,15 +28,25 @@ export default function ChildProfile({ child, isSelected, onClick }: Props) {
           <div className="absolute -inset-1 rounded-full border-4 border-pink-100" />
         )}
 
-        <div className="flex items-center justify-center rounded-full w-[75px] h-[75px] bg-black-100">
-          <img
+        <div className="flex items-center justify-center rounded-full w-[75px] h-[75px]  bg-black">
+          <SwitchCase
+            value={child.profile}
+            case={{
+              CAT: <CatIcon className="w-[70px] h-[70px]" />,
+              CHICK: <ChickIcon className="w-[70px] h-[70px]" />,
+              DINOSAUR: <DinosaurIcon className="w-[70px] h-[70px]" />,
+              DOG: <DogIcon className="w-[70px] h-[70px]" />,
+              RABBIT: <RabbitIcon className="w-[70px] h-[70px]" />,
+            }}
+          />
+          {/* <img
             className="w-[65px] h-[65px"
             src={
               CHILD_PROFILE_URLS[
                 child.profile as keyof typeof CHILD_PROFILE_URLS
               ]
             }
-          />
+          /> */}
         </div>
       </div>
       {/* 이름 */}

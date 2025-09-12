@@ -10,7 +10,7 @@ import {
 import { PATH } from "@/shared/constants";
 import { useReviewStore } from "@/stores/reviewStore";
 
-const VoiceReview: React.FC = () => {
+export const VoiceReviewPage = () => {
   const navigate = useNavigate();
   const {
     recordedAudio,
@@ -241,5 +241,3 @@ const VoiceReview: React.FC = () => {
     </div>
   );
 };
-
-export default VoiceReview;

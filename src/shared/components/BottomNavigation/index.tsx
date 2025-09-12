@@ -8,7 +8,6 @@ interface CustomTabBarButtonProps {
   onPress: () => void;
   children: React.ReactNode;
   isSelected: boolean;
-  href: string;
 }
 
 function CustomTabBarButton({
@@ -20,7 +19,6 @@ function CustomTabBarButton({
     <button
       onClick={onPress}
       className="flex relative flex-col flex-1 justify-between items-center"
-      role="tab"
       aria-selected={isSelected}
       style={{
         transform: isSelected ? "scale(0.95)" : "scale(1)",
@@ -43,7 +41,6 @@ function CustomTabBarButton({
           />
         )}
         <div className="flex flex-col gap-1 justify-center items-center mt-3">
-          {children}
           <span
             className="mt-1 text-xs"
             style={{
@@ -115,16 +112,7 @@ export function BottomNavigation() {
   ];
 
   return (
-    <nav
-      className="fixed bottom-0 left-1/2 z-50 w-full transform -translate-x-1/2"
-      style={{
-        backgroundColor: COLORS.WHITE,
-        height: 72,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        boxShadow: "0 -10px 20px rgba(0, 0, 0, 0.25)",
-      }}
-    >
+    <nav className="fixed bottom-0 left-0 z-50 w-full h-[64px] rounded-t-3xl bg-gray-200 flex flex-col items-center justify-center shadow-[0_-10px_20px_rgba(0,0,0,0.25)]">
       <div className="flex h-full">
         {tabItems.map((item) => {
           const isSelected =
@@ -135,17 +123,12 @@ export function BottomNavigation() {
             <Link
               key={item.name}
               to={item.path}
-              className="flex-1"
-              style={{ textDecoration: "none" }}
+              className="flex-1 no-underline"
             >
-              <CustomTabBarButton
-                onPress={() => {}}
-                isSelected={isSelected}
-                href={item.path}
-              >
-                {item.icon(isSelected)}
+              <CustomTabBarButton onPress={() => {}} isSelected={isSelected}>
+                {item.icon(isSelected)}{" "}
+                <p className="text-green-200">{item.title}</p>
               </CustomTabBarButton>
-              <p className="text-green-100">{item.title}</p>
             </Link>
           );
         })}

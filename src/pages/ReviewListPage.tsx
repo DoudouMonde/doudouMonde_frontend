@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { reviewApi } from "@/domains/review/apis/reviewApi";
 import { ReviewResponse } from "@/domains/review/types/ReviewResponse";
 import { NavigationButtons } from "@/shared/components";
 import { PATH } from "@/shared/constants";
 
-const ReviewList: React.FC = () => {
+export const ReviewListPage = () => {
   const navigate = useNavigate();
   const [reviews, setReviews] = useState<ReviewResponse[]>([]);
   const [loading, setLoading] = useState(true);
@@ -162,5 +162,3 @@ const ReviewList: React.FC = () => {
     </div>
   );
 };
-
-export default ReviewList;

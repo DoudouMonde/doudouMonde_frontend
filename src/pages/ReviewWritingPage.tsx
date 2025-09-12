@@ -5,7 +5,7 @@ import { Calendar, PlayingCardsIcon } from "@/assets/icons";
 import { PATH } from "@/shared/constants";
 import { useReviewStore } from "@/stores/reviewStore";
 
-const ReviewWriting: React.FC = () => {
+export const ReviewWritingPage = () => {
   const navigate = useNavigate();
   const {
     reviewText,
@@ -173,5 +173,3 @@ const ReviewWriting: React.FC = () => {
     </div>
   );
 };
-
-export default ReviewWriting;

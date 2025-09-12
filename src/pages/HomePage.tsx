@@ -15,7 +15,7 @@ import { Genre, Sido } from "@/shared/types";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const HomeScreen = () => {
+export const HomePage = () => {
   const navigate = useNavigate();
 
   const handlePerformancePress = (performanceId: number) => {
@@ -51,7 +51,7 @@ const HomeScreen = () => {
     return;
   }
   return (
-    <div>
+    <div className="flex flex-col items-center w-full">
       <header className="flex fixed left-0 z-10 flex-row justify-center items-center w-full h-16 bg-gray-200 border-2">
         <p className="text-2xl text-black title-hak">두두몽드</p>
         <SearchInput
@@ -130,5 +130,3 @@ const HomeScreen = () => {
     </div>
   );
 };
-
-export default HomeScreen;

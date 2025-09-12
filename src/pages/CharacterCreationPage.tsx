@@ -46,7 +46,7 @@ import {
 } from "@/shared/components/SingleSelect";
 import { RadioTrue, RadioFalse } from "@/assets/icons";
 
-const CharacterCreation: React.FC = () => {
+export const CharacterCreationPage: React.FC = () => {
   const navigate = useNavigate();
 
   // 동물 데이터 배열
@@ -521,5 +521,3 @@ const CharacterCreation: React.FC = () => {
     </div>
   );
 };
-
-export default CharacterCreation;

@@ -24,7 +24,7 @@ interface CharacterData {
   accessory: string;
 }
 
-const CharacterPreview: React.FC = () => {
+export const CharacterPreviewPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const {
@@ -325,5 +325,3 @@ const CharacterPreview: React.FC = () => {
     </div>
   );
 };
-
-export default CharacterPreview;

@@ -7,12 +7,19 @@ import { useParams } from "react-router-dom";
 
 export const PerformanceOverview = () => {
   const { performanceId } = useParams();
+
   const { data: performanceDetail } = usePerformanceDetailQuery(
-    Number(performanceId)
+    Number(performanceId),
+    {
+      enabled: !!performanceId,
+    }
   );
+
   if (!performanceDetail) {
-    return;
+    return null;
   }
+
+  console.groupEnd();
   return (
     <div className="flex flex-col gap-4 px-4 pt-4">
       <section className="flex flex-row gap-4">

@@ -5,7 +5,7 @@ import { NavigationButtons } from "@/shared/components";
 import { RadioTrue, RadioFalse } from "@/assets/icons";
 import { PATH } from "@/shared/constants";
 
-const ChildAndDateSelection: React.FC = () => {
+export const ChildAndDateSelectionPage: React.FC = () => {
   const navigate = useNavigate();
   const [selectedChildren, setSelectedChildren] = useState<number[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -115,5 +115,3 @@ const ChildAndDateSelection: React.FC = () => {
     </div>
   );
 };
-
-export default ChildAndDateSelection;

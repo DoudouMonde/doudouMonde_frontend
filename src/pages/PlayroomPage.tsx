@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { LandingPage } from "@/domains/playroom/components";
 import { PATH } from "@/shared/constants";
 
-function Playroom() {
+export const PlayroomPage = () => {
   const navigate = useNavigate();
 
   const handleStart = () => {
@@ -22,6 +22,4 @@ function Playroom() {
       <LandingPage onStart={handleStart} onSkip={handleSkip} />
     </div>
   );
-}
-
-export default Playroom;
+};

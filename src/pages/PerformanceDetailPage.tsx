@@ -1,17 +1,15 @@
 import {
-  ContentSection,
-  NearbySection,
   PerformanceOverview,
   TransportSection,
 } from "@/domains/performance/components";
 import { Tab } from "@/shared/components";
-import SwitchCase from "@/shared/components/SwitchCase";
+import { SwitchCase } from "@/shared/components";
 
-export function PerformanceDetailPage() {
+export const PerformanceDetailPage = () => {
   const activeTab = "transport";
   return (
-    <div className="flex-1 bg-white">
-      <div className="flex-1">
+    <div className="flex flex-col flex-1 items-center w-full bg-white">
+      <div className="flex-1 w-full">
         {/* 공연 정보 */}
         <PerformanceOverview />
 
@@ -39,4 +37,4 @@ export function PerformanceDetailPage() {
       </div>
     </div>
   );
-}
+};

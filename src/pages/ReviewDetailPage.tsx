@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { NavigationButtons } from "@/shared/components";
 import { Calendar, PlayingCardsIcon } from "@/assets/icons";
@@ -30,7 +30,7 @@ interface ReviewDetailData {
   audioUrl: string | null;
 }
 
-const ReviewDetail: React.FC = () => {
+export const ReviewDetailPage = () => {
   const navigate = useNavigate();
   const { reviewId } = useParams<{ reviewId: string }>();
   const [reviewData, setReviewData] = useState<ReviewDetailData | null>(null);
@@ -322,5 +322,3 @@ const ReviewDetail: React.FC = () => {
     </div>
   );
 };
-
-export default ReviewDetail;

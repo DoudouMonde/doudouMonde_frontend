@@ -5,3 +5,4 @@ export * from "./MultiSelect";
 export * from "./SearchInput";
 export * from "./SingleSelect";
 export * from "./Tab";
+export * from "./SwitchCase";
