@@ -63,7 +63,7 @@ export function BottomNavigation() {
   const tabItems = [
     {
       name: "home",
-      path: "/",
+      path: "/home",
       title: "홈",
       icon: (isSelected: boolean) => (
         <HomeIcon
@@ -87,7 +87,7 @@ export function BottomNavigation() {
     },
     {
       name: "wishlist",
-      path: "/favorites",
+      path: "/home/favorites",
       title: "찜",
       icon: (isSelected: boolean) => (
         <HeartIcon
@@ -99,7 +99,7 @@ export function BottomNavigation() {
     },
     {
       name: "profile",
-      path: "/mypage",
+      path: "/home/mypage",
       title: "마이",
       icon: (isSelected: boolean) => (
         <UserIcon

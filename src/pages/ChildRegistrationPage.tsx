@@ -1,8 +1,72 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackIcon from "@/assets/icons/Back";
-import Arrow from "@/assets/icons/Arrow";
 import { PATH } from "@/shared/constants/paths";
+import { MultiRadio } from "@/shared/components/Radio";
+import { MultiSelectGroup } from "@/shared/components/MultiSelect";
+import {
+  CatIcon,
+  ChickIcon,
+  DinosaurIcon,
+  DogIcon,
+  RabbitIcon,
+} from "@/assets/icons/profile";
+import { SwitchCase } from "@/shared/components";
+import { signupApi } from "@/domains/auth/apis/signupApi";
+import {
+  SignupRequest,
+  ChildRequest,
+  GENDER_MAPPING,
+  TRAIT_MAPPING,
+  GENRE_MAPPING,
+  PROFILE_MAPPING,
+} from "@/domains/auth/types/signup";
+
+// 개별 성향 목록
+const TRAITS = [
+  { value: "music", label: "음악을 좋아해요" },
+  { value: "active", label: "활동적이에요" },
+  { value: "sensitive", label: "소리에 민감해요" },
+  { value: "short-attention", label: "집중시간이 짧아요" },
+];
+
+// 장르 목록
+const GENRES = [
+  { value: "PLAY", label: "연극" },
+  { value: "PERFORMANCE", label: "퍼포먼스" },
+  { value: "MUSICAL", label: "뮤지컬" },
+  { value: "CIRCUS", label: "서커스" },
+  { value: "MAGIC", label: "마술" },
+];
+
+// 프로필 옵션
+const PROFILE_OPTIONS = [
+  { value: "CAT", label: "고양이" },
+  { value: "CHICK", label: "병아리" },
+  { value: "DINOSAUR", label: "공룡" },
+  { value: "DOG", label: "강아지" },
+  { value: "RABBIT", label: "토끼" },
+];
+
+function TraitSelector() {
+  return (
+    <div className="grid grid-cols-2 gap-3">
+      {TRAITS.map((trait) => (
+        <MultiRadio key={trait.value} label={trait.label} value={trait.value} />
+      ))}
+    </div>
+  );
+}
+
+function GenreSelector() {
+  return (
+    <div className="grid grid-cols-2 gap-3">
+      {GENRES.map((genre) => (
+        <MultiRadio key={genre.value} label={genre.label} value={genre.value} />
+      ))}
+    </div>
+  );
+}
 
 export const ChildRegistrationPage = () => {
   const navigate = useNavigate();
@@ -15,49 +79,156 @@ export const ChildRegistrationPage = () => {
   // 성별 상태
   const [gender, setGender] = useState<string>("");
 
-  // 년도 옵션 생성 (현재 년도부터 20년 전까지)
+  // 성향 상태
+  const [selectedTraits, setSelectedTraits] = useState<string[]>([]);
+
+  // 장르 상태
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+
+  // 프로필 상태
+  const [selectedProfile, setSelectedProfile] = useState<string>("CAT");
+
+  // 바텀시트 상태
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false);
+
+  // 이름 입력 상태 (실시간 업데이트를 위해)
+  const [name, setName] = useState<string>("");
+
+  // 제출 상태
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  // 이름 입력 ref
+  const nameInputRef = React.useRef<HTMLInputElement>(null);
+
+  // 년도/월/일 옵션
   const currentYear = new Date().getFullYear();
   const yearOptions = Array.from({ length: 21 }, (_, i) => currentYear - i);
-
-  // 월 옵션 생성
   const monthOptions = Array.from({ length: 12 }, (_, i) => i + 1);
-
-  // 성별 옵션
-  const genderOptions = [
-    { value: "MALE", label: "남자" },
-    { value: "FEMALE", label: "여자" },
-  ];
-
-  // 일 옵션 생성 (선택된 년월에 따라 달라짐)
   const getDayOptions = (year: string, month: string) => {
     if (!year || !month) return Array.from({ length: 31 }, (_, i) => i + 1);
     const daysInMonth = new Date(parseInt(year), parseInt(month), 0).getDate();
     return Array.from({ length: daysInMonth }, (_, i) => i + 1);
   };
-
   const dayOptions = getDayOptions(birthYear, birthMonth);
 
-  const handleBackClick = () => {
-    navigate(-1);
+  // 내비게이션
+  const handleBackClick = () => navigate(-1);
+
+  // 저장하기 핸들러
+  const handleSave = () => {
+    // TODO: 실제 저장 로직 구현
+    console.log("저장할 데이터:", {
+      name: nameInputRef.current?.value,
+      birthYear,
+      birthMonth,
+      birthDay,
+      gender,
+      selectedTraits,
+      selectedProfile,
+    });
+
+    // 저장 성공 시 바텀시트 열기
+    setIsBottomSheetOpen(true);
   };
 
-  const handleMemberInfoClick = () => {
-    navigate(PATH.MEMBER_INFO);
-  };
-
-  const handleChildInfoClick = () => {
-    navigate(PATH.CHILD_INFO);
-  };
-
-  // LocalDate 형식으로 변환 (YYYY-MM-DD)
-  const getLocalDateString = () => {
-    if (birthYear && birthMonth && birthDay) {
-      const month = birthMonth.padStart(2, "0");
-      const day = birthDay.padStart(2, "0");
-      return `${birthYear}-${month}-${day}`;
+  // 폼 초기화
+  const resetForm = () => {
+    setName("");
+    setBirthYear("");
+    setBirthMonth("");
+    setBirthDay("");
+    setGender("");
+    setSelectedTraits([]);
+    setSelectedGenres([]);
+    setSelectedProfile("CAT");
+    if (nameInputRef.current) {
+      nameInputRef.current.focus();
     }
-    return null;
   };
+
+  // 다른 아이 등록하기
+  const handleAddAnotherChild = () => {
+    setIsBottomSheetOpen(false);
+    resetForm();
+  };
+
+  // 완료
+  const handleComplete = async () => {
+    if (!isFormValid()) return;
+
+    setIsSubmitting(true);
+
+    try {
+      // 현재 아이 정보를 ChildRequest 형태로 변환
+      const childData: ChildRequest = {
+        name: name.trim(),
+        birthday: `${birthYear}-${birthMonth.padStart(
+          2,
+          "0"
+        )}-${birthDay.padStart(2, "0")}`,
+        gender: GENDER_MAPPING[gender as keyof typeof GENDER_MAPPING] || "MALE",
+        profile:
+          PROFILE_MAPPING[selectedProfile as keyof typeof PROFILE_MAPPING] ||
+          "CAT",
+        traits: selectedTraits.map(
+          (trait) => TRAIT_MAPPING[trait as keyof typeof TRAIT_MAPPING] || trait
+        ),
+        genres: selectedGenres.map(
+          (genre) => GENRE_MAPPING[genre as keyof typeof GENRE_MAPPING] || genre
+        ),
+      };
+
+      // localStorage에서 위치 정보 가져오기
+      const savedLocation = localStorage.getItem("userLocation");
+      let locationData;
+
+      if (savedLocation) {
+        locationData = JSON.parse(savedLocation);
+      } else {
+        // 위치 정보가 없으면 임시 데이터 사용
+        locationData = {
+          longitude: 127.0276,
+          latitude: 37.4979,
+          address: "서울특별시 강남구",
+          sido: "SEOUL",
+        };
+      }
+
+      const signupData: SignupRequest = {
+        longitude: locationData.longitude,
+        latitude: locationData.latitude,
+        address: locationData.address,
+        sido: locationData.sido,
+        children: [childData],
+      };
+
+      const response = await signupApi.signup(signupData);
+      console.log("회원가입 성공:", response);
+
+      // 성공 시 localStorage 정리 및 홈 페이지로 이동
+      localStorage.removeItem("userLocation");
+      navigate(PATH.HOME);
+    } catch (error) {
+      console.error("회원가입 실패:", error);
+      alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // 폼 유효성 검사
+  const isFormValid = () => {
+    return !!(
+      name.trim() &&
+      birthYear &&
+      birthMonth &&
+      birthDay &&
+      gender &&
+      selectedTraits.length > 0 &&
+      selectedGenres.length > 0
+    );
+  };
+
   return (
     <div className="flex relative flex-col items-center px-6 w-full min-h-screen">
       {/* 배경 이미지 */}
@@ -75,24 +246,32 @@ export const ChildRegistrationPage = () => {
       />
 
       {/* 컨텐츠 */}
-      <main className="relative z-10 max-w-[375px] flex flex-col items-center">
+      <main className="relative z-10 max-w-[375px] flex flex-col items-center mb-20">
         <div className="w-[375px] h-full mx-auto overflow-y-auto">
           {/* 상단 바 */}
           <div
-            className="fixed top-0 right-0  left-0 z-20 px-6 pb-2 shadow-sm h-[60px] bg-gray-200/70"
-            style={{
-              paddingTop: `max(1rem, env(safe-area-inset-top))`,
-            }}
+            className="fixed top-0 right-0 left-0 z-20 px-6 pb-2 h-[60px] bg-gray-200/70 shadow-sm"
+            style={{ paddingTop: `max(1rem, env(safe-area-inset-top))` }}
           >
-            <div className="flex flex-1 justify-center items-center">
-              <div className="text-black title-hak">아이 등록</div>
+            <div className="flex justify-between items-center">
+              <button
+                onClick={handleBackClick}
+                className="flex items-center w-10 h-10"
+                aria-label="이전으로 이동"
+              >
+                <BackIcon className="w-5 h-5 text-gray-700" />
+              </button>
+              <div className="flex flex-1 justify-center">
+                <div className="text-black title-hak">아이 등록</div>
+              </div>
+              <div className="w-10" />
             </div>
           </div>
 
           {/* 메인 컨텐츠 */}
           <div className="py-4 pt-24">
             <div className="flex flex-col gap-6 justify-center">
-              {/* 카카오톡 계정 연동 */}
+              {/* 아이 정보 카드 */}
               <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-7 w-full h-auto">
                 <div className="flex flex-col gap-2">
                   <p className="title-hak">아이 정보</p>
@@ -102,21 +281,23 @@ export const ChildRegistrationPage = () => {
                 <div className="flex flex-col gap-2">
                   <p>이름</p>
                   <input
+                    ref={nameInputRef}
                     type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     placeholder="예: 정불명"
-                    className="p-4 body-inter-r w-full h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none body-inter rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
+                    className="p-4 body-inter-r w-full h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
                   />
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <p>생년월일</p>
                   <div className="flex gap-2">
-                    {/* 년도 선택 */}
+                    {/* 년도 */}
                     <select
                       value={birthYear}
                       onChange={(e) => {
                         setBirthYear(e.target.value);
-                        // 년도가 변경되면 일자 초기화 (2월 29일 같은 경우)
                         if (birthDay) {
                           const newDayOptions = getDayOptions(
                             e.target.value,
@@ -145,12 +326,11 @@ export const ChildRegistrationPage = () => {
                       ))}
                     </select>
 
-                    {/* 월 선택 */}
+                    {/* 월 */}
                     <select
                       value={birthMonth}
                       onChange={(e) => {
                         setBirthMonth(e.target.value);
-                        // 월이 변경되면 일자 초기화
                         if (birthDay) {
                           const newDayOptions = getDayOptions(
                             birthYear,
@@ -179,7 +359,7 @@ export const ChildRegistrationPage = () => {
                       ))}
                     </select>
 
-                    {/* 일 선택 */}
+                    {/* 일 */}
                     <select
                       value={birthDay}
                       onChange={(e) => setBirthDay(e.target.value)}
@@ -201,12 +381,6 @@ export const ChildRegistrationPage = () => {
                       ))}
                     </select>
                   </div>
-                  {/* 선택된 날짜 표시 (디버깅용) */}
-                  {/* {getLocalDateString() && (
-                    <p className="text-xs text-gray-500">
-                      선택된 날짜: {getLocalDateString()}
-                    </p>
-                  )} */}
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -225,49 +399,151 @@ export const ChildRegistrationPage = () => {
                     }}
                   >
                     <option value="">성별을 선택해주세요</option>
-                    {genderOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
+                    <option value="MALE">남자</option>
+                    <option value="FEMALE">여자</option>
                   </select>
                 </div>
               </div>
-              {/* 계정정보 */}
-              <p className="text-black title-hak">계정</p>
-              <div className="flex flex-col justify-center gap-6 bg-gray-200/70 rounded-[20px] p-5 w-full h-auto">
-                <div
-                  className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
-                  onClick={handleMemberInfoClick}
-                >
-                  <p className="body-inter-r">회원 정보</p>
-                  <Arrow className="w-6 h-6" />
+
+              {/* 아이 성향 선택 카드 */}
+              <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-6 pb-8 w-full h-auto">
+                <div className="flex flex-col gap-2">
+                  <p className="title-hak">아이 성향</p>
+                  <p className="subtitle text-secondary-100">
+                    아이의 해당되는 특성을 선택해주세요.
+                  </p>
                 </div>
-                <div
-                  className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
-                  onClick={handleChildInfoClick}
-                >
-                  <p className="body-inter-r">아이 정보</p>
-                  <Arrow className="w-6 h-6" />
+                <div className="flex flex-col gap-2 w-full">
+                  <MultiSelectGroup
+                    selectedValues={selectedTraits}
+                    onChange={(values) => setSelectedTraits(values as string[])}
+                  >
+                    <TraitSelector />
+                  </MultiSelectGroup>
                 </div>
               </div>
 
-              {/* 추가 기능 */}
-              <p className="text-black title-hak">추가 기능</p>
-              <div className="flex flex-col justify-center gap-6 bg-gray-200/70 rounded-[20px] p-5 w-full">
-                <div className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60">
-                  <p className="body-inter-r">보고 싶어요 누른 작품</p>
-                  <Arrow className="w-6 h-6" />
+              {/* 장르 선택 카드 */}
+              <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-6 pb-8 w-full h-auto">
+                <div className="flex flex-col gap-2">
+                  <p className="title-hak">좋아하는 장르</p>
+                  <p className="subtitle text-secondary-100">
+                    좋아하는 장르를 선택해주세요
+                  </p>
                 </div>
-                <div className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60">
-                  <p className="body-inter-r">이야기 마을</p>
-                  <Arrow className="w-6 h-6" />
+                <div className="flex flex-col gap-2 w-full">
+                  <MultiSelectGroup
+                    selectedValues={selectedGenres}
+                    onChange={(values) => setSelectedGenres(values as string[])}
+                  >
+                    <GenreSelector />
+                  </MultiSelectGroup>
+                </div>
+              </div>
+
+              {/* 프로필 사진 선택*/}
+              <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-6 pb-8 w-full h-auto">
+                <div className="flex flex-col gap-2">
+                  <p className="title-hak">프로필 사진 선택</p>
+                  <p className="subtitle text-secondary-100">
+                    아이의 프로필로 사용할 귀여운 캐릭터를 골라주세요.
+                  </p>
+                </div>
+
+                {/* 프로필 선택 그리드 */}
+                <div className="grid grid-cols-3 gap-4">
+                  {PROFILE_OPTIONS.map((option) => (
+                    <div
+                      key={option.value}
+                      onClick={() => setSelectedProfile(option.value)}
+                      className={`flex flex-col items-center p-3 rounded-lg cursor-pointer transition-colors ${
+                        selectedProfile === option.value
+                          ? "bg-blue-100 border-2 border-blue-300"
+                          : "bg-white hover:bg-gray-50"
+                      }`}
+                    >
+                      <div className="flex justify-center items-center mb-2 w-16 h-16 bg-gray-200 rounded-full">
+                        <SwitchCase
+                          value={option.value}
+                          case={{
+                            CAT: <CatIcon className="w-12 h-12" />,
+                            CHICK: <ChickIcon className="w-12 h-12" />,
+                            DINOSAUR: <DinosaurIcon className="w-12 h-12" />,
+                            DOG: <DogIcon className="w-12 h-12" />,
+                            RABBIT: <RabbitIcon className="w-12 h-12" />,
+                          }}
+                        />
+                      </div>
+                      <span className="text-gray-700 text-ceker body-hak-r">
+                        {option.label}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </main>
+
+      {/* 하단 고정 저장 버튼 */}
+      <div className="fixed right-0 bottom-0 left-0 z-30 p-6">
+        <button
+          onClick={handleSave}
+          disabled={!isFormValid()}
+          className={`py-4 w-full text-gray-200 rounded-[20px] transition-colors body-inter-r ${
+            isFormValid()
+              ? "bg-green-100 cursor-pointer hover:bg-primary-200"
+              : "cursor-not-allowed bg-secondary-100"
+          }`}
+        >
+          저장하기
+        </button>
+      </div>
+
+      {/* 바텀시트 오버레이 */}
+      {isBottomSheetOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50"
+          onClick={() => setIsBottomSheetOpen(false)}
+        />
+      )}
+
+      {/* 바텀시트 */}
+      {isBottomSheetOpen && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-gray-200 rounded-t-3xl p-6 max-h-[50vh]">
+          <div className="flex justify-center mb-4">
+            <div className="w-12 h-1 bg-gray-300 rounded-full" />
+          </div>
+
+          <div className="mb-6 text-center">
+            <h3 className="mb-2 text-lg font-semibold">
+              아이 정보가 저장됐어요.
+            </h3>
+            <p className="text-gray-600">다른 아이도 이어서 등록할까요?</p>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={handleAddAnotherChild}
+              className="py-4 w-full font-semibold text-green-100  border transition-colors border-green-100 hover:bg-primary-200 rounded-[20px]"
+            >
+              다른 아이 등록하기
+            </button>
+            <button
+              onClick={handleComplete}
+              disabled={isSubmitting}
+              className={`py-4 w-full font-semibold text-gray-100 border border-gray-300 transition-colors rounded-[20px] ${
+                isSubmitting
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-green-100 hover:bg-black"
+              }`}
+            >
+              {isSubmitting ? "처리 중..." : "완료"}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

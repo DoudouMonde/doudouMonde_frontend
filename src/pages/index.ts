@@ -1,4 +1,5 @@
 export * from "./LoginPage";
+export * from "./RegionRegistrationPage";
 export * from "./ChildRegistrationPage";
 export * from "./HomePage";
 export * from "./PlayroomPage";

@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { PlayroomLayout } from "@/app/PlayroomLayout";
 import {
   LoginPage,
+  RegionRegistrationPage,
   ChildRegistrationPage,
   PerformanceDetailPage,
   PlayroomPage,
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
+    path: "/region-registration",
+    element: <RegionRegistrationPage />,
+  },
+  {
     path: "/child-registration",
     element: <ChildRegistrationPage />,
   },
@@ -38,7 +43,7 @@ const router = createBrowserRouter([
     element: <BottomNavigationLayout />,
     children: [
       {
-        path: PATH.HOME,
+        index: true,
         element: <HomePage />,
       },
       {

@@ -11,10 +11,12 @@ export const MyPage = () => {
   };
 
   const handleMemberInfoClick = () => {
+    console.log("회원 정보 클릭:", PATH.MEMBER_INFO);
     navigate(PATH.MEMBER_INFO);
   };
 
   const handleChildInfoClick = () => {
+    console.log("아이 정보 클릭:", PATH.CHILD_INFO);
     navigate(PATH.CHILD_INFO);
   };
 

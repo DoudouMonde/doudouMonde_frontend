@@ -71,8 +71,11 @@ export const ChildInfoPage = () => {
   const handleBackClick = () => {
     navigate(-1);
   };
-  const { data: { contents: childrenData } = { contents: [] } } =
-    useChildListQuery();
+  const {
+    data: { contents: childrenData } = { contents: [] },
+    isLoading,
+    error,
+  } = useChildListQuery();
   const updateChildNameMutation = useUpdateChildNameMutation();
   const updateChildProfileMutation = useUpdateChildProfileMutation();
   const updateChildTraitsMutation = useUpdateChildTraitsMutation();
@@ -231,8 +234,47 @@ export const ChildInfoPage = () => {
     },
     [children]
   );
+  // 로딩 상태 처리
+  if (isLoading) {
+    return (
+      <div className="w-[375px] h-full mx-auto overflow-y-auto">
+        <div className="flex justify-center items-center h-64">
+          <div className="text-lg">로딩 중...</div>
+        </div>
+      </div>
+    );
+  }
+
+  // 에러 상태 처리
+  if (error) {
+    return (
+      <div className="w-[375px] h-full mx-auto overflow-y-auto">
+        <div className="flex justify-center items-center h-64">
+          <div className="text-lg text-red-500">에러가 발생했습니다.</div>
+        </div>
+      </div>
+    );
+  }
+
+  // 데이터가 없을 때 처리
+  if (!childrenData || childrenData.length === 0) {
+    return (
+      <div className="w-[375px] h-full mx-auto overflow-y-auto">
+        <div className="flex justify-center items-center h-64">
+          <div className="text-lg">등록된 아이가 없습니다.</div>
+        </div>
+      </div>
+    );
+  }
+
   if (!selectedChild) {
-    return;
+    return (
+      <div className="w-[375px] h-full mx-auto overflow-y-auto">
+        <div className="flex justify-center items-center h-64">
+          <div className="text-lg">아이를 선택해주세요.</div>
+        </div>
+      </div>
+    );
   }
 
   return (

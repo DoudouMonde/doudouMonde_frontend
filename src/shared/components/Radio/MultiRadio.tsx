@@ -19,7 +19,7 @@ export const MultiRadio = ({ label, value }: Props) => {
       className="flex gap-2 items-center"
     >
       <RadioUI checked={getIsChecked(value)} />
-      <p className="text-black body-inter">{label}</p>
+      <p className="text-black body-hak-r">{label}</p>
     </MultiSelectItem>
   );
 };
