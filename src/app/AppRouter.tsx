@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { PlayroomLayout } from "@/app/PlayroomLayout";
 import {
   LoginPage,
+  ChildRegistrationPage,
   PerformanceDetailPage,
   PlayroomPage,
   FavoritesPage,
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <LoginPage />,
+  },
+  {
+    path: "/child-registration",
+    element: <ChildRegistrationPage />,
   },
   {
     path: "/home",
