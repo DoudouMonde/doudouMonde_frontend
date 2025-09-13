@@ -1,3 +1,5 @@
+import { KakaoLoginBtn } from "@/assets/icons";
+
 export const LoginButton = () => {
   const handleLogin = () => {
     // PWA에서도 안전하게 동작하도록 개선
@@ -18,9 +20,9 @@ export const LoginButton = () => {
   return (
     <button
       onClick={handleLogin}
-      className="w-[142px] h-[48px] border-2 rounded-[10px] body-hak text-base font-normal tracking-[-0.03em] transition-all duration-200 hover:scale-105 active:scale-95"
+      className="w-full h-[48px] rounded-[10px] body-hak text-base font-normal tracking-[-0.03em] transition-all duration-200 hover:scale-105 active:scale-95"
     >
-      카카오로 로그인
+      <KakaoLoginBtn className="w-full" />
     </button>
   );
 };

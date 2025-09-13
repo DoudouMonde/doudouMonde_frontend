@@ -19,9 +19,7 @@ import {
   ReviewDetailPage,
   ReviewListPage,
   HomePage,
-  LoginPage,
   LoginRedirectPage,
-  SignupPage,
 } from "@/pages";
 import { BottomNavigationLayout } from "@/app/layout";
 import { PATH } from "@/shared/constants";
@@ -72,10 +70,7 @@ const router = createBrowserRouter([
         path: PATH.LOGIN,
         element: <LoginPage />,
       },
-      {
-        path: PATH.SIGNUP,
-        element: <SignupPage />,
-      },
+
       {
         path: PATH.LOGIN_REDIRECT,
         element: <LoginRedirectPage />,

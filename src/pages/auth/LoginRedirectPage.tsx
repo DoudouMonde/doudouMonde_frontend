@@ -24,7 +24,7 @@ export const LoginRedirectPage = () => {
         // 2. 권한에 따라 페이지를 이동시킨다.
         localStorage.setItem("token", response.data.token);
         if (response.data.role === Role.TEMP) {
-          navigate(PATH.SIGNUP, { replace: true });
+          navigate(PATH.CHILD_REGISTRATION, { replace: true });
         } else {
           navigate(PATH.HOME, { replace: true });
         }

@@ -1,7 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import GradientBg from "@/assets/icons/GradientBg";
-import { KakaoLoginBtn, LoginLogo } from "@/assets/icons";
+import { LoginLogo } from "@/assets/icons";
+import { LoginButton } from "@/domains/auth/components";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -26,7 +27,8 @@ export const LoginPage = () => {
       {/* 컨텐츠 */}
       <div className="flex relative z-10 flex-col gap-6 items-center">
         <LoginLogo className="w-40" />
-        <KakaoLoginBtn className="w-full" />
+        <LoginButton />
+
         <button
           onClick={handleSkipToChildRegistration}
           className="text-primary-100"
