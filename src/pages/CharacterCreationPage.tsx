@@ -235,7 +235,7 @@ export const CharacterCreationPage: React.FC = () => {
                 console.log("액세사리동물:", AccessoryCharacter);
                 if (AccessoryCharacter) {
                   return (
-                    <AccessoryCharacter className="w-[147px] h-[224px] relative z-20" />
+                    <AccessoryCharacter className="w-[350px] h-[250px] relative z-20" />
                   );
                 }
               } else if (currentStep === "emotion") {
@@ -247,7 +247,7 @@ export const CharacterCreationPage: React.FC = () => {
                 console.log("감정동물:", EmotionCharacter);
                 if (EmotionCharacter) {
                   return (
-                    <EmotionCharacter className="w-[147px] h-[224px] relative z-20" />
+                    <EmotionCharacter className="w-[350px] h-[250px] relative z-20" />
                   );
                 }
               }
@@ -257,12 +257,12 @@ export const CharacterCreationPage: React.FC = () => {
                 (animal) => animal.id === selectedAnimal
               );
               const BodyIcon = selectedAnimalData?.bodyIcon || ChickBody;
-              return <BodyIcon className="w-[147px] h-[224px] relative z-20" />;
+              return <BodyIcon className="w-[350px] h-[250px] relative z-20" />;
             })()}
           </div>
-          <Shadow className="w-[147px] h-[40px] mt-[-25px] relative z-10" />
+          <Shadow className="w-[147px] h-[40px] mt-[-40px] relative z-10" />
         </div>
-        <hr className="my-4 mb-6 border-secondary-100/30" />
+        <hr className="my-4 mb-7 border-secondary-100/30" />
 
         {/* 선택할 항목 preview 띄우기 */}
 
@@ -305,7 +305,7 @@ export const CharacterCreationPage: React.FC = () => {
               </div>
 
               {/* 두 번째 줄: 2개 동물을 가운데 정렬 */}
-              <div className="flex gap-5 justify-center">
+              <div className="flex gap-12 justify-center">
                 {animals.slice(3, 5).map((animal) => {
                   const HeadIcon = animal.headIcon;
                   return (

@@ -273,10 +273,10 @@ export const CharacterPreviewPage: React.FC = () => {
           <div className="flex relative z-10 flex-col items-center">
             <div className="flex justify-center">
               {selectedAnimal && (
-                <selectedAnimal.bodyIcon className="w-[147px] h-[224px] relative z-20" />
+                <selectedAnimal.bodyIcon className="w-[350px] h-[250px] relative z-20" />
               )}
             </div>
-            <Shadow className="w-[200px] h-[50px] mt-[-25px] relative z-10" />
+            <Shadow className="w-[200px] h-[50px]  mt-[-40px] relative z-10" />
           </div>
         </div>
 

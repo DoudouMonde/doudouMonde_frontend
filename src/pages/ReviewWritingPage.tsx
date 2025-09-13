@@ -150,7 +150,7 @@ export const ReviewWritingPage = () => {
               value={reviewText}
               onChange={handleTextChange}
               placeholder="오랫동안 추억할 수 있게 간단한 메모를 남겨주세요."
-              className="w-full h-20 text-gray-700 bg-transparent border-none outline-none resize-none subtitle"
+              className="w-full h-20 text-gray-700 bg-gray-200/70 subtitle"
               maxLength={500}
             />
             <div className="flex justify-end mt-2">
