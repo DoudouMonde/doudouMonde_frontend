@@ -6,6 +6,12 @@ import axios, {
   isAxiosError,
 } from "axios";
 
+export const apiRequesterWithoutAuth: AxiosInstance = axios.create({
+  baseURL: SERVER_BASE_URL,
+  timeout: 5_000,
+  withCredentials: true,
+});
+
 export const apiRequester: AxiosInstance = axios.create({
   baseURL: SERVER_BASE_URL,
   timeout: 5_000,

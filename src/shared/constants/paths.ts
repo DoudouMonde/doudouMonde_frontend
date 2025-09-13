@@ -12,4 +12,8 @@ export const PATH = {
   CHILD_INFO: "/child-info",
   PERFORMANCE_DETAIL: (performanceId: number) =>
     `/performances/${performanceId}` as const,
+
+  SIGNUP: "/signup",
+  LOGIN_REDIRECT: "/login-redirect",
+  LOGIN: "/login",
 } as const;

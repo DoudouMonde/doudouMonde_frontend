@@ -22,6 +22,7 @@ import {
   SignupPage,
 } from "@/pages";
 import { BottomNavigationLayout } from "@/app/layout";
+import { PATH } from "@/shared/constants";
 
 const router = createBrowserRouter([
   {
@@ -58,15 +59,15 @@ const router = createBrowserRouter([
     path: "/",
     children: [
       {
-        path: "login",
+        path: PATH.LOGIN,
         element: <LoginPage />,
       },
       {
-        path: "signup",
+        path: PATH.SIGNUP,
         element: <SignupPage />,
       },
       {
-        path: "login-redirect",
+        path: PATH.LOGIN_REDIRECT,
         element: <LoginRedirectPage />,
       },
     ],
