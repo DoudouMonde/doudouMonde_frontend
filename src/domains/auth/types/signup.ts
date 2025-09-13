@@ -18,7 +18,7 @@ export interface ChildRequest {
   genres: string[]; // Genre enum 값들
 }
 
-// Enum 매핑을 위한 상수
+// Enum 매핑을 위한 상수 (백엔드 enum에 맞춤)
 export const SIDO_MAPPING = {
   서울특별시: "SEOUL",
   부산광역시: "BUSAN",
@@ -27,16 +27,13 @@ export const SIDO_MAPPING = {
   광주광역시: "GWANGJU",
   대전광역시: "DAEJEON",
   울산광역시: "ULSAN",
-  세종특별자치시: "SEJONG",
   경기도: "GYEONGGI",
-  강원도: "GANGWON",
-  충청북도: "CHUNGBUK",
-  충청남도: "CHUNGNAM",
-  전라북도: "JEONBUK",
-  전라남도: "JEONNAM",
-  경상북도: "GYEONGBUK",
-  경상남도: "GYEONGNAM",
-  제주특별자치도: "JEJU",
+  전라북도: "JEON_BUK",
+  전라남도: "JEON_NAM",
+  충청북도: "CHUNG_BUK",
+  충청남도: "CHUNG_NAM",
+  경상북도: "GYEONG_BUK",
+  경상남도: "GYEONG_NAM",
 } as const;
 
 export const GENDER_MAPPING = {

@@ -2,7 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "@/shared/constants";
 import { signupApi } from "@/domains/auth/apis/signupApi";
-import { SignupRequest, SIDO_MAPPING } from "@/domains/auth/types/signup";
+import {
+  SignupRequest,
+  ChildRequest,
+  SIDO_MAPPING,
+} from "@/domains/auth/types/signup";
 
 type Coords = { latitude: number | null; longitude: number | null };
 
@@ -148,34 +152,34 @@ export function RegionRegistrationPage() {
     setIsSubmitting(true);
 
     try {
-      // 위치 정보만 전송 (아이 정보는 ChildRegistrationPage에서 처리)
+      // localStorage에서 아이 정보 가져오기
+      const savedChildData = localStorage.getItem("childData");
+      if (!savedChildData) {
+        throw new Error("아이 정보를 찾을 수 없습니다.");
+      }
+
+      const childData: ChildRequest = JSON.parse(savedChildData);
+      console.log("📋 저장된 아이 정보:", childData);
+
+      // 위치 정보와 아이 정보를 함께 백엔드에 전송
       const signupData: SignupRequest = {
-        longitude: coords.longitude || 0,
-        latitude: coords.latitude || 0,
+        longitude: 127.0276, // 하드코딩된 경도 (서울 강남)
+        latitude: 37.4979, // 하드코딩된 위도 (서울 강남)
         address: detailedAddress,
         sido:
           SIDO_MAPPING[selectedRegion as keyof typeof SIDO_MAPPING] || "SEOUL",
-        children: [], // 빈 배열로 전송, 실제 아이 정보는 ChildRegistrationPage에서 추가
+        children: [childData],
       };
 
+      console.log("🚀 백엔드로 전송할 데이터:", signupData);
+      console.log("🌐 API 엔드포인트: POST /auth/signup");
+
       const response = await signupApi.signup(signupData);
-      console.log("회원가입 성공:", response);
+      console.log("✅ 회원가입 성공:", response);
 
-      // 위치 정보를 localStorage에 저장 (ChildRegistrationPage에서 사용)
-      localStorage.setItem(
-        "userLocation",
-        JSON.stringify({
-          longitude: coords.longitude,
-          latitude: coords.latitude,
-          address: detailedAddress,
-          sido:
-            SIDO_MAPPING[selectedRegion as keyof typeof SIDO_MAPPING] ||
-            "SEOUL",
-        })
-      );
-
-      // 성공 시 다음 페이지로 이동
-      navigate(PATH.CHILD_REGISTRATION);
+      // 성공 시 localStorage 정리 및 홈 페이지로 이동
+      localStorage.removeItem("childData");
+      navigate(PATH.HOME);
     } catch (error) {
       console.error("회원가입 실패:", error);
       setLocationError("회원가입에 실패했습니다. 다시 시도해주세요.");

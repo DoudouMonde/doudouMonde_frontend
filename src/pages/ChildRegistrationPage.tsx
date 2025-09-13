@@ -12,9 +12,7 @@ import {
   RabbitIcon,
 } from "@/assets/icons/profile";
 import { SwitchCase } from "@/shared/components";
-import { signupApi } from "@/domains/auth/apis/signupApi";
 import {
-  SignupRequest,
   ChildRequest,
   GENDER_MAPPING,
   TRAIT_MAPPING,
@@ -95,7 +93,6 @@ export const ChildRegistrationPage = () => {
   const [name, setName] = useState<string>("");
 
   // 제출 상태
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // 이름 입력 ref
   const nameInputRef = React.useRef<HTMLInputElement>(null);
@@ -153,67 +150,33 @@ export const ChildRegistrationPage = () => {
   };
 
   // 완료
-  const handleComplete = async () => {
+  const handleComplete = () => {
     if (!isFormValid()) return;
 
-    setIsSubmitting(true);
+    // 현재 아이 정보를 ChildRequest 형태로 변환
+    const childData: ChildRequest = {
+      name: name.trim(),
+      birthday: `${birthYear}-${birthMonth.padStart(
+        2,
+        "0"
+      )}-${birthDay.padStart(2, "0")}`,
+      gender: GENDER_MAPPING[gender as keyof typeof GENDER_MAPPING] || "MALE",
+      profile:
+        PROFILE_MAPPING[selectedProfile as keyof typeof PROFILE_MAPPING] ||
+        "CAT",
+      traits: selectedTraits.map(
+        (trait) => TRAIT_MAPPING[trait as keyof typeof TRAIT_MAPPING] || trait
+      ),
+      genres: selectedGenres.map(
+        (genre) => GENRE_MAPPING[genre as keyof typeof GENRE_MAPPING] || genre
+      ),
+    };
 
-    try {
-      // 현재 아이 정보를 ChildRequest 형태로 변환
-      const childData: ChildRequest = {
-        name: name.trim(),
-        birthday: `${birthYear}-${birthMonth.padStart(
-          2,
-          "0"
-        )}-${birthDay.padStart(2, "0")}`,
-        gender: GENDER_MAPPING[gender as keyof typeof GENDER_MAPPING] || "MALE",
-        profile:
-          PROFILE_MAPPING[selectedProfile as keyof typeof PROFILE_MAPPING] ||
-          "CAT",
-        traits: selectedTraits.map(
-          (trait) => TRAIT_MAPPING[trait as keyof typeof TRAIT_MAPPING] || trait
-        ),
-        genres: selectedGenres.map(
-          (genre) => GENRE_MAPPING[genre as keyof typeof GENRE_MAPPING] || genre
-        ),
-      };
+    // 아이 정보를 localStorage에 저장
+    localStorage.setItem("childData", JSON.stringify(childData));
 
-      // localStorage에서 위치 정보 가져오기
-      const savedLocation = localStorage.getItem("userLocation");
-      let locationData;
-
-      if (savedLocation) {
-        locationData = JSON.parse(savedLocation);
-      } else {
-        // 위치 정보가 없으면 임시 데이터 사용
-        locationData = {
-          longitude: 127.0276,
-          latitude: 37.4979,
-          address: "서울특별시 강남구",
-          sido: "SEOUL",
-        };
-      }
-
-      const signupData: SignupRequest = {
-        longitude: locationData.longitude,
-        latitude: locationData.latitude,
-        address: locationData.address,
-        sido: locationData.sido,
-        children: [childData],
-      };
-
-      const response = await signupApi.signup(signupData);
-      console.log("회원가입 성공:", response);
-
-      // 성공 시 localStorage 정리 및 홈 페이지로 이동
-      localStorage.removeItem("userLocation");
-      navigate(PATH.HOME);
-    } catch (error) {
-      console.error("회원가입 실패:", error);
-      alert("회원가입에 실패했습니다. 다시 시도해주세요.");
-    } finally {
-      setIsSubmitting(false);
-    }
+    // 다음 페이지로 이동
+    navigate(PATH.REGION_REGISTRATION);
   };
 
   // 폼 유효성 검사
@@ -532,14 +495,9 @@ export const ChildRegistrationPage = () => {
             </button>
             <button
               onClick={handleComplete}
-              disabled={isSubmitting}
-              className={`py-4 w-full font-semibold text-gray-100 border border-gray-300 transition-colors rounded-[20px] ${
-                isSubmitting
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-green-100 hover:bg-black"
-              }`}
+              className="py-4 w-full font-semibold text-gray-100 border border-gray-300 transition-colors rounded-[20px] bg-green-100 hover:bg-black"
             >
-              {isSubmitting ? "처리 중..." : "완료"}
+              완료
             </button>
           </div>
         </div>
