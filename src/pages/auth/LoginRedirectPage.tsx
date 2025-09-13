@@ -24,9 +24,9 @@ export const LoginRedirectPage = () => {
         console.log(response.data);
         // 2. 권한에 따라 페이지를 이동시킨다.
         if (response.data.role === Role.TEMP) {
-          navigate(PATH.SIGNUP);
+          navigate(PATH.SIGNUP, { replace: true });
         } else {
-          navigate(PATH.HOME);
+          navigate(PATH.HOME, { replace: true });
         }
 
         return response.data.role;
