@@ -12,12 +12,21 @@ export const ChildRegistrationPage = () => {
   const [birthMonth, setBirthMonth] = useState<string>("");
   const [birthDay, setBirthDay] = useState<string>("");
 
+  // 성별 상태
+  const [gender, setGender] = useState<string>("");
+
   // 년도 옵션 생성 (현재 년도부터 20년 전까지)
   const currentYear = new Date().getFullYear();
   const yearOptions = Array.from({ length: 21 }, (_, i) => currentYear - i);
 
   // 월 옵션 생성
   const monthOptions = Array.from({ length: 12 }, (_, i) => i + 1);
+
+  // 성별 옵션
+  const genderOptions = [
+    { value: "MALE", label: "남자" },
+    { value: "FEMALE", label: "여자" },
+  ];
 
   // 일 옵션 생성 (선택된 년월에 따라 달라짐)
   const getDayOptions = (year: string, month: string) => {
@@ -119,6 +128,14 @@ export const ChildRegistrationPage = () => {
                         }
                       }}
                       className="flex-1 p-3 body-inter-r h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
+                      style={{
+                        appearance: "none",
+                        backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
+                        backgroundPosition: "right 8px center",
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "16px",
+                        paddingRight: "32px",
+                      }}
                     >
                       <option value="">년도</option>
                       {yearOptions.map((year) => (
@@ -145,6 +162,14 @@ export const ChildRegistrationPage = () => {
                         }
                       }}
                       className="flex-1 p-3 body-inter-r h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
+                      style={{
+                        appearance: "none",
+                        backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
+                        backgroundPosition: "right 8px center",
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "16px",
+                        paddingRight: "32px",
+                      }}
                     >
                       <option value="">월</option>
                       {monthOptions.map((month) => (
@@ -159,6 +184,14 @@ export const ChildRegistrationPage = () => {
                       value={birthDay}
                       onChange={(e) => setBirthDay(e.target.value)}
                       className="flex-1 p-3 body-inter-r h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
+                      style={{
+                        appearance: "none",
+                        backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
+                        backgroundPosition: "right 8px center",
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "16px",
+                        paddingRight: "32px",
+                      }}
                     >
                       <option value="">일</option>
                       {dayOptions.map((day) => (
@@ -169,20 +202,35 @@ export const ChildRegistrationPage = () => {
                     </select>
                   </div>
                   {/* 선택된 날짜 표시 (디버깅용) */}
-                  {getLocalDateString() && (
+                  {/* {getLocalDateString() && (
                     <p className="text-xs text-gray-500">
                       선택된 날짜: {getLocalDateString()}
                     </p>
-                  )}
+                  )} */}
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <p>성별</p>
-                  <input
-                    type="text"
-                    placeholder="예: 정불명"
-                    className="p-4 body-inter-r w-full h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none body-inter rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
-                  />
+                  <select
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+                    className="px-3 py-3 body-inter-r w-full h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
+                    style={{
+                      appearance: "none",
+                      backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
+                      backgroundPosition: "right 8px center",
+                      backgroundRepeat: "no-repeat",
+                      backgroundSize: "16px",
+                      paddingRight: "32px",
+                    }}
+                  >
+                    <option value="">성별을 선택해주세요</option>
+                    {genderOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
               {/* 계정정보 */}
