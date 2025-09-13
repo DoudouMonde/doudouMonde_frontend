@@ -1,3 +1,4 @@
+import { LoginButton } from "@/domains/auth/components/LoginButton";
 import ChildProfile from "@/domains/child/components/ChildProfile";
 import { useChildListQuery } from "@/domains/child/queries/useChildListQuery";
 import { ChildItem } from "@/domains/child/types";
@@ -48,8 +49,9 @@ export const HomePage = () => {
   const [searchText, setSearchText] = useState<string>("");
 
   if (!selectedChild) {
-    return;
+    return <LoginButton />;
   }
+
   return (
     <div className="flex flex-col items-center w-full">
       <header className="flex fixed left-0 z-10 flex-row justify-center items-center w-full h-16 bg-gray-200 border-2">
