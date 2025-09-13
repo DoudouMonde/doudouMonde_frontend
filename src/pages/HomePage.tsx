@@ -1,4 +1,3 @@
-import { LoginButton } from "@/domains/auth/components/LoginButton";
 import ChildProfile from "@/domains/child/components/ChildProfile";
 import { useChildListQuery } from "@/domains/child/queries/useChildListQuery";
 import { ChildItem } from "@/domains/child/types";
@@ -49,7 +48,7 @@ export const HomePage = () => {
   const [searchText, setSearchText] = useState<string>("");
 
   if (!selectedChild) {
-    return <LoginButton />;
+    return null;
   }
 
   return (

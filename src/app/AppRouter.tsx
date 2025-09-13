@@ -15,6 +15,9 @@ import {
   ReviewDetailPage,
   ReviewListPage,
   HomePage,
+  LoginPage,
+  LoginRedirectPage,
+  SignupPage,
 } from "@/pages";
 import { BottomNavigationLayout } from "@/app/layout";
 
@@ -38,6 +41,23 @@ const router = createBrowserRouter([
       {
         path: "performances/:performanceId",
         element: <PerformanceDetailPage />,
+      },
+    ],
+  },
+  {
+    path: "/",
+    children: [
+      {
+        path: "login",
+        element: <LoginPage />,
+      },
+      {
+        path: "signup",
+        element: <SignupPage />,
+      },
+      {
+        path: "login-redirect",
+        element: <LoginRedirectPage />,
       },
     ],
   },
