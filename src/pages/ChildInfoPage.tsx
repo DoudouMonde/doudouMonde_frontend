@@ -1,10 +1,20 @@
 import { useNavigate } from "react-router-dom";
 import BackIcon from "@/assets/icons/Back";
 import { useEffect, useState } from "react";
-import ChildProfile from "@/domains/child/components/ChildProfile";
 import { useChildListQuery } from "@/domains/child/queries/useChildListQuery";
+import { useUpdateChildNameMutation } from "@/domains/child/queries/useUpdateChildNameMutation";
+import { useUpdateChildProfileMutation } from "@/domains/child/queries/useUpdateChildProfileMutation";
 import { ChildItem } from "@/domains/child/types";
 import { RadioTrue, RadioFalse } from "@/assets/icons";
+import Pen from "@/assets/icons/Pen";
+import {
+  CatIcon,
+  ChickIcon,
+  DinosaurIcon,
+  DogIcon,
+  RabbitIcon,
+} from "@/assets/icons/profile";
+import { SwitchCase, ProfileSelectModal } from "@/shared/components";
 
 const TraitSelector = ({
   selectedTraits,
@@ -48,10 +58,19 @@ export const ChildInfoPage = () => {
   const handleBackClick = () => {
     navigate(-1);
   };
-  const { data: { contents: children } = { contents: [] } } =
+  const { data: { contents: childrenData } = { contents: [] } } =
     useChildListQuery();
+  const updateChildNameMutation = useUpdateChildNameMutation();
+  const updateChildProfileMutation = useUpdateChildProfileMutation();
+  const [children, setChildren] = useState<ChildItem[]>([]);
   const [selectedChild, setSelectedChild] = useState<ChildItem | null>(null);
   const [selectedTraits, setSelectedTraits] = useState<string[]>([]);
+  const [editingChildId, setEditingChildId] = useState<number | null>(null);
+  const [editingName, setEditingName] = useState<string>("");
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [editingProfileChildId, setEditingProfileChildId] = useState<
+    number | null
+  >(null);
 
   const handleTraitToggle = (trait: string) => {
     setSelectedTraits((prev) => {
@@ -64,6 +83,105 @@ export const ChildInfoPage = () => {
       }
     });
   };
+
+  const handleEditName = (childId: number, currentName: string) => {
+    setEditingChildId(childId);
+    setEditingName(currentName);
+  };
+
+  const handleSaveName = () => {
+    if (editingChildId && editingName.trim()) {
+      updateChildNameMutation.mutate(
+        {
+          childId: editingChildId,
+          request: { name: editingName.trim() },
+        },
+        {
+          onSuccess: (response) => {
+            // children 배열을 즉시 업데이트하여 화면에 바로 반영
+            setChildren((prev) =>
+              prev.map((child) =>
+                child.id === editingChildId
+                  ? { ...child, name: response.name }
+                  : child
+              )
+            );
+            // selectedChild도 업데이트
+            setSelectedChild((prev) => {
+              if (prev && prev.id === editingChildId) {
+                return { ...prev, name: response.name };
+              }
+              return prev;
+            });
+            setEditingChildId(null);
+            setEditingName("");
+          },
+          onError: (error) => {
+            console.error("이름 변경 실패:", error);
+            // 에러 처리 (예: 토스트 메시지 표시)
+          },
+        }
+      );
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingChildId(null);
+    setEditingName("");
+  };
+
+  const handleProfileClick = (childId: number) => {
+    setEditingProfileChildId(childId);
+    setIsProfileModalOpen(true);
+  };
+
+  const handleProfileConfirm = (profile: string) => {
+    if (editingProfileChildId) {
+      updateChildProfileMutation.mutate(
+        {
+          childId: editingProfileChildId,
+          request: { profile },
+        },
+        {
+          onSuccess: (response) => {
+            // children 배열을 즉시 업데이트하여 화면에 바로 반영
+            setChildren((prev) =>
+              prev.map((child) =>
+                child.id === editingProfileChildId
+                  ? { ...child, profile: response.profile as any }
+                  : child
+              )
+            );
+            // selectedChild도 업데이트
+            setSelectedChild((prev) => {
+              if (prev && prev.id === editingProfileChildId) {
+                return { ...prev, profile: response.profile as any };
+              }
+              return prev;
+            });
+            setIsProfileModalOpen(false);
+            setEditingProfileChildId(null);
+          },
+          onError: (error) => {
+            console.error("프로필 변경 실패:", error);
+            // 에러 처리 (예: 토스트 메시지 표시)
+          },
+        }
+      );
+    }
+  };
+
+  const handleProfileModalClose = () => {
+    setIsProfileModalOpen(false);
+    setEditingProfileChildId(null);
+  };
+
+  // childrenData가 변경될 때 children 상태 업데이트
+  useEffect(() => {
+    if (childrenData.length > 0) {
+      setChildren(childrenData);
+    }
+  }, [childrenData]);
 
   useEffect(
     function initializeSelectedChild() {
@@ -99,19 +217,67 @@ export const ChildInfoPage = () => {
       <div className="py-4 pt-24">
         <div className="flex flex-col gap-6">
           {/* 아이 프로필 */}
-          <ul className="flex justify-around w-full h-auto bg-gray-200/70 rounded-[20px] p-4">
+          <ul className="flex justify-around w-full h-40 bg-gray-200/70 rounded-[20px] p-4">
             {children.map((child) => (
-              <div className="flex flex-col gap-2">
-                <ChildProfile
-                  key={child.id}
-                  child={child}
-                  isSelected={false}
-                  onClick={setSelectedChild}
-                />
-                <div>
-                  <p className="subtitle text-secondary-100">
-                    프로필 사진 변경
-                  </p>
+              <div key={child.id} className="flex flex-col gap-4 items-center">
+                {/* 프로필 이미지 */}
+                <div
+                  className="relative cursor-pointer"
+                  onClick={() => handleProfileClick(child.id)}
+                >
+                  <div className="absolute -inset-1 rounded-full border-2 border-gray-100" />
+                  <div className="flex items-center justify-center rounded-full w-[80px] h-[80px] bg-gray-200 hover:bg-gray-300 transition-colors">
+                    <SwitchCase
+                      value={child.profile}
+                      case={{
+                        CAT: <CatIcon className="w-[70px] h-[70px]" />,
+                        CHICK: <ChickIcon className="w-[70px] h-[70px]" />,
+                        DINOSAUR: (
+                          <DinosaurIcon className="w-[70px] h-[70px]" />
+                        ),
+                        DOG: <DogIcon className="w-[70px] h-[70px]" />,
+                        RABBIT: <RabbitIcon className="w-[70px] h-[70px]" />,
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* 이름과 편집 기능 */}
+                <div className="flex flex-col gap-2 justify-center items-center h-12">
+                  {editingChildId === child.id ? (
+                    <div className="flex gap-2 items-center">
+                      <input
+                        type="text"
+                        value={editingName}
+                        onChange={(e) => setEditingName(e.target.value)}
+                        className="px-2 py-1 w-16 text-sm rounded border border-gray-300"
+                        autoFocus
+                      />
+                      <button
+                        onClick={handleSaveName}
+                        disabled={updateChildNameMutation.isPending}
+                        className="text-green-600 hover:text-green-800 disabled:opacity-50"
+                      >
+                        {updateChildNameMutation.isPending ? "..." : "✓"}
+                      </button>
+                      <button
+                        onClick={handleCancelEdit}
+                        className="text-red-600 hover:text-red-800"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2 items-center">
+                      <span className="text-lg font-semibold text-center body-hak">
+                        {child.name}
+                      </span>
+                      <Pen
+                        className="w-4 h-4 text-gray-600 cursor-pointer hover:text-gray-800"
+                        onClick={() => handleEditName(child.id, child.name)}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -138,6 +304,20 @@ export const ChildInfoPage = () => {
           </div>
         </div>
       </div>
+
+      {/* 프로필 선택 모달 */}
+      <ProfileSelectModal
+        isOpen={isProfileModalOpen}
+        onClose={handleProfileModalClose}
+        onConfirm={handleProfileConfirm}
+        currentProfile={
+          editingProfileChildId
+            ? children.find((c) => c.id === editingProfileChildId)?.profile ||
+              "CAT"
+            : "CAT"
+        }
+        isLoading={updateChildProfileMutation.isPending}
+      />
     </div>
   );
 };

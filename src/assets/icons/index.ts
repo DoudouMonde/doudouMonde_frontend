@@ -8,6 +8,7 @@ export { default as ChevronRightIcon } from "./ChevronRightIcon";
 export { default as GamepadIcon } from "./GamepadIcon";
 export { default as HeartIcon } from "./HeartIcon";
 export { default as HomeIcon } from "./HomeIcon";
+export { default as Pen } from "./Pen";
 export { default as PlayingCardsIcon } from "./PlayingCardsIcon";
 export { default as RadioFalse } from "./RadioFalse";
 export { default as RadioTrue } from "./RadioTrue";
