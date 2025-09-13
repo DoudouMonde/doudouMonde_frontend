@@ -14,13 +14,14 @@ export const LoginRedirectPage = () => {
       try {
         // 1. 토큰을 통해 유저의 권한을 확인
         const response = await apiRequesterWithoutAuth.get<{ role: Role }>(
-          "/auth/login/redirect",
+          "/v1/auth",
           {
             params: {
               token,
             },
           }
         );
+        console.log(response.data);
         // 2. 권한에 따라 페이지를 이동시킨다.
         if (response.data.role === Role.TEMP) {
           navigate(PATH.SIGNUP);
@@ -30,7 +31,7 @@ export const LoginRedirectPage = () => {
 
         return response.data.role;
       } catch (error) {
-        console.error(error);
+        console.error("권한을 가져오는 중 에러가 발생했습니다.", error);
       }
     };
     getRole();
