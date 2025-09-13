@@ -8,6 +8,8 @@ export const PATH = {
   CHARACTER_CREATION: "/playroom/character-creation",
   WISHLIST: "/wishlist",
   PROFILE: "/profile",
+  MEMBER_INFO: "/member-info",
+  CHILD_INFO: "/child-info",
   PERFORMANCE_DETAIL: (performanceId: number) =>
     `/performances/${performanceId}` as const,
 } as const;
