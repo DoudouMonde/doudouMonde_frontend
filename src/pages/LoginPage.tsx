@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import GradientBg from "@/assets/icons/GradientBg";
 import { LoginLogo } from "@/assets/icons";
