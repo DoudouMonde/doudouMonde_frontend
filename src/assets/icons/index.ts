@@ -1,4 +1,5 @@
 export { default as BabyIcon } from "./BabyIcon";
+export { default as Back } from "./Back";
 export { default as BearIcon } from "./BearIcon";
 export { default as Calendar } from "./Calendar";
 export { default as GamepadIcon } from "./GamepadIcon";
