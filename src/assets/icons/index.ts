@@ -3,6 +3,8 @@ export { default as BabyIcon } from "./BabyIcon";
 export { default as Back } from "./Back";
 export { default as BearIcon } from "./BearIcon";
 export { default as Calendar } from "./Calendar";
+export { default as ChevronDownIcon } from "./ChevronDownIcon";
+export { default as ChevronRightIcon } from "./ChevronRightIcon";
 export { default as GamepadIcon } from "./GamepadIcon";
 export { default as HeartIcon } from "./HeartIcon";
 export { default as HomeIcon } from "./HomeIcon";
