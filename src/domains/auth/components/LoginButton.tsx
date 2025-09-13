@@ -1,9 +1,10 @@
 import { KakaoLoginBtn } from "@/assets/icons";
+import { SERVER_BASE_URL } from "@/shared/constants";
 
 export const LoginButton = () => {
   const handleLogin = () => {
     // PWA에서도 안전하게 동작하도록 개선
-    const loginUrl = "http://localhost:8080/oauth2/authorization/kakao";
+    const loginUrl = `${SERVER_BASE_URL}/oauth2/authorization/kakao`;
 
     // PWA 환경 감지
     const isPWA = window.matchMedia("(display-mode: standalone)").matches;

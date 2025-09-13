@@ -7,13 +7,13 @@ import axios, {
 } from "axios";
 
 export const apiRequesterWithoutAuth: AxiosInstance = axios.create({
-  baseURL: SERVER_BASE_URL,
+  baseURL: SERVER_BASE_URL + "/api",
   timeout: 5_000,
   withCredentials: true,
 });
 
 export const apiRequester: AxiosInstance = axios.create({
-  baseURL: SERVER_BASE_URL,
+  baseURL: SERVER_BASE_URL + "/api",
   timeout: 5_000,
   withCredentials: true,
 });

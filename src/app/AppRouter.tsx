@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { PlayroomLayout } from "@/app/PlayroomLayout";
 import {
+  IndexPage,
   LoginPage,
   RegionRegistrationPage,
   ChildRegistrationPage,
@@ -28,6 +29,10 @@ import { PATH } from "@/shared/constants";
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <IndexPage />,
+  },
+  {
+    path: "/login",
     element: <LoginPage />,
   },
   {
@@ -35,7 +40,11 @@ const router = createBrowserRouter([
     element: <RegionRegistrationPage />,
   },
   {
-    path: "/child-registration",
+    path: PATH.LOGIN_REDIRECT,
+    element: <LoginRedirectPage />,
+  },
+  {
+    path: PATH.CHILD_REGISTRATION,
     element: <ChildRegistrationPage />,
   },
   {
@@ -43,6 +52,7 @@ const router = createBrowserRouter([
     element: <BottomNavigationLayout />,
     children: [
       {
+        index: true,
         index: true,
         element: <HomePage />,
       },
@@ -68,21 +78,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-  {
-    path: "/",
-    children: [
-      {
-        path: PATH.LOGIN,
-        element: <LoginPage />,
-      },
-
-      {
-        path: PATH.LOGIN_REDIRECT,
-        element: <LoginRedirectPage />,
-      },
-    ],
-  },
-
   {
     path: "/playroom",
     element: <PlayroomLayout />,
