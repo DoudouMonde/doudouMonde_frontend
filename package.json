@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
+    "build:check": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "svgr": "npx @svgr/cli -d src/assets/icons --ignore-existing --typescript --no-dimensions public/assets/icons"
@@ -17,6 +18,7 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.8.2",
+    "react-kakao-maps-sdk": "^1.1.27",
     "zustand": "^4.5.4"
   },
   "devDependencies": {
