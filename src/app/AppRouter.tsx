@@ -6,6 +6,8 @@ import {
   PlayroomPage,
   FavoritesPage,
   MyPage,
+  MemberInfoPage,
+  ChildInfoPage,
   SelectPerformancePage,
   ChildAndDateSelectionPage,
   ReviewWritingPage,
@@ -37,6 +39,14 @@ const router = createBrowserRouter([
       {
         path: "mypage",
         element: <MyPage />,
+      },
+      {
+        path: "member-info",
+        element: <MemberInfoPage />,
+      },
+      {
+        path: "child-info",
+        element: <ChildInfoPage />,
       },
       {
         path: "performances/:performanceId",

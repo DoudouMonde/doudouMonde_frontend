@@ -14,6 +14,10 @@ export const MyPage = () => {
     navigate(PATH.MEMBER_INFO);
   };
 
+  const handleChildInfoClick = () => {
+    navigate(PATH.CHILD_INFO);
+  };
+
   return (
     <div className="w-[375px] h-full mx-auto overflow-y-auto">
       {/* 상단 바 */}
@@ -51,7 +55,10 @@ export const MyPage = () => {
               <p className="body-inter-r">회원 정보</p>
               <Arrow className="w-6 h-6" />
             </div>
-            <div className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60">
+            <div
+              className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
+              onClick={handleChildInfoClick}
+            >
               <p className="body-inter-r">아이 정보</p>
               <Arrow className="w-6 h-6" />
             </div>

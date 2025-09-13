@@ -2,6 +2,8 @@ export * from "./HomePage";
 export * from "./PlayroomPage";
 export * from "./FavoritesPage";
 export * from "./MyPage";
+export * from "./MemberInfoPage";
+export * from "./ChildInfoPage";
 export * from "./CharacterCreationPage";
 export * from "./CharacterPreviewPage";
 export * from "./ReviewWritingPage";
