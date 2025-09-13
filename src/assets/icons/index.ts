@@ -1,3 +1,4 @@
+export { default as Arrow } from "./Arrow";
 export { default as BabyIcon } from "./BabyIcon";
 export { default as Back } from "./Back";
 export { default as BearIcon } from "./BearIcon";
