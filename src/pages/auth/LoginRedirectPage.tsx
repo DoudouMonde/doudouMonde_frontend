@@ -13,16 +13,16 @@ export const LoginRedirectPage = () => {
     const getRole = async () => {
       try {
         // 1. 토큰을 통해 유저의 권한을 확인
-        const response = await apiRequesterWithoutAuth.get<{ role: Role }>(
-          "/v1/auth",
-          {
-            params: {
-              token,
-            },
-          }
-        );
-        console.log(response.data);
+        const response = await apiRequesterWithoutAuth.get<{
+          role: Role;
+          token: string;
+        }>("/v1/auth", {
+          params: {
+            token,
+          },
+        });
         // 2. 권한에 따라 페이지를 이동시킨다.
+        localStorage.setItem("token", response.data.token);
         if (response.data.role === Role.TEMP) {
           navigate(PATH.SIGNUP, { replace: true });
         } else {

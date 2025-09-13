@@ -37,7 +37,12 @@ export const setRequestDefaultHeader = (requestConfig: AxiosRequestConfig) => {
 //   return config as InternalAxiosRequestConfig;
 // };
 
+//locals storage에 토큰이 있으면 헤더에 추가
 apiRequester.interceptors.request.use((request) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    request.headers.Authorization = `Bearer ${token}`;
+  }
   // FormData인 경우 Content-Type을 설정하지 않음 (브라우저가 자동으로 multipart/form-data로 설정)
   if (!(request.data instanceof FormData)) {
     setRequestDefaultHeader(request);
