@@ -1,6 +1,7 @@
 export * from "./BottomNavigation";
 export * from "./Chip";
 export * from "./ConfirmModal";
+export * from "./ProfileSelectModal";
 export { default as NavigationButtons } from "./NavigationButtons";
 export * from "./MultiSelect";
 export * from "./SearchInput";

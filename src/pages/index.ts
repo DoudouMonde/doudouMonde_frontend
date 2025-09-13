@@ -1,3 +1,5 @@
+export * from "./LoginPage";
+export * from "./ChildRegistrationPage";
 export * from "./HomePage";
 export * from "./PlayroomPage";
 export * from "./FavoritesPage";

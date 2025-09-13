@@ -2,6 +2,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { PlayroomLayout } from "@/app/PlayroomLayout";
 import {
+  LoginPage,
+  ChildRegistrationPage,
   PerformanceDetailPage,
   PlayroomPage,
   FavoritesPage,
@@ -27,6 +29,14 @@ import { PATH } from "@/shared/constants";
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <LoginPage />,
+  },
+  {
+    path: "/child-registration",
+    element: <ChildRegistrationPage />,
+  },
+  {
+    path: "/home",
     element: <BottomNavigationLayout />,
     children: [
       {

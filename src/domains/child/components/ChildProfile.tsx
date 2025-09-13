@@ -24,11 +24,13 @@ export default function ChildProfile({ child, isSelected, onClick }: Props) {
     >
       <div className="relative">
         {/* 선택 테두리 - 바깥쪽 */}
-        {isSelected && (
+        {isSelected ? (
           <div className="absolute -inset-1 rounded-full border-4 border-pink-100" />
+        ) : (
+          <div className="absolute -inset-1 rounded-full border-2 border-gray-100" />
         )}
 
-        <div className="flex items-center justify-center rounded-full w-[75px] h-[75px]  bg-black">
+        <div className="flex items-center justify-center rounded-full w-[80px] h-[80px]  bg-gray-200">
           <SwitchCase
             value={child.profile}
             case={{
