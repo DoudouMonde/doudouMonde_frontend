@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useChildListQuery } from "@/domains/child/queries/useChildListQuery";
 import { useUpdateChildNameMutation } from "@/domains/child/queries/useUpdateChildNameMutation";
 import { useUpdateChildProfileMutation } from "@/domains/child/queries/useUpdateChildProfileMutation";
+import { useUpdateChildTraitsMutation } from "@/domains/child/queries/useUpdateChildTraitsMutation";
 import { ChildItem } from "@/domains/child/types";
 import { RadioTrue, RadioFalse } from "@/assets/icons";
 import Pen from "@/assets/icons/Pen";
@@ -14,7 +15,19 @@ import {
   DogIcon,
   RabbitIcon,
 } from "@/assets/icons/profile";
-import { SwitchCase, ProfileSelectModal } from "@/shared/components";
+import {
+  SwitchCase,
+  ProfileSelectModal,
+  ConfirmModal,
+} from "@/shared/components";
+
+// 백엔드 enum과 매핑되는 상수
+const TRAIT_MAPPING = {
+  music: "MUSIC_LOVER",
+  active: "ACTIVE",
+  sensitive: "SOUND_SENSITIVE",
+  "short-attention": "SHORT_ATTENTION",
+} as const;
 
 const TraitSelector = ({
   selectedTraits,
@@ -62,6 +75,7 @@ export const ChildInfoPage = () => {
     useChildListQuery();
   const updateChildNameMutation = useUpdateChildNameMutation();
   const updateChildProfileMutation = useUpdateChildProfileMutation();
+  const updateChildTraitsMutation = useUpdateChildTraitsMutation();
   const [children, setChildren] = useState<ChildItem[]>([]);
   const [selectedChild, setSelectedChild] = useState<ChildItem | null>(null);
   const [selectedTraits, setSelectedTraits] = useState<string[]>([]);
@@ -71,6 +85,7 @@ export const ChildInfoPage = () => {
   const [editingProfileChildId, setEditingProfileChildId] = useState<
     number | null
   >(null);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const handleTraitToggle = (trait: string) => {
     setSelectedTraits((prev) => {
@@ -174,6 +189,32 @@ export const ChildInfoPage = () => {
   const handleProfileModalClose = () => {
     setIsProfileModalOpen(false);
     setEditingProfileChildId(null);
+  };
+
+  const handleSaveTraits = () => {
+    if (selectedChild) {
+      // 선택된 성향을 백엔드 enum 형식으로 변환
+      const backendTraits = selectedTraits.map(
+        (trait) => TRAIT_MAPPING[trait as keyof typeof TRAIT_MAPPING]
+      );
+
+      updateChildTraitsMutation.mutate(
+        {
+          childId: selectedChild.id,
+          request: { traits: backendTraits },
+        },
+        {
+          onSuccess: (response) => {
+            console.log("성향 변경 성공:", response);
+            setIsSuccessModalOpen(true);
+          },
+          onError: (error) => {
+            console.error("성향 변경 실패:", error);
+            // 에러 처리 (예: 토스트 메시지 표시)
+          },
+        }
+      );
+    }
   };
 
   // childrenData가 변경될 때 children 상태 업데이트
@@ -293,13 +334,11 @@ export const ChildInfoPage = () => {
           {/* 저장 버튼 */}
           <div className="flex justify-center mt-6">
             <button
-              onClick={() => {
-                console.log("선택된 성향:", selectedTraits);
-                // TODO: 성향 저장 API 호출
-              }}
-              className="px-8 py-3 w-full font-semibold text-gray-200 bg-green-100 rounded-full shadow-md transition-colors hover:bg-blue-600"
+              onClick={handleSaveTraits}
+              disabled={updateChildTraitsMutation.isPending}
+              className="px-8 py-3 w-full font-semibold text-gray-200 bg-green-100 rounded-full shadow-md transition-colors hover:bg-blue-600 disabled:opacity-50"
             >
-              저장
+              {updateChildTraitsMutation.isPending ? "저장 중..." : "저장"}
             </button>
           </div>
         </div>
@@ -317,6 +356,20 @@ export const ChildInfoPage = () => {
             : "CAT"
         }
         isLoading={updateChildProfileMutation.isPending}
+      />
+
+      {/* 완료 모달 */}
+      <ConfirmModal
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+        onConfirm={() => {
+          setIsSuccessModalOpen(false);
+          setSelectedTraits([]); // 성향 선택 초기화
+        }}
+        title="완료"
+        message="완료되었습니다."
+        confirmText="확인"
+        cancelText=""
       />
     </div>
   );

@@ -19,6 +19,15 @@ export interface UpdateChildProfileResponse {
   profile: string;
 }
 
+export interface UpdateChildTraitsRequest {
+  traits: string[];
+}
+
+export interface UpdateChildTraitsResponse {
+  childId: number;
+  traits: string[];
+}
+
 export const childApi = {
   getChildList: async () => {
     const response = await apiRequester.get<ChildListResponse>("/v1/child");
@@ -40,6 +49,16 @@ export const childApi = {
   ): Promise<UpdateChildProfileResponse> => {
     const response = await apiRequester.patch<UpdateChildProfileResponse>(
       `/v1/child/${childId}/profile`,
+      request
+    );
+    return response.data;
+  },
+  updateChildTraits: async (
+    childId: number,
+    request: UpdateChildTraitsRequest
+  ): Promise<UpdateChildTraitsResponse> => {
+    const response = await apiRequester.patch<UpdateChildTraitsResponse>(
+      `/v1/child/${childId}/traits`,
       request
     );
     return response.data;
