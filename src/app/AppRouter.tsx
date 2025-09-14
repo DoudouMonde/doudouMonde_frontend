@@ -58,15 +58,15 @@ const router = createBrowserRouter([
         element: <FavoritesPage />,
       },
       {
-        path: "mypage",
+        path: PATH.PROFILE,
         element: <MyPage />,
       },
       {
-        path: "member-info",
+        path: PATH.MEMBER_INFO,
         element: <MemberInfoPage />,
       },
       {
-        path: "child-info",
+        path: PATH.CHILD_INFO,
         element: <ChildInfoPage />,
       },
       {
