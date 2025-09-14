@@ -47,20 +47,15 @@ const router = createBrowserRouter([
     path: PATH.CHILD_REGISTRATION,
     element: <ChildRegistrationPage />,
   },
-
   {
-    path: "/",
+    path: "/home",
     element: <BottomNavigationLayout />,
     children: [
-      { path: "home", element: <HomePage /> },
       {
-        path: "favorites",
-        element: <FavoritesPage />,
+        index: true,
+        element: <HomePage />,
       },
-      {
-        path: "mypage",
-        element: <MyPage />,
-      },
+
       {
         path: "member-info",
         element: <MemberInfoPage />,
@@ -72,6 +67,47 @@ const router = createBrowserRouter([
       {
         path: "performances/:performanceId",
         element: <PerformanceDetailPage />,
+      },
+    ],
+  },
+  // 추가적인 직접 경로들 (fallback)
+  {
+    path: "/favorites",
+    element: <FavoritesPage />,
+    children: [
+      {
+        index: true,
+        element: <FavoritesPage />,
+      },
+    ],
+  },
+  {
+    path: "/mypage",
+    element: <MyPage />,
+    children: [
+      {
+        index: true,
+        element: <MyPage />,
+      },
+    ],
+  },
+  {
+    path: "/member-info",
+    element: <BottomNavigationLayout />,
+    children: [
+      {
+        index: true,
+        element: <MemberInfoPage />,
+      },
+    ],
+  },
+  {
+    path: "/child-info",
+    element: <BottomNavigationLayout />,
+    children: [
+      {
+        index: true,
+        element: <ChildInfoPage />,
       },
     ],
   },

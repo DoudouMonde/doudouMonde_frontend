@@ -4,6 +4,8 @@ import Arrow from "@/assets/icons/Arrow";
 import { PATH } from "@/shared/constants/paths";
 
 export const MyPage = () => {
+  console.log("🎯 MyPage 컴포넌트가 렌더링되었습니다!");
+
   const navigate = useNavigate();
 
   const handleBackClick = () => {

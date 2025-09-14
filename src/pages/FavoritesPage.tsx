@@ -8,6 +8,8 @@ import { ConfirmModal } from "@/shared/components";
 import { useState } from "react";
 
 export const FavoritesPage: React.FC = () => {
+  console.log("🎯 FavoritesPage 컴포넌트가 렌더링되었습니다!");
+
   const navigate = useNavigate();
   const { data: wishlist = [], isLoading, error } = useWishlistQuery();
   const removeWishlistMutation = useRemoveWishlistMutation();
