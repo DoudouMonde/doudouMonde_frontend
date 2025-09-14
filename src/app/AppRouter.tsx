@@ -74,14 +74,8 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/",
-    element: <PerformanceDetailLayout />,
-    children: [
-      {
-        path: "performances/:performanceId",
-        element: <PerformanceDetailPage />,
-      },
-    ],
+    path: "performances/:performanceId",
+    element: <PerformanceDetailPage />,
   },
 
   {

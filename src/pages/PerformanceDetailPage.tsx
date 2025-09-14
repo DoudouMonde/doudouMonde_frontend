@@ -43,7 +43,7 @@ export const PerformanceDetailPage = () => {
   }
 
   return (
-    <div className="flex flex-col flex-1 items-center w-full bg-white">
+    <div className="flex flex-col flex-1 items-center w-full bg-white pb-[80px]">
       <div className="flex-1 w-full">
         {/* 공연 정보 */}
         <PerformanceOverview />
@@ -96,7 +96,7 @@ export const PerformanceDetailPage = () => {
         </div>
       </div>
 
-      <nav className="fixed flex-row bottom-0 px-5 left-0 gap-3 z-50 w-full h-[64px] rounded-t-3xl bg-gray-200 flex items-center justify-center shadow-[0_-10px_20px_rgba(0,0,0,0.25)]">
+      <nav className="fixed flex-row bottom-0 px-5 left-0 gap-3 z-50 w-full h-[64px] rounded-t-3xl bg-gray-200 flex items-center justify-center shadow-[0_-0px_20px_rgba(0,0,0,0.25)]">
         <ButtonChip
           onClick={() => {
             if (performanceDetail?.isLike) {
