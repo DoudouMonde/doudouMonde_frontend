@@ -1,9 +1,13 @@
 import { usePerformanceDetailQuery } from "@/domains/performance/queries";
-import { useAddWishlistMutation } from "@/domains/favorites/queries";
+import {
+  useAddWishlistMutation,
+  useWishlistQuery,
+  useRemoveWishlistMutation,
+} from "@/domains/favorites/queries";
 import { Chip } from "@/shared/components";
 import { toYYYYMMDD, formatCurrency } from "@/shared/utils";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // type Props = {};
 
@@ -18,23 +22,49 @@ export const PerformanceOverview = () => {
     }
   );
 
+  const { data: wishlistData = [] } = useWishlistQuery();
   const addWishlistMutation = useAddWishlistMutation();
+  const removeWishlistMutation = useRemoveWishlistMutation();
+
+  // 현재 공연이 위시리스트에 있는지 확인
+  useEffect(() => {
+    if (performanceId && wishlistData.length > 0) {
+      const isInWishlist = wishlistData.some(
+        (item) => item.performanceId === Number(performanceId)
+      );
+      setIsWishlisted(isInWishlist);
+    }
+  }, [performanceId, wishlistData]);
 
   const handleWishlistClick = () => {
     if (!performanceId) return;
 
-    addWishlistMutation.mutate(
-      { performanceId: Number(performanceId) },
-      {
+    if (isWishlisted) {
+      // 이미 위시리스트에 있으면 제거
+      removeWishlistMutation.mutate(Number(performanceId), {
         onSuccess: () => {
-          setIsWishlisted(true);
-          console.log("✅ 위시리스트에 추가되었습니다!");
+          setIsWishlisted(false);
+          console.log("✅ 위시리스트에서 제거되었습니다!");
         },
         onError: (error) => {
-          console.error("❌ 위시리스트 추가 실패:", error);
+          console.error("❌ 위시리스트 제거 실패:", error);
         },
-      }
-    );
+      });
+    } else {
+      // 위시리스트에 없으면 추가
+      addWishlistMutation.mutate(
+        { performanceId: Number(performanceId) },
+        {
+          onSuccess: () => {
+            setIsWishlisted(true);
+            console.log("✅ 위시리스트에 추가되었습니다!");
+          },
+          onError: (error) => {
+            console.error("❌ 위시리스트 추가 실패:", error);
+          },
+        }
+      );
+    }
   };
 
   if (!performanceDetail) {

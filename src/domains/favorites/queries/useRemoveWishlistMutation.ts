@@ -6,7 +6,8 @@ export const useRemoveWishlistMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (wishlistId: number) => favoritesApi.removeWishlist(wishlistId),
+    mutationFn: (performanceId: number) =>
+      favoritesApi.removeWishlist(performanceId),
     onSuccess: () => {
       // 위시리스트 목록을 다시 불러오기
       queryClient.invalidateQueries({

@@ -21,7 +21,7 @@ export const favoritesApi = {
     );
     return response.data;
   },
-  removeWishlist: async (wishlistId: number): Promise<void> => {
-    await apiRequester.delete(`/v1/wishlists/${wishlistId}`);
+  removeWishlist: async (performanceId: number): Promise<void> => {
+    await apiRequester.delete(`/v1/wishlists?performanceId=${performanceId}`);
   },
 };
