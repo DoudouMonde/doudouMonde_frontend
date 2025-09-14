@@ -1,19 +1,20 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "@/shared/constants";
+import { validateAuth } from "@/shared/utils";
 
 export const IndexPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 토큰이 있는지 확인
-    const token = localStorage.getItem("token");
+    // 토큰 유효성 검증
+    const isAuthenticated = validateAuth();
 
-    if (token) {
-      // 토큰이 있으면 홈으로 리다이렉트
+    if (isAuthenticated) {
+      // 유효한 토큰이 있으면 홈으로 리다이렉트
       navigate(PATH.HOME, { replace: true });
     } else {
-      // 토큰이 없으면 로그인 페이지로 리다이렉트
+      // 토큰이 없거나 유효하지 않으면 로그인 페이지로 리다이렉트
       navigate("/login", { replace: true });
     }
   }, [navigate]);

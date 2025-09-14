@@ -12,6 +12,7 @@ import { SearchInput } from "@/shared/components/SearchInput";
 import { PATH } from "@/shared/constants/paths";
 import { getGenreLabel, getSidoLabel } from "@/shared/services";
 import { Genre, Sido } from "@/shared/types";
+import { debugTokenStatus } from "@/shared/utils";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -21,6 +22,13 @@ export const HomePage = () => {
   const handlePerformancePress = (performanceId: number) => {
     navigate(PATH.PERFORMANCE_DETAIL(performanceId));
   };
+
+  // 컴포넌트 마운트 시 토큰 상태 확인
+  useEffect(() => {
+    console.log("🏠 HomePage 마운트됨 - 토큰 상태 확인");
+    debugTokenStatus();
+  }, []);
+
   const { data: { contents: children } = { contents: [] } } =
     useChildListQuery();
   const [selectedChild, setSelectedChild] = useState<ChildItem | null>(null);
