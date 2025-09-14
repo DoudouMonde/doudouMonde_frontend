@@ -48,11 +48,11 @@ const router = createBrowserRouter([
     element: <ChildRegistrationPage />,
   },
   {
-    path: "/home",
+    path: "/",
     element: <BottomNavigationLayout />,
     children: [
       {
-        index: true,
+        path: PATH.HOME,
         element: <HomePage />,
       },
       {
