@@ -44,7 +44,7 @@ export const PerformanceDetailPage = () => {
 
   return (
     <div className="flex flex-col flex-1 items-center w-full bg-white pb-[80px]">
-      <div className="flex-1 w-full">
+      <div className="flex flex-col flex-1 w-full">
         {/* 공연 정보 */}
         <PerformanceOverview />
 
