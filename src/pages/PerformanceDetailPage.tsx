@@ -1,4 +1,5 @@
 import {
+  ContentSection,
   NearbySection,
   PerformanceOverview,
   TransportSection,
@@ -34,7 +35,8 @@ export const PerformanceDetailPage = () => {
 
           {/* 탭 콘텐츠 */}
           <div className="flex-1 w-full">
-            <NearbySection />
+            <ContentSection />
+            {/* <NearbySection /> */}
             {/* <SwitchCase
               value={activeTab}
               case={{

@@ -21,3 +21,4 @@ export { default as RecordStop } from "./RecordStop";
 export { default as RestroomIcon } from "./RestroomIcon";
 export { default as SearchIcon } from "./SearchIcon";
 export { default as UserIcon } from "./UserIcon";
+export { default as YoutubeIcon } from "./YoutubeIcon";
