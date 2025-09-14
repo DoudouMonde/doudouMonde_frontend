@@ -10,6 +10,7 @@ export { default as GradientBg } from "./GradientBg";
 export { default as HeartIcon } from "./HeartIcon";
 export { default as HomeIcon } from "./HomeIcon";
 export { default as KakaoLoginBtn } from "./KakaoLoginBtn";
+export { default as KakaoMapIcon } from "./KakaoMapIcon";
 export { default as LoginLogo } from "./LoginLogo";
 export { default as Pen } from "./Pen";
 export { default as PlayingCardsIcon } from "./PlayingCardsIcon";

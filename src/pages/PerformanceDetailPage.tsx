@@ -1,12 +1,14 @@
 import {
+  NearbySection,
   PerformanceOverview,
   TransportSection,
 } from "@/domains/performance/components";
 import { Tab } from "@/shared/components";
 import { SwitchCase } from "@/shared/components";
+import { useState } from "react";
 
 export const PerformanceDetailPage = () => {
-  const activeTab = "transport";
+  const [activeTab, setActiveTab] = useState("transport");
 
   // 실제로는 API에서 가져올 데이터 (임시 mockup - 강남역 → 롯데콘서트홀)
   const performanceVenueInfo = {
@@ -24,31 +26,27 @@ export const PerformanceDetailPage = () => {
 
         {/* 탭 메뉴 */}
         <div className="flex flex-col gap-4 w-full bg-gray-200 border-2">
-          <Tab activeTab={activeTab}>
+          <Tab activeTab={activeTab} setActiveTab={setActiveTab}>
             <Tab.Item value="transport">🚸 교통정보</Tab.Item>
             <Tab.Item value="content">😉 인근정보</Tab.Item>
             <Tab.Item value="seats">💺 좌석정보</Tab.Item>
           </Tab>
 
-          <TransportSection
-            venueName={performanceVenueInfo.venueName}
-            venueAddress={performanceVenueInfo.venueAddress}
-            venueLat={performanceVenueInfo.venueLat}
-            venueLng={performanceVenueInfo.venueLng}
-          />
-
           {/* 탭 콘텐츠 */}
           <div className="flex-1 w-full">
+            <NearbySection />
             {/* <SwitchCase
               value={activeTab}
               case={{
-                transport: <TransportSection 
-                  venueName={performanceVenueInfo.venueName}
-                  venueAddress={performanceVenueInfo.venueAddress}
-                  venueLat={performanceVenueInfo.venueLat}
-                  venueLng={performanceVenueInfo.venueLng}
-                />,
-                // seats: <NearbySection />,
+                transport: (
+                  <TransportSection
+                    venueName={performanceVenueInfo.venueName}
+                    venueAddress={performanceVenueInfo.venueAddress}
+                    venueLat={performanceVenueInfo.venueLat}
+                    venueLng={performanceVenueInfo.venueLng}
+                  />
+                ),
+                seats: <NearbySection />,
                 // content: <ContentSection />,
               }}
             /> */}
