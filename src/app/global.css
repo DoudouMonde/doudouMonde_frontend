@@ -107,6 +107,30 @@
     font-weight: 700;
     line-height: normal;
   }
+
+  /* 스크롤바 숨기기 유틸리티 */
+  .hide-scrollbar {
+    /* IE and Edge */
+    -ms-overflow-style: none;
+    /* Firefox */
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    /* Chrome, Safari and Opera */
+    display: none;
+  }
+
+  /* 스크롤은 가능하지만 스크롤바는 숨김 */
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    overflow: scroll;
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* 리스트 기본 스타일 제거 */
