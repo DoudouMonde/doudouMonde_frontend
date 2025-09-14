@@ -1,5 +1,6 @@
 import { apiRequester } from "@/shared/apis/axiosInstance";
 import { WishlistResponse } from "../types";
+import { WishlistResponse as PerformanceWishlistResponse } from "@/domains/performance/types/performanceApiTypes";
 
 export const favoritesApi = {
   getWishlist: async (): Promise<WishlistResponse[]> => {

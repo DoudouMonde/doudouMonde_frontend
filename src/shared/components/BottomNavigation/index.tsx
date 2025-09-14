@@ -61,6 +61,8 @@ function CustomTabBarButton({
 export function BottomNavigation() {
   const location = useLocation();
 
+  console.log("🔍 현재 위치:", location.pathname);
+
   const tabItems = [
     {
       name: "home",
@@ -125,6 +127,9 @@ export function BottomNavigation() {
               key={item.name}
               to={item.path}
               className="flex-1 no-underline"
+              onClick={() => {
+                console.log(`🔗 네비게이션 클릭: ${item.title} → ${item.path}`);
+              }}
             >
               <CustomTabBarButton onPress={() => {}} isSelected={isSelected}>
                 {item.icon(isSelected)}{" "}

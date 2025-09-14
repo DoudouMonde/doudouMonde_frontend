@@ -3,6 +3,7 @@ import { Sido } from "../types";
 
 export const getSidoLabel = (sido: Sido) => {
   switch (sido) {
+    // 새로운 통합 지역들
     case Sido.SEOUL:
       return "서울";
     case Sido.GYEONGGI:

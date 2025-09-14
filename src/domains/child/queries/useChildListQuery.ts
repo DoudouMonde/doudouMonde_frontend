@@ -1,7 +1,7 @@
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 import { childApi } from "@/domains/child/apis/childApi";
-import { ChildListResponse } from "@/domains/child/apis/dto/ChildListResponse";
+import { ChildListResponse } from "@/domains/child/types/childApiTypes";
 import { queryKeys } from "@/shared/apis/queryKeys";
 
 export function useChildListQuery(

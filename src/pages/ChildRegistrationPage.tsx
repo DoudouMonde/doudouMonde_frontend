@@ -495,7 +495,7 @@ export const ChildRegistrationPage = () => {
             </button>
             <button
               onClick={handleComplete}
-              className="py-4 w-full font-semibold text-gray-100 border border-gray-300 transition-colors rounded-[20px] bg-green-100 hover:bg-black"
+              className="py-4 w-full font-semibold text-gray-100 border border-gray-300 transition-colors rounded-[20px] bg-green-100 hover:bg-green-200"
             >
               완료
             </button>
