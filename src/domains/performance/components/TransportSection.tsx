@@ -1,11 +1,9 @@
 import { useState } from "react";
 import KakaoMap from "@/shared/components/KakaoMap";
+import { useCombinedLocationsQuery } from "@/domains/performance/queries";
 
 type Props = {
-  // 공연장 정보를 받을 수 있도록 확장
-  venueName?: string;
-  venueLat?: number;
-  venueLng?: number;
+  performanceId: number;
 };
 
 type TransportType = "car" | "transit" | "walk";
@@ -31,19 +29,47 @@ const transportOptions: Array<{
   { type: "walk", label: "도보", icon: "🚶", description: "건강한 이동" },
 ];
 
-export const TransportSection = ({
-  venueName = "롯데콘서트홀",
-  venueLat = 37.5125,
-  venueLng = 127.1025,
-}: Props) => {
+export const TransportSection = ({ performanceId }: Props) => {
   const [selectedTransport, setSelectedTransport] =
     useState<TransportType>("transit");
 
-  // 하드코딩된 출발지 (강남역 근처)
-  const userLocation = {
-    lat: 37.4979, // 강남역
-    lng: 127.0276,
-  };
+  // API에서 위치 정보 가져오기
+  const {
+    data: locationData,
+    isLoading,
+    error,
+  } = useCombinedLocationsQuery(performanceId);
+
+  if (!locationData) {
+    return null;
+  }
+
+  // API 데이터가 있으면 사용하고, 없으면 fallback 값 사용
+  const userLocation = locationData.memberLocation
+    ? {
+        lat: locationData.memberLocation.latitude,
+        lng: locationData.memberLocation.longitude,
+        address: locationData.memberLocation.address,
+      }
+    : {
+        lat: 37.4979, // 강남역 fallback
+        lng: 127.0276,
+        address: "강남역",
+      };
+
+  const venueLocation = locationData?.facilityLocation
+    ? {
+        lat: locationData.facilityLocation.latitude,
+        lng: locationData.facilityLocation.longitude,
+        address: locationData.facilityLocation.address,
+        name: locationData.facilityLocation.address,
+      }
+    : {
+        lat: 37.5125,
+        lng: 127.1025,
+        address: "롯데콘서트홀",
+        name: "롯데콘서트홀",
+      };
 
   // 카카오맵 외부 링크로 이동
   const openKakaoMapRoute = (transportType: TransportType) => {
@@ -55,13 +81,50 @@ export const TransportSection = ({
     };
 
     const mode = transportModeMap[transportType];
-    const origin = `강남역,${userLocation.lat},${userLocation.lng}`;
-    const destination = `${venueName},${venueLat},${venueLng}`;
+    const origin = `${userLocation.address},${userLocation.lat},${userLocation.lng}`;
+    const destination = `${venueLocation.name},${venueLocation.lat},${venueLocation.lng}`;
     const url = `https://map.kakao.com/link/by/${mode}/${origin}/${destination}`;
 
-    console.log(`🗺️ 카카오맵 URL (${transportType}):`, url);
     window.open(url, "_blank");
   };
+
+  // 로딩 상태 처리
+  if (isLoading) {
+    return (
+      <div className="p-4 space-y-4">
+        <div className="mb-4">
+          <h3 className="mb-2 text-lg font-semibold text-primary-100">
+            🚗 교통 정보
+          </h3>
+          <p className="text-sm text-secondary-100">
+            위치 정보를 불러오는 중...
+          </p>
+        </div>
+        <div className="flex items-center justify-center h-[350px] bg-gray-200 rounded-lg">
+          <div className="text-secondary-100">로딩 중...</div>
+        </div>
+      </div>
+    );
+  }
+
+  // 에러 상태 처리
+  if (error) {
+    return (
+      <div className="p-4 space-y-4">
+        <div className="mb-4">
+          <h3 className="mb-2 text-lg font-semibold text-primary-100">
+            🚗 교통 정보
+          </h3>
+          <p className="text-sm text-red-500">
+            위치 정보를 불러올 수 없습니다.
+          </p>
+        </div>
+        <div className="flex items-center justify-center h-[350px] bg-gray-200 rounded-lg">
+          <div className="text-red-500">위치 정보 로딩 실패</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 space-y-4">
@@ -71,7 +134,7 @@ export const TransportSection = ({
           🚗 교통 정보
         </h3>
         <p className="text-sm text-secondary-100">
-          {venueName}까지의 경로를 확인하세요
+          {venueLocation.name}까지의 경로를 확인하세요
         </p>
       </div>
 
@@ -110,18 +173,20 @@ export const TransportSection = ({
       <div className="overflow-hidden bg-gray-200 rounded-lg border border-tertiary-100">
         <div className="p-3 border-b bg-beige-200 border-tertiary-100">
           <h4 className="text-sm font-medium text-primary-100">📍 위치 정보</h4>
-          <p className="text-xs text-secondary-100">강남역 → {venueName}</p>
+          <p className="text-xs text-secondary-100">
+            {userLocation.address} → {venueLocation.address}
+          </p>
         </div>
         <div className="w-full h-[350px]">
           <KakaoMap
             width="100%"
             height="350px"
-            lat={(userLocation.lat + venueLat) / 2} // 두 지점의 중간점
-            lng={(userLocation.lng + venueLng) / 2}
+            lat={(userLocation.lat + venueLocation.lat) / 2} // 두 지점의 중간점
+            lng={(userLocation.lng + venueLocation.lng) / 2}
             startLat={userLocation.lat}
             startLng={userLocation.lng}
-            endLat={venueLat}
-            endLng={venueLng}
+            endLat={venueLocation.lat}
+            endLng={venueLocation.lng}
           />
         </div>
       </div>

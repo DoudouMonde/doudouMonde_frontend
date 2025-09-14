@@ -6,9 +6,11 @@ import {
 } from "@/domains/performance/components";
 import { SwitchCase } from "@/shared/components";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 export const PerformanceDetailPage = () => {
   const [activeTab, setActiveTab] = useState("transport");
+  const { performanceId } = useParams();
 
   // 실제로는 API에서 가져올 데이터 (임시 mockup - 강남역 → 롯데콘서트홀)
   const performanceVenueInfo = {
@@ -64,11 +66,7 @@ export const PerformanceDetailPage = () => {
               value={activeTab}
               case={{
                 transport: (
-                  <TransportSection
-                    venueName={performanceVenueInfo.venueName}
-                    venueLat={performanceVenueInfo.venueLat}
-                    venueLng={performanceVenueInfo.venueLng}
-                  />
+                  <TransportSection performanceId={Number(performanceId)} />
                 ),
                 content: <ContentSection />,
                 nearby: <NearbySection />,

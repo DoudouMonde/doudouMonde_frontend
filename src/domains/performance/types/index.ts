@@ -52,3 +52,15 @@ export type NearbyInfo = {
   restaurants: NearbyPlace[];
   kidsCafes: NearbyPlace[];
 };
+// 위치 정보 타입
+export type LocationDto = {
+  latitude: number;
+  longitude: number;
+  address: string;
+};
+
+// 회원 위치와 공연장 위치를 함께 반환하는 타입
+export type CombinedLocationDto = {
+  memberLocation: LocationDto;
+  facilityLocation: LocationDto;
+};
