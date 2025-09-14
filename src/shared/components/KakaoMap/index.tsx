@@ -13,26 +13,12 @@ export default function KakaoMap({ width, height, lat, lng }: Props) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log("🗺️ KakaoMap 컴포넌트 마운트됨");
-    console.log("window.kakao:", window.kakao);
-    console.log(
-      "환경 변수 VITE_KAKAO_API_KEY:",
-      import.meta.env.VITE_KAKAO_API_KEY
-    );
-
     // 카카오 객체가 존재하는지 확인
     if (typeof window !== "undefined") {
       if (window.kakao && window.kakao.maps) {
-        console.log("✅ 카카오맵 스크립트 로드 완료");
         setIsReady(true);
       } else {
-        console.log("❌ 카카오맵 스크립트를 찾을 수 없음");
-        console.log("현재 페이지의 스크립트 태그들:");
         const scripts = document.querySelectorAll('script[src*="kakao"]');
-        console.log("카카오 스크립트 태그 개수:", scripts.length);
-        scripts.forEach((script, index) => {
-          console.log(`스크립트 ${index + 1}:`, script.src);
-        });
 
         // 타이머로 주기적으로 확인
         const checkKakao = setInterval(() => {
@@ -68,8 +54,8 @@ export default function KakaoMap({ width, height, lat, lng }: Props) {
         className="flex justify-center items-center bg-red-50 rounded border border-red-300"
       >
         <div className="p-4 text-center">
-          <p className="text-red-600 text-sm font-semibold">{error}</p>
-          <p className="text-red-500 text-xs mt-2">
+          <p className="text-sm font-semibold text-red-600">{error}</p>
+          <p className="mt-2 text-xs text-red-500">
             개발자 도구(F12) → Console 탭에서 자세한 로그를 확인하세요.
           </p>
         </div>
@@ -84,8 +70,8 @@ export default function KakaoMap({ width, height, lat, lng }: Props) {
         className="flex justify-center items-center bg-blue-50 rounded border border-blue-300"
       >
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
-          <p className="text-blue-600 text-sm">지도를 불러오는 중...</p>
+          <div className="mx-auto mb-2 w-8 h-8 rounded-full border-b-2 border-blue-600 animate-spin"></div>
+          <p className="text-sm text-blue-600">지도를 불러오는 중...</p>
         </div>
       </div>
     );
