@@ -120,7 +120,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
         <div className="flex absolute inset-x-0 top-0 z-20 flex-col gap-0 justify-center items-center mx-auto translate-y-full">
           {/* Speech Bubble */}
           <div className="bg-gray-200/70 backdrop-blur-sm rounded-[40px] w-[80%] p-6 shadow-[0px_0px_12px_0px_rgba(255,246,165,1)]">
-            <p className="text-center text-black text-base font-normal leading-[1.21] tracking-[-0.04em] font-['Inter']">
+            <p className="text-center text-black text-base font-normal body-inter-r leading-[1.3] tracking-[-0.04em] ">
               안녕 {childNames}!
               <br />
               이야기마을에 온 걸 환영해.
