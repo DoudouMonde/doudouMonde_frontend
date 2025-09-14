@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import { COLORS } from "@/shared/constants/colors";
 import { GamepadIcon, HeartIcon, HomeIcon, UserIcon } from "@/assets/icons";
+import { PATH } from "@/shared/constants";
 
 interface CustomTabBarButtonProps {
   onPress: () => void;
@@ -63,7 +64,7 @@ export function BottomNavigation() {
   const tabItems = [
     {
       name: "home",
-      path: "/home",
+      path: PATH.HOME,
       title: "홈",
       icon: (isSelected: boolean) => (
         <HomeIcon
@@ -75,7 +76,7 @@ export function BottomNavigation() {
     },
     {
       name: "playroom",
-      path: "/playroom",
+      path: PATH.PLAYROOM,
       title: "놀이방",
       icon: (isSelected: boolean) => (
         <GamepadIcon
@@ -87,7 +88,7 @@ export function BottomNavigation() {
     },
     {
       name: "wishlist",
-      path: "/home/favorites",
+      path: PATH.WISHLIST,
       title: "찜",
       icon: (isSelected: boolean) => (
         <HeartIcon
@@ -99,7 +100,7 @@ export function BottomNavigation() {
     },
     {
       name: "profile",
-      path: "/home/mypage",
+      path: PATH.PROFILE,
       title: "마이",
       icon: (isSelected: boolean) => (
         <UserIcon

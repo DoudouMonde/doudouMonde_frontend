@@ -6,10 +6,10 @@ export const PATH = {
   REVIEW_WRITING: "/playroom/review-writing",
   VOICE_REVIEW: "/playroom/voice-review",
   CHARACTER_CREATION: "/playroom/character-creation",
-  WISHLIST: "/home/favorites",
-  PROFILE: "/home/mypage",
-  MEMBER_INFO: "/home/member-info",
-  CHILD_INFO: "/home/child-info",
+  WISHLIST: "/favorites",
+  PROFILE: "/mypage",
+  MEMBER_INFO: "/member-info",
+  CHILD_INFO: "/child-info",
   PERFORMANCE_DETAIL: (performanceId: number) =>
     `/performances/${performanceId}` as const,
 
