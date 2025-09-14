@@ -193,6 +193,43 @@ export const SelectPerformancePage = () => {
           </div>
         </div>
 
+        {/* <hr className="my-4 border-secondary-100/30" /> */}
+        <div className="bg-green-200/20 rounded-[20px] p-4 mb-8">
+          <h2 className="flex items-center mb-2 text-green-100 body-hak-b">
+            이 공연으로 후기를 작성할까요?
+          </h2>
+
+          {/* 선택된 공연 표시 */}
+          {selectedPerformanceData && (
+            <div className="flex">
+              <div className="text-white">
+                <div className="flex gap-4 items-center">
+                  <img
+                    src={
+                      selectedPerformanceData.posterUrl ||
+                      "/assets/images/playroom/backgroundImg.png"
+                    }
+                    alt={selectedPerformanceData.title}
+                    className="object-cover w-16 h-20 rounded-lg"
+                    onError={(e) => {
+                      e.currentTarget.src =
+                        "/assets/images/playroom/backgroundImg.png";
+                    }}
+                  />
+                  <div className="flex-1">
+                    <h4 className="mb-1 font-semibold text-gray-800">
+                      {selectedPerformanceData.title}
+                    </h4>
+                    <p className="subtitle text-secondary-100">
+                      {selectedPerformanceData.location}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
         {/* 위시리스트 공연 섹션 */}
         <div className="mb-8">
           <div className="">
@@ -316,41 +353,6 @@ export const SelectPerformancePage = () => {
             )}
           </div>
         </div>
-
-        {/* <hr className="my-4 border-secondary-100/30" /> */}
-        <h2 className="flex items-center mb-4 body-hak-b">
-          이 공연으로 후기를 작성할까요?
-        </h2>
-
-        {/* 선택된 공연 표시 */}
-        {selectedPerformanceData && (
-          <div className="flex p-4 mb-8 bg-green-200/20 rounded-[20px]">
-            <div className="text-white">
-              <div className="flex gap-4 items-center">
-                <img
-                  src={
-                    selectedPerformanceData.posterUrl ||
-                    "/assets/images/playroom/backgroundImg.png"
-                  }
-                  alt={selectedPerformanceData.title}
-                  className="object-cover w-16 h-20 rounded-lg"
-                  onError={(e) => {
-                    e.currentTarget.src =
-                      "/assets/images/playroom/backgroundImg.png";
-                  }}
-                />
-                <div className="flex-1">
-                  <h4 className="mb-1 text-lg font-bold">
-                    {selectedPerformanceData.title}
-                  </h4>
-                  <p className="subtitle text-secondary-100">
-                    {selectedPerformanceData.location}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* 네비게이션 버튼 */}
         <div className="mt-8">
