@@ -23,7 +23,7 @@ export function PlayroomLayout() {
       <div className="absolute inset-0 bg-gray-200/40"></div>
 
       {/* 상단 바 */}
-      <div className="fixed top-0 right-0 left-0 z-20 px-6 pt-4 pb-2 h-[60px] bg-gray-200/70 shadow-sm">
+      <div className="fixed top-0 right-0 left-0 z-20 px-6 pt-4 pb-2 h-[60px] bg-gray-200/70 shadow">
         <div className="flex justify-between items-center">
           <button
             onClick={handleBackClick}
