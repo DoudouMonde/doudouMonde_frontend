@@ -15,7 +15,7 @@ export function useSidoPerformanceListQuery(
   >
 ) {
   return useQuery({
-    queryKey: [queryKeys.PERFORMANCE_LIST],
+    queryKey: [queryKeys.PERFORMANCE_LIST, sido],
     queryFn: async () => await performanceApi.getSidoPerformanceList(sido),
     ...queryOptions,
   });

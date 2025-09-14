@@ -12,14 +12,6 @@ export const PerformanceDetailPage = () => {
   const [activeTab, setActiveTab] = useState("transport");
   const { performanceId } = useParams();
 
-  // 실제로는 API에서 가져올 데이터 (임시 mockup - 강남역 → 롯데콘서트홀)
-  const performanceVenueInfo = {
-    venueName: "롯데콘서트홀",
-    venueAddress: "서울특별시 송파구 올림픽로 300 롯데월드타워",
-    venueLat: 37.5125,
-    venueLng: 127.1025,
-  };
-
   useEffect(() => {
     console.log("activeTab", activeTab);
   }, [activeTab]);
@@ -68,7 +60,9 @@ export const PerformanceDetailPage = () => {
                 transport: (
                   <TransportSection performanceId={Number(performanceId)} />
                 ),
-                content: <ContentSection />,
+                content: (
+                  <ContentSection performanceId={Number(performanceId)} />
+                ),
                 nearby: <NearbySection />,
               }}
             />

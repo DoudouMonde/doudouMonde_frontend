@@ -64,3 +64,16 @@ export type CombinedLocationDto = {
   memberLocation: LocationDto;
   facilityLocation: LocationDto;
 };
+
+// 영어 콘텐츠 타입
+export type EnglishContent = {
+  id: number;
+  thumbnailUrl: string;
+  youtubeUrl: string;
+  englishTitle: string;
+};
+
+// 영어 콘텐츠 목록 응답 타입
+export type EnglishContentListResponse = {
+  contents: EnglishContent[];
+};
