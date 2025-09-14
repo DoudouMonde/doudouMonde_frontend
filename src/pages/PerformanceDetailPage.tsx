@@ -1,20 +1,46 @@
 import {
+  useAddWishlistMutation,
+  useRemoveWishlistMutation,
+} from "@/domains/favorites/queries";
+import {
   ContentSection,
   NearbySection,
   PerformanceOverview,
   TransportSection,
 } from "@/domains/performance/components";
-import { SwitchCase } from "@/shared/components";
-import { useEffect, useState } from "react";
+import { usePerformanceDetailQuery } from "@/domains/performance/queries";
+import { queryClient, queryKeys } from "@/shared/apis";
+import { ButtonChip, SwitchCase } from "@/shared/components";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 export const PerformanceDetailPage = () => {
   const [activeTab, setActiveTab] = useState("transport");
   const { performanceId } = useParams();
+  const { data: performanceDetail } = usePerformanceDetailQuery(
+    Number(performanceId),
+    {
+      enabled: !!performanceId,
+    }
+  );
+  const { mutate: addWishlistMutation } = useAddWishlistMutation({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.PERFORMANCE_DETAIL, performanceId],
+      });
+    },
+  });
+  const { mutate: removeWishlistMutation } = useRemoveWishlistMutation({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.PERFORMANCE_DETAIL, performanceId],
+      });
+    },
+  });
 
-  useEffect(() => {
-    console.log("activeTab", activeTab);
-  }, [activeTab]);
+  if (!performanceDetail) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col flex-1 items-center w-full bg-white">
@@ -69,6 +95,28 @@ export const PerformanceDetailPage = () => {
           </div>
         </div>
       </div>
+
+      <nav className="fixed flex-row bottom-0 px-5 left-0 gap-3 z-50 w-full h-[64px] rounded-t-3xl bg-gray-200 flex items-center justify-center shadow-[0_-10px_20px_rgba(0,0,0,0.25)]">
+        <ButtonChip
+          onClick={() => {
+            if (performanceDetail?.isLike) {
+              removeWishlistMutation(Number(performanceId));
+            } else {
+              addWishlistMutation({ performanceId: Number(performanceId) });
+            }
+          }}
+          isActive={performanceDetail?.isLike || false}
+        >
+          보고싶어요
+        </ButtonChip>
+
+        <ButtonChip
+          onClick={() => {}}
+          isActive={performanceDetail?.isView || false}
+        >
+          봤어요
+        </ButtonChip>
+      </nav>
     </div>
   );
 };

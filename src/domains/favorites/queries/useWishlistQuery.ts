@@ -6,6 +6,5 @@ export const useWishlistQuery = () => {
   return useQuery({
     queryKey: queryKeys.favorites.wishlist(),
     queryFn: favoritesApi.getWishlist,
-    staleTime: 5 * 60 * 1000, // 5분
   });
 };

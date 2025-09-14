@@ -32,12 +32,11 @@ export type PerformanceDetail = {
 
   genre: Genre;
   sido: Sido;
-
+  isView: boolean;
+  isLike: boolean;
   hasPlayRoom: boolean;
   hasNursingRoom: boolean;
   hasRestRoom: boolean;
-  nearbyInfo?: NearbyInfo;
-  seatsInfo?: SeatsInfo;
 };
 
 export type TabType = "transport" | "seats" | "content";

@@ -1,3 +1,4 @@
+import { PerformanceDetailBottomBar } from "@/domains/performance/components/PerformanceDetailBottomBar";
 import { Outlet } from "react-router-dom";
 
 export function PerformanceDetailLayout() {

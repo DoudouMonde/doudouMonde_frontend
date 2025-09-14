@@ -9,3 +9,5 @@ export * from "./SearchPerformancesInput";
 export * from "./SingleSelect";
 export * from "./Tab";
 export * from "./SwitchCase";
+export * from "./CustomButton";
+export * from "./ButtonChip";
