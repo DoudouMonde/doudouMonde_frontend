@@ -5,13 +5,16 @@ type Props = {};
 
 export const TransportSection = ({}: Props) => {
   return (
-    <div className="p-4">
+    <div className="p-4 border-2 border-blue-500">
       {/* <iframe
         className="w-full h-full"
         src="https://map.kakao.com/?sName=서울역&eName=강남역"
         loading="lazy"
       ></iframe> */}
-      <KakaoMap width="85%" height="20dvh" lat={37.501389} lng={126.978} />
+      {/* <KakaoMap width="85%" height="20dvh" lat={37.501389} lng={126.978} /> */}
+      <div className="w-[200px] h-[200px] border-2 border-red-500 ">
+        <KakaoMap width="200px" height="200px" lat={37.5} lng={126.978} />
+      </div>
     </div>
   );
 };

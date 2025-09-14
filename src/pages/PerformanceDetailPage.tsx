@@ -22,18 +22,18 @@ export const PerformanceDetailPage = () => {
             <Tab.Item value="seats">💺 좌석정보</Tab.Item>
           </Tab>
 
+          <TransportSection />
+
           {/* 탭 콘텐츠 */}
-          <div className="flex-1 w-full bg-white">
-            <SwitchCase
+          <div className="flex-1 w-full">
+            {/* <SwitchCase
               value={activeTab}
-              case={
-                {
-                  // transport: <TransportSection />,
-                  // seats: <NearbySection />,
-                  // content: <ContentSection />,
-                }
-              }
-            />
+              case={{
+                transport: <TransportSection />,
+                // seats: <NearbySection />,
+                // content: <ContentSection />,
+              }}
+            /> */}
           </div>
         </div>
       </div>
