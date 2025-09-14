@@ -57,7 +57,6 @@ apiRequester.interceptors.request.use((request) => {
   const token = localStorage.getItem("token");
   if (token) {
     request.headers.Authorization = `Bearer ${token}`;
-    console.log(`✅ Authorization 헤더 추가됨`);
   } else {
     console.warn(`⚠️ 토큰이 없어서 인증되지 않은 요청으로 전송됩니다.`);
   }

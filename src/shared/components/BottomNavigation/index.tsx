@@ -61,8 +61,6 @@ function CustomTabBarButton({
 export function BottomNavigation() {
   const location = useLocation();
 
-  console.log("🔍 현재 위치:", location.pathname);
-
   const tabItems = [
     {
       name: "home",
