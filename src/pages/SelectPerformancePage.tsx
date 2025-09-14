@@ -228,6 +228,8 @@ export const SelectPerformancePage = () => {
           )}
         </div>
 
+        <hr className="my-4 border-secondary-100/30" />
+
         {/* 검색 섹션 */}
         <h2 className="flex items-center mb-4 body-hak-b">공연검색</h2>
         <div className="mb-8 w-full">

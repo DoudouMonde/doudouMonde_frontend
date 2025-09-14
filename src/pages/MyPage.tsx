@@ -27,6 +27,11 @@ export const MyPage = () => {
     navigate(PATH.STORY_VILLAGE_BOOK);
   };
 
+  const handleFavoritesClick = () => {
+    console.log("보고싶어요 누른 작품 클릭:", PATH.WISHLIST);
+    navigate(PATH.WISHLIST);
+  };
+
   return (
     <div className="w-[375px] h-full mx-auto overflow-y-auto">
       {/* 상단 바 */}
@@ -76,7 +81,10 @@ export const MyPage = () => {
           {/* 추가 기능 */}
           <p className="text-black title-hak">추가 기능</p>
           <div className="flex flex-col justify-center gap-6 bg-gray-200/70 rounded-[20px] p-5 w-full">
-            <div className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60">
+            <div
+              className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
+              onClick={handleFavoritesClick}
+            >
               <p className="body-inter-r">보고 싶어요 누른 작품</p>
               <Arrow className="w-6 h-6" />
             </div>
