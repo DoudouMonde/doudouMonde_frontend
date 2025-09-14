@@ -55,13 +55,16 @@ const router = createBrowserRouter([
         index: true,
         element: <HomePage />,
       },
-
       {
-        path: "member-info",
+        path: PATH.PROFILE,
+        element: <MyPage />,
+      },
+      {
+        path: PATH.MEMBER_INFO,
         element: <MemberInfoPage />,
       },
       {
-        path: "child-info",
+        path: PATH.CHILD_INFO,
         element: <ChildInfoPage />,
       },
       {
