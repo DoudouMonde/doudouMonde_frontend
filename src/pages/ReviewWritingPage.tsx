@@ -73,13 +73,15 @@ export const ReviewWritingPage = () => {
           <div className="flex flex-col gap-2 w-auto">
             <div className="flex gap-1 items-center">
               <PlayingCardsIcon className="w-[13px] h-[13px]" />
-              <p>
+              <p className="body-hak-r">
                 {selectedPerformance ? selectedPerformance.title : "공연이름"}
               </p>
             </div>
             <div className="flex gap-1 items-center">
               <Calendar className="w-[13px] h-[13px] flex-shrink-0" />
-              <p className="whitespace-nowrap">{selectedDate || "선택날짜"}</p>
+              <p className="whitespace-nowrap body-hak-r">
+                {selectedDate || "선택날짜"}
+              </p>
             </div>
           </div>
         </div>
@@ -87,7 +89,7 @@ export const ReviewWritingPage = () => {
 
         {/* 사진 업로드 섹션 */}
         <div className="mb-8">
-          <h2 className="mb-4 title-inter">사진 등록</h2>
+          <h2 className="mb-4 subtitle-b">사진 등록</h2>
           <div className="grid grid-cols-2 gap-4">
             {[0, 1, 2, 3].map((index) => (
               <div
@@ -144,13 +146,13 @@ export const ReviewWritingPage = () => {
 
         {/* 후기 텍스트 섹션 */}
         <div className="mb-8">
-          <h2 className="mb-4 title-inter">메모</h2>
-          <div className="backdrop-blur-sm rounded-[20px] p-4 border border-secondary-100/30">
+          <h2 className="mb-4 subtitle-b">메모</h2>
+          <div className="backdrop-blur-sm rounded-[20px] p-4 border border-secondary-100/30 bg-gray-200/70">
             <textarea
               value={reviewText}
               onChange={handleTextChange}
               placeholder="오랫동안 추억할 수 있게 간단한 메모를 남겨주세요."
-              className="w-full h-20 text-gray-700 bg-gray-200/70 subtitle"
+              className="w-full text-gray-700 h-15 subtitle"
               maxLength={500}
             />
             <div className="flex justify-end mt-2">
