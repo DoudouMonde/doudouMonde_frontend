@@ -23,7 +23,7 @@ import {
   HomePage,
   LoginRedirectPage,
 } from "@/pages";
-import { BottomNavigationLayout } from "@/app/layout";
+import { BottomNavigationLayout, PerformanceDetailLayout } from "@/app/layout";
 import { PATH } from "@/shared/constants";
 
 const router = createBrowserRouter([
@@ -71,12 +71,19 @@ const router = createBrowserRouter([
         path: "child-info",
         element: <ChildInfoPage />,
       },
+    ],
+  },
+  {
+    path: "/",
+    element: <PerformanceDetailLayout />,
+    children: [
       {
         path: "performances/:performanceId",
         element: <PerformanceDetailPage />,
       },
     ],
   },
+
   {
     path: "/playroom",
     element: <PlayroomLayout />,
