@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { LandingPageProps, ActionButtonProps } from "../types";
 import { reviewApi } from "@/domains/review/apis/reviewApi";
 import { useChildListQuery } from "@/domains/child/queries/useChildListQuery";
+import { PATH } from "@/shared/constants/paths";
 import {
   StorytownTree0,
   StorytownTree1,
@@ -38,30 +40,15 @@ const ActionButton: React.FC<ActionButtonProps> = ({
     </button>
   );
 };
-/**API 호출하는 방법 */
-// const [recommendedPerformanceList, setRecommendedPerformanceList] = useState<
-//   PerformanceItem[]
-// >([]);
 
-// useEffect(
-//   function initializeRecommendedPerformanceList() {
-
-//     const fetchRecommendedPerformanceList = async () => {
-//       // const { contents: recommendedPerformances } =
-//       const recommendedPerformances =
-//         await performanceApi.getRecommendedPerformanceList(selectedChild.id);
-//       setRecommendedPerformanceList(recommendedPerformances);
-//     };
-
-//     fetchRecommendedPerformanceList();
-//   },
-// );
 const LandingPage: React.FC<LandingPageProps> = ({
   onStart,
   onSkip,
   // className = "",
 }) => {
   const [reviewCount, setReviewCount] = useState(0);
+  const [showBookPopup, setShowBookPopup] = useState(true); // 테스트용으로 true로 설정
+  const navigate = useNavigate();
 
   // 아이 목록 가져오기
   const { data: childListData } = useChildListQuery();
@@ -75,6 +62,11 @@ const LandingPage: React.FC<LandingPageProps> = ({
       try {
         const reviews = await reviewApi.getMemberReviews();
         setReviewCount(reviews.length);
+
+        // 리뷰가 9개일 때 팝업 표시
+        if (reviews.length >= 9) {
+          setShowBookPopup(true);
+        }
       } catch (error) {
         console.error("리뷰 개수 조회 실패:", error);
         setReviewCount(0);
@@ -83,6 +75,17 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
     fetchReviewCount();
   }, []);
+
+  // 팝업 핸들러 함수들
+  const handlePurchaseClick = () => {
+    setShowBookPopup(false);
+    navigate(PATH.STORY_VILLAGE_BOOK);
+  };
+
+  const handleCancelClick = () => {
+    console.log("취소 버튼 클릭됨!");
+    setShowBookPopup(false);
+  };
 
   // 리뷰 개수에 맞는 나무 컴포넌트 결정 (최대 9개)
   const getTreeComponent = (count: number) => {
@@ -103,6 +106,42 @@ const LandingPage: React.FC<LandingPageProps> = ({
   };
   return (
     <div className={`overflow-hidden relative w-full h-screen`}>
+      {/* 팝업 오버레이 */}
+      {showBookPopup && (
+        <div className="flex fixed inset-0 z-50 justify-center items-center backdrop-blur-sm bg-black/50">
+          <div className="p-6 mx-4 w-full max-w-sm bg-gray-200 rounded-2xl shadow-2xl transition-all duration-300 transform scale-100">
+            <div className="space-y-4 text-center">
+              <div className="mb-2 text-4xl">🎉</div>
+              <h3 className="text-lg font-bold text-gray-800 title-hak">
+                축하해요!
+              </h3>
+              <p className="leading-relaxed text-gray-600 subtitle">
+                이야기마을 후기를 9개 작성하셨네요!
+                <br />
+                우리 아이와 공연 추억을 담은
+                <br />
+                이야기마을 북을 구매할 수 있어요
+              </p>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={handleCancelClick}
+                  className="flex-1 px-4 py-3 font-medium text-gray-700 bg-gray-100 rounded-xl transition-colors duration-200 hover:bg-gray-300"
+                >
+                  취소
+                </button>
+                <button
+                  onClick={handlePurchaseClick}
+                  className="flex-1 px-4 py-3 font-medium text-gray-200 bg-green-200 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl transition-all duration-200 transform hover:shadow-lg hover:scale-105"
+                >
+                  구매하러 가기
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Background Image */}
       {/* <PlayingCardsIcon className="w-10 h-10 text-green-100" /> */}
       {/* Main Content Area */}

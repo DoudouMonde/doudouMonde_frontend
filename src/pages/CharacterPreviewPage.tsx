@@ -54,10 +54,30 @@ export const CharacterPreviewPage: React.FC = () => {
     accessory: "crwon",
   };
 
-  // localStorage에서 선택된 날짜, 아이들, 공연 정보 불러오기
+  // localStorage에서 선택된 공연 정보 불러오기
+  const [selectedPerformanceFromStorage, setSelectedPerformanceFromStorage] =
+    React.useState<{
+      id: number;
+      title: string;
+      posterUrl: string;
+      location: string;
+    } | null>(null);
+
   React.useEffect(() => {
-    // 이제 Zustand store에서 데이터를 관리하므로 localStorage는 사용하지 않음
-    // 필요시 여기서 store 초기화 로직을 추가할 수 있음
+    // localStorage에서 선택된 공연 정보 불러오기
+    const storedPerformance = localStorage.getItem("selectedPerformance");
+    if (storedPerformance) {
+      try {
+        const performanceData = JSON.parse(storedPerformance);
+        setSelectedPerformanceFromStorage(performanceData);
+        console.log(
+          "CharacterPreview - localStorage에서 불러온 공연 정보:",
+          performanceData
+        );
+      } catch (error) {
+        console.error("공연 정보 파싱 오류:", error);
+      }
+    }
   }, []);
 
   // 동물 데이터
@@ -182,7 +202,10 @@ export const CharacterPreviewPage: React.FC = () => {
     };
 
     return {
-      seenPerformanceId: selectedPerformance?.id || 1, // 기본값 설정
+      performanceName:
+        selectedPerformanceFromStorage?.title ||
+        selectedPerformance?.title ||
+        "공연이름", // 공연 이름 전송
       watchDate: selectedDate
         ? new Date(selectedDate).toISOString().slice(0, 19) // "2025-09-08T20:00:00" 형식
         : new Date().toISOString().slice(0, 19),
@@ -207,7 +230,7 @@ export const CharacterPreviewPage: React.FC = () => {
       alert("캐릭터 이름을 입력해주세요.");
       return;
     }
-    if (!selectedPerformance) {
+    if (!selectedPerformanceFromStorage && !selectedPerformance) {
       alert("공연 정보가 없습니다.");
       return;
     }
@@ -404,7 +427,9 @@ export const CharacterPreviewPage: React.FC = () => {
             <div className="flex gap-1 items-center">
               <PlayingCardsIcon className="w-[13px] h-[13px]" />
               <p className="body-hak-r">
-                {selectedPerformance ? selectedPerformance.title : "공연이름"}
+                {selectedPerformanceFromStorage?.title ||
+                  selectedPerformance?.title ||
+                  "공연이름"}
               </p>
             </div>
             <div className="flex gap-1 items-center">

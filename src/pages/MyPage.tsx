@@ -22,6 +22,11 @@ export const MyPage = () => {
     navigate(PATH.CHILD_INFO);
   };
 
+  const handleStoryVillageBookClick = () => {
+    console.log("이야기 마을 북 클릭:", PATH.STORY_VILLAGE_BOOK);
+    navigate(PATH.STORY_VILLAGE_BOOK);
+  };
+
   return (
     <div className="w-[375px] h-full mx-auto overflow-y-auto">
       {/* 상단 바 */}
@@ -75,8 +80,11 @@ export const MyPage = () => {
               <p className="body-inter-r">보고 싶어요 누른 작품</p>
               <Arrow className="w-6 h-6" />
             </div>
-            <div className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60">
-              <p className="body-inter-r">이야기 마을</p>
+            <div
+              className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
+              onClick={handleStoryVillageBookClick}
+            >
+              <p className="body-inter-r">이야기 마을 북</p>
               <Arrow className="w-6 h-6" />
             </div>
           </div>

@@ -10,6 +10,7 @@ export const PATH = {
   PROFILE: "/mypage",
   MEMBER_INFO: "/member-info",
   CHILD_INFO: "/child-info",
+  STORY_VILLAGE_BOOK: "/story-village-book",
   PERFORMANCE_DETAIL: (performanceId: number) =>
     `/performances/${performanceId}` as const,
 
