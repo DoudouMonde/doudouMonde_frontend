@@ -26,11 +26,13 @@ export const PerformanceDetailPage = () => {
           <div className="flex-1 w-full bg-white">
             <SwitchCase
               value={activeTab}
-              case={{
-                transport: <TransportSection />,
-                // seats: <NearbySection />,
-                // content: <ContentSection />,
-              }}
+              case={
+                {
+                  // transport: <TransportSection />,
+                  // seats: <NearbySection />,
+                  // content: <ContentSection />,
+                }
+              }
             />
           </div>
         </div>
@@ -38,3 +40,4 @@ export const PerformanceDetailPage = () => {
     </div>
   );
 };
+// http://www.kopis.or.kr/openApi/restful/pblprfr/PF132236?service=7d467135319d4e57b69714067f7f5385

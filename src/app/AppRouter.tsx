@@ -47,14 +47,12 @@ const router = createBrowserRouter([
     path: PATH.CHILD_REGISTRATION,
     element: <ChildRegistrationPage />,
   },
+
   {
-    path: "/home",
+    path: "/",
     element: <BottomNavigationLayout />,
     children: [
-      {
-        index: true,
-        element: <HomePage />,
-      },
+      { path: "home", element: <HomePage /> },
       {
         path: "favorites",
         element: <FavoritesPage />,

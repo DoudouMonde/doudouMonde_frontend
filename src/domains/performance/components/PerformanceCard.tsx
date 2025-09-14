@@ -9,7 +9,6 @@ type Props = {
 };
 
 export default function PerformanceCard({ performance, onClick }: Props) {
-  console.log(performance);
   return (
     <li
       onClick={() => onClick?.(performance.performanceId)}

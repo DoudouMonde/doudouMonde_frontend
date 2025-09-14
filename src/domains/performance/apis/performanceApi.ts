@@ -43,4 +43,16 @@ export const performanceApi = {
     );
     return response.data;
   },
+  searchPerformances: async (searchText?: string, page: number = 0) => {
+    const response = await apiRequester.get<PerformanceListResponse>(
+      `/v1/performances`,
+      {
+        params: {
+          searchText,
+          page,
+        },
+      }
+    );
+    return response.data;
+  },
 };
