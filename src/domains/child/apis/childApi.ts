@@ -1,4 +1,4 @@
-import { ChildListResponse } from "@/domains/child/apis/dto/ChildListResponse";
+import { ChildListResponse } from "@/domains/child/types/childApiTypes";
 import { apiRequester } from "@/shared/apis/axiosInstance";
 
 export interface UpdateChildNameRequest {

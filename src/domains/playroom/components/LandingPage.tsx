@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { LandingPageProps, ActionButtonProps } from "../types";
 import { reviewApi } from "@/domains/review/apis/reviewApi";
+import { useChildListQuery } from "@/domains/child/queries/useChildListQuery";
 import {
   StorytownTree0,
   StorytownTree1,
@@ -62,6 +63,13 @@ const LandingPage: React.FC<LandingPageProps> = ({
 }) => {
   const [reviewCount, setReviewCount] = useState(0);
 
+  // 아이 목록 가져오기
+  const { data: childListData } = useChildListQuery();
+
+  // 모든 아이의 이름을 쉼표로 구분해서 가져오기 (기본값: "서아")
+  const childNames =
+    childListData?.contents?.map((child) => child.name).join(", ") || "서아";
+
   useEffect(() => {
     const fetchReviewCount = async () => {
       try {
@@ -113,7 +121,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
           {/* Speech Bubble */}
           <div className="bg-gray-200/70 backdrop-blur-sm rounded-[40px] w-[80%] p-6 shadow-[0px_0px_12px_0px_rgba(255,246,165,1)]">
             <p className="text-center text-black text-base font-normal leading-[1.21] tracking-[-0.04em] font-['Inter']">
-              안녕 서아야!
+              안녕 {childNames}!
               <br />
               이야기마을에 온 걸 환영해.
               <br />
