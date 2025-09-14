@@ -29,13 +29,19 @@ export enum Trait {
 export enum Sido {
   SEOUL = "SEOUL",
   GYEONGGI = "GYEONGGI",
+  GANGWON = "GANGWON",
+  CHUNGCHEONG = "CHUNGCHEONG",
+  JEOLLA = "JEOLLA",
+  GYEONGSANG = "GYEONGSANG",
+  JEJU = "JEJU",
+
+  // 기존 상세 지역들 (하위 호환성을 위해 유지)
   JEON_BUK = "JEON_BUK",
   JEON_NAM = "JEON_NAM",
   CHUNG_BUK = "CHUNG_BUK",
   CHUNG_NAM = "CHUNG_NAM",
   GYEONG_BUK = "GYEONG_BUK",
   GYEONG_NAM = "GYEONG_NAM",
-
   BUSAN = "BUSAN",
   DAEGU = "DAEGU",
   INCHEON = "INCHEON",

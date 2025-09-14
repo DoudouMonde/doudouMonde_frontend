@@ -20,20 +20,13 @@ export interface ChildRequest {
 
 // Enum 매핑을 위한 상수 (백엔드 enum에 맞춤)
 export const SIDO_MAPPING = {
-  서울특별시: "SEOUL",
-  부산광역시: "BUSAN",
-  대구광역시: "DAEGU",
-  인천광역시: "INCHEON",
-  광주광역시: "GWANGJU",
-  대전광역시: "DAEJEON",
-  울산광역시: "ULSAN",
-  경기도: "GYEONGGI",
-  전라북도: "JEON_BUK",
-  전라남도: "JEON_NAM",
-  충청북도: "CHUNG_BUK",
-  충청남도: "CHUNG_NAM",
-  경상북도: "GYEONG_BUK",
-  경상남도: "GYEONG_NAM",
+  SEOUL: "SEOUL",
+  GYEONGGI: "GYEONGGI",
+  GANGWON: "GANGWON",
+  CHUNGCHEONG: "CHUNGCHEONG",
+  JEOLLA: "JEOLLA",
+  GYEONGSANG: "GYEONGSANG",
+  JEJU: "JEJU",
 } as const;
 
 export const GENDER_MAPPING = {

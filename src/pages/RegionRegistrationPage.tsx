@@ -2,11 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "@/shared/constants";
 import { signupApi } from "@/domains/auth/apis/signupApi";
-import {
-  SignupRequest,
-  ChildRequest,
-  SIDO_MAPPING,
-} from "@/domains/auth/types/signup";
+import { SignupRequest, ChildRequest } from "@/domains/auth/types/signup";
 
 type Coords = { latitude: number | null; longitude: number | null };
 
@@ -28,20 +24,13 @@ export function RegionRegistrationPage() {
   const [isSubmitting, setIsSubmitting] = useState(false); // 제출 중 상태
 
   const regions = [
-    "서울특별시",
-    "경기도",
-    "전라북도",
-    "전라남도",
-    "충청북도",
-    "충청남도",
-    "경상북도",
-    "경상남도",
-    "부산광역시",
-    "대구광역시",
-    "인천광역시",
-    "광주광역시",
-    "대전광역시",
-    "울산광역시",
+    { value: "SEOUL", label: "서울" },
+    { value: "GYEONGGI", label: "경기도" },
+    { value: "GANGWON", label: "강원도" },
+    { value: "CHUNGCHEONG", label: "충청도" },
+    { value: "JEOLLA", label: "전라도" },
+    { value: "GYEONGSANG", label: "경상도" },
+    { value: "JEJU", label: "제주도" },
   ];
 
   const handleRegionSelect = (region: string) => setSelectedRegion(region);
@@ -166,8 +155,7 @@ export function RegionRegistrationPage() {
         longitude: 127.0276, // 하드코딩된 경도 (서울 강남)
         latitude: 37.4979, // 하드코딩된 위도 (서울 강남)
         address: detailedAddress,
-        sido:
-          SIDO_MAPPING[selectedRegion as keyof typeof SIDO_MAPPING] || "SEOUL",
+        sido: selectedRegion || "SEOUL",
         children: [childData],
       };
 
@@ -361,9 +349,9 @@ export function RegionRegistrationPage() {
                   <option value="" disabled>
                     지역을 선택해주세요
                   </option>
-                  {regions.map((r) => (
-                    <option key={r} value={r}>
-                      {r}
+                  {regions.map((region) => (
+                    <option key={region.value} value={region.value}>
+                      {region.label}
                     </option>
                   ))}
                 </select>
