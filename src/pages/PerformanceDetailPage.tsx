@@ -4,9 +4,8 @@ import {
   PerformanceOverview,
   TransportSection,
 } from "@/domains/performance/components";
-import { Tab } from "@/shared/components";
 import { SwitchCase } from "@/shared/components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const PerformanceDetailPage = () => {
   const [activeTab, setActiveTab] = useState("transport");
@@ -19,6 +18,10 @@ export const PerformanceDetailPage = () => {
     venueLng: 127.1025,
   };
 
+  useEffect(() => {
+    console.log("activeTab", activeTab);
+  }, [activeTab]);
+
   return (
     <div className="flex flex-col flex-1 items-center w-full bg-white">
       <div className="flex-1 w-full">
@@ -27,35 +30,53 @@ export const PerformanceDetailPage = () => {
 
         {/* 탭 메뉴 */}
         <div className="flex flex-col gap-4 w-full bg-gray-200 border-2">
-          <Tab activeTab={activeTab} setActiveTab={setActiveTab}>
-            <Tab.Item value="transport">🚸 교통정보</Tab.Item>
-            <Tab.Item value="content">😉 인근정보</Tab.Item>
-            <Tab.Item value="seats">💺 좌석정보</Tab.Item>
-          </Tab>
+          <ul className={`flex justify-between w-full`}>
+            {[
+              {
+                label: "교통정보",
+                value: "transport",
+              },
+              {
+                label: "인근정보",
+                value: "nearby",
+              },
+              {
+                label: "관련 콘텐츠",
+                value: "content",
+              },
+            ].map((item) => (
+              <li
+                className={`px-4 py-3 body-hak flex-1 text-center cursor-pointer transition-all duration-200  active:scale-95 ${
+                  activeTab === item.value
+                    ? "text-black bg-white border-b-[4px] border-b-black"
+                    : "bg-gray-200 text-secondary-100 border-b-[1px] border-b-gray-100"
+                } `}
+                onClick={() => setActiveTab(item.value)}
+              >
+                {item.label}
+              </li>
+            ))}
+          </ul>
 
           {/* 탭 콘텐츠 */}
           <div className="flex-1 w-full">
-            <ContentSection />
-            {/* <NearbySection /> */}
-            {/* <SwitchCase
+            <SwitchCase
               value={activeTab}
               case={{
                 transport: (
                   <TransportSection
                     venueName={performanceVenueInfo.venueName}
-                    venueAddress={performanceVenueInfo.venueAddress}
                     venueLat={performanceVenueInfo.venueLat}
                     venueLng={performanceVenueInfo.venueLng}
                   />
                 ),
-                seats: <NearbySection />,
-                // content: <ContentSection />,
+                content: <ContentSection />,
+                nearby: <NearbySection />,
               }}
-            /> */}
+            />
           </div>
         </div>
       </div>
     </div>
   );
 };
-// http://www.kopis.or.kr/openApi/restful/pblprfr/PF132236?service=7d467135319d4e57b69714067f7f5385
