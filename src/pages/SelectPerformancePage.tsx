@@ -173,13 +173,59 @@ export const SelectPerformancePage = () => {
       <div className="p-6 w-full bg-gray-200/70 rounded-[40px] mt-20 mb-24">
         <div className="flex flex-col gap-4">
           <h2 className="title-inter">공연 선택</h2>
-          <p className="mb-4 subtitle text-secondary-100">
-            이야기마을에 기록할 공연을 선택해주세요.
-            <br />
-            공연을 직접 검색하거나
-            <br />
-            '봤어요','보고싶어요' 누른 공연에서 선택할 수 있어요.
-          </p>
+        </div>
+
+        {/* <hr className="my-4 border-secondary-100/30" /> */}
+        <div>
+          {/* 선택된 공연 표시 */}
+          {selectedPerformanceData ? (
+            <div className="bg-green-200/20 rounded-[20px] p-4 mb-8 mt-4">
+              <h2 className="flex items-center mb-2 text-green-100 body-hak-b">
+                후기 작성할 공연
+              </h2>
+              <div className="flex">
+                <div className="text-white">
+                  <div className="flex gap-4 items-center">
+                    <img
+                      src={
+                        selectedPerformanceData.posterUrl ||
+                        "/assets/images/playroom/backgroundImg.png"
+                      }
+                      alt={selectedPerformanceData.title}
+                      className="object-cover w-16 h-20 rounded-lg"
+                      onError={(e) => {
+                        e.currentTarget.src =
+                          "/assets/images/playroom/backgroundImg.png";
+                      }}
+                    />
+                    <div className="flex-1">
+                      <h4 className="mb-1 font-semibold text-gray-800">
+                        {selectedPerformanceData.title}
+                      </h4>
+                      <p className="subtitle text-secondary-100">
+                        {selectedPerformanceData.location}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-gray-100/80 rounded-[20px] p-4 mb-8 mt-8">
+              <h2 className="flex items-center mb-4 text-secondary-100 body-hak-b">
+                아직 선택된 공연이 없어요
+              </h2>
+              <div className="flex">
+                <div className="text-black subtitle">
+                  이야기마을에 기록할 공연을 선택해주세요.
+                  <br />
+                  공연을 직접 검색하거나
+                  <br />
+                  '봤어요','보고싶어요' 누른 공연에서 선택할 수 있어요.
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* 검색 섹션 */}
@@ -191,43 +237,6 @@ export const SelectPerformancePage = () => {
               onResultClick={handleSearchResultClick}
             />
           </div>
-        </div>
-
-        {/* <hr className="my-4 border-secondary-100/30" /> */}
-        <div className="bg-green-200/20 rounded-[20px] p-4 mb-8">
-          <h2 className="flex items-center mb-2 text-green-100 body-hak-b">
-            이 공연으로 후기를 작성할까요?
-          </h2>
-
-          {/* 선택된 공연 표시 */}
-          {selectedPerformanceData && (
-            <div className="flex">
-              <div className="text-white">
-                <div className="flex gap-4 items-center">
-                  <img
-                    src={
-                      selectedPerformanceData.posterUrl ||
-                      "/assets/images/playroom/backgroundImg.png"
-                    }
-                    alt={selectedPerformanceData.title}
-                    className="object-cover w-16 h-20 rounded-lg"
-                    onError={(e) => {
-                      e.currentTarget.src =
-                        "/assets/images/playroom/backgroundImg.png";
-                    }}
-                  />
-                  <div className="flex-1">
-                    <h4 className="mb-1 font-semibold text-gray-800">
-                      {selectedPerformanceData.title}
-                    </h4>
-                    <p className="subtitle text-secondary-100">
-                      {selectedPerformanceData.location}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* 위시리스트 공연 섹션 */}
