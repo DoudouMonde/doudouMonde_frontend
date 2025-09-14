@@ -1,12 +1,15 @@
 import { usePerformanceDetailQuery } from "@/domains/performance/queries";
+import { useAddWishlistMutation } from "@/domains/favorites/queries";
 import { Chip } from "@/shared/components";
 import { toYYYYMMDD, formatCurrency } from "@/shared/utils";
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 // type Props = {};
 
 export const PerformanceOverview = () => {
   const { performanceId } = useParams();
+  const [isWishlisted, setIsWishlisted] = useState(false);
 
   const { data: performanceDetail } = usePerformanceDetailQuery(
     Number(performanceId),
@@ -14,6 +17,25 @@ export const PerformanceOverview = () => {
       enabled: !!performanceId,
     }
   );
+
+  const addWishlistMutation = useAddWishlistMutation();
+
+  const handleWishlistClick = () => {
+    if (!performanceId) return;
+
+    addWishlistMutation.mutate(
+      { performanceId: Number(performanceId) },
+      {
+        onSuccess: () => {
+          setIsWishlisted(true);
+          console.log("✅ 위시리스트에 추가되었습니다!");
+        },
+        onError: (error) => {
+          console.error("❌ 위시리스트 추가 실패:", error);
+        },
+      }
+    );
+  };
 
   if (!performanceDetail) {
     return null;
@@ -38,7 +60,17 @@ export const PerformanceOverview = () => {
             <h1 className="title-hak">{performanceDetail.performanceName}</h1>
           </div>
           <div className="flex gap-3">
-            <Chip variant="outlined">보고싶어요 💖</Chip>
+            <Chip
+              variant={isWishlisted ? "filled" : "outlined"}
+              onClick={handleWishlistClick}
+              className={`cursor-pointer transition-all duration-200 ${
+                isWishlisted
+                  ? "text-pink-600 bg-pink-100 border-pink-300"
+                  : "hover:bg-pink-50 hover:border-pink-200"
+              }`}
+            >
+              {isWishlisted ? "보고싶어요 💖" : "보고싶어요 💖"}
+            </Chip>
             <Chip variant="outlined">봤어요 ✅</Chip>
           </div>
         </div>
