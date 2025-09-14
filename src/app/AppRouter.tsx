@@ -56,61 +56,24 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: PATH.PROFILE,
+        path: "favorites",
+        element: <FavoritesPage />,
+      },
+      {
+        path: "mypage",
         element: <MyPage />,
       },
       {
-        path: PATH.MEMBER_INFO,
+        path: "member-info",
         element: <MemberInfoPage />,
       },
       {
-        path: PATH.CHILD_INFO,
+        path: "child-info",
         element: <ChildInfoPage />,
       },
       {
         path: "performances/:performanceId",
         element: <PerformanceDetailPage />,
-      },
-    ],
-  },
-  // 추가적인 직접 경로들 (fallback)
-  {
-    path: "/favorites",
-    element: <FavoritesPage />,
-    children: [
-      {
-        index: true,
-        element: <FavoritesPage />,
-      },
-    ],
-  },
-  {
-    path: "/mypage",
-    element: <MyPage />,
-    children: [
-      {
-        index: true,
-        element: <MyPage />,
-      },
-    ],
-  },
-  {
-    path: "/member-info",
-    element: <BottomNavigationLayout />,
-    children: [
-      {
-        index: true,
-        element: <MemberInfoPage />,
-      },
-    ],
-  },
-  {
-    path: "/child-info",
-    element: <BottomNavigationLayout />,
-    children: [
-      {
-        index: true,
-        element: <ChildInfoPage />,
       },
     ],
   },
