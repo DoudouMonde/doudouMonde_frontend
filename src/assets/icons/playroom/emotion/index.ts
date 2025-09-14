@@ -1,5 +1,6 @@
-export { default as Bored } from "./Bored";
-export { default as Exited } from "./Exited";
-export { default as Happy } from "./Happy";
-export { default as Sad } from "./Sad";
-export { default as Surprise } from "./Surprise";
+export { default as EmojiBored } from "./EmojiBored";
+export { default as EmojiCurious } from "./EmojiCurious";
+export { default as EmojiHappy } from "./EmojiHappy";
+export { default as EmojiOnemore } from "./EmojiOnemore";
+export { default as EmojiSad } from "./EmojiSad";
+export { default as EmojiSurprised } from "./EmojiSurprised";

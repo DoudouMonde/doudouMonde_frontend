@@ -17,6 +17,13 @@ import {
   RabbitBody,
 } from "@/assets/icons/playroom/type_body";
 import { Shadow } from "@/assets/icons/playroom";
+import * as EmotionCharacters from "@/assets/icons/playroom/storytown/character/emotion";
+import * as CrownCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/crown";
+import * as CapCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/cap";
+import * as FlowerCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/flower";
+import * as GlassesCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/glasses";
+import * as RibbonCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/ribbon";
+import * as WizhatCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/wizhat";
 
 interface CharacterData {
   animal: string;
@@ -66,6 +73,85 @@ export const CharacterPreviewPage: React.FC = () => {
   const selectedAnimal = animals.find(
     (animal) => animal.id === characterData.animal
   );
+
+  // 동물과 감정을 조합해서 캐릭터 컴포넌트를 가져오는 함수
+  const getEmotionCharacter = (animal: string, emotion: string) => {
+    const animalName = animal.charAt(0).toUpperCase() + animal.slice(1);
+    const emotionName = emotion.charAt(0).toUpperCase() + emotion.slice(1);
+    const componentName = `${animalName}${emotionName}`;
+
+    // 컴포넌트 이름 매핑 (oneMore -> Onemore)
+    const mappedComponentName = componentName.replace("Onemore", "Onemore");
+
+    return (
+      EmotionCharacters as Record<
+        string,
+        React.ComponentType<{ className?: string }>
+      >
+    )[mappedComponentName];
+  };
+
+  // 동물, 감정, 액세사리를 조합해서 캐릭터 컴포넌트를 가져오는 함수
+  const getAccessoryCharacter = (
+    animal: string,
+    emotion: string,
+    accessory: string
+  ) => {
+    const animalName = animal.charAt(0).toUpperCase() + animal.slice(1);
+    const emotionName = emotion.charAt(0).toUpperCase() + emotion.slice(1);
+    const accessoryName =
+      accessory.charAt(0).toUpperCase() + accessory.slice(1);
+    const componentName = `${animalName}${emotionName}${accessoryName}`;
+
+    // 액세사리별로 다른 모듈에서 가져오기
+    let characterModule: Record<
+      string,
+      React.ComponentType<{ className?: string }>
+    >;
+
+    switch (accessory) {
+      case "crown":
+        characterModule = CrownCharacters as Record<
+          string,
+          React.ComponentType<{ className?: string }>
+        >;
+        break;
+      case "cap":
+        characterModule = CapCharacters as Record<
+          string,
+          React.ComponentType<{ className?: string }>
+        >;
+        break;
+      case "flower":
+        characterModule = FlowerCharacters as Record<
+          string,
+          React.ComponentType<{ className?: string }>
+        >;
+        break;
+      case "glasses":
+        characterModule = GlassesCharacters as Record<
+          string,
+          React.ComponentType<{ className?: string }>
+        >;
+        break;
+      case "ribbon":
+        characterModule = RibbonCharacters as Record<
+          string,
+          React.ComponentType<{ className?: string }>
+        >;
+        break;
+      case "wizhat":
+        characterModule = WizhatCharacters as Record<
+          string,
+          React.ComponentType<{ className?: string }>
+        >;
+        break;
+      default:
+        return null;
+    }
+
+    return characterModule[componentName];
+  };
 
   // 캐릭터 데이터를 API 형식으로 변환
   const convertToApiFormat = () => {
@@ -272,25 +358,60 @@ export const CharacterPreviewPage: React.FC = () => {
         <div className="flex flex-col items-center mb-8">
           <div className="flex relative z-10 flex-col items-center">
             <div className="flex justify-center">
-              {selectedAnimal && (
-                <selectedAnimal.bodyIcon className="w-[350px] h-[250px] relative z-20" />
-              )}
+              {(() => {
+                // 액세사리가 적용된 최종 캐릭터 표시
+                const AccessoryCharacter = getAccessoryCharacter(
+                  characterData.animal,
+                  characterData.emotion,
+                  characterData.accessory
+                );
+
+                if (AccessoryCharacter) {
+                  return (
+                    <AccessoryCharacter className="w-[350px] h-[250px] relative z-20" />
+                  );
+                }
+
+                // 액세사리 캐릭터를 찾을 수 없는 경우 감정 캐릭터 표시
+                const EmotionCharacter = getEmotionCharacter(
+                  characterData.animal,
+                  characterData.emotion
+                );
+
+                if (EmotionCharacter) {
+                  return (
+                    <EmotionCharacter className="w-[350px] h-[250px] relative z-20" />
+                  );
+                }
+
+                // 기본 동물 전신 모습 표시
+                if (selectedAnimal) {
+                  const BodyIcon = selectedAnimal.bodyIcon;
+                  return (
+                    <BodyIcon className="w-[350px] h-[250px] relative z-20" />
+                  );
+                }
+
+                return null;
+              })()}
             </div>
-            <Shadow className="w-[200px] h-[50px]  mt-[-40px] relative z-10" />
+            <Shadow className="w-[200px] h-[50px] mt-[-40px] relative z-10" />
           </div>
         </div>
 
-        <div className="flex flex-col items-center">
-          <div className="flex flex-col items-start">
+        <div className="flex justify-center">
+          <div className="flex flex-col gap-2 w-auto">
             <div className="flex gap-1 items-center">
               <PlayingCardsIcon className="w-[13px] h-[13px]" />
-              <p>
+              <p className="body-hak-r">
                 {selectedPerformance ? selectedPerformance.title : "공연이름"}
               </p>
             </div>
             <div className="flex gap-1 items-center">
               <Calendar className="w-[13px] h-[13px] flex-shrink-0" />
-              <p className="whitespace-nowrap">{selectedDate || "선택날짜"}</p>
+              <p className="whitespace-nowrap body-hak-r">
+                {selectedDate || "선택날짜"}
+              </p>
             </div>
           </div>
         </div>

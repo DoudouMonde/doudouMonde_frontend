@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavigationButtons } from "@/shared/components";
 import {
@@ -16,11 +16,12 @@ import {
   RabbitPre,
 } from "@/assets/icons/playroom/type_head";
 import {
-  Bored,
-  Exited,
-  Happy,
-  Sad,
-  Surprise,
+  EmojiBored as Bored,
+  EmojiOnemore as Exited,
+  EmojiHappy as Happy,
+  EmojiSad as Sad,
+  EmojiSurprised as Surprise,
+  EmojiCurious as Curious,
 } from "@/assets/icons/playroom/emotion";
 import * as EmotionCharacters from "@/assets/icons/playroom/storytown/character/emotion";
 import * as CrownCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/crown";
@@ -60,11 +61,12 @@ export const CharacterCreationPage: React.FC = () => {
 
   // 감정 데이터 배열
   const emotions = [
-    { id: "happy", name: "행복", icon: Happy },
-    { id: "onemore", name: "한번 더", icon: Exited },
-    { id: "surprised", name: "놀람", icon: Surprise },
-    { id: "sad", name: "슬픔", icon: Sad },
-    { id: "bored", name: "지루함", icon: Bored },
+    { id: "happy", name: "행복했어요", icon: Happy },
+    { id: "onemore", name: "또 보고싶어요", icon: Exited },
+    { id: "surprised", name: "놀랐어요", icon: Surprise },
+    { id: "sad", name: "슬펐어요", icon: Sad },
+    { id: "bored", name: "지루했어요", icon: Bored },
+    { id: "curious", name: "궁금해요", icon: Curious },
   ];
 
   // 악세사리 데이터 배열
@@ -87,6 +89,18 @@ export const CharacterCreationPage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<
     "animal" | "emotion" | "accessory"
   >("animal");
+  // 애니메이션 상태
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  // 선택이 바뀔 때마다 애니메이션 트리거
+  useEffect(() => {
+    setIsAnimating(true);
+    const timer = setTimeout(() => {
+      setIsAnimating(false);
+    }, 600); // 0.6초 후 애니메이션 종료
+
+    return () => clearTimeout(timer);
+  }, [selectedAnimal, selectedEmotion, selectedAccessory, currentStep]);
 
   // 동물과 감정을 조합해서 캐릭터 컴포넌트를 가져오는 함수
   const getEmotionCharacter = (animal: string, emotion: string) => {
@@ -235,7 +249,11 @@ export const CharacterCreationPage: React.FC = () => {
                 console.log("액세사리동물:", AccessoryCharacter);
                 if (AccessoryCharacter) {
                   return (
-                    <AccessoryCharacter className="w-[350px] h-[250px] relative z-20" />
+                    <AccessoryCharacter
+                      className={`w-[350px] h-[250px] relative z-20 ${
+                        isAnimating ? "animate-gentle-bounce" : ""
+                      }`}
+                    />
                   );
                 }
               } else if (currentStep === "emotion") {
@@ -247,7 +265,11 @@ export const CharacterCreationPage: React.FC = () => {
                 console.log("감정동물:", EmotionCharacter);
                 if (EmotionCharacter) {
                   return (
-                    <EmotionCharacter className="w-[350px] h-[250px] relative z-20" />
+                    <EmotionCharacter
+                      className={`w-[350px] h-[250px] relative z-20 ${
+                        isAnimating ? "animate-gentle-bounce" : ""
+                      }`}
+                    />
                   );
                 }
               }
@@ -257,7 +279,13 @@ export const CharacterCreationPage: React.FC = () => {
                 (animal) => animal.id === selectedAnimal
               );
               const BodyIcon = selectedAnimalData?.bodyIcon || ChickBody;
-              return <BodyIcon className="w-[350px] h-[250px] relative z-20" />;
+              return (
+                <BodyIcon
+                  className={`w-[350px] h-[250px] relative z-20 ${
+                    isAnimating ? "animate-gentle-bounce" : ""
+                  }`}
+                />
+              );
             })()}
           </div>
           <Shadow className="w-[147px] h-[40px] mt-[-40px] relative z-10" />
@@ -273,7 +301,7 @@ export const CharacterCreationPage: React.FC = () => {
               onChange={(value) => setSelectedAnimal(value as string)}
             >
               {/* 첫 번째 줄: 3개 동물 */}
-              <div className="grid grid-cols-3 gap-3 mb-4">
+              <div className="grid grid-cols-3 mb-4">
                 {animals.slice(0, 3).map((animal) => {
                   const HeadIcon = animal.headIcon;
                   return (
@@ -281,19 +309,19 @@ export const CharacterCreationPage: React.FC = () => {
                       <div
                         className={`transition-all duration-200 cursor-pointer`}
                       >
-                        <div className="flex flex-col gap-2 items-center">
+                        <div className="flex flex-col items-center">
                           {/* 동물 head 이미지 */}
                           <div className="flex-shrink-0">
-                            <HeadIcon className="w-16 h-16" />
+                            <HeadIcon className="w-40 h-40" />
                           </div>
                           {/* 선택 표시와 동물 이름을 한 줄로 */}
-                          <div className="flex gap-2 items-center">
+                          <div className="flex gap-2 items-center mt-[-12px]">
                             {selectedAnimal === animal.id ? (
                               <RadioTrue className="w-6 h-6" />
                             ) : (
                               <RadioFalse className="w-6 h-6" />
                             )}
-                            <h3 className="text-sm text-gray-900 body-inter">
+                            <h3 className="text-sm text-gray-900 body-hak-r">
                               {animal.name}
                             </h3>
                           </div>
@@ -305,7 +333,7 @@ export const CharacterCreationPage: React.FC = () => {
               </div>
 
               {/* 두 번째 줄: 2개 동물을 가운데 정렬 */}
-              <div className="flex gap-12 justify-center">
+              <div className="flex justify-center">
                 {animals.slice(3, 5).map((animal) => {
                   const HeadIcon = animal.headIcon;
                   return (
@@ -313,19 +341,19 @@ export const CharacterCreationPage: React.FC = () => {
                       <div
                         className={`transition-all duration-200 cursor-pointer`}
                       >
-                        <div className="flex flex-col gap-2 items-center">
+                        <div className="flex flex-col justify-center items-center">
                           {/* 동물 head 이미지 */}
                           <div className="flex-shrink-0">
-                            <HeadIcon className="w-16 h-16" />
+                            <HeadIcon className="w-40 h-40" />
                           </div>
                           {/* 선택 표시와 동물 이름을 한 줄로 */}
-                          <div className="flex gap-2 items-center">
+                          <div className="flex gap-2 items-center mt-[-12px]">
                             {selectedAnimal === animal.id ? (
                               <RadioTrue className="w-6 h-6" />
                             ) : (
                               <RadioFalse className="w-6 h-6" />
                             )}
-                            <h3 className="text-sm text-gray-900 body-inter">
+                            <h3 className="text-sm text-gray-900 body-hak-r">
                               {animal.name}
                             </h3>
                           </div>
@@ -353,7 +381,7 @@ export const CharacterCreationPage: React.FC = () => {
                         <div className="flex flex-col gap-2 items-center">
                           {/* 감정 이미지 */}
                           <div className="flex-shrink-0">
-                            <EmotionIcon className="w-16 h-16" />
+                            <EmotionIcon className="w-24 h-24" />
                           </div>
                           {/* 선택 표시와 감정 이름을 한 줄로 */}
                           <div className="flex gap-2 items-center">
@@ -362,7 +390,7 @@ export const CharacterCreationPage: React.FC = () => {
                             ) : (
                               <RadioFalse className="w-6 h-6" />
                             )}
-                            <h3 className="text-sm text-gray-900 body-inter">
+                            <h3 className="text-sm text-gray-900 body-hak-r">
                               {emotion.name}
                             </h3>
                           </div>
@@ -375,7 +403,7 @@ export const CharacterCreationPage: React.FC = () => {
 
               {/* 두 번째 줄: 2개 감정을 가운데 정렬 */}
               <div className="flex gap-5 justify-center">
-                {emotions.slice(3, 5).map((emotion) => {
+                {emotions.slice(3, 6).map((emotion) => {
                   const EmotionIcon = emotion.icon;
                   return (
                     <SingleSelectItem key={emotion.id} value={emotion.id}>
@@ -385,7 +413,7 @@ export const CharacterCreationPage: React.FC = () => {
                         <div className="flex flex-col gap-2 items-center">
                           {/* 감정 이미지 */}
                           <div className="flex-shrink-0">
-                            <EmotionIcon className="w-16 h-16" />
+                            <EmotionIcon className="w-24 h-24" />
                           </div>
                           {/* 선택 표시와 감정 이름을 한 줄로 */}
                           <div className="flex gap-2 items-center">
@@ -394,7 +422,7 @@ export const CharacterCreationPage: React.FC = () => {
                             ) : (
                               <RadioFalse className="w-6 h-6" />
                             )}
-                            <h3 className="text-sm text-gray-900 body-inter">
+                            <h3 className="text-sm text-gray-900 body-hak-r">
                               {emotion.name}
                             </h3>
                           </div>
