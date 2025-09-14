@@ -145,20 +145,22 @@ export const VoiceReviewPage = () => {
   return (
     <div className="flex min-h-screen">
       {/* Main Content */}
-      <div className="p-6 w-full bg-gray-200/70 rounded-[40px] mt-20 mb-24">
+      <div className=" relative p-6 w-full bg-gray-200/70 rounded-[40px] mt-20 mb-24">
         {/* Header */}
         <div className="flex flex-col mb-6">
           <h1 className="mb-4 title-inter">후기 입력</h1>
           <div className="flex flex-col gap-2 w-auto">
             <div className="flex gap-1 items-center">
               <PlayingCardsIcon className="w-[13px] h-[13px]" />
-              <p>
+              <p className="body-hak-r">
                 {selectedPerformance ? selectedPerformance.title : "공연이름"}
               </p>
             </div>
             <div className="flex gap-1 items-center">
               <Calendar className="w-[13px] h-[13px] flex-shrink-0" />
-              <p className="whitespace-nowrap">{selectedDate || "선택날짜"}</p>
+              <p className="whitespace-nowrap body-hak-r">
+                {selectedDate || "선택날짜"}
+              </p>
             </div>
           </div>
         </div>
@@ -166,7 +168,7 @@ export const VoiceReviewPage = () => {
 
         {/* 음성 녹음 섹션 */}
         <div className="mb-8">
-          <p className="mb-2 title-inter">음성 메시지 기록</p>
+          <p className="mb-2 subtitle-b">음성 메시지 기록</p>
 
           <p className="subtitle text-secondary-100">
             아이와 대화를 나누며 자유롭게 음성 기록을 남겨주세요!
@@ -176,7 +178,7 @@ export const VoiceReviewPage = () => {
             캐릭터는 누구야?
           </p>
 
-          <div className="bg-white/60 backdrop-blur-sm rounded-[16px] p-6 border border-secondary-100/30 mt-5">
+          <div className="bg-white/60 backdrop-blur-sm rounded-[16px] p-6 border border-secondary-100/30 mt-5 h-52 flex items-center justify-center">
             {!recordedAudio ? (
               <div className="flex flex-col items-center">
                 <p className="mb-4 text-black-100 body-noto">
@@ -191,7 +193,8 @@ export const VoiceReviewPage = () => {
                   className={`flex justify-center items-center w-16 h-16 rounded-full transition-all duration-200 ${
                     isRecording
                       ? "bg-red-500 animate-pulse hover:bg-red-600"
-                      : ""}`}
+                      : ""
+                  }`}
                 >
                   {isRecording ? <RecordStop /> : <RecordStart />}
                 </button>
@@ -230,7 +233,7 @@ export const VoiceReviewPage = () => {
         </div>
 
         {/* 네비게이션 버튼 */}
-        <div className="mt-8">
+        <div className="absolute right-0 left-0 bottom-8">
           <NavigationButtons
             onPrevious={handlePrevious}
             onNext={handleNext}

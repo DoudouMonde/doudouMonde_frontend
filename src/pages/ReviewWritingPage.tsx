@@ -164,7 +164,7 @@ export const ReviewWritingPage = () => {
         </div>
 
         {/* 네비게이션 버튼 */}
-        <div className="mt-8">
+        <div className="mb-2">
           <NavigationButtons
             onPrevious={handlePrevious}
             onNext={handleNext}
