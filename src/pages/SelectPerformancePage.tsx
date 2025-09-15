@@ -16,6 +16,14 @@ export const SelectPerformancePage = () => {
   // 백엔드에서 위시리스트 가져오기
   const { data: wishlist = [], isLoading, error } = useWishlistQuery();
 
+  console.log("📊 위시리스트 상태:", {
+    wishlist,
+    isLoading,
+    error,
+    wishlistLength: wishlist?.length || 0,
+    timestamp: new Date().toISOString(),
+  });
+
   const [selectedPerformance, setSelectedPerformance] = useState<number | null>(
     null
   );
@@ -32,37 +40,50 @@ export const SelectPerformancePage = () => {
   // 백엔드에서 가져온 원본 데이터 콘솔 출력
 
   // 위시리스트 데이터를 PerformanceItem 형태로 변환
-  const performances = wishlist.map((item) => {
-    console.log("🎭 개별 위시리스트 아이템:", {
-      wishlistId: item.wishlistId,
-      performanceId: item.performanceId,
-      performanceName: item.performanceName,
-      createTime: item.createTime,
-      sido: item.sido,
-      posterUrl: item.posterUrl,
-    });
-
-    return {
-      id: item.performanceId,
-      title: item.performanceName,
-      date: new Date(item.createTime)
-        .toLocaleDateString("ko-KR", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-        })
-        .replace(/\./g, ".")
-        .replace(/\s/g, ""),
-      location: getSidoLabel(item.sido as Sido),
-      description: `${item.performanceName} - ${getSidoLabel(
-        item.sido as Sido
-      )}에서 진행되는 공연입니다.`,
-      posterUrl: item.posterUrl || "/assets/images/playroom/backgroundImg.png",
-    };
+  console.log("🔄 위시리스트 변환 시작:", {
+    wishlistLength: wishlist?.length || 0,
+    wishlistType: typeof wishlist,
+    isArray: Array.isArray(wishlist),
   });
 
+  const performances =
+    wishlist?.map((item) => {
+      // console.log("🎭 개별 위시리스트 아이템:", {
+      //   wishlistId: item.wishlistId,
+      //   performanceId: item.performanceId,
+      //   performanceName: item.performanceName,
+      //   createTime: item.createTime,
+      //   sido: item.sido,
+      //   posterUrl: item.posterUrl,
+      // });
+
+      return {
+        id: item.performanceId,
+        title: item.performanceName,
+        date: new Date(item.createTime)
+          .toLocaleDateString("ko-KR", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          })
+          .replace(/\./g, ".")
+          .replace(/\s/g, ""),
+        location: getSidoLabel(item.sido as Sido),
+        description: `${item.performanceName} - ${getSidoLabel(
+          item.sido as Sido
+        )}에서 진행되는 공연입니다.`,
+        posterUrl:
+          item.posterUrl || "/assets/images/playroom/backgroundImg.png",
+      };
+    }) || [];
+
   // 변환된 공연 데이터 콘솔 출력
-  console.log("🎪 변환된 공연 데이터:", performances);
+  // console.log("🎪 변환된 공연 데이터:", {
+  //   performances,
+  //   performancesLength: performances?.length || 0,
+  //   performancesType: typeof performances,
+  //   isArray: Array.isArray(performances),
+  // });
 
   const handleSearchResultClick = (performance: {
     id: number;
@@ -105,6 +126,16 @@ export const SelectPerformancePage = () => {
           "selectedPerformance",
           JSON.stringify(selectedPerformanceData)
         );
+
+        console.log("🎭 선택된 공연 상세 정보:", {
+          performanceId: selectedPerformanceData.id,
+          title: selectedPerformanceData.title,
+          posterUrl: selectedPerformanceData.posterUrl,
+          location: selectedPerformanceData.location,
+          date: selectedPerformanceData.date,
+          description: selectedPerformanceData.description,
+        });
+
         console.log("💾 localStorage에 저장된 공연:", selectedPerformanceData);
         console.log(
           "🔍 localStorage 확인:",
@@ -190,6 +221,7 @@ export const SelectPerformancePage = () => {
       handlePrevPage();
     }
   };
+  console.log("🎭 선택된 공연 데이터:", selectedPerformanceData);
 
   return (
     <div className="flex min-h-screen">

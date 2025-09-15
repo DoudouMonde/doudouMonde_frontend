@@ -244,7 +244,26 @@ export const CharacterPreviewPage: React.FC = () => {
       // 1. 서버에 보낼 JSON 데이터 객체를 생성합니다.
       const reviewData = convertToApiFormat();
 
-      console.log("전송할 리뷰 데이터 (JSON):", reviewData);
+      console.log("📝 리뷰 등록 요청 데이터 상세:", {
+        seenPerformanceId: reviewData.seenPerformanceId,
+        performanceName: reviewData.performanceName,
+        watchDate: reviewData.watchDate,
+        content: reviewData.content,
+        characterName: reviewData.characterName,
+        characterType: reviewData.characterType,
+        characterEmotion: reviewData.characterEmotion,
+        characterAccessories: reviewData.characterAccessories,
+        timestamp: new Date().toISOString(),
+      });
+
+      console.log("🎭 선택된 공연 정보:", {
+        selectedPerformanceFromStorage,
+        selectedPerformance,
+        selectedPerformanceId:
+          selectedPerformanceFromStorage?.id || selectedPerformance?.id,
+        selectedPerformanceTitle:
+          selectedPerformanceFromStorage?.title || selectedPerformance?.title,
+      });
 
       // 2. FormData 객체를 새로 생성합니다.
       const formData = new FormData();
@@ -256,41 +275,72 @@ export const CharacterPreviewPage: React.FC = () => {
       formData.append("request", reviewBlob);
 
       // 4. Zustand store에서 이미지 파일들을 가져와서 FormData에 추가
-      console.log(
-        "CharacterPreview - uploadedImages from store:",
-        uploadedImages
-      ); //제대로 됨
+      console.log("📸 업로드된 이미지 정보:", {
+        uploadedImagesFromStore: uploadedImages,
+        uploadedImagesLength: uploadedImages?.length || 0,
+        uploadedImagesType: typeof uploadedImages,
+        isArray: Array.isArray(uploadedImages),
+      });
+
       const validImages = uploadedImages.filter(
         (img) => img !== null
       ) as File[];
-      console.log("CharacterPreview - validImages:", validImages);
-      console.log("CharacterPreview - validImages.length:", validImages.length);
+
+      console.log("📸 유효한 이미지 정보:", {
+        validImages,
+        validImagesLength: validImages.length,
+        validImagesDetails: validImages.map((img, index) => ({
+          index,
+          name: img.name,
+          size: img.size,
+          type: img.type,
+          lastModified: img.lastModified,
+        })),
+      });
 
       if (validImages.length > 0) {
         // localStorage 방식과 동일하게 Blob으로 변환해서 추가
         validImages.forEach(async (image, index) => {
-          console.log(
-            `CharacterPreview - 이미지 ${index} 처리:`,
-            image.name,
-            image.size,
-            "bytes",
-            image.type
-          );
+          console.log(`📸 이미지 ${index} 처리 상세:`, {
+            index,
+            name: image.name,
+            size: image.size,
+            type: image.type,
+            lastModified: image.lastModified,
+            webkitRelativePath: image.webkitRelativePath,
+            isFile: image instanceof File,
+            isBlob: image instanceof Blob,
+          });
 
           // File을 Blob으로 변환 (이미 File은 Blob을 상속받지만, 명시적으로 변환)
           const imageBlob = new Blob([image], { type: image.type });
-          console.log(
-            `CharacterPreview - Blob 변환 결과:`,
-            imageBlob.size,
-            "bytes",
-            imageBlob.type
-          );
+          console.log(`📸 Blob 변환 결과 ${index}:`, {
+            originalSize: image.size,
+            blobSize: imageBlob.size,
+            originalType: image.type,
+            blobType: imageBlob.type,
+            sizeMatch: image.size === imageBlob.size,
+            typeMatch: image.type === imageBlob.type,
+          });
 
           formData.append(`images`, imageBlob, `image_${index}_${image.name}`);
+          console.log(`📸 FormData에 이미지 ${index} 추가 완료`);
         });
-        console.log(
-          `${validImages.length}개의 이미지 파일이 FormData에 추가되었습니다.`
-        );
+
+        console.log("📸 FormData 이미지 추가 완료:", {
+          totalImages: validImages.length,
+          formDataKeys: Array.from(formData.keys()),
+          formDataEntries: Array.from(formData.entries()).map(
+            ([key, value]) => ({
+              key,
+              valueType: typeof value,
+              isFile: value instanceof File,
+              isBlob: value instanceof Blob,
+              size: value instanceof Blob ? value.size : "N/A",
+              type: value instanceof Blob ? value.type : "N/A",
+            })
+          ),
+        });
       } else {
         console.log("CharacterPreview - 추가할 이미지가 없습니다.");
       }
