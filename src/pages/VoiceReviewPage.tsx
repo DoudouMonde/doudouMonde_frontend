@@ -278,13 +278,13 @@ export const VoiceReviewPage = () => {
                 <div className="flex gap-4">
                   <button
                     onClick={handleDeleteRecording}
-                    className="px-4 py-2 text-secondary-100  rounded-[20px] transition-colors border border-secondary-100/70 body-inter-r hover:bg-red-600"
+                    className="px-4 py-2 text-secondary-100  rounded-[20px] transition-colors border border-secondary-100/70 subtitle hover:bg-red-600"
                   >
                     다시 녹음
                   </button>
                   <button
                     onClick={handlePlayRecording}
-                    className="px-4 py-2 text-gray-200 bg-green-100 rounded-[20px] transition-colors body-inter-r hover:bg-green-200"
+                    className="px-4 py-2 text-gray-200 bg-green-100 rounded-[20px] transition-colors subtitle hover:bg-green-200"
                   >
                     재생
                   </button>

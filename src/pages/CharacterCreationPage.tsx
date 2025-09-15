@@ -387,7 +387,7 @@ export const CharacterCreationPage: React.FC = () => {
                             ) : (
                               <RadioFalse className="w-6 h-6" />
                             )}
-                            <h3 className="text-sm text-gray-900 body-hak-r">
+                            <h3 className="text-sm text-gray-900 body-hak-sm">
                               {emotion.name}
                             </h3>
                           </div>
@@ -419,7 +419,7 @@ export const CharacterCreationPage: React.FC = () => {
                             ) : (
                               <RadioFalse className="w-6 h-6" />
                             )}
-                            <h3 className="text-sm text-gray-900 body-hak-r">
+                            <h3 className="text-sm text-gray-900 body-hak-sm">
                               {emotion.name}
                             </h3>
                           </div>
