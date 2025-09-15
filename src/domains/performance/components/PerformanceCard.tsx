@@ -22,7 +22,11 @@ export default function PerformanceCard({ performance, onClick }: Props) {
           alt={performance.performanceName + "이미지"}
           className="w-full h-full rounded-xl"
         />
-        <div className="flex absolute bottom-0 left-0 gap-1 items-center px-2 py-2 w-full h-6 rounded-b-xl bg-secondary-100">
+        {/* 배경 레이어 (투명도 적용) */}
+        <div className="flex absolute bottom-0 left-0 w-full h-6 rounded-b-xl bg-secondary-100/80"></div>
+
+        {/* 아이콘 레이어 (투명도 적용 안됨) */}
+        <div className="flex absolute bottom-0 left-0 gap-1 items-center px-2 py-2 w-full h-6 rounded-b-xl">
           {performance.hasRestRoom && (
             <div className="flex justify-center items-center w-4 h-4">
               <RestroomIcon className="w-full h-full text-yellow-100" />
@@ -43,10 +47,10 @@ export default function PerformanceCard({ performance, onClick }: Props) {
 
       {/* 제목과 위치 */}
       <div className="flex flex-col">
-        <p className="body-inter">{performance.performanceName}</p>
         <p className="subtitle text-secondary-100">
           {getSidoLabel(performance.sido)}
         </p>
+        <p className="body-inter">{performance.performanceName}</p>
       </div>
     </li>
   );

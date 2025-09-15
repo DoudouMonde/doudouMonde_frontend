@@ -114,7 +114,7 @@ export const PerformanceOverview = () => {
                 <p className="text-secondary-100  subtitle-b w-[44px] flex-shrink-0">
                   {item.label}
                 </p>
-                <p className="text-black body-inter-r">{item.value}</p>
+                <p className="text-black/80 body-inter-r">{item.value}</p>
               </div>
             ))}
           </div>

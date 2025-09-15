@@ -66,6 +66,12 @@
     font-weight: 700;
     line-height: 1.35;
   }
+  .title-inter-b {
+    font-family: "Inter", sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
 
   .title-hak {
     font-family: "Hakgyoansim Dunggeunmiso OTF", sans-serif;
