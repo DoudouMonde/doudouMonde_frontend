@@ -22,7 +22,7 @@ interface ReviewDetailData {
   characterType: CharacterType;
   characterEmotion: CharacterEmotion;
   characterAccessories: CharacterAccessories;
-  performanceTitle: string;
+  performanceName: string;
   watchDate: string;
   content: string;
   imageUrls: string[];
@@ -97,7 +97,7 @@ export const ReviewDetailPage = () => {
           characterType: response.characterType,
           characterEmotion: response.characterEmotion,
           characterAccessories: response.characterAccessories,
-          performanceTitle: "공연명", // TODO: API에서 공연명도 받아오도록 수정 필요
+          performanceName: response.performanceName || "공연명 없음",
           watchDate: processedWatchDate,
           content: response.content,
           imageUrls: response.imageUrls || [],
@@ -407,12 +407,14 @@ export const ReviewDetailPage = () => {
               <div className="flex flex-col gap-2 p-4">
                 <div className="flex gap-1 items-center">
                   <PlayingCardsIcon className="w-[13px] h-[13px]" />
-                  <p className="body-hak-r">{reviewData.performanceTitle}</p>
+                  <p className="body-hak-r">{reviewData.performanceName}</p>
                 </div>
                 <div className="flex gap-1 items-center">
                   <Calendar className="w-[13px] h-[13px] flex-shrink-0" />
                   <p className="whitespace-nowrap body-hak-r">
-                    {reviewData.watchDate || "날짜 정보 없음"}
+                    {new Date(reviewData.watchDate)
+                      .toISOString()
+                      .split("T")[0] || "날짜 정보 없음"}
                   </p>
                 </div>
               </div>

@@ -47,7 +47,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
   // className = "",
 }) => {
   const [reviewCount, setReviewCount] = useState(0);
-  const [showBookPopup, setShowBookPopup] = useState(true); // 테스트용으로 true로 설정
+  const [showBookPopup, setShowBookPopup] = useState(false); // 테스트용으로 true로 설정
   const navigate = useNavigate();
 
   // 아이 목록 가져오기

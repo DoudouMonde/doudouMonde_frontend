@@ -27,13 +27,6 @@ export const LoginPage = () => {
       <div className="flex relative z-10 flex-col gap-6 items-center">
         <LoginLogo className="w-40" />
         <LoginButton />
-
-        <button
-          onClick={handleSkipToChildRegistration}
-          className="text-primary-100"
-        >
-          아이등록 페이지로 건너뛰기
-        </button>
       </div>
     </div>
   );

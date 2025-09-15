@@ -202,8 +202,12 @@ export const CharacterPreviewPage: React.FC = () => {
     };
 
     return {
-      performanceId:
+      seenPerformanceId:
         selectedPerformanceFromStorage?.id || selectedPerformance?.id || 1, // 공연 ID 전송
+      performanceName:
+        selectedPerformanceFromStorage?.title ||
+        selectedPerformance?.title ||
+        "공연이름", // 공연 이름 전송
       watchDate: selectedDate
         ? new Date(selectedDate).toISOString().slice(0, 19) // "2025-09-08T20:00:00" 형식
         : new Date().toISOString().slice(0, 19),

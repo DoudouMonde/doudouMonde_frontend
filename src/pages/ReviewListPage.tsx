@@ -238,15 +238,14 @@ export const ReviewListPage = () => {
   return (
     <div className="flex min-h-screen">
       {/* Main Content */}
-      <div className="p-6 w-full bg-gray-200/70 rounded-[40px] mt-20 mb-24">
+      <div className="relative p-6 w-full  rounded-[40px] mt-20 mb-24">
         {/* Header */}
         <div className="flex flex-col mb-6">
-          <h1 className="mb-4 title-inter">내 리뷰 목록</h1>
-          <p className="subtitle text-secondary-100">
+          <h1 className="mb-4 title-hak">내 리뷰 목록</h1>
+          <p className="text-black subtitle">
             지금까지 작성한 공연 리뷰들을 확인해보세요
           </p>
         </div>
-        <hr className="my-4 mb-6 border-secondary-100/30" />
 
         {/* 리뷰 목록 */}
         <div className="space-y-4">
@@ -273,9 +272,9 @@ export const ReviewListPage = () => {
                 <div
                   key={review.reviewId}
                   onClick={() => handleReviewClick(review.reviewId)}
-                  className="p-4 bg-white rounded-lg border border-gray-200 shadow-sm transition-shadow cursor-pointer hover:shadow-md"
+                  className="p-4 rounded-[20px] cursor-pointer bg-gray-200/70 hover:shadow-md shadow-sm"
                 >
-                  <div className="flex gap-4 items-start mb-3">
+                  <div className="flex gap-4 items-start">
                     {/* 캐릭터 전신 모습 */}
                     <div className="flex-shrink-0">
                       {(() => {
@@ -287,7 +286,7 @@ export const ReviewListPage = () => {
                         );
 
                         if (AccessoryCharacter) {
-                          return <AccessoryCharacter className="w-20 h-24" />;
+                          return <AccessoryCharacter className="w-24 h-24" />;
                         }
 
                         // 액세사리 캐릭터를 찾을 수 없는 경우 감정 캐릭터 표시
@@ -297,13 +296,13 @@ export const ReviewListPage = () => {
                         );
 
                         if (EmotionCharacter) {
-                          return <EmotionCharacter className="w-20 h-24" />;
+                          return <EmotionCharacter className="w-24 h-24" />;
                         }
 
                         // 기본 동물 전신 모습 표시
                         if (selectedAnimal) {
                           const BodyIcon = selectedAnimal.bodyIcon;
-                          return <BodyIcon className="w-20 h-24" />;
+                          return <BodyIcon className="w-24 h-24" />;
                         }
 
                         return null;
@@ -311,34 +310,50 @@ export const ReviewListPage = () => {
                     </div>
 
                     {/* 리뷰 정보 */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex justify-between items-center mb-2">
-                        <h3 className="text-lg font-semibold text-gray-900 truncate">
+                    <div className="flex flex-col flex-1 min-w-0">
+                      <div className="mb-2">
+                        <h3 className="text-gray-900 truncate body-inter-b">
                           {review.characterName || "캐릭터명 없음"}
                         </h3>
-                        <span className="ml-2 text-sm text-gray-500">
-                          {formatDate(review.watchDate)}
-                        </span>
                       </div>
 
                       <div className="mb-2">
-                        <span className="text-sm text-gray-600">공연:</span>
-                        <span className="ml-1 text-sm font-medium">
-                          공연명 없음
+                        <span className="text-sm font-medium">
+                          {review.performanceName || "공연명 없음"}
                         </span>
                       </div>
 
-                      {review.content && (
-                        <p className="mb-3 text-sm text-gray-700 line-clamp-2">
-                          {review.content}
-                        </p>
-                      )}
-
-                      <div className="flex gap-4 items-center text-xs text-gray-500">
-                        {review.imageUrls && review.imageUrls.length > 0 && (
-                          <span>📷 {review.imageUrls.length}장</span>
+                      {/* 후기 텍스트와 날짜/아이콘을 같은 줄에 배치 */}
+                      <div className="flex justify-between items-center">
+                        {review.content && (
+                          <p
+                            className="text-sm text-gray-700 truncate max-w-[200px]"
+                            title={review.content}
+                          >
+                            {review.content.length > 10
+                              ? `${review.content.substring(0, 10)}...`
+                              : review.content}
+                          </p>
                         )}
-                        {review.audioUrl && <span>🎵 음성</span>}
+
+                        {/* 오른쪽 정보 */}
+                        <div className="flex flex-col gap-1 items-end">
+                          <span className="subtitle text-secondary-100">
+                            {
+                              new Date(review.watchDate)
+                                .toISOString()
+                                .split("T")[0]
+                            }
+                          </span>
+
+                          <div className="flex gap-4 items-center text-xs text-gray-500">
+                            {review.imageUrls &&
+                              review.imageUrls.length > 0 && (
+                                <span>📷 {review.imageUrls.length}장</span>
+                              )}
+                            {review.audioUrl && <span>🎵 음성</span>}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -349,7 +364,7 @@ export const ReviewListPage = () => {
         </div>
 
         {/* 네비게이션 버튼 */}
-        <div className="mt-8">
+        <div className="absolute right-0 left-0 bottom-8">
           <NavigationButtons
             onPrevious={handlePrevious}
             onNext={handleNext}
