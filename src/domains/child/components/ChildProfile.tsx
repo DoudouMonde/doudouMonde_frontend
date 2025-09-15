@@ -54,7 +54,7 @@ export default function ChildProfile({ child, isSelected, onClick }: Props) {
       {/* 이름 */}
       <p
         className={`text-center body-hak ${
-          isSelected ? "":"title-secondary"}`}
+          isSelected ? "":"text-secondary-100"}`}
       >
         {child.name}
       </p>

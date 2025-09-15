@@ -78,7 +78,7 @@ export const HomePage = () => {
       {/* 아이 선택 */}
       <main className="flex flex-col gap-4 pt-16 w-full">
         <section className="flex flex-col gap-3">
-          <h2 className="px-6 text-black title-inter">
+          <h2 className="py-6 text-black title-inter">
             {selectedChild?.name}를 위한{" "}
             {getGenreLabel(selectedChild?.genre ?? Genre.PLAY)}공연
           </h2>
@@ -88,7 +88,7 @@ export const HomePage = () => {
             onPerformanceClick={handlePerformancePress}
           />
         </section>
-        <div className="flex flex-col gap-4 px-6 pt-5 w-full h-full bg-gray-200/70">
+        <div className="flex flex-col gap-4 px-6 pt-5 w-full min-h-screen bg-gray-200/70">
           <ul className="flex overflow-x-auto flex-row gap-4 px-1 py-2">
             {children.map((child) => (
               <ChildProfile
@@ -102,7 +102,7 @@ export const HomePage = () => {
           <div className="flex flex-col gap-12 w-full">
             {/*  지역별 공연 섹션 */}
             <section className="flex flex-col gap-2">
-              <h2 className="p-3 text-black title-inter">
+              <h2 className="py-3 text-black title-inter">
                 {getSidoLabel(selectedChild?.sido ?? Sido.SEOUL)} 지역 인기 공연
               </h2>
               <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
@@ -119,7 +119,7 @@ export const HomePage = () => {
             {/*  수상을 받은 공연 섹션 */}
 
             <section className="flex flex-col gap-2">
-              <h2 className="p-3 text-black title-inter">수상 받은 공연</h2>
+              <h2 className="py-3 text-black title-inter">수상 받은 공연</h2>
               <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
                 {rewardPerformanceList.map((rewardPerformance) => (
                   <PerformanceCard

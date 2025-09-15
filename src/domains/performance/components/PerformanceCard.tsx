@@ -19,7 +19,7 @@ export default function PerformanceCard({ performance, onClick }: Props) {
         <img
           src={performance.posterUrl}
           alt={performance.performanceName + "이미지"}
-          className="w-full h-full rounded-b-xl"
+          className="w-full h-full rounded-xl"
         />
         <div className="flex absolute bottom-0 left-0 gap-1 items-center px-2 py-2 w-full h-6 rounded-b-xl bg-secondary-100">
           {performance.hasRestRoom && (
