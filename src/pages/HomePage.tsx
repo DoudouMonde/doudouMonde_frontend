@@ -78,8 +78,8 @@ export const HomePage = () => {
       {/* 아이 선택 */}
       <main className="flex flex-col gap-4 pt-16 w-full">
         <section className="flex flex-col gap-3">
-          <h2 className="py-6 text-black title-inter">
-            {selectedChild?.name}를 위한{" "}
+          <h2 className="px-3 py-6 text-black title-inter">
+            {selectedChild?.name}을 위한{" "}
             {getGenreLabel(selectedChild?.genre ?? Genre.PLAY)}공연
           </h2>
           <AutoCarousel

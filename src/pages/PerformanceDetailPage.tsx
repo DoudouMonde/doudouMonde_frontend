@@ -48,7 +48,7 @@ export const PerformanceDetailPage = () => {
       {/* 상단 헤더 */}
       <PerformanceHeader />
 
-      <div className="flex flex-col flex-1 w-full pt-[88px]">
+      <div className="flex flex-col flex-1 w-full pt-[60px]">
         {/* 공연 정보 */}
         <PerformanceOverview />
 

@@ -41,12 +41,16 @@ export const PerformanceOverview = () => {
       }}
     >
       {/* 포스터 뒤 이펙트 (blur + opacity) */}
-      <div className="absolute left-1/2 transform -translate-x-1/2  w-full h-[205px] -z-10">
-        <img
-          src={performanceDetail.posterUrl}
-          className="object-cover w-full h-full rounded-lg opacity-25"
-        />
-      </div>
+      <div
+        className="absolute w-[393px] h-[205px] left-0 top-[86px] -z-10"
+        style={{
+          background: `linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${performanceDetail.posterUrl})`,
+          boxShadow: "inset 0px 4px 15px rgba(0, 0, 0, 0.25)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      />
 
       {/* 포스터 */}
       <article className="flex flex-col gap-5 items-center h-fit pt-[22px]">
