@@ -358,7 +358,8 @@ export const CharacterPreviewPage: React.FC = () => {
       navigate(`/playroom/reviews/${reviewId}`);
     } catch (error) {
       console.error("리뷰 등록 중 오류가 발생했습니다:", error);
-      alert("리뷰 등록 중 오류가 발생했습니다. 다시 시도해주세요.");
+      //alert에 error 출력
+      alert("리뷰 등록 중 오류가 발생했습니다.: " + error);
     } finally {
       setIsSubmitting(false);
     }
