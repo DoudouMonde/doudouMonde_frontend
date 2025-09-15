@@ -39,6 +39,7 @@ export const FavoritesPage: React.FC = () => {
           setIsModalOpen(false);
           setSelectedWishlistId(null);
         },
+        onError: (error) => {},
       });
     }
   };
@@ -50,7 +51,7 @@ export const FavoritesPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="w-[375px] h-full bg-white mx-auto overflow-y-auto">
+      <div className="overflow-y-auto mx-auto w-full max-w-md h-full bg-white">
         {/* 상단 바 */}
         <div className="fixed top-0 right-0 left-0 z-20 px-6 pt-4 pb-2 h-[60px] bg-gray-200/70 shadow-sm">
           <div className="flex justify-between items-center">
@@ -76,7 +77,7 @@ export const FavoritesPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="w-[375px] h-full bg-white mx-auto overflow-y-auto">
+      <div className="overflow-y-auto mx-auto w-full max-w-md h-full bg-white">
         {/* 상단 바 */}
         <div className="fixed top-0 right-0 left-0 z-20 px-6 pt-4 pb-2 h-[60px] bg-gray-200/70 shadow-sm">
           <div className="flex justify-between items-center">
@@ -101,7 +102,7 @@ export const FavoritesPage: React.FC = () => {
   }
 
   return (
-    <div className="w-[375px] h-full bg-white mx-auto overflow-y-auto">
+    <div className="overflow-y-auto mx-auto w-full max-w-md h-full bg-white">
       {/* 상단 바 */}
       <div className="fixed top-0 right-0 left-0 z-20 px-6 pt-4 pb-2 h-[60px] bg-gray-200/70 shadow-sm">
         <div className="flex justify-between items-center">
@@ -120,7 +121,7 @@ export const FavoritesPage: React.FC = () => {
       </div>
 
       {/* 위시리스트 목록 */}
-      <div className=" py-4 pt-[76px]">
+      <div className="px-4 py-4 pt-[76px]">
         {wishlist.length === 0 ? (
           <div className="flex flex-col justify-center items-center py-16">
             <HeartIcon className="mb-4 w-16 h-16 text-gray-300" />
@@ -167,7 +168,7 @@ export const FavoritesPage: React.FC = () => {
                   <div className="flex justify-end mt-2">
                     <button
                       onClick={(e) => handleRemoveWishlist(e, item.wishlistId)}
-                      className="mr-2 text-sm text-red-500 underline"
+                      className="mr-2 body-inter-sm text-secondary-100  bg-gray-100  rounded-[16px] p-2  shadow-sm"
                     >
                       삭제
                     </button>

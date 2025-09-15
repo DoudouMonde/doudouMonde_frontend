@@ -105,6 +105,12 @@
     font-weight: 700;
     line-height: normal;
   }
+  .body-inter-sm {
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: normal;
+  }
   .body-hak-b {
     font-family: "Hakgyoansim Dunggeunmiso OTF", sans-serif;
     font-size: 16px;
