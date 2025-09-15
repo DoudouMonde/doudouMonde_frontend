@@ -208,9 +208,45 @@ export const CharacterPreviewPage: React.FC = () => {
         selectedPerformanceFromStorage?.title ||
         selectedPerformance?.title ||
         "공연이름", // 공연 이름 전송
-      watchDate: selectedDate
-        ? new Date(selectedDate).toISOString().slice(0, 19) // "2025-09-08T20:00:00" 형식
-        : new Date().toISOString().slice(0, 19),
+      watchDate: (() => {
+        console.log("📅 날짜 처리 시작:", {
+          selectedDate,
+          selectedDateType: typeof selectedDate,
+          selectedDateValue: selectedDate,
+        });
+
+        if (!selectedDate) {
+          console.log("📅 selectedDate가 없음, 현재 시간 사용");
+          return new Date().toISOString().slice(0, 19);
+        }
+
+        // selectedDate가 이미 ISO 문자열인 경우 (ChildAndDateSelectionPage에서 저장된 경우)
+        if (typeof selectedDate === "string" && selectedDate.includes("T")) {
+          console.log("📅 ISO 문자열 형태의 날짜 처리:", selectedDate);
+          const result = new Date(selectedDate).toISOString().slice(0, 19);
+          console.log("📅 ISO 문자열 변환 결과:", result);
+          return result;
+        }
+
+        // selectedDate가 한국어 날짜 문자열인 경우 (ReviewWritingPage에서 변환된 경우)
+        if (typeof selectedDate === "string") {
+          console.log(
+            "📅 한국어 날짜 문자열 형태, localStorage에서 원본 가져오기"
+          );
+          // localStorage에서 원본 ISO 문자열을 가져와서 사용
+          const savedDate = localStorage.getItem("selectedDate");
+          console.log("📅 localStorage에서 가져온 원본 날짜:", savedDate);
+          if (savedDate) {
+            const result = new Date(savedDate).toISOString().slice(0, 19);
+            console.log("📅 localStorage 날짜 변환 결과:", result);
+            return result;
+          }
+        }
+
+        // 기본값으로 현재 시간 사용
+        console.log("📅 기본값으로 현재 시간 사용");
+        return new Date().toISOString().slice(0, 19);
+      })(),
       content:
         reviewText || `상상친구 ${characterName}와 함께한 공연 후기입니다.`,
       characterName: characterName,
