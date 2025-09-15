@@ -6,6 +6,7 @@ import {
   ContentSection,
   NearbySection,
   PerformanceOverview,
+  PerformanceHeader,
   TransportSection,
 } from "@/domains/performance/components";
 import { usePerformanceDetailQuery } from "@/domains/performance/queries";
@@ -44,7 +45,10 @@ export const PerformanceDetailPage = () => {
 
   return (
     <div className="flex flex-col flex-1 items-center w-full bg-white pb-[80px]">
-      <div className="flex flex-col flex-1 w-full">
+      {/* 상단 헤더 */}
+      <PerformanceHeader />
+
+      <div className="flex flex-col flex-1 w-full pt-[88px]">
         {/* 공연 정보 */}
         <PerformanceOverview />
 

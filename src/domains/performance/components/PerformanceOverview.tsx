@@ -17,7 +17,15 @@ export const PerformanceOverview = () => {
   );
 
   // 현재 공연이 위시리스트에 있는지 확인
-
+  const getAgeLimitLabel = (ageLimit: number) => {
+    if (ageLimit === 0) {
+      return "전체관람가";
+    }
+    if (ageLimit > 10) {
+      return ageLimit + "개월 이상 관람가능";
+    }
+    return ageLimit + "세 이상 관람가능";
+  };
   if (!performanceDetail) {
     return null;
   }
@@ -77,10 +85,7 @@ export const PerformanceOverview = () => {
               },
               {
                 label: "관람연령",
-                value:
-                  performanceDetail.ageLimit > 10
-                    ? performanceDetail.ageLimit + "개월 이상 관람가능"
-                    : performanceDetail.ageLimit + "세 이상 관람가능",
+                value: getAgeLimitLabel(performanceDetail.ageLimit),
               },
               { label: "가격", value: formatCurrency(performanceDetail.price) },
               { label: "시설정보", value: "장애인화장실, 수유실, 놀이방" },

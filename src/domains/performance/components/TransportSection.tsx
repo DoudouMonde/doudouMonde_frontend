@@ -130,9 +130,6 @@ export const TransportSection = ({ performanceId }: Props) => {
     <div className="p-4 space-y-4">
       {/* 제목 */}
       <div className="mb-4">
-        <h3 className="mb-2 text-lg font-semibold text-primary-100">
-          🚗 교통 정보
-        </h3>
         <p className="text-sm text-secondary-100">
           {venueLocation.name}까지의 경로를 확인하세요
         </p>
@@ -151,12 +148,13 @@ export const TransportSection = ({ performanceId }: Props) => {
                 setSelectedTransport(option.type);
                 openKakaoMapRoute(option.type);
               }}
-              className={`p-3 rounded-lg border-2 transition-all ${
+              className={`p-3 bg-gray-200 rounded-lg border-2 transition-all border-tertiary-100 text-secondary-100`}
+            >
+              {/* ${
                 selectedTransport === option.type
                   ? "border-green-200 bg-green-200/10 text-green-100"
-                  : "border-tertiary-100 bg-gray-200 text-secondary-100 hover:border-green-200"
-              }`}
-            >
+                  : "border-tertiary-100 bg-gray-200 text-secondary-100"
+              } */}
               <div className="text-center">
                 <div className="mb-1 text-2xl">{option.icon}</div>
                 <div className="text-xs font-medium">{option.label}</div>
@@ -173,9 +171,6 @@ export const TransportSection = ({ performanceId }: Props) => {
       <div className="overflow-hidden bg-gray-200 rounded-lg border border-tertiary-100">
         <div className="p-3 border-b bg-beige-200 border-tertiary-100">
           <h4 className="text-sm font-medium text-primary-100">📍 위치 정보</h4>
-          <p className="text-xs text-secondary-100">
-            {userLocation.address} → {venueLocation.address}
-          </p>
         </div>
         <div className="w-full h-[350px]">
           <KakaoMap
