@@ -10,6 +10,13 @@ export default {
       },
       animation: {
         "loading-spin": "loading-spin 2.0333s linear infinite",
+        breathe: "breathe 2s ease-in-out infinite",
+      },
+      keyframes: {
+        breathe: {
+          "0%, 100%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.05)" },
+        },
       },
     },
 
