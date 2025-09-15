@@ -19,6 +19,7 @@ import {
   GENRE_MAPPING,
   PROFILE_MAPPING,
 } from "@/domains/auth/types/signup";
+import { CustomButton } from "@/shared/components/CustomButton";
 
 // 개별 성향 목록
 const TRAITS = [
@@ -453,17 +454,9 @@ export const ChildRegistrationPage = () => {
 
       {/* 하단 고정 저장 버튼 */}
       <div className="fixed right-0 bottom-0 left-0 z-30 p-6">
-        <button
-          onClick={handleSave}
-          disabled={!isFormValid()}
-          className={`py-4 w-full text-gray-200 rounded-[20px] transition-colors body-inter-r ${
-            isFormValid()
-              ? "bg-green-100 cursor-pointer hover:bg-primary-200"
-              : "cursor-not-allowed bg-secondary-100"
-          }`}
-        >
+        <CustomButton onClick={handleSave} isActive={isFormValid()}>
           저장하기
-        </button>
+        </CustomButton>
       </div>
 
       {/* 바텀시트 오버레이 */}

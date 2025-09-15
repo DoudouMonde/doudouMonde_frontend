@@ -1,8 +1,17 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  UseMutationOptions,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { favoritesApi } from "../apis/favoritesApi";
 import { queryKeys } from "@/shared/apis/queryKeys";
 
-export const useRemoveWishlistMutation = () => {
+export const useRemoveWishlistMutation = (
+  mutationOptions?: Omit<
+    UseMutationOptions<unknown, Error, number>,
+    "mutationFn"
+  >
+) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -32,5 +41,6 @@ export const useRemoveWishlistMutation = () => {
         timestamp: new Date().toISOString(),
       });
     },
+    ...mutationOptions,
   });
 };

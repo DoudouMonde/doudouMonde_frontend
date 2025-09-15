@@ -24,20 +24,19 @@ export type PerformanceDetail = {
   performanceName: string;
   posterUrl: string;
   place: string;
-  startDate: [number, number, number];
-  endDate: [number, number, number];
+  startDate: string;
+  endDate: string;
   durationMinutes: number;
-  ageLimit: string;
+  ageLimit: number;
   price: number;
 
   genre: Genre;
   sido: Sido;
-
+  isView: boolean;
+  isLike: boolean;
   hasPlayRoom: boolean;
   hasNursingRoom: boolean;
   hasRestRoom: boolean;
-  nearbyInfo?: NearbyInfo;
-  seatsInfo?: SeatsInfo;
 };
 
 export type TabType = "transport" | "seats" | "content";
@@ -51,4 +50,29 @@ export type NearbyPlace = {
 export type NearbyInfo = {
   restaurants: NearbyPlace[];
   kidsCafes: NearbyPlace[];
+};
+// 위치 정보 타입
+export type LocationDto = {
+  latitude: number;
+  longitude: number;
+  address: string;
+};
+
+// 회원 위치와 공연장 위치를 함께 반환하는 타입
+export type CombinedLocationDto = {
+  memberLocation: LocationDto;
+  facilityLocation: LocationDto;
+};
+
+// 영어 콘텐츠 타입
+export type EnglishContent = {
+  id: number;
+  thumbnailUrl: string;
+  youtubeUrl: string;
+  englishTitle: string;
+};
+
+// 영어 콘텐츠 목록 응답 타입
+export type EnglishContentListResponse = {
+  contents: EnglishContent[];
 };

@@ -1,65 +1,52 @@
 import { NearbyInfo, NearbyPlace } from "@/domains/performance/types";
 
-type Props = {};
-
-// 유아의자 아이콘 컴포넌트
-const HighChairIcon = () => (
-  <div className="w-6 h-6 rounded-full bg-[#D9D9D9] flex items-center justify-center">
-    <div className="flex justify-center items-center w-6 h-6 bg-white rounded-full">
-      <div className="w-[13.23px] h-[17.63px] items-center justify-center">
-        {/* SVG 대신 텍스트 아이콘으로 대체 */}
-        <p className="text-[#FFF5A6] text-xs">👶</p>
-      </div>
-    </div>
-  </div>
-);
+// 더미 데이터
+const nearbyInfo: NearbyInfo = {
+  restaurants: [
+    { name: "맘스터치 강남점", distance: "", hasHighChair: false },
+    { name: "떡볶이 천국", distance: "", hasHighChair: false },
+    { name: "키즈 레스토랑", distance: "", hasHighChair: false },
+  ],
+  kidsCafes: [
+    { name: "점프점프 키즈카페", distance: "", hasHighChair: false },
+    { name: "플레이그라운드", distance: "", hasHighChair: false },
+    { name: "코코몽 키즈카페", distance: "", hasHighChair: false },
+  ],
+};
 
 // 카카오맵 아이콘 컴포넌트
-const KakaoMapIcon = () => (
-  <div className="w-[17px] h-[17px] bg-gray-200 rounded-sm">
-    {/* 실제로는 카카오맵 아이콘 이미지가 들어갈 자리 */}
-    <p className="text-xs text-center">📍</p>
-  </div>
-);
+const KakaoMapIcon = ({ placeName }: { placeName: string }) => {
+  const handleKakaoMapClick = () => {
+    const encodedPlaceName = encodeURIComponent(placeName);
+    const kakaoMapUrl = `https://map.kakao.com/link/search/${encodedPlaceName}`;
+    window.open(kakaoMapUrl, "_blank");
+  };
+
+  return (
+    <div
+      className="w-[18px] h-[18px] cursor-pointer"
+      onClick={handleKakaoMapClick}
+    >
+      <img
+        src="/assets/icons/kakao_map_icon.svg"
+        alt="카카오맵"
+        className="w-full h-full"
+      />
+    </div>
+  );
+};
 
 // 개별 장소 아이템 컴포넌트
 const PlaceItem = ({ place }: { place: NearbyPlace }) => (
-  <div
-    className="flex-row items-center justify-between px-2.5 py-2 border-b-[0.5px] border-[#808080] h-8"
-    style={{ backgroundColor: "rgba(217, 217, 217, 0)" }}
-  >
-    <div className="flex-row flex-1 items-center">
-      <div className="flex-row flex-1 justify-between items-center">
-        {/* 장소명과 거리 */}
-        <div className="flex-row flex-1 items-center">
-          <p
-            className="text-[11px] font-semibold text-black mr-2"
-            style={{ fontFamily: "Noto Sans KR" }}
-          >
-            {place.name}
-          </p>
-        </div>
+  <li className="flex items-center justify-between px-0 py-2 border-b-[0.5px] border-secondary-100 min-h-[32px]">
+    <div className="flex flex-1 items-center justify-between">
+      {/* 장소명 */}
+      <p className="text-black body-noto">{place.name}</p>
 
-        {/* 거리 정보 */}
-        <p
-          className="text-[11px] text-[#595959] mr-2"
-          style={{ fontFamily: "Noto Sans KR" }}
-        >
-          {place.distance}
-        </p>
-
-        {/* 카카오맵 아이콘 */}
-        <KakaoMapIcon />
-      </div>
-
-      {/* 유아의자 아이콘 (맛집에만 표시) */}
-      {place.hasHighChair && (
-        <div className="ml-4">
-          <HighChairIcon />
-        </div>
-      )}
+      {/* 카카오맵 아이콘 */}
+      <KakaoMapIcon placeName={place.name} />
     </div>
-  </div>
+  </li>
 );
 
 // 섹션 컴포넌트
@@ -70,33 +57,23 @@ const Section = ({
   title: string;
   places: NearbyPlace[];
 }) => (
-  <div className="mb-6">
-    <p
-      className="mb-4 text-xs font-normal text-black"
-      style={{
-        fontFamily: "System", // Figma에서 '?????' 로 표시된 부분
-        textDecorationLine: "underline",
-        textDecorationColor: "#000000",
-      }}
-    >
-      {title}
-    </p>
-    <div className="space-y-0">
+  <div className="pb-6">
+    <p className="pb-4 text-black body-hak-b">{title}</p>
+    <ul className="px-4 space-y-0">
       {places.map((place, index) => (
         <PlaceItem key={index} place={place} />
       ))}
-    </div>
+    </ul>
   </div>
 );
 
-export const NearbySection = ({}: Props) => {
+export const NearbySection = () => {
   return (
-    <div className="p-4">
-      {/* 아이와 가볼만한 맛집 섹션 */}
-      <Section title="아이와 가볼만한 맛집" places={nearbyInfo.restaurants} />
-
+    <div className="p-4 flex flex-col gap-0">
       {/* 가볼만한 키즈카페 섹션 */}
       <Section title="가볼만한 키즈카페" places={nearbyInfo.kidsCafes} />
+      {/* 아이와 가볼만한 맛집 섹션 */}
+      <Section title="아이와 가볼만한 맛집" places={nearbyInfo.restaurants} />
     </div>
   );
 };

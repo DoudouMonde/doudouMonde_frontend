@@ -72,16 +72,17 @@ const router = createBrowserRouter([
         path: "child-info",
         element: <ChildInfoPage />,
       },
-      {
-        path: "story-village-book",
-        element: <StoryVillageBookPage />,
-      },
-      {
-        path: "performances/:performanceId",
-        element: <PerformanceDetailPage />,
-      },
     ],
   },
+  {
+    path: "story-village-book",
+    element: <StoryVillageBookPage />,
+  },
+  {
+    path: "performances/:performanceId",
+    element: <PerformanceDetailPage />,
+  },
+
   {
     path: "/playroom",
     element: <PlayroomLayout />,

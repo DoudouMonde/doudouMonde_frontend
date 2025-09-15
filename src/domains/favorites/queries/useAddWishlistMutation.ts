@@ -1,9 +1,18 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  UseMutationOptions,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { favoritesApi } from "../apis/favoritesApi";
 import { WishlistRequest } from "../types/wishlistTypes";
 import { queryKeys } from "@/shared/apis/queryKeys";
 
-export const useAddWishlistMutation = () => {
+export const useAddWishlistMutation = (
+  mutationOptions?: Omit<
+    UseMutationOptions<unknown, Error, WishlistRequest>,
+    "mutationFn"
+  >
+) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -14,5 +23,6 @@ export const useAddWishlistMutation = () => {
         queryKey: queryKeys.favorites.wishlist(),
       });
     },
+    ...mutationOptions,
   });
 };

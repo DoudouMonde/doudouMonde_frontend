@@ -13,7 +13,7 @@ export function useRewardPerformanceListQuery(
   >
 ) {
   return useQuery({
-    queryKey: [queryKeys.PERFORMANCE_LIST],
+    queryKey: [queryKeys.PERFORMANCE_LIST, "reward"],
     queryFn: async () => await performanceApi.getRewardPerformanceList(),
     ...queryOptions,
   });
