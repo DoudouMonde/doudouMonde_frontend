@@ -147,7 +147,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
       {/* Main Content Area */}
       <div className="relative pt-[64px]">
         {/* 나무 이미지 */}
-        <div className="flex z-20 justify-center items-start pt-8 w-full">
+        <div className="flex z-20 justify-center items-start w-full">
           {(() => {
             const TreeComponent = getTreeComponent(reviewCount);
             return (
@@ -175,7 +175,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
             <img
               src="/assets/characters/doudou.png"
               alt="두두 캐릭터"
-              className="w-[193px] h-[248px] object-contain drop-shadow-[0px_0px_10px_rgba(202, 255, 133, 0.1)]"
+              className="animate-breathe w-[193px] h-[248px] object-contain drop-shadow-[0px_0px_10px_rgba(202, 255, 133, 0.1)]"
             />
 
             {/* Action Buttons */}

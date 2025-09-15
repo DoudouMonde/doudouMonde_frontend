@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { reviewApi } from "@/domains/review/apis/reviewApi";
 import { ReviewResponse } from "@/domains/review/types/ReviewResponse";
-import { NavigationButtons } from "@/shared/components";
 import { PATH } from "@/shared/constants";
 import {
   CharacterType,
@@ -29,6 +28,11 @@ export const ReviewListPage = () => {
   const [reviews, setReviews] = useState<ReviewResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // 스와이프 관련 상태
+  const [currentPage, setCurrentPage] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -60,6 +64,39 @@ export const ReviewListPage = () => {
     console.log("reviewId", reviewId);
     navigate(`/playroom/reviews/${reviewId}`);
   };
+
+  // 스와이프 핸들러
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe && currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+    if (isRightSwipe && currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // 페이지네이션 로직
+  const itemsPerPage = 3;
+  const totalPages = Math.ceil(reviews.length / itemsPerPage);
+  const currentReviews = reviews.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
+  );
 
   const formatDate = (dateArray: number[] | null) => {
     if (!dateArray || dateArray.length < 3) return "날짜 없음";
@@ -238,7 +275,7 @@ export const ReviewListPage = () => {
   return (
     <div className="flex min-h-screen">
       {/* Main Content */}
-      <div className="relative p-6 w-full  rounded-[40px] mt-20 mb-24">
+      <div className="relative w-full p-4 rounded-[40px] mt-20 mb-24">
         {/* Header */}
         <div className="flex flex-col mb-6">
           <h1 className="mb-4 title-hak">내 리뷰 목록</h1>
@@ -248,128 +285,190 @@ export const ReviewListPage = () => {
         </div>
 
         {/* 리뷰 목록 */}
-        <div className="space-y-4">
-          {reviews.length === 0 ? (
-            <div className="flex flex-col justify-center items-center py-12">
-              <div className="mb-4 text-lg text-gray-600">
-                아직 작성한 리뷰가 없습니다
-              </div>
-              <button
-                onClick={() => navigate(PATH.HOME)}
-                className="px-6 py-3 text-white bg-blue-500 rounded-lg transition-colors hover:bg-blue-600"
-              >
-                첫 리뷰 작성하기
-              </button>
+        {reviews.length === 0 ? (
+          <div className="flex flex-col justify-center items-center py-12">
+            <div className="mb-4 text-lg text-gray-600">
+              아직 작성한 리뷰가 없습니다
             </div>
-          ) : (
-            reviews.map((review) => {
-              const selectedAnimal = getCharacterAnimal(review.characterType);
-              const animal = getAnimalString(review.characterType);
-              const emotion = getEmotionString(review.characterEmotion);
-              const accessory = getAccessoryString(review.characterAccessories);
+            <button
+              onClick={() => navigate(PATH.HOME)}
+              className="px-6 py-3 text-white bg-blue-500 rounded-lg transition-colors hover:bg-blue-600"
+            >
+              첫 리뷰 작성하기
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {/* 스와이프 가능한 리뷰 컨테이너 */}
+            <div
+              className="overflow-hidden relative"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              <div
+                className="flex transition-transform duration-300 ease-in-out"
+                style={{ transform: `translateX(-${currentPage * 100}%)` }}
+              >
+                {Array.from({ length: totalPages }, (_, pageIndex) => (
+                  <div key={pageIndex} className="flex-shrink-0 w-full">
+                    <div className="space-y-4">
+                      {reviews
+                        .slice(
+                          pageIndex * itemsPerPage,
+                          (pageIndex + 1) * itemsPerPage
+                        )
+                        .map((review) => {
+                          const selectedAnimal = getCharacterAnimal(
+                            review.characterType
+                          );
+                          const animal = getAnimalString(review.characterType);
+                          const emotion = getEmotionString(
+                            review.characterEmotion
+                          );
+                          const accessory = getAccessoryString(
+                            review.characterAccessories
+                          );
 
-              return (
-                <div
-                  key={review.reviewId}
-                  onClick={() => handleReviewClick(review.reviewId)}
-                  className="p-4 rounded-[20px] cursor-pointer bg-gray-200/70 hover:shadow-md shadow-sm"
-                >
-                  <div className="flex gap-4 items-start">
-                    {/* 캐릭터 전신 모습 */}
-                    <div className="flex-shrink-0">
-                      {(() => {
-                        // 액세사리가 적용된 최종 캐릭터 표시
-                        const AccessoryCharacter = getAccessoryCharacter(
-                          animal,
-                          emotion,
-                          accessory
-                        );
+                          return (
+                            <div
+                              key={review.reviewId}
+                              onClick={() => handleReviewClick(review.reviewId)}
+                              className="p-4 rounded-[20px] cursor-pointer bg-gray-200/70 hover:shadow-md shadow-sm"
+                            >
+                              <div className="flex gap-4 items-start">
+                                {/* 캐릭터 전신 모습 */}
+                                <div className="flex-shrink-0">
+                                  {(() => {
+                                    // 액세사리가 적용된 최종 캐릭터 표시
+                                    const AccessoryCharacter =
+                                      getAccessoryCharacter(
+                                        animal,
+                                        emotion,
+                                        accessory
+                                      );
 
-                        if (AccessoryCharacter) {
-                          return <AccessoryCharacter className="w-24 h-24" />;
-                        }
+                                    if (AccessoryCharacter) {
+                                      return (
+                                        <AccessoryCharacter className="w-24 h-24" />
+                                      );
+                                    }
 
-                        // 액세사리 캐릭터를 찾을 수 없는 경우 감정 캐릭터 표시
-                        const EmotionCharacter = getEmotionCharacter(
-                          animal,
-                          emotion
-                        );
+                                    // 액세사리 캐릭터를 찾을 수 없는 경우 감정 캐릭터 표시
+                                    const EmotionCharacter =
+                                      getEmotionCharacter(animal, emotion);
 
-                        if (EmotionCharacter) {
-                          return <EmotionCharacter className="w-24 h-24" />;
-                        }
+                                    if (EmotionCharacter) {
+                                      return (
+                                        <EmotionCharacter className="w-24 h-24" />
+                                      );
+                                    }
 
-                        // 기본 동물 전신 모습 표시
-                        if (selectedAnimal) {
-                          const BodyIcon = selectedAnimal.bodyIcon;
-                          return <BodyIcon className="w-24 h-24" />;
-                        }
+                                    // 기본 동물 전신 모습 표시
+                                    if (selectedAnimal) {
+                                      const BodyIcon = selectedAnimal.bodyIcon;
+                                      return <BodyIcon className="w-24 h-24" />;
+                                    }
 
-                        return null;
-                      })()}
-                    </div>
+                                    return null;
+                                  })()}
+                                </div>
 
-                    {/* 리뷰 정보 */}
-                    <div className="flex flex-col flex-1 min-w-0">
-                      <div className="mb-2">
-                        <h3 className="text-gray-900 truncate body-inter-b">
-                          {review.characterName || "캐릭터명 없음"}
-                        </h3>
-                      </div>
+                                {/* 리뷰 정보 */}
+                                <div className="flex flex-col flex-1 min-w-0">
+                                  <div className="">
+                                    <h3 className="text-gray-900 truncate body-inter-b">
+                                      {review.characterName || "캐릭터명 없음"}
+                                    </h3>
+                                  </div>
 
-                      <div className="mb-2">
-                        <span className="text-sm font-medium">
-                          {review.performanceName || "공연명 없음"}
-                        </span>
-                      </div>
+                                  <div className="mb-2">
+                                    <span className="text-sm font-medium text-secondary-100 subtitle-b">
+                                      {review.performanceName || "공연명 없음"}
+                                    </span>
+                                  </div>
 
-                      {/* 후기 텍스트와 날짜/아이콘을 같은 줄에 배치 */}
-                      <div className="flex justify-between items-center">
-                        {review.content && (
-                          <p
-                            className="text-sm text-gray-700 truncate max-w-[200px]"
-                            title={review.content}
-                          >
-                            {review.content.length > 10
-                              ? `${review.content.substring(0, 10)}...`
-                              : review.content}
-                          </p>
-                        )}
+                                  {/* 후기 텍스트와 날짜/아이콘을 같은 줄에 배치 */}
+                                  <div className="flex justify-between items-center">
+                                    {review.content && (
+                                      <p
+                                        className="text-sm text-gray-700 truncate max-w-[200px]"
+                                        title={review.content}
+                                      >
+                                        {review.content.length > 10
+                                          ? `${review.content.substring(
+                                              0,
+                                              10
+                                            )}...`
+                                          : review.content}
+                                      </p>
+                                    )}
 
-                        {/* 오른쪽 정보 */}
-                        <div className="flex flex-col gap-1 items-end">
-                          <span className="subtitle text-secondary-100">
-                            {
-                              new Date(review.watchDate)
-                                .toISOString()
-                                .split("T")[0]
-                            }
-                          </span>
+                                    {/* 오른쪽 정보 */}
+                                    <div className="flex flex-col gap-1 items-end">
+                                      <span className="subtitle text-secondary-100">
+                                        {
+                                          new Date(review.watchDate)
+                                            .toISOString()
+                                            .split("T")[0]
+                                        }
+                                      </span>
 
-                          <div className="flex gap-4 items-center text-xs text-gray-500">
-                            {review.imageUrls &&
-                              review.imageUrls.length > 0 && (
-                                <span>📷 {review.imageUrls.length}장</span>
-                              )}
-                            {review.audioUrl && <span>🎵 음성</span>}
-                          </div>
-                        </div>
-                      </div>
+                                      <div className="flex gap-4 items-center text-xs text-gray-500">
+                                        {review.imageUrls &&
+                                          review.imageUrls.length > 0 && (
+                                            <span>
+                                              📷 {review.imageUrls.length}장
+                                            </span>
+                                          )}
+                                        {review.audioUrl && (
+                                          <span>🎵 음성</span>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
                     </div>
                   </div>
-                </div>
-              );
-            })
-          )}
-        </div>
+                ))}
+              </div>
+            </div>
 
-        {/* 네비게이션 버튼 */}
-        <div className="absolute right-0 left-0 bottom-8">
-          <NavigationButtons
-            onPrevious={handlePrevious}
-            onNext={handleNext}
-            isNextDisabled={false}
-          />
+            {/* 페이지 인디케이터 */}
+            {totalPages > 1 && (
+              <div className="flex gap-2 justify-center items-center mt-6">
+                {Array.from({ length: totalPages }, (_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentPage(index)}
+                    className={`w-8 h-8 rounded-full transition-colors text-sm font-medium ${
+                      currentPage === index
+                        ? "bg-green-200 text-gray-200"
+                        : "bg-gray-300 text-gray-600 hover:bg-gray-400"
+                    }`}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* 홈으로 버튼 */}
+        <div className="absolute right-4 left-4 bottom-8">
+          <div className="flex justify-center">
+            <button
+              onClick={handleNext}
+              className="flex items-center justify-center gap-2 w-full h-[34px] rounded-[20px] transition-all duration-200 active:scale-95 text-gray-200 bg-green-100 shadow-lg hover:scale-105 body-inter-r"
+            >
+              <span className="text-base font-medium body-inter-r">홈으로</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

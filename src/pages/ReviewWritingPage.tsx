@@ -28,7 +28,21 @@ export const ReviewWritingPage = () => {
 
     const savedPerformance = localStorage.getItem("selectedPerformance");
     if (savedPerformance) {
-      setSelectedPerformance(JSON.parse(savedPerformance));
+      try {
+        const performanceData = JSON.parse(savedPerformance);
+        // SelectPerformancePage에서 저장한 데이터를 reviewStore의 PerformanceData 형태로 변환
+        setSelectedPerformance({
+          id: performanceData.id,
+          title: performanceData.title,
+        });
+        console.log("저장된 공연 데이터:", performanceData);
+        console.log("변환된 공연 데이터:", {
+          id: performanceData.id,
+          title: performanceData.title,
+        });
+      } catch (error) {
+        console.error("공연 데이터 파싱 오류:", error);
+      }
     }
   }, [setSelectedDate, setSelectedPerformance]);
 

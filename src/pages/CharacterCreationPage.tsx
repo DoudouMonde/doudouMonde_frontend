@@ -298,7 +298,7 @@ export const CharacterCreationPage: React.FC = () => {
               onChange={(value) => setSelectedAnimal(value as string)}
             >
               {/* 첫 번째 줄: 3개 동물 */}
-              <div className="grid grid-cols-3 mb-4">
+              <div className="grid grid-cols-3 gap-4 mb-4 sm:gap-6 md:gap-8 lg:gap-12">
                 {animals.slice(0, 3).map((animal) => {
                   const HeadIcon = animal.headIcon;
                   return (
@@ -309,7 +309,7 @@ export const CharacterCreationPage: React.FC = () => {
                         <div className="flex flex-col items-center">
                           {/* 동물 head 이미지 */}
                           <div className="flex-shrink-0">
-                            <HeadIcon className="w-40 h-40" />
+                            <HeadIcon className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40" />
                           </div>
                           {/* 선택 표시와 동물 이름을 한 줄로 */}
                           <div className="flex gap-2 items-center mt-[-12px]">
@@ -330,7 +330,7 @@ export const CharacterCreationPage: React.FC = () => {
               </div>
 
               {/* 두 번째 줄: 2개 동물을 가운데 정렬 */}
-              <div className="flex justify-center">
+              <div className="flex gap-4 justify-center sm:gap-6 md:gap-8 lg:gap-12">
                 {animals.slice(3, 5).map((animal) => {
                   const HeadIcon = animal.headIcon;
                   return (
@@ -341,7 +341,7 @@ export const CharacterCreationPage: React.FC = () => {
                         <div className="flex flex-col justify-center items-center">
                           {/* 동물 head 이미지 */}
                           <div className="flex-shrink-0">
-                            <HeadIcon className="w-40 h-40" />
+                            <HeadIcon className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40" />
                           </div>
                           {/* 선택 표시와 동물 이름을 한 줄로 */}
                           <div className="flex gap-2 items-center mt-[-12px]">
@@ -378,7 +378,7 @@ export const CharacterCreationPage: React.FC = () => {
                         <div className="flex flex-col gap-2 items-center">
                           {/* 감정 이미지 */}
                           <div className="flex-shrink-0">
-                            <EmotionIcon className="w-24 h-24" />
+                            <EmotionIcon className="w-20 h-20" />
                           </div>
                           {/* 선택 표시와 감정 이름을 한 줄로 */}
                           <div className="flex gap-2 items-center">
@@ -410,7 +410,7 @@ export const CharacterCreationPage: React.FC = () => {
                         <div className="flex flex-col gap-2 items-center">
                           {/* 감정 이미지 */}
                           <div className="flex-shrink-0">
-                            <EmotionIcon className="w-24 h-24" />
+                            <EmotionIcon className="w-20 h-20" />
                           </div>
                           {/* 선택 표시와 감정 이름을 한 줄로 */}
                           <div className="flex gap-2 items-center">
@@ -456,9 +456,9 @@ export const CharacterCreationPage: React.FC = () => {
                             ) : (
                               <RadioFalse className="w-6 h-6" />
                             )}
-                            <h3 className="text-sm text-gray-900 body-inter">
+                            {/* <h3 className="text-sm text-gray-900 body-inter">
                               {accessory.name}
-                            </h3>
+                            </h3> */}
                           </div>
                         </div>
                       </div>
@@ -488,9 +488,9 @@ export const CharacterCreationPage: React.FC = () => {
                             ) : (
                               <RadioFalse className="w-6 h-6" />
                             )}
-                            <h3 className="text-sm text-gray-900 body-inter">
+                            {/* <h3 className="text-sm text-gray-900 body-inter">
                               {accessory.name}
-                            </h3>
+                            </h3> */}
                           </div>
                         </div>
                       </div>

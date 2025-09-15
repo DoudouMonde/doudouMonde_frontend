@@ -29,6 +29,8 @@ interface ReviewDetailData {
   audioUrl: string | null;
 }
 
+import Play from "@/assets/icons/Play";
+import Stop from "@/assets/icons/Stop";
 import {
   StorytownTree0,
   StorytownTree1,
@@ -269,12 +271,30 @@ export const ReviewDetailPage = () => {
   };
 
   // 음성 재생/정지
+  const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(
+    null
+  );
+
   const handlePlayAudio = () => {
     if (reviewData?.audioUrl) {
-      const audio = new Audio(reviewData.audioUrl);
-      audio.play();
-      setIsPlaying(true);
-      audio.onended = () => setIsPlaying(false);
+      if (isPlaying) {
+        // 정지
+        if (audioElement) {
+          audioElement.pause();
+          audioElement.currentTime = 0;
+        }
+        setIsPlaying(false);
+      } else {
+        // 재생
+        const audio = new Audio(reviewData.audioUrl);
+        audio.play();
+        setIsPlaying(true);
+        setAudioElement(audio);
+        audio.onended = () => {
+          setIsPlaying(false);
+          setAudioElement(null);
+        };
+      }
     }
   };
 
@@ -469,7 +489,9 @@ export const ReviewDetailPage = () => {
 
             {/* 텍스트 후기 */}
             <div className="p-4">
-              <p className="text-black-100 body-inter">{reviewData.content}</p>
+              <p className="text-black-100 body-inter-r">
+                {reviewData.content}
+              </p>
             </div>
 
             {/* 음성 파일 재생 */}
@@ -477,29 +499,19 @@ export const ReviewDetailPage = () => {
               {reviewData.audioUrl ? (
                 <div className="bg-white/60 backdrop-blur-sm rounded-[16px] p-6 border border-secondary-100/30">
                   <div className="flex flex-col items-center">
-                    <div className="flex justify-center items-center mb-4 w-12 h-12 bg-green-100 rounded-full">
-                      <svg
-                        className="w-8 h-8 text-green-600"
-                        fill="currentColor"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </div>
-                    <p className="mb-4 text-gray-600 body-inter">
-                      음성 후기를 재생해보세요
-                    </p>
                     <button
                       onClick={handlePlayAudio}
-                      disabled={isPlaying}
-                      className={`px-3 py-3 rounded-lg transition-colors ${
-                        isPlaying
-                          ? "text-white bg-gray-400 cursor-not-allowed"
-                          : "text-white bg-green-100 hover:bg-green-200"
-                      }`}
+                      className="flex justify-center items-center mb-4 w-12 h-12 bg-green-200 rounded-full transition-colors cursor-pointer hover:bg-green-300"
                     >
-                      {isPlaying ? "재생 중..." : "재생하기"}
+                      {isPlaying ? (
+                        <Stop className="w-6 h-6 text-white" />
+                      ) : (
+                        <Play className="w-6 h-6 text-white" />
+                      )}
                     </button>
+                    <p className="mb-4 text-gray-600 subtitle">
+                      {isPlaying ? "재생 중..." : "음성 후기를 재생해보세요"}
+                    </p>
                   </div>
                 </div>
               ) : (
