@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavigationButtons } from "@/shared/components";
+import { useReviewStore } from "@/stores/reviewStore";
 import {
   ChickBody,
   CatBody,
@@ -45,10 +46,37 @@ import {
   SingleSelectGroup,
   SingleSelectItem,
 } from "@/shared/components/SingleSelect";
-import { RadioTrue, RadioFalse } from "@/assets/icons";
+import { RadioTrue, RadioFalse, PlayingCardsIcon } from "@/assets/icons";
 
 export const CharacterCreationPage: React.FC = () => {
   const navigate = useNavigate();
+
+  // 공연 정보 가져오기
+  const { selectedPerformance, setSelectedPerformance } = useReviewStore();
+
+  // localStorage에서 선택된 공연 정보 불러오기
+  useEffect(() => {
+    const savedPerformance = localStorage.getItem("selectedPerformance");
+    if (savedPerformance) {
+      try {
+        const performanceData = JSON.parse(savedPerformance);
+        setSelectedPerformance({
+          id: performanceData.id,
+          title: performanceData.title,
+        });
+        console.log(
+          "CharacterCreationPage - 저장된 공연 데이터:",
+          performanceData
+        );
+        console.log("CharacterCreationPage - 변환된 공연 데이터:", {
+          id: performanceData.id,
+          title: performanceData.title,
+        });
+      } catch (error) {
+        console.error("CharacterCreationPage - 공연 데이터 파싱 오류:", error);
+      }
+    }
+  }, [setSelectedPerformance]);
 
   // 동물 데이터 배열
   const animals = [
@@ -226,6 +254,16 @@ export const CharacterCreationPage: React.FC = () => {
               ? "친구의 표정을 선택해보세요.\n어떤 기분의 친구가 될까요?"
               : "친구의 악세사리를 선택해보세요.\n어떤 스타일의 친구가 될까요?"}
           </p>
+
+          {/* 공연 정보 표시 */}
+          {selectedPerformance && (
+            <div className="mt-4 p-3 bg-white/60 backdrop-blur-sm rounded-[16px] border border-secondary-100/30">
+              <div className="flex gap-1 items-center">
+                <PlayingCardsIcon className="w-[13px] h-[13px]" />
+                <p className="body-hak-r">{selectedPerformance.title}</p>
+              </div>
+            </div>
+          )}
         </div>
         <hr className="my-4 mb-6 border-secondary-100/30" />
 
