@@ -19,7 +19,7 @@ export const SearchInput = ({
   };
 
   return (
-    <div className={`inline-block relative }`}>
+    <div className={`block relative w-full`}>
       {/* 검색 아이콘 */}
       <div className="absolute left-[14px] top-1/2 transform -translate-y-1/2 z-10">
         <SearchIcon className="w-[18px] h-[19px] text-black" />

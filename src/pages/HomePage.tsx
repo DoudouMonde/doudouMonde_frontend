@@ -69,14 +69,14 @@ export const HomePage = () => {
 
   return (
     <div className="flex flex-col items-center p-0 m-0 w-full h-full">
-      <header className="flex fixed top-0 right-0 left-0 z-10 gap-2 items-center px-4 w-full h-16 bg-gray-200/70">
+      <header className="flex fixed top-0 right-0 left-0 z-10 gap-2 items-center p-4 px-4 w-full h-16 bg-gray-200/70">
         <KoreanLogo className="flex-shrink-0 w-9" />
         <div className="flex-1">
           <SearchPerformancesInput placeholder="공연 검색..." />
         </div>
       </header>
       {/* 아이 선택 */}
-      <main className="flex flex-col gap-4 pt-16 w-full">
+      <main className="flex flex-col flex-1 gap-4 pt-16 w-full">
         <section className="flex flex-col gap-3">
           <h2 className="px-3 py-6 text-black title-inter">
             {selectedChild?.name}을 위한{" "}
@@ -88,7 +88,7 @@ export const HomePage = () => {
             onPerformanceClick={handlePerformancePress}
           />
         </section>
-        <div className="flex flex-col gap-4 px-6 pt-5 w-full min-h-screen bg-gray-200/70">
+        <div className="flex flex-col flex-1 gap-4 px-6 pt-5 w-full bg-gray-200/70">
           <ul className="flex overflow-x-auto flex-row gap-4 px-1 py-2">
             {children.map((child) => (
               <ChildProfile

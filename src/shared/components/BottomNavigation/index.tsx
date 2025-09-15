@@ -28,7 +28,7 @@ function CustomTabBarButton({
     >
       {isSelected && (
         <div
-          className="flex absolute top-0 w-10 h-1 rounded-full shadow-lg"
+          className="flex absolute -top-1 gap-3 w-10 h-1 rounded-full"
           style={{ backgroundColor: COLORS.PRIMARY }}
         />
       )}
@@ -41,13 +41,13 @@ function CustomTabBarButton({
             }}
           />
         )}
-        <div className="flex flex-col gap-1 justify-center items-center mt-3">
+        <div className="flex flex-col justify-center items-center mt-4">
           <span
-            className="mt-1 text-xs"
+            className="text-xs"
             style={{
               fontFamily: "Inter",
               fontWeight: "400",
-              color: isSelected ? COLORS.PRIMARY : COLORS.SECONDARY,
+              color: isSelected ? COLORS.PRIMARY : COLORS.BLACK,
             }}
           >
             {children}
@@ -68,9 +68,7 @@ export function BottomNavigation() {
       title: "홈",
       icon: (isSelected: boolean) => (
         <HomeIcon
-          className={`w-6 h-6 ${
-            isSelected ? "text-green-100" : "text-gray-400"
-          }`}
+          className={`w-6 h-6 ${isSelected ? COLORS.PRIMARY : "text-gray-400"}`}
         />
       ),
     },
@@ -80,9 +78,7 @@ export function BottomNavigation() {
       title: "놀이방",
       icon: (isSelected: boolean) => (
         <GamepadIcon
-          className={`w-6 h-6 ${
-            isSelected ? "text-green-100" : "text-gray-400"
-          }`}
+          className={`w-6 h-6 ${isSelected ? COLORS.PRIMARY : "text-gray-400"}`}
         />
       ),
     },
@@ -92,9 +88,7 @@ export function BottomNavigation() {
       title: "찜",
       icon: (isSelected: boolean) => (
         <HeartIcon
-          className={`w-6 h-6 ${
-            isSelected ? "text-green-100" : "text-gray-400"
-          }`}
+          className={`w-6 h-6 ${isSelected ? COLORS.PRIMARY : "text-gray-400"}`}
         />
       ),
     },
@@ -104,16 +98,14 @@ export function BottomNavigation() {
       title: "마이",
       icon: (isSelected: boolean) => (
         <UserIcon
-          className={`w-6 h-6 ${
-            isSelected ? "text-green-100" : "text-gray-400"
-          }`}
+          className={`w-6 h-6 ${isSelected ? COLORS.PRIMARY : "text-gray-400"}`}
         />
       ),
     },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 z-50 w-full h-[64px] rounded-t-3xl bg-gray-200 flex flex-col items-center justify-center shadow-[0_-10px_20px_rgba(0,0,0,0.25)]">
+    <nav className="fixed bottom-0 left-0 z-50 w-full h-[68px] rounded-t-3xl bg-gray-200 flex flex-col items-center justify-center shadow-[0_-10px_20px_rgba(0,0,0,0.25)]">
       <div className="flex h-full">
         {tabItems.map((item) => {
           const isSelected =
@@ -130,8 +122,7 @@ export function BottomNavigation() {
               }}
             >
               <CustomTabBarButton onPress={() => {}} isSelected={isSelected}>
-                {item.icon(isSelected)}{" "}
-                <p className="text-green-200">{item.title}</p>
+                {item.icon(isSelected)} <p className="mt-1"> {item.title}</p>
               </CustomTabBarButton>
             </Link>
           );
