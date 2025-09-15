@@ -38,8 +38,8 @@ const KakaoMapIcon = ({ placeName }: { placeName: string }) => {
 
 // 개별 장소 아이템 컴포넌트
 const PlaceItem = ({ place }: { place: NearbyPlace }) => (
-  <li className="flex items-center justify-between px-0 py-2 border-b-[0.5px] border-secondary-100 min-h-[32px]">
-    <div className="flex flex-1 items-center justify-between">
+  <li className="flex items-center justify-between px-0 py-2 min-h-[32px]">
+    <div className="flex flex-1 justify-between items-center">
       {/* 장소명 */}
       <p className="text-black body-noto">{place.name}</p>
 
@@ -58,8 +58,8 @@ const Section = ({
   places: NearbyPlace[];
 }) => (
   <div className="pb-6">
-    <p className="pb-4 text-black body-hak-b">{title}</p>
-    <ul className="px-4 space-y-0">
+    <p className="p-4 text-black body-hak-b">{title}</p>
+    <ul className="px-4 space-y-0 body-inter-r">
       {places.map((place, index) => (
         <PlaceItem key={index} place={place} />
       ))}
@@ -69,9 +69,10 @@ const Section = ({
 
 export const NearbySection = () => {
   return (
-    <div className="p-4 flex flex-col gap-0">
+    <div className="flex flex-col gap-0 p-4">
       {/* 가볼만한 키즈카페 섹션 */}
       <Section title="가볼만한 키즈카페" places={nearbyInfo.kidsCafes} />
+      <hr className="border-secondary-100/30" />
       {/* 아이와 가볼만한 맛집 섹션 */}
       <Section title="아이와 가볼만한 맛집" places={nearbyInfo.restaurants} />
     </div>

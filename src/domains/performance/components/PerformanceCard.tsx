@@ -1,5 +1,6 @@
 import { BabyIcon, BearIcon, RestroomIcon } from "@/assets/icons";
 import { PerformanceItem } from "@/domains/performance/types";
+import { DUMMY_IMAGES } from "@/shared/constants";
 import { getSidoLabel } from "@/shared/services/address";
 
 // Props 타입
@@ -17,7 +18,7 @@ export default function PerformanceCard({ performance, onClick }: Props) {
       {/* 포스터 */}
       <div className="w-[124px] h-[177px] rounded-xl relative">
         <img
-          src={performance.posterUrl}
+          src={performance.posterUrl || DUMMY_IMAGES.PERFORMANCE}
           alt={performance.performanceName + "이미지"}
           className="w-full h-full rounded-xl"
         />

@@ -35,7 +35,7 @@ export const PerformanceHeader = () => {
         </button>
 
         {/* 공연 제목 */}
-        <h1 className="flex-1 text-center text-black font-bold text-base leading-[19px] font-inter">
+        <h1 className="flex-1 text-center text-black  leading-[19px] body-inter-b">
           {performanceDetail.performanceName}
         </h1>
 

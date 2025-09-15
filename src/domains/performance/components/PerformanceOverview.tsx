@@ -1,5 +1,6 @@
 import { usePerformanceDetailQuery } from "@/domains/performance/queries";
 
+import { DUMMY_IMAGES } from "@/shared/constants";
 import { formatCurrency } from "@/shared/utils";
 import { useParams } from "react-router-dom";
 
@@ -30,21 +31,26 @@ export const PerformanceOverview = () => {
   }
 
   return (
-    <div
-      className="relative w-full flex flex-col gap-2 items-center pb-[32px] -z-20"
-      style={{
-        backgroundImage:
-          "url('/assets/images/background/background_afternoon.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
+    <div className="relative w-full flex flex-col gap-2 items-center pb-[32px]">
+      {/* 배경 이미지 (opacity 적용) */}
+      <div
+        className="absolute inset-0 w-full h-full -z-30"
+        style={{
+          backgroundImage:
+            "url('/assets/images/background/background_afternoon.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          opacity: 0.5,
+        }}
+      />
       {/* 포스터 뒤 이펙트 (blur + opacity) */}
       <div
-        className="absolute w-[393px] h-[205px] left-0 top-[86px] -z-10"
+        className="absolute w-full h-[205px] left-0 -z-20"
         style={{
-          background: `linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${performanceDetail.posterUrl})`,
+          background: `linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${
+            performanceDetail.posterUrl || DUMMY_IMAGES.POSTER
+          })`,
           boxShadow: "inset 0px 4px 15px rgba(0, 0, 0, 0.25)",
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -57,7 +63,7 @@ export const PerformanceOverview = () => {
         <div className="w-[173px] h-[231px]">
           {/* <div className="w-[225px] h-[300px]"> */}
           <img
-            src={performanceDetail.posterUrl}
+            src={performanceDetail.posterUrl || DUMMY_IMAGES.POSTER}
             className="object-cover w-full h-full rounded-lg shadow-lg"
           />
         </div>
@@ -67,7 +73,9 @@ export const PerformanceOverview = () => {
           <div className="flex flex-col gap-2 items-center">
             {/* <Chip>🌱 차차는 처음 보는 장르예요!</Chip> */}
 
-            <h1 className="title-hak">{performanceDetail.performanceName}</h1>
+            <h1 className="p-3 title-hak">
+              {performanceDetail.performanceName}
+            </h1>
           </div>
           {/* 공연 정보 */}
           <div className="flex flex-col gap-[7px] w-full">
@@ -102,7 +110,7 @@ export const PerformanceOverview = () => {
                   : "없음",
               },
             ].map((item, index) => (
-              <div key={index} className="flex flex-row gap-4 items-center">
+              <div key={index} className="flex flex-row gap-10 items-center">
                 <p className="text-secondary-100  subtitle-b w-[44px] flex-shrink-0">
                   {item.label}
                 </p>
