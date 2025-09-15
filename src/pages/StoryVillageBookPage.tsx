@@ -1,18 +1,52 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import BackIcon from "@/assets/icons/Back";
 import { StorytownBookCoverEx } from "@/assets/icons/playroom/storytown_book";
 import { StorytownBookInsideEx } from "@/assets/icons/playroom/storytown_book";
 import { StorytownBookLogo } from "@/assets/icons/playroom/storytown_book";
+import { reviewApi } from "@/domains/review/apis/reviewApi";
 
 export const StoryVillageBookPage = () => {
   const navigate = useNavigate();
+  const [reviewCount, setReviewCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  // 리뷰 개수 가져오기
+  useEffect(() => {
+    const fetchReviewCount = async () => {
+      try {
+        const reviews = await reviewApi.getMemberReviews();
+        setReviewCount(reviews.length);
+      } catch (error) {
+        console.error("리뷰 개수 조회 실패:", error);
+        setReviewCount(0);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReviewCount();
+  }, []);
 
   const handleBackClick = () => {
     navigate(-1);
   };
 
+  // 진행도 계산
+  const progressPercentage = (reviewCount / 9) * 100;
+  const remainingCount = 9 - reviewCount;
+
+  // 진행도에 따른 색상 결정
+  const getProgressColor = () => {
+    if (reviewCount === 0) return "from-gray-300 to-gray-400";
+    if (reviewCount < 3) return "from-red-300 to-red-400";
+    if (reviewCount < 6) return "from-yellow-300 to-yellow-400";
+    if (reviewCount < 9) return "from-blue-300 to-blue-400";
+    return "from-green-300 to-green-500"; // 9개 완료
+  };
+
   return (
-    <div className="w-[375px] h-full mx-auto overflow-y-auto">
+    <div className="overflow-y-auto mx-auto w-full max-w-md h-full">
       {/* 상단 바 */}
       <div className="fixed top-0 right-0 left-0 z-20 px-6 pt-4 pb-2 h-[60px] bg-gray-200/70 shadow-sm">
         <div className="flex justify-between items-center">
@@ -31,10 +65,10 @@ export const StoryVillageBookPage = () => {
       </div>
 
       {/* 메인 컨텐츠 */}
-      <div className="py-4 pt-24">
+      <div className="px-4 py-4 pt-24">
         <div className="flex flex-col gap-6 justify-center">
           {/* 이야기 마을 북 컨텐츠 */}
-          <div className="flex flex-col justify-center gap-6 bg-gradient-to-br from-pink-50/80 to-purple-50/80 rounded-[20px] p-6 w-full bg-gray-200/70">
+          <div className="flex flex-col justify-center gap-6 bg-gradient-to-br from-pink-50/80 to-purple-50/80 rounded-[20px] p-4 sm:p-6 w-full bg-gray-200/70 min-h-[600px] sm:min-h-[700px]">
             {/* 로고 섹션 */}
             <div className="flex flex-col gap-3 items-center">
               <StorytownBookLogo />
@@ -95,13 +129,18 @@ export const StoryVillageBookPage = () => {
                 <span className="text-sm font-medium text-gray-700">
                   후기 작성 진행도
                 </span>
-                <span className="text-sm font-bold text-purple-600">3/9</span>
+                <span className="text-sm font-bold">{reviewCount}/9</span>
               </div>
               <div className="w-full h-3 bg-gray-100 rounded-full">
-                <div className="w-1/3 h-3 bg-gradient-to-r from-pink-400 to-purple-500 rounded-full transition-all duration-500"></div>
+                <div
+                  className={`h-3 bg-gradient-to-r rounded-full transition-all duration-500 ${getProgressColor()}`}
+                  style={{ width: `${progressPercentage}%` }}
+                ></div>
               </div>
               <p className="mt-2 text-xs text-center text-gray-600">
-                6개 더 작성하면 북을 받을 수 있어요! 💫
+                {remainingCount > 0
+                  ? `${remainingCount}개 더 작성하면 북을 받을 수 있어요! 💫`
+                  : "축하해요! 북을 받을 수 있어요! 🎉"}
               </p>
             </div>
           </div>
