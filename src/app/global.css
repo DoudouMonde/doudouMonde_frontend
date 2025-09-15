@@ -147,6 +147,10 @@
   .scrollbar-hidden::-webkit-scrollbar {
     display: none;
   }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* 리스트 기본 스타일 제거 */

@@ -202,14 +202,13 @@ export const CharacterPreviewPage: React.FC = () => {
     };
 
     return {
-      performanceName:
-        selectedPerformanceFromStorage?.title ||
-        selectedPerformance?.title ||
-        "공연이름", // 공연 이름 전송
+      performanceId:
+        selectedPerformanceFromStorage?.id || selectedPerformance?.id || 1, // 공연 ID 전송
       watchDate: selectedDate
         ? new Date(selectedDate).toISOString().slice(0, 19) // "2025-09-08T20:00:00" 형식
         : new Date().toISOString().slice(0, 19),
-      content: `상상친구 ${characterName}와 함께한 공연 후기입니다.`,
+      content:
+        reviewText || `상상친구 ${characterName}와 함께한 공연 후기입니다.`,
       characterName: characterName,
       characterType: animalToType[characterData.animal] || CharacterType.CHICK,
       characterEmotion:
@@ -240,7 +239,6 @@ export const CharacterPreviewPage: React.FC = () => {
     try {
       // 1. 서버에 보낼 JSON 데이터 객체를 생성합니다.
       const reviewData = convertToApiFormat();
-      reviewData.content = reviewText; // Zustand store에서 가져온 후기 텍스트 사용
 
       console.log("전송할 리뷰 데이터 (JSON):", reviewData);
 
