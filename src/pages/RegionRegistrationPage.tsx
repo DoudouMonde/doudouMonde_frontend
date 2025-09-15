@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { PATH } from "@/shared/constants";
 import { signupApi } from "@/domains/auth/apis/signupApi";
 import { SignupRequest, ChildRequest } from "@/domains/auth/types/signup";
+import BackIcon from "@/assets/icons/Back";
 
 type Coords = { latitude: number | null; longitude: number | null };
 
@@ -18,8 +19,6 @@ export function RegionRegistrationPage() {
 
   const [isLocating, setIsLocating] = useState(false);
   const [isLoadingAddress, setIsLoadingAddress] = useState(false);
-  const [locationError, setLocationError] = useState("");
-  const [showManual, setShowManual] = useState(false); // 수동 입력 토글
   const [showLocationModal, setShowLocationModal] = useState(true); // 위치 동의 모달
   const [isSubmitting, setIsSubmitting] = useState(false); // 제출 중 상태
 
@@ -38,14 +37,11 @@ export function RegionRegistrationPage() {
   // ✅ 카카오 역지오코딩: road_address 우선, 없으면 address 사용
   async function reverseGeocodeKakao(lat: number, lng: number) {
     setIsLoadingAddress(true);
-    setLocationError("");
 
     // ⚠️ 프론트에서 REST 키를 쓰면 노출 위험. 가능하면 백엔드 프록시(/api/geocode/reverse)로 호출 권장.
     const apiKey = import.meta.env.VITE_KAKAO_MAP_API_KEY;
     if (!apiKey) {
-      setLocationError(
-        "주소 자동완성을 사용할 수 없습니다. 직접 입력해주세요."
-      );
+      console.warn("주소 자동완성을 사용할 수 없습니다. 직접 입력해주세요.");
       setIsLoadingAddress(false);
       return;
     }
@@ -69,10 +65,7 @@ export function RegionRegistrationPage() {
       setSelectedRegion(regionName);
       setDetailedAddress(detail);
     } catch (e) {
-      console.error(e);
-      setLocationError(
-        "주소 정보를 가져올 수 없습니다. 수동으로 입력해주세요."
-      );
+      console.error("주소 정보를 가져올 수 없습니다:", e);
     } finally {
       setIsLoadingAddress(false);
     }
@@ -81,11 +74,10 @@ export function RegionRegistrationPage() {
   // ✅ 현재 위치 한 번에 가져와서 주소까지 세팅
   async function handleUseCurrentLocation() {
     if (!("geolocation" in navigator)) {
-      setLocationError("이 브라우저에서는 위치 서비스를 지원하지 않습니다.");
+      console.warn("이 브라우저에서는 위치 서비스를 지원하지 않습니다.");
       return;
     }
     setIsLocating(true);
-    setLocationError("");
 
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
@@ -96,24 +88,18 @@ export function RegionRegistrationPage() {
         setIsLocating(false);
         setShowLocationModal(false); // 성공 시 모달 닫기
 
-        // 주소 변환이 실패했을 경우 수동 입력 폼 표시
-        setTimeout(() => {
-          if (!selectedRegion || !detailedAddress) {
-            setShowManual(true);
-          }
-        }, 100);
+        // 주소 변환이 실패했을 경우 기본값 사용
       },
       (err) => {
-        console.error(err);
+        console.error("위치 정보 가져오기 실패:", err);
         // 권한 거부 / 타임아웃 등
         const message =
           err.code === err.PERMISSION_DENIED
             ? "위치 권한이 거부되었습니다. 브라우저 설정에서 허용해주세요."
             : "위치 정보를 가져오지 못했습니다. 잠시 후 다시 시도해주세요.";
-        setLocationError(message);
+        console.warn(message);
         setIsLocating(false);
-        // 필요 시 수동 입력 노출
-        setShowManual(true);
+        // 위치 정보를 가져올 수 없어도 계속 진행
       },
       {
         enableHighAccuracy: true,
@@ -132,11 +118,13 @@ export function RegionRegistrationPage() {
   // 모달에서 직접 입력하기 버튼 클릭
   function handleManualInput() {
     setShowLocationModal(false);
-    setShowManual(true);
+    // 수동 입력 모드로 전환
   }
+  // 내비게이션
+  const handleBackClick = () => navigate(-1);
 
   async function handleNext() {
-    if (!selectedRegion || !detailedAddress.trim()) return;
+    if (!selectedRegion) return;
 
     setIsSubmitting(true);
 
@@ -150,12 +138,19 @@ export function RegionRegistrationPage() {
       const childData: ChildRequest = JSON.parse(savedChildData);
       console.log("📋 저장된 아이 정보:", childData);
 
+      // 실제 위치 정보 사용 (없으면 기본값)
+      const longitude = coords.longitude || 127.0276; // 서울 강남 기본값
+      const latitude = coords.latitude || 37.4979; // 서울 강남 기본값
+      const address = detailedAddress.trim() || `${selectedRegion} 지역`;
+
+      console.log("📍 사용할 위치 정보:", { longitude, latitude, address });
+
       // 위치 정보와 아이 정보를 함께 백엔드에 전송
       const signupData: SignupRequest = {
-        longitude: 127.0276, // 하드코딩된 경도 (서울 강남)
-        latitude: 37.4979, // 하드코딩된 위도 (서울 강남)
-        address: detailedAddress,
-        sido: selectedRegion || "SEOUL",
+        longitude,
+        latitude,
+        address,
+        sido: selectedRegion,
         children: [childData],
       };
 
@@ -170,14 +165,27 @@ export function RegionRegistrationPage() {
       navigate(PATH.HOME);
     } catch (error) {
       console.error("회원가입 실패:", error);
-      setLocationError("회원가입에 실패했습니다. 다시 시도해주세요.");
+      alert("회원가입에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setIsSubmitting(false);
     }
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="flex relative flex-col w-full min-h-screen">
+      {/* 배경 이미지 */}
+      <div
+        className="absolute inset-0 w-full h-full -z-10"
+        style={{
+          backgroundImage:
+            "url('/assets/images/background/background_afternoon.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed",
+          opacity: 0.7,
+        }}
+      />
       {/* Location Consent Modal */}
       {showLocationModal && (
         <div className="flex fixed inset-0 z-50 justify-center items-center bg-black bg-opacity-50">
@@ -235,34 +243,29 @@ export function RegionRegistrationPage() {
       )}
 
       {/* Header */}
-      <div className="flex justify-between items-center p-4 border-b border-gray-200">
-        <button
-          onClick={() => navigate(-1)}
-          className="p-2 rounded-full transition-colors hover:bg-gray-100"
-          aria-label="뒤로가기"
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+      <div
+        className="fixed top-0 right-0 left-0 z-20 px-6 pb-2 h-[60px] bg-gray-200/70 shadow-sm"
+        style={{ paddingTop: `max(1rem, env(safe-area-inset-top))` }}
+      >
+        <div className="flex justify-between items-center">
+          <button
+            onClick={handleBackClick}
+            className="flex items-center w-10 h-10"
+            aria-label="이전으로 이동"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </button>
-        <h1 className="text-lg font-semibold text-gray-900">지역 선택</h1>
-        <div className="w-10" />
+            <BackIcon className="w-5 h-5 text-gray-700" />
+          </button>
+          <div className="flex flex-1 justify-center">
+            <div className="text-black title-hak">지역 등록</div>
+          </div>
+          <div className="w-10" />
+        </div>
       </div>
 
       {/* Content */}
-      <div className="p-6">
+      <div className="px-8 pt-24">
         {/* 위치 정보 수집 완료 시 표시 */}
-        {coords.latitude && coords.longitude && (
+        {/* {coords.latitude && coords.longitude && (
           <div className="p-4 mb-6 bg-green-50 rounded-lg border border-green-200">
             <div className="flex gap-2 items-center mb-2">
               <svg
@@ -287,53 +290,25 @@ export function RegionRegistrationPage() {
             {!selectedRegion && !detailedAddress && (
               <button
                 className="mt-2 text-xs text-gray-600 underline hover:text-gray-800"
-                onClick={() => setShowManual(true)}
+                onClick={() => setShowLocationModal(false)}
               >
                 주소를 수동으로 입력하세요
               </button>
             )}
           </div>
-        )}
-
-        {/* 에러 메시지 */}
-        {locationError && (
-          <div className="p-3 mb-6 text-sm text-red-600 bg-red-50 rounded-lg border border-red-200">
-            {locationError}
-            <button
-              className="ml-2 text-gray-700 underline"
-              onClick={() => setShowManual(true)}
-            >
-              수동으로 입력
-            </button>
-          </div>
-        )}
-
-        {/* 자동으로 채워진 결과 미리보기 */}
-        {(selectedRegion || detailedAddress) && (
-          <div className="p-4 mb-6 bg-green-50 rounded-lg border border-green-200">
-            <div className="mb-1 text-sm font-medium text-green-800">
-              자동 입력 완료
-            </div>
-            <div className="text-sm text-gray-800">
-              지역: {selectedRegion || "-"}
-              <br />
-              주소: {detailedAddress || "-"}
-            </div>
-            <button
-              className="mt-2 text-xs text-gray-600 underline"
-              onClick={() => setShowManual(true)}
-            >
-              수정하기
-            </button>
-          </div>
-        )}
+        )} */}
 
         {/* 수동 입력 (기본은 감춤, 오류나 수정 시 표시) */}
-        {showManual && (
-          <>
+
+        <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-6 pb-8 w-full h-auto">
+          <div className="flex flex-col gap-2">
+            <p className="title-hak">지역 선택</p>
+            <p className="subtitle-b text-secondary-100">
+              우리 지역의 인기공연을 추천받을 수 있어요
+            </p>
+
             <div className="mb-6">
               <label className="block mb-2 font-medium text-gray-700 body-inter-r">
-                지역 선택{" "}
                 {isLoadingAddress && (
                   <span className="ml-2 text-xs text-green-600">
                     자동으로 불러오는 중…
@@ -344,7 +319,7 @@ export function RegionRegistrationPage() {
                 <select
                   value={selectedRegion}
                   onChange={(e) => handleRegionSelect(e.target.value)}
-                  className="p-4 pr-10 w-full bg-white rounded-lg border appearance-none border-secondary-100 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
+                  className="p-4 pr-10 w-full bg-gray-200 rounded-lg border appearance-none border-secondary-100/30 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
                 >
                   <option value="" disabled>
                     지역을 선택해주세요
@@ -373,7 +348,44 @@ export function RegionRegistrationPage() {
               </div>
             </div>
 
-            <div className="mb-8">
+            {/* 상세 주소 입력 (선택사항) */}
+            <div className="mb-6">
+              <label className="block mb-2 font-medium text-gray-700 body-inter-r">
+                상세 주소 (선택사항)
+                {isLoadingAddress && (
+                  <span className="ml-2 text-xs text-green-600">
+                    주소를 불러오는 중...
+                  </span>
+                )}
+              </label>
+              <input
+                type="text"
+                value={detailedAddress}
+                onChange={(e) => setDetailedAddress(e.target.value)}
+                placeholder="예: 강남구 테헤란로 123, ○○아파트"
+                className="p-4 w-full bg-gray-200 rounded-lg border border-secondary-100/30 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
+              />
+            </div>
+          </div>
+          <div className="flex flex-col gap-2 w-full"></div>
+
+          {/* Next */}
+          <button
+            onClick={handleNext}
+            disabled={!selectedRegion || isSubmitting}
+            className={`w-full rounded-[20px] font-semibold transition-colors h-12
+              ${
+                selectedRegion && !isSubmitting
+                  ? "bg-green-200 hover:bg-green-600 text-gray-200"
+                  : "bg-secondary-100 text-gray-200 cursor-not-allowed"
+              }`}
+          >
+            {isSubmitting ? "처리 중..." : "확인"}
+          </button>
+        </div>
+
+        <>
+          {/* <div className="mb-8">
               <label className="block mb-2 font-medium text-gray-700 body-inter-r">
                 상세주소 입력
               </label>
@@ -384,23 +396,8 @@ export function RegionRegistrationPage() {
                 placeholder="예: 강남구 테헤란로 123, ○○아파트"
                 className="p-4 w-full bg-white rounded-lg border border-secondary-100 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
               />
-            </div>
-          </>
-        )}
-
-        {/* Next */}
-        <button
-          onClick={handleNext}
-          disabled={!selectedRegion || !detailedAddress.trim() || isSubmitting}
-          className={`w-full py-4 rounded-[12px] font-semibold transition-colors border
-             ${
-               selectedRegion && detailedAddress.trim() && !isSubmitting
-                 ? "bg-green-200 hover:bg-green-600 text-gray-200"
-                 : "bg-secondary-100 text-gray-200 cursor-not-allowed"
-             }`}
-        >
-          {isSubmitting ? "처리 중..." : "확인"}
-        </button>
+            </div> */}
+        </>
       </div>
     </div>
   );

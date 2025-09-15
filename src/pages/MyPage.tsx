@@ -33,7 +33,7 @@ export const MyPage = () => {
   };
 
   return (
-    <div className="w-[375px] h-full mx-auto overflow-y-auto">
+    <div className="overflow-y-auto w-full h-full">
       {/* 상단 바 */}
       <div className="fixed top-0 right-0 left-0 z-20 px-6 pt-4 pb-2 h-[60px] bg-gray-200/70 shadow-sm">
         <div className="flex justify-between items-center">
@@ -52,8 +52,8 @@ export const MyPage = () => {
       </div>
 
       {/* 메인 컨텐츠 */}
-      <div className="py-4 pt-24">
-        <div className="flex flex-col gap-6 justify-center">
+      <div className="px-6 py-4 pt-24">
+        <div className="flex flex-col gap-6 justify-center w-full">
           {/* 카카오톡 계정 연동 */}
           <div className="flex flex-col justify-center gap-2 bg-gray-200/70 rounded-[20px] p-7 w-full h-[120px]">
             <p className="title-hak">김출신</p>
