@@ -17,17 +17,25 @@ export const AutoCarousel: React.FC<AutoCarouselProps> = ({
   autoPlayInterval = 2000,
   genre,
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(1); // 가상 포스터를 위해 1부터 시작
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isTransitioning, setIsTransitioning] = useState(true);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const scrollContainerRef = useRef<HTMLUListElement>(null);
+
+  // 무한 캐러셀을 위한 가상 포스터 배열 생성
+  const extendedPerformances = [
+    performances[performances.length - 1], // 마지막 포스터를 맨 앞에 추가
+    ...performances,
+    performances[0], // 첫 번째 포스터를 맨 뒤에 추가
+  ];
 
   // 자동 재생 로직
   useEffect(() => {
     if (!isAutoPlaying || performances.length <= 1) return;
 
     intervalRef.current = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % performances.length);
+      setCurrentIndex((prevIndex) => prevIndex + 1);
     }, autoPlayInterval);
 
     return () => {
@@ -40,13 +48,31 @@ export const AutoCarousel: React.FC<AutoCarouselProps> = ({
 
   // 현재 슬라이드 표시 업데이트
   useEffect(() => {
-    // 스크롤 대신 transform을 사용하여 슬라이드 전환
     if (scrollContainerRef.current) {
       const container = scrollContainerRef.current;
-      const itemWidth = 256; //gap + li폭
+      const itemWidth = 256; // gap + li폭
       container.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
     }
-  }, [currentIndex, performances.length]);
+  }, [currentIndex]);
+
+  // 무한 캐러셀을 위한 인덱스 조정
+  useEffect(() => {
+    if (currentIndex === 0) {
+      // 첫 번째 가상 포스터(마지막 실제 포스터)에서 실제 마지막 포스터로 점프
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrentIndex(performances.length);
+        setTimeout(() => setIsTransitioning(true), 50);
+      }, 500);
+    } else if (currentIndex === extendedPerformances.length - 1) {
+      // 마지막 가상 포스터(첫 번째 실제 포스터)에서 실제 첫 번째 포스터로 점프
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrentIndex(1);
+        setTimeout(() => setIsTransitioning(true), 50);
+      }, 500);
+    }
+  }, [currentIndex, performances.length, extendedPerformances.length]);
 
   const handleMouseLeave = () => {
     setIsAutoPlaying(true);
@@ -66,7 +92,7 @@ export const AutoCarousel: React.FC<AutoCarouselProps> = ({
 
   // 인디케이터 클릭 핸들러
   const handleIndicatorClick = (index: number) => {
-    setCurrentIndex(index);
+    setCurrentIndex(index + 1); // 가상 포스터 때문에 +1
     setIsAutoPlaying(false);
 
     // 기존 타이머 정리
@@ -88,16 +114,20 @@ export const AutoCarousel: React.FC<AutoCarouselProps> = ({
   return (
     <div className="flex flex-col gap-2 w-full">
       {/* 캐러셀 컨테이너 */}
-      <div className="overflow-hidden relative px-10 w-full">
+      <div className="overflow-hidden relative px-16 w-full">
         <ul
           ref={scrollContainerRef}
-          className="flex gap-4 w-full transition-transform duration-500 ease-in-out"
+          className={`flex gap-4 w-full ${
+            isTransitioning
+              ? "transition-transform duration-500 ease-in-out"
+              : ""
+          }`}
           onMouseLeave={handleMouseLeave}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          style={{ width: `${performances.length * 100}%` }}
+          style={{ width: `${extendedPerformances.length * 100}%` }}
         >
-          {performances.map((performance) => (
+          {extendedPerformances.map((performance) => (
             <li
               key={performance.performanceId}
               className="flex flex-col flex-shrink-0 items-center cursor-pointer"
@@ -126,7 +156,7 @@ export const AutoCarousel: React.FC<AutoCarouselProps> = ({
                 <div className="absolute right-[18px] bottom-5">
                   <div className="flex items-center justify-center w-[67px] h-[30px] bg-gray-100 rounded-[60px]">
                     <p className="body-inter-b text-secondary-100">
-                      {currentIndex + 1}/{performances.length}
+                      {currentIndex}/{performances.length}
                     </p>
                   </div>
                 </div>
@@ -156,7 +186,7 @@ export const AutoCarousel: React.FC<AutoCarouselProps> = ({
               key={index}
               onClick={() => handleIndicatorClick(index)}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentIndex ? "bg-black w-6" : "bg-gray-200"
+                index === currentIndex - 1 ? "bg-black w-6" : "bg-gray-200"
               }`}
               aria-label={`${index + 1}번째 슬라이드로 이동`}
             />
