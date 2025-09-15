@@ -43,8 +43,7 @@ export const AutoCarousel: React.FC<AutoCarouselProps> = ({
     // 스크롤 대신 transform을 사용하여 슬라이드 전환
     if (scrollContainerRef.current) {
       const container = scrollContainerRef.current;
-      const containerWidth = container.offsetWidth;
-      const itemWidth = containerWidth / performances.length;
+      const itemWidth = 256; //gap + li폭
       container.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
     }
   }, [currentIndex, performances.length]);
@@ -89,11 +88,10 @@ export const AutoCarousel: React.FC<AutoCarouselProps> = ({
   return (
     <div className="flex flex-col gap-2 w-full">
       {/* 캐러셀 컨테이너 */}
-      <div className="overflow-hidden relative w-full">
+      <div className="overflow-hidden relative px-10 w-full">
         <ul
           ref={scrollContainerRef}
-          className="flex w-full transition-transform duration-500 ease-in-out"
-          // onMouseEnter={handleMouseEnter}
+          className="flex gap-4 w-full transition-transform duration-500 ease-in-out"
           onMouseLeave={handleMouseLeave}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
@@ -102,11 +100,11 @@ export const AutoCarousel: React.FC<AutoCarouselProps> = ({
           {performances.map((performance) => (
             <li
               key={performance.performanceId}
-              className="flex-shrink-0 cursor-pointer"
-              style={{ width: `${100 / performances.length}%` }}
+              className="flex flex-col flex-shrink-0 items-center cursor-pointer"
+              // style={{ width: `${100 / performances.length}%` }}
               onClick={() => onPerformanceClick(performance.performanceId)}
             >
-              <article className="relative w-full h-[482px] rounded-[20px] overflow-hidden">
+              <article className="relative w-[240px] h-[320px] rounded-[20px] overflow-hidden">
                 {/* 포스터 이미지 */}
                 <img
                   src={performance.posterUrl}
