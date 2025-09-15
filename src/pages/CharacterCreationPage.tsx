@@ -251,8 +251,7 @@ export const CharacterCreationPage: React.FC = () => {
                   return (
                     <AccessoryCharacter
                       className={`w-[350px] h-[250px] relative z-20 ${
-                        isAnimating ? "animate-gentle-bounce" : ""
-                      }`}
+                        isAnimating ? "animate-gentle-bounce" : ""}`}
                     />
                   );
                 }
@@ -267,8 +266,7 @@ export const CharacterCreationPage: React.FC = () => {
                   return (
                     <EmotionCharacter
                       className={`w-[350px] h-[250px] relative z-20 ${
-                        isAnimating ? "animate-gentle-bounce" : ""
-                      }`}
+                        isAnimating ? "animate-gentle-bounce" : ""}`}
                     />
                   );
                 }
@@ -282,8 +280,7 @@ export const CharacterCreationPage: React.FC = () => {
               return (
                 <BodyIcon
                   className={`w-[350px] h-[250px] relative z-20 ${
-                    isAnimating ? "animate-gentle-bounce" : ""
-                  }`}
+                    isAnimating ? "animate-gentle-bounce" : ""}`}
                 />
               );
             })()}

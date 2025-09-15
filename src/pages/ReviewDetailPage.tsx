@@ -41,6 +41,13 @@ import {
   StorytownTree8,
   StorytownTree9,
 } from "@/assets/icons/playroom/storytown_tree";
+import * as EmotionCharacters from "@/assets/icons/playroom/storytown/character/emotion";
+import * as CrownCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/crown";
+import * as CapCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/cap";
+import * as FlowerCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/flower";
+import * as GlassesCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/glasses";
+import * as RibbonCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/ribbon";
+import * as WizhatCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/wizhat";
 
 export const ReviewDetailPage = () => {
   const navigate = useNavigate();
@@ -144,6 +151,123 @@ export const ReviewDetailPage = () => {
     return animals.find((animal) => animal.id === typeToId[characterType]);
   };
 
+  // API 타입을 문자열로 변환하는 함수들
+  const getAnimalString = (characterType: CharacterType): string => {
+    const typeToString: Record<CharacterType, string> = {
+      [CharacterType.CHICK]: "chick",
+      [CharacterType.CAT]: "cat",
+      [CharacterType.DINO]: "dino",
+      [CharacterType.DOG]: "dog",
+      [CharacterType.RABBIT]: "rabbit",
+    };
+    return typeToString[characterType];
+  };
+
+  const getEmotionString = (characterEmotion: CharacterEmotion): string => {
+    const emotionToString: Record<CharacterEmotion, string> = {
+      [CharacterEmotion.HAPPY]: "happy",
+      [CharacterEmotion.EXITED]: "exited",
+      [CharacterEmotion.SURPRISE]: "surprise",
+      [CharacterEmotion.SAD]: "sad",
+      [CharacterEmotion.BORED]: "bored",
+      [CharacterEmotion.CURIOUS]: "curious",
+    };
+    return emotionToString[characterEmotion];
+  };
+
+  const getAccessoryString = (
+    characterAccessories: CharacterAccessories
+  ): string => {
+    const accessoryToString: Record<CharacterAccessories, string> = {
+      [CharacterAccessories.CROWN]: "crown",
+      [CharacterAccessories.FLOWER]: "flower",
+      [CharacterAccessories.HAT]: "cap",
+      [CharacterAccessories.RIBBON]: "ribbon",
+      [CharacterAccessories.ROUND_GLASS]: "glasses",
+      [CharacterAccessories.WIZARD_HAT]: "wizhat",
+    };
+    return accessoryToString[characterAccessories];
+  };
+
+  // 동물과 감정을 조합해서 캐릭터 컴포넌트를 가져오는 함수
+  const getEmotionCharacter = (animal: string, emotion: string) => {
+    const animalName = animal.charAt(0).toUpperCase() + animal.slice(1);
+    const emotionName = emotion.charAt(0).toUpperCase() + emotion.slice(1);
+    const componentName = `${animalName}${emotionName}`;
+
+    // 컴포넌트 이름 매핑 (oneMore -> Onemore)
+    const mappedComponentName = componentName.replace("Onemore", "Onemore");
+
+    return (
+      EmotionCharacters as Record<
+        string,
+        React.ComponentType<{ className?: string }>
+      >
+    )[mappedComponentName];
+  };
+
+  // 동물, 감정, 액세사리를 조합해서 캐릭터 컴포넌트를 가져오는 함수
+  const getAccessoryCharacter = (
+    animal: string,
+    emotion: string,
+    accessory: string
+  ) => {
+    const animalName = animal.charAt(0).toUpperCase() + animal.slice(1);
+    const emotionName = emotion.charAt(0).toUpperCase() + emotion.slice(1);
+    const accessoryName =
+      accessory.charAt(0).toUpperCase() + accessory.slice(1);
+    const componentName = `${animalName}${emotionName}${accessoryName}`;
+
+    // 액세사리별로 다른 모듈에서 가져오기
+    let characterModule: Record<
+      string,
+      React.ComponentType<{ className?: string }>
+    >;
+
+    switch (accessory) {
+      case "crown":
+        characterModule = CrownCharacters as Record<
+          string,
+          React.ComponentType<{ className?: string }>
+        >;
+        break;
+      case "cap":
+        characterModule = CapCharacters as Record<
+          string,
+          React.ComponentType<{ className?: string }>
+        >;
+        break;
+      case "flower":
+        characterModule = FlowerCharacters as Record<
+          string,
+          React.ComponentType<{ className?: string }>
+        >;
+        break;
+      case "glasses":
+        characterModule = GlassesCharacters as Record<
+          string,
+          React.ComponentType<{ className?: string }>
+        >;
+        break;
+      case "ribbon":
+        characterModule = RibbonCharacters as Record<
+          string,
+          React.ComponentType<{ className?: string }>
+        >;
+        break;
+      case "wizhat":
+        characterModule = WizhatCharacters as Record<
+          string,
+          React.ComponentType<{ className?: string }>
+        >;
+        break;
+      default:
+        return null;
+    }
+
+    return characterModule[componentName];
+  };
+
   // 음성 재생/정지
   const handlePlayAudio = () => {
     if (reviewData?.audioUrl) {
@@ -228,9 +352,47 @@ export const ReviewDetailPage = () => {
         <div className="flex flex-col items-center pt-36 pb-8">
           <div className="flex relative z-10 flex-col items-center">
             <div className="flex justify-center">
-              {selectedAnimal && (
-                <selectedAnimal.bodyIcon className="w-[350px] h-[250px] relative z-20" />
-              )}
+              {(() => {
+                if (!reviewData) return null;
+
+                const animal = getAnimalString(reviewData.characterType);
+                const emotion = getEmotionString(reviewData.characterEmotion);
+                const accessory = getAccessoryString(
+                  reviewData.characterAccessories
+                );
+
+                // 액세사리가 적용된 최종 캐릭터 표시
+                const AccessoryCharacter = getAccessoryCharacter(
+                  animal,
+                  emotion,
+                  accessory
+                );
+
+                if (AccessoryCharacter) {
+                  return (
+                    <AccessoryCharacter className="w-[350px] h-[250px] relative z-20" />
+                  );
+                }
+
+                // 액세사리 캐릭터를 찾을 수 없는 경우 감정 캐릭터 표시
+                const EmotionCharacter = getEmotionCharacter(animal, emotion);
+
+                if (EmotionCharacter) {
+                  return (
+                    <EmotionCharacter className="w-[350px] h-[250px] relative z-20" />
+                  );
+                }
+
+                // 기본 동물 전신 모습 표시
+                if (selectedAnimal) {
+                  const BodyIcon = selectedAnimal.bodyIcon;
+                  return (
+                    <BodyIcon className="w-[350px] h-[250px] relative z-20" />
+                  );
+                }
+
+                return null;
+              })()}
             </div>
           </div>
         </div>
