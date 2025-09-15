@@ -61,7 +61,7 @@ export const HomePage = () => {
   // }
 
   return (
-    <div className="flex flex-col items-center p-0 w-full border-2">
+    <div className="flex flex-col items-center p-0 w-full h-full border-2">
       <header className="flex fixed left-0 z-10 flex-row flex-1 gap-2 justify-center items-center w-full h-16 bg-gray-200">
         <KoreanLogo className="w-9" />
         <SearchPerformancesInput placeholder="공연 검색..." />
@@ -79,7 +79,7 @@ export const HomePage = () => {
             onPerformanceClick={handlePerformancePress}
           />
         </section>
-        <div className="flex flex-col gap-4 px-6 w-full">
+        <div className="flex flex-col gap-4 px-6 pt-5 w-full h-full bg-gray-200">
           <ul className="flex overflow-x-auto flex-row gap-4 px-1 py-2">
             {children.map((child) => (
               <ChildProfile
