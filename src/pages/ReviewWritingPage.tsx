@@ -28,7 +28,21 @@ export const ReviewWritingPage = () => {
 
     const savedPerformance = localStorage.getItem("selectedPerformance");
     if (savedPerformance) {
-      setSelectedPerformance(JSON.parse(savedPerformance));
+      try {
+        const performanceData = JSON.parse(savedPerformance);
+        // SelectPerformancePage에서 저장한 데이터를 reviewStore의 PerformanceData 형태로 변환
+        setSelectedPerformance({
+          id: performanceData.id,
+          title: performanceData.title,
+        });
+        console.log("저장된 공연 데이터:", performanceData);
+        console.log("변환된 공연 데이터:", {
+          id: performanceData.id,
+          title: performanceData.title,
+        });
+      } catch (error) {
+        console.error("공연 데이터 파싱 오류:", error);
+      }
     }
   }, [setSelectedDate, setSelectedPerformance]);
 
@@ -73,13 +87,15 @@ export const ReviewWritingPage = () => {
           <div className="flex flex-col gap-2 w-auto">
             <div className="flex gap-1 items-center">
               <PlayingCardsIcon className="w-[13px] h-[13px]" />
-              <p>
+              <p className="body-hak-r">
                 {selectedPerformance ? selectedPerformance.title : "공연이름"}
               </p>
             </div>
             <div className="flex gap-1 items-center">
               <Calendar className="w-[13px] h-[13px] flex-shrink-0" />
-              <p className="whitespace-nowrap">{selectedDate || "선택날짜"}</p>
+              <p className="whitespace-nowrap body-hak-r">
+                {selectedDate || "선택날짜"}
+              </p>
             </div>
           </div>
         </div>
@@ -87,7 +103,7 @@ export const ReviewWritingPage = () => {
 
         {/* 사진 업로드 섹션 */}
         <div className="mb-8">
-          <h2 className="mb-4 title-inter">사진 등록</h2>
+          <h2 className="mb-4 subtitle-b">사진 등록</h2>
           <div className="grid grid-cols-2 gap-4">
             {[0, 1, 2, 3].map((index) => (
               <div
@@ -144,13 +160,13 @@ export const ReviewWritingPage = () => {
 
         {/* 후기 텍스트 섹션 */}
         <div className="mb-8">
-          <h2 className="mb-4 title-inter">메모</h2>
-          <div className="backdrop-blur-sm rounded-[20px] p-4 border border-secondary-100/30">
+          <h2 className="mb-4 subtitle-b">메모</h2>
+          <div className="backdrop-blur-sm rounded-[20px] p-4 border border-secondary-100/30 bg-gray-200/70">
             <textarea
               value={reviewText}
               onChange={handleTextChange}
               placeholder="오랫동안 추억할 수 있게 간단한 메모를 남겨주세요."
-              className="w-full h-20 text-gray-700 bg-gray-200/70 subtitle"
+              className="w-full text-gray-700 h-15 subtitle"
               maxLength={500}
             />
             <div className="flex justify-end mt-2">
@@ -162,7 +178,7 @@ export const ReviewWritingPage = () => {
         </div>
 
         {/* 네비게이션 버튼 */}
-        <div className="mt-8">
+        <div className="mb-2">
           <NavigationButtons
             onPrevious={handlePrevious}
             onNext={handleNext}

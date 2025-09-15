@@ -239,23 +239,25 @@ export const ChildRegistrationPage = () => {
               <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-7 w-full h-auto">
                 <div className="flex flex-col gap-2">
                   <p className="title-hak">아이 정보</p>
-                  <p className="subtitle">아이의 기본 정보를 입력해주세요.</p>
+                  <p className="subtitle-b text-secondary-100">
+                    아이의 기본 정보를 입력해주세요.
+                  </p>
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <p>이름</p>
+                  <p className="body-inter-b">이름</p>
                   <input
                     ref={nameInputRef}
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="예: 정불명"
-                    className="p-4 body-inter-r w-full h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
+                    className="p-4  w-full h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
                   />
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <p>생년월일</p>
+                  <p className="body-inter-b">생년월일</p>
                   <div className="flex gap-2">
                     {/* 년도 */}
                     <select
@@ -272,7 +274,7 @@ export const ChildRegistrationPage = () => {
                           }
                         }
                       }}
-                      className="flex-1 p-3 body-inter-r h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
+                      className="flex-1 p-2  h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
                       style={{
                         appearance: "none",
                         backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
@@ -305,7 +307,7 @@ export const ChildRegistrationPage = () => {
                           }
                         }
                       }}
-                      className="flex-1 p-3 body-inter-r h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
+                      className="flex-1 p-3 h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
                       style={{
                         appearance: "none",
                         backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
@@ -327,7 +329,7 @@ export const ChildRegistrationPage = () => {
                     <select
                       value={birthDay}
                       onChange={(e) => setBirthDay(e.target.value)}
-                      className="flex-1 p-3 body-inter-r h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
+                      className="flex-1 p-3 h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
                       style={{
                         appearance: "none",
                         backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
@@ -348,11 +350,11 @@ export const ChildRegistrationPage = () => {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <p>성별</p>
+                  <p className="body-inter-b">성별</p>
                   <select
                     value={gender}
                     onChange={(e) => setGender(e.target.value)}
-                    className="px-3 py-3 body-inter-r w-full h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
+                    className="px-3 py-3 w-full h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
                     style={{
                       appearance: "none",
                       backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
@@ -373,7 +375,7 @@ export const ChildRegistrationPage = () => {
               <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-6 pb-8 w-full h-auto">
                 <div className="flex flex-col gap-2">
                   <p className="title-hak">아이 성향</p>
-                  <p className="subtitle text-secondary-100">
+                  <p className="subtitle-b text-secondary-100">
                     아이의 해당되는 특성을 선택해주세요.
                   </p>
                 </div>
@@ -391,7 +393,7 @@ export const ChildRegistrationPage = () => {
               <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-6 pb-8 w-full h-auto">
                 <div className="flex flex-col gap-2">
                   <p className="title-hak">좋아하는 장르</p>
-                  <p className="subtitle text-secondary-100">
+                  <p className="subtitle-b text-secondary-100">
                     좋아하는 장르를 선택해주세요
                   </p>
                 </div>
@@ -409,7 +411,7 @@ export const ChildRegistrationPage = () => {
               <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-6 pb-8 w-full h-auto">
                 <div className="flex flex-col gap-2">
                   <p className="title-hak">프로필 사진 선택</p>
-                  <p className="subtitle text-secondary-100">
+                  <p className="subtitle-b text-secondary-100">
                     아이의 프로필로 사용할 귀여운 캐릭터를 골라주세요.
                   </p>
                 </div>

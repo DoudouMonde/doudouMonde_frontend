@@ -1,5 +1,6 @@
 export interface ReviewAddRequest {
   seenPerformanceId: number;
+  performanceName: string;
   watchDate?: string; // ISO 8601 format
   content: string;
   audioUrl?: string;

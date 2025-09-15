@@ -22,8 +22,18 @@ export const MyPage = () => {
     navigate(PATH.CHILD_INFO);
   };
 
+  const handleStoryVillageBookClick = () => {
+    console.log("이야기 마을 북 클릭:", PATH.STORY_VILLAGE_BOOK);
+    navigate(PATH.STORY_VILLAGE_BOOK);
+  };
+
+  const handleFavoritesClick = () => {
+    console.log("보고싶어요 누른 작품 클릭:", PATH.WISHLIST);
+    navigate(PATH.WISHLIST);
+  };
+
   return (
-    <div className="w-[375px] h-full mx-auto overflow-y-auto">
+    <div className="overflow-y-auto w-full h-full">
       {/* 상단 바 */}
       <div className="fixed top-0 right-0 left-0 z-20 px-6 pt-4 pb-2 h-[60px] bg-gray-200/70 shadow-sm">
         <div className="flex justify-between items-center">
@@ -42,8 +52,8 @@ export const MyPage = () => {
       </div>
 
       {/* 메인 컨텐츠 */}
-      <div className="py-4 pt-24">
-        <div className="flex flex-col gap-6 justify-center">
+      <div className="px-6 py-4 pt-24">
+        <div className="flex flex-col gap-6 justify-center w-full">
           {/* 카카오톡 계정 연동 */}
           <div className="flex flex-col justify-center gap-2 bg-gray-200/70 rounded-[20px] p-7 w-full h-[120px]">
             <p className="title-hak">김출신</p>
@@ -71,12 +81,18 @@ export const MyPage = () => {
           {/* 추가 기능 */}
           <p className="text-black title-hak">추가 기능</p>
           <div className="flex flex-col justify-center gap-6 bg-gray-200/70 rounded-[20px] p-5 w-full">
-            <div className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60">
+            <div
+              className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
+              onClick={handleFavoritesClick}
+            >
               <p className="body-inter-r">보고 싶어요 누른 작품</p>
               <Arrow className="w-6 h-6" />
             </div>
-            <div className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60">
-              <p className="body-inter-r">이야기 마을</p>
+            <div
+              className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
+              onClick={handleStoryVillageBookClick}
+            >
+              <p className="body-inter-r">이야기 마을 북</p>
               <Arrow className="w-6 h-6" />
             </div>
           </div>

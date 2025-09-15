@@ -22,6 +22,7 @@ import {
   ReviewListPage,
   HomePage,
   LoginRedirectPage,
+  StoryVillageBookPage,
 } from "@/pages";
 import { BottomNavigationLayout } from "@/app/layout";
 import { PATH } from "@/shared/constants";
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
         element: <ChildInfoPage />,
       },
     ],
+  },
+  {
+    path: "story-village-book",
+    element: <StoryVillageBookPage />,
   },
   {
     path: "performances/:performanceId",

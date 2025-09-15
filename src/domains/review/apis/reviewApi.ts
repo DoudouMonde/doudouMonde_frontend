@@ -7,6 +7,7 @@ export const reviewApi = {
   addReview: async (formData: FormData) => {
     console.log("=== API 요청 시작 ===");
     console.log("요청 URL:", "/v1/reviews");
+    console.log("전체 URL:", `${apiRequester.defaults.baseURL}/v1/reviews`);
     console.log("FormData 타입:", formData instanceof FormData);
 
     try {
@@ -18,6 +19,11 @@ export const reviewApi = {
     } catch (error) {
       console.log("=== API 요청 실패 ===");
       console.error("에러 상세:", error);
+      if (error.response) {
+        console.error("응답 상태:", error.response.status);
+        console.error("응답 데이터:", error.response.data);
+        console.error("요청 URL:", error.config?.url);
+      }
       throw error;
     }
   },

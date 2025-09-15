@@ -17,6 +17,13 @@ import {
   RabbitBody,
 } from "@/assets/icons/playroom/type_body";
 import { Shadow } from "@/assets/icons/playroom";
+import * as EmotionCharacters from "@/assets/icons/playroom/storytown/character/emotion";
+import * as CrownCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/crown";
+import * as CapCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/cap";
+import * as FlowerCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/flower";
+import * as GlassesCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/glasses";
+import * as RibbonCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/ribbon";
+import * as WizhatCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/wizhat";
 
 interface CharacterData {
   animal: string;
@@ -47,10 +54,30 @@ export const CharacterPreviewPage: React.FC = () => {
     accessory: "crwon",
   };
 
-  // localStorage에서 선택된 날짜, 아이들, 공연 정보 불러오기
+  // localStorage에서 선택된 공연 정보 불러오기
+  const [selectedPerformanceFromStorage, setSelectedPerformanceFromStorage] =
+    React.useState<{
+      id: number;
+      title: string;
+      posterUrl: string;
+      location: string;
+    } | null>(null);
+
   React.useEffect(() => {
-    // 이제 Zustand store에서 데이터를 관리하므로 localStorage는 사용하지 않음
-    // 필요시 여기서 store 초기화 로직을 추가할 수 있음
+    // localStorage에서 선택된 공연 정보 불러오기
+    const storedPerformance = localStorage.getItem("selectedPerformance");
+    if (storedPerformance) {
+      try {
+        const performanceData = JSON.parse(storedPerformance);
+        setSelectedPerformanceFromStorage(performanceData);
+        console.log(
+          "CharacterPreview - localStorage에서 불러온 공연 정보:",
+          performanceData
+        );
+      } catch (error) {
+        console.error("공연 정보 파싱 오류:", error);
+      }
+    }
   }, []);
 
   // 동물 데이터
@@ -66,6 +93,85 @@ export const CharacterPreviewPage: React.FC = () => {
   const selectedAnimal = animals.find(
     (animal) => animal.id === characterData.animal
   );
+
+  // 동물과 감정을 조합해서 캐릭터 컴포넌트를 가져오는 함수
+  const getEmotionCharacter = (animal: string, emotion: string) => {
+    const animalName = animal.charAt(0).toUpperCase() + animal.slice(1);
+    const emotionName = emotion.charAt(0).toUpperCase() + emotion.slice(1);
+    const componentName = `${animalName}${emotionName}`;
+
+    // 컴포넌트 이름 매핑 (oneMore -> Onemore)
+    const mappedComponentName = componentName.replace("Onemore", "Onemore");
+
+    return (
+      EmotionCharacters as Record<
+        string,
+        React.ComponentType<{ className?: string }>
+      >
+    )[mappedComponentName];
+  };
+
+  // 동물, 감정, 액세사리를 조합해서 캐릭터 컴포넌트를 가져오는 함수
+  const getAccessoryCharacter = (
+    animal: string,
+    emotion: string,
+    accessory: string
+  ) => {
+    const animalName = animal.charAt(0).toUpperCase() + animal.slice(1);
+    const emotionName = emotion.charAt(0).toUpperCase() + emotion.slice(1);
+    const accessoryName =
+      accessory.charAt(0).toUpperCase() + accessory.slice(1);
+    const componentName = `${animalName}${emotionName}${accessoryName}`;
+
+    // 액세사리별로 다른 모듈에서 가져오기
+    let characterModule: Record<
+      string,
+      React.ComponentType<{ className?: string }>
+    >;
+
+    switch (accessory) {
+      case "crown":
+        characterModule = CrownCharacters as Record<
+          string,
+          React.ComponentType<{ className?: string }>
+        >;
+        break;
+      case "cap":
+        characterModule = CapCharacters as Record<
+          string,
+          React.ComponentType<{ className?: string }>
+        >;
+        break;
+      case "flower":
+        characterModule = FlowerCharacters as Record<
+          string,
+          React.ComponentType<{ className?: string }>
+        >;
+        break;
+      case "glasses":
+        characterModule = GlassesCharacters as Record<
+          string,
+          React.ComponentType<{ className?: string }>
+        >;
+        break;
+      case "ribbon":
+        characterModule = RibbonCharacters as Record<
+          string,
+          React.ComponentType<{ className?: string }>
+        >;
+        break;
+      case "wizhat":
+        characterModule = WizhatCharacters as Record<
+          string,
+          React.ComponentType<{ className?: string }>
+        >;
+        break;
+      default:
+        return null;
+    }
+
+    return characterModule[componentName];
+  };
 
   // 캐릭터 데이터를 API 형식으로 변환
   const convertToApiFormat = () => {
@@ -96,11 +202,17 @@ export const CharacterPreviewPage: React.FC = () => {
     };
 
     return {
-      seenPerformanceId: selectedPerformance?.id || 1, // 기본값 설정
+      seenPerformanceId:
+        selectedPerformanceFromStorage?.id || selectedPerformance?.id || 1, // 공연 ID 전송
+      performanceName:
+        selectedPerformanceFromStorage?.title ||
+        selectedPerformance?.title ||
+        "공연이름", // 공연 이름 전송
       watchDate: selectedDate
         ? new Date(selectedDate).toISOString().slice(0, 19) // "2025-09-08T20:00:00" 형식
         : new Date().toISOString().slice(0, 19),
-      content: `상상친구 ${characterName}와 함께한 공연 후기입니다.`,
+      content:
+        reviewText || `상상친구 ${characterName}와 함께한 공연 후기입니다.`,
       characterName: characterName,
       characterType: animalToType[characterData.animal] || CharacterType.CHICK,
       characterEmotion:
@@ -121,7 +233,7 @@ export const CharacterPreviewPage: React.FC = () => {
       alert("캐릭터 이름을 입력해주세요.");
       return;
     }
-    if (!selectedPerformance) {
+    if (!selectedPerformanceFromStorage && !selectedPerformance) {
       alert("공연 정보가 없습니다.");
       return;
     }
@@ -131,7 +243,6 @@ export const CharacterPreviewPage: React.FC = () => {
     try {
       // 1. 서버에 보낼 JSON 데이터 객체를 생성합니다.
       const reviewData = convertToApiFormat();
-      reviewData.content = reviewText; // Zustand store에서 가져온 후기 텍스트 사용
 
       console.log("전송할 리뷰 데이터 (JSON):", reviewData);
 
@@ -272,25 +383,62 @@ export const CharacterPreviewPage: React.FC = () => {
         <div className="flex flex-col items-center mb-8">
           <div className="flex relative z-10 flex-col items-center">
             <div className="flex justify-center">
-              {selectedAnimal && (
-                <selectedAnimal.bodyIcon className="w-[350px] h-[250px] relative z-20" />
-              )}
+              {(() => {
+                // 액세사리가 적용된 최종 캐릭터 표시
+                const AccessoryCharacter = getAccessoryCharacter(
+                  characterData.animal,
+                  characterData.emotion,
+                  characterData.accessory
+                );
+
+                if (AccessoryCharacter) {
+                  return (
+                    <AccessoryCharacter className="w-[350px] h-[250px] relative z-20" />
+                  );
+                }
+
+                // 액세사리 캐릭터를 찾을 수 없는 경우 감정 캐릭터 표시
+                const EmotionCharacter = getEmotionCharacter(
+                  characterData.animal,
+                  characterData.emotion
+                );
+
+                if (EmotionCharacter) {
+                  return (
+                    <EmotionCharacter className="w-[350px] h-[250px] relative z-20" />
+                  );
+                }
+
+                // 기본 동물 전신 모습 표시
+                if (selectedAnimal) {
+                  const BodyIcon = selectedAnimal.bodyIcon;
+                  return (
+                    <BodyIcon className="w-[350px] h-[250px] relative z-20" />
+                  );
+                }
+
+                return null;
+              })()}
             </div>
-            <Shadow className="w-[200px] h-[50px]  mt-[-40px] relative z-10" />
+            <Shadow className="w-[200px] h-[50px] mt-[-40px] relative z-10" />
           </div>
         </div>
 
-        <div className="flex flex-col items-center">
-          <div className="flex flex-col items-start">
+        <div className="flex justify-center">
+          <div className="flex flex-col gap-2 w-auto">
             <div className="flex gap-1 items-center">
               <PlayingCardsIcon className="w-[13px] h-[13px]" />
-              <p>
-                {selectedPerformance ? selectedPerformance.title : "공연이름"}
+              <p className="body-hak-r">
+                {selectedPerformanceFromStorage?.title ||
+                  selectedPerformance?.title ||
+                  "공연이름"}
               </p>
             </div>
             <div className="flex gap-1 items-center">
               <Calendar className="w-[13px] h-[13px] flex-shrink-0" />
-              <p className="whitespace-nowrap">{selectedDate || "선택날짜"}</p>
+              <p className="whitespace-nowrap body-hak-r">
+                {selectedDate || "선택날짜"}
+              </p>
             </div>
           </div>
         </div>

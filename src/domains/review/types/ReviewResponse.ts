@@ -14,4 +14,5 @@ export interface ReviewResponse {
   characterType: CharacterType;
   characterEmotion: CharacterEmotion;
   characterAccessories: CharacterAccessories;
+  performanceName: string;
 }

@@ -17,4 +17,5 @@ export * from "./ChildAndDateSelectionPage";
 export * from "./ReviewDetailPage";
 export * from "./ReviewListPage";
 export * from "./PerformanceDetailPage";
+export * from "./StoryVillageBookPage";
 export * from "./auth";

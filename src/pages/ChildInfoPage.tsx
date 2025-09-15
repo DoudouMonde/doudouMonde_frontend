@@ -44,21 +44,19 @@ const TraitSelector = ({
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className="grid grid-cols-2 gap-1">
       {traits.map((trait) => (
         <div
           key={trait.value}
           onClick={() => onTraitToggle(trait.value)}
-          className="flex gap-3 items-center p-3 bg-white rounded-lg transition-colors cursor-pointer hover:bg-gray-100"
+          className="flex gap-3 items-center p-3 bg-white rounded-lg transition-colors cursor-pointer body-hak-r hover:bg-gray-100"
         >
           {selectedTraits.includes(trait.value) ? (
             <RadioTrue className="flex-shrink-0 w-5 h-5" />
           ) : (
             <RadioFalse className="flex-shrink-0 w-5 h-5" />
           )}
-          <span className="text-sm text-center body-inter-r">
-            {trait.label}
-          </span>
+          <span className="text-sm text-center body-hak-r">{trait.label}</span>
         </div>
       ))}
     </div>
@@ -308,7 +306,7 @@ export const ChildInfoPage = () => {
                   className="relative cursor-pointer"
                   onClick={() => handleProfileClick(child.id)}
                 >
-                  <div className="absolute -inset-1 rounded-full border-2 border-gray-100" />
+                  <div className="absolute -inset-1 rounded-full border border-black" />
                   <div className="flex items-center justify-center rounded-full w-[80px] h-[80px] bg-gray-200 hover:bg-gray-300 transition-colors">
                     <SwitchCase
                       value={child.profile}
@@ -366,7 +364,7 @@ export const ChildInfoPage = () => {
             ))}
           </ul>
           <p className="title-hak">아이 성향 변경</p>
-          <div className="flex flex-col gap-4 bg-gray-200/70 rounded-[20px] p-6 w-full">
+          <div className=" flex flex-col gap-4 bg-gray-200/70 rounded-[20px] p-4 w-full">
             <TraitSelector
               selectedTraits={selectedTraits}
               onTraitToggle={handleTraitToggle}
