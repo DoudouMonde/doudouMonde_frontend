@@ -71,6 +71,13 @@ export const SelectPerformancePage = () => {
     location: string;
   }) => {
     // 검색 결과에서 공연을 선택했을 때
+    console.log("🎭 검색 결과에서 공연 선택:", {
+      performanceId: performance.id,
+      title: performance.title,
+      posterUrl: performance.posterUrl,
+      location: performance.location,
+      timestamp: new Date().toISOString(),
+    });
     setSelectedPerformance(performance.id);
     setSelectedPerformanceData(performance);
   };
@@ -80,6 +87,12 @@ export const SelectPerformancePage = () => {
   };
 
   const handleNext = () => {
+    console.log("🚀 다음 버튼 클릭:", {
+      selectedPerformance,
+      selectedPerformanceData,
+      timestamp: new Date().toISOString(),
+    });
+
     if (selectedPerformance) {
       // 선택된 공연 정보 찾기
       const selectedPerformanceData = performances.find(
@@ -92,11 +105,22 @@ export const SelectPerformancePage = () => {
           "selectedPerformance",
           JSON.stringify(selectedPerformanceData)
         );
-        console.log("선택된 공연:", selectedPerformanceData);
+        console.log("💾 localStorage에 저장된 공연:", selectedPerformanceData);
+        console.log(
+          "🔍 localStorage 확인:",
+          localStorage.getItem("selectedPerformance")
+        );
+      } else {
+        console.warn(
+          "⚠️ 선택된 공연 데이터를 찾을 수 없습니다:",
+          selectedPerformance
+        );
       }
 
       // ChildAndDateSelection 페이지로 이동
       navigate(PATH.CHILD_DATE_SELECTION);
+    } else {
+      console.warn("⚠️ 공연이 선택되지 않았습니다.");
     }
   };
 
@@ -288,6 +312,13 @@ export const SelectPerformancePage = () => {
                                   : " hover:border-pink-200 hover:bg-pink-50/80"
                               }`}
                               onClick={() => {
+                                console.log("🎭 위시리스트에서 공연 선택:", {
+                                  performanceId: performance.id,
+                                  title: performance.title,
+                                  posterUrl: performance.posterUrl,
+                                  location: performance.location,
+                                  timestamp: new Date().toISOString(),
+                                });
                                 setSelectedPerformance(performance.id);
                                 setSelectedPerformanceData({
                                   id: performance.id,

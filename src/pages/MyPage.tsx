@@ -62,19 +62,19 @@ export const MyPage = () => {
           {/* 계정정보 */}
           <p className="text-black title-hak">계정</p>
           <div className="flex flex-col justify-center gap-6 bg-gray-200/70 rounded-[20px] p-5 w-full h-auto">
-            <div
+            {/* <div
               className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
               onClick={handleMemberInfoClick}
             >
               <p className="body-inter-r">회원 정보</p>
-              <Arrow className="w-6 h-6" />
-            </div>
+              <Arrow className="w-4 h-4" />
+            </div> */}
             <div
               className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
               onClick={handleChildInfoClick}
             >
               <p className="body-inter-r">아이 정보</p>
-              <Arrow className="w-6 h-6" />
+              <Arrow className="w-4 h-4" />
             </div>
           </div>
 
@@ -86,14 +86,14 @@ export const MyPage = () => {
               onClick={handleFavoritesClick}
             >
               <p className="body-inter-r">보고 싶어요 누른 작품</p>
-              <Arrow className="w-6 h-6" />
+              <Arrow className="w-4 h-4" />
             </div>
             <div
               className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
               onClick={handleStoryVillageBookClick}
             >
               <p className="body-inter-r">이야기 마을 북</p>
-              <Arrow className="w-6 h-6" />
+              <Arrow className="w-4 h-4" />
             </div>
           </div>
         </div>
