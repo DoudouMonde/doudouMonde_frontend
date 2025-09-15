@@ -19,7 +19,7 @@ export function BottomNavigationLayout() {
       />
 
       {/* 컨텐츠 */}
-      <main className="relative z-10 pb-[92px] max-w-[375px] flex flex-col items-center">
+      <main className="relative z-10 pb-[92px] w-full flex flex-col items-center">
         <Outlet />
       </main>
       <BottomNavigation />
