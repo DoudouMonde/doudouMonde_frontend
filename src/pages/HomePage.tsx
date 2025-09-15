@@ -68,7 +68,7 @@ export const HomePage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full h-full">
+    <div className="flex flex-col items-center p-0 m-0 w-full h-full">
       <header className="flex fixed top-0 right-0 left-0 z-10 gap-2 items-center px-4 w-full h-16 bg-gray-200/70">
         <KoreanLogo className="flex-shrink-0 w-9" />
         <div className="flex-1">
@@ -99,7 +99,7 @@ export const HomePage = () => {
               />
             ))}
           </ul>
-          <div className="flex flex-col gap-12 w-full border-2">
+          <div className="flex flex-col gap-12 w-full">
             {/*  지역별 공연 섹션 */}
             <section className="flex flex-col gap-2">
               <h2 className="p-3 text-black title-inter">

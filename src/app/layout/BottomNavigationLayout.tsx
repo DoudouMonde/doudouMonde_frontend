@@ -3,7 +3,7 @@ import { BottomNavigation } from "@/shared/components";
 
 export function BottomNavigationLayout() {
   return (
-    <div className="flex relative flex-col items-center w-full min-h-screen">
+    <div className="flex relative flex-col items-center w-full min-h-screen m-0 p-0">
       {/* 배경 이미지 */}
       <div
         className="absolute inset-0 w-full h-full"
