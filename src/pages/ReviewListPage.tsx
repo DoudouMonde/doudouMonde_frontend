@@ -334,9 +334,9 @@ export const ReviewListPage = () => {
                             <div
                               key={review.reviewId}
                               onClick={() => handleReviewClick(review.reviewId)}
-                              className="p-4 rounded-[20px] cursor-pointer bg-gray-200/70 hover:shadow-md shadow-sm"
+                              className="p-4 rounded-[20px] cursor-pointer bg-gray-200/70 hover:shadow-md shadow-sm min-h-[120px]"
                             >
-                              <div className="flex gap-4 items-start">
+                              <div className="flex gap-4 items-stretch">
                                 {/* 캐릭터 전신 모습 */}
                                 <div className="flex-shrink-0">
                                   {(() => {
@@ -375,7 +375,7 @@ export const ReviewListPage = () => {
                                 </div>
 
                                 {/* 리뷰 정보 */}
-                                <div className="flex flex-col flex-1 min-w-0">
+                                <div className="flex flex-col flex-1 justify-between items-stretch min-w-0 h-full">
                                   <div className="">
                                     <h3 className="text-gray-900 truncate body-inter-b">
                                       {review.characterName || "캐릭터명 없음"}
@@ -392,7 +392,7 @@ export const ReviewListPage = () => {
                                   <div className="flex justify-between items-center">
                                     {review.content && (
                                       <p
-                                        className="text-sm text-gray-700 truncate max-w-[200px]"
+                                        className="text-sm text-secondary-100 truncate max-w-[200px]"
                                         title={review.content}
                                       >
                                         {review.content.length > 10
@@ -406,6 +406,14 @@ export const ReviewListPage = () => {
 
                                     {/* 오른쪽 정보 */}
                                     <div className="flex flex-col gap-1 items-end">
+                                      <div className="flex gap-4 items-center text-xs text-secondary-100">
+                                        <span>
+                                          📷 {review.imageUrls?.length || 0}장
+                                        </span>
+                                        {review.audioUrl && (
+                                          <span>🎵 음성</span>
+                                        )}
+                                      </div>
                                       <span className="subtitle text-secondary-100">
                                         {
                                           new Date(review.watchDate)
@@ -413,18 +421,6 @@ export const ReviewListPage = () => {
                                             .split("T")[0]
                                         }
                                       </span>
-
-                                      <div className="flex gap-4 items-center text-xs text-gray-500">
-                                        {review.imageUrls &&
-                                          review.imageUrls.length > 0 && (
-                                            <span>
-                                              📷 {review.imageUrls.length}장
-                                            </span>
-                                          )}
-                                        {review.audioUrl && (
-                                          <span>🎵 음성</span>
-                                        )}
-                                      </div>
                                     </div>
                                   </div>
                                 </div>
