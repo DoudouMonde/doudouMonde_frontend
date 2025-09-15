@@ -68,10 +68,12 @@ export const HomePage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-0 w-full h-full border-2">
-      <header className="flex fixed left-0 z-10 flex-row flex-1 gap-2 justify-center items-center w-full h-16 bg-gray-200">
-        <KoreanLogo className="w-9" />
-        <SearchPerformancesInput placeholder="공연 검색..." />
+    <div className="flex flex-col items-center w-full h-full border-2">
+      <header className="flex fixed top-0 right-0 left-0 z-10 gap-2 items-center px-4 w-full h-16 bg-gray-200">
+        <KoreanLogo className="flex-shrink-0 w-9" />
+        <div className="flex-1">
+          <SearchPerformancesInput placeholder="공연 검색..." />
+        </div>
       </header>
       {/* 아이 선택 */}
       <main className="flex flex-col gap-4 pt-20 w-full">
@@ -86,7 +88,7 @@ export const HomePage = () => {
             onPerformanceClick={handlePerformancePress}
           />
         </section>
-        <div className="flex flex-col gap-4 px-6 pt-5 w-full h-full bg-gray-200">
+        <div className="flex flex-col gap-4 px-6 pt-5 w-full h-full bg-gray-200/70">
           <ul className="flex overflow-x-auto flex-row gap-4 px-1 py-2">
             {children.map((child) => (
               <ChildProfile
@@ -97,13 +99,11 @@ export const HomePage = () => {
               />
             ))}
           </ul>
-          <button onClick={savePerformance}>savePerformance</button>
           <div className="flex flex-col gap-12 w-full border-2">
             {/*  지역별 공연 섹션 */}
             <section className="flex flex-col gap-2">
-              <h2 className="text-black title-hak">
-                👩‍👧 {getSidoLabel(selectedChild?.sido ?? Sido.SEOUL)} 지역 인기
-                공연이에요
+              <h2 className="p-3 text-black title-inter">
+                {getSidoLabel(selectedChild?.sido ?? Sido.SEOUL)} 지역 인기 공연
               </h2>
               <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
                 {sidoPerformanceList.map((sidoPerformance) => (
@@ -119,7 +119,7 @@ export const HomePage = () => {
             {/*  수상을 받은 공연 섹션 */}
 
             <section className="flex flex-col gap-2">
-              <h2 className="text-black title-hak">수상 받은 공연이에요</h2>
+              <h2 className="p-3 text-black title-inter">수상 받은 공연</h2>
               <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
                 {rewardPerformanceList.map((rewardPerformance) => (
                   <PerformanceCard

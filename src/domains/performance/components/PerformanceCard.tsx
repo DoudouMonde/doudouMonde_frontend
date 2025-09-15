@@ -19,7 +19,7 @@ export default function PerformanceCard({ performance, onClick }: Props) {
         <img
           src={performance.posterUrl}
           alt={performance.performanceName + "이미지"}
-          className="w-full h-full"
+          className="w-full h-full rounded-b-xl"
         />
         <div className="flex absolute bottom-0 left-0 gap-1 items-center px-2 py-2 w-full h-6 rounded-b-xl bg-secondary-100">
           {performance.hasRestRoom && (
@@ -42,10 +42,10 @@ export default function PerformanceCard({ performance, onClick }: Props) {
 
       {/* 제목과 위치 */}
       <div className="flex flex-col">
+        <p className="body-inter">{performance.performanceName}</p>
         <p className="subtitle text-secondary-100">
           {getSidoLabel(performance.sido)}
         </p>
-        <p className="body-inter">{performance.performanceName}</p>
       </div>
     </li>
   );

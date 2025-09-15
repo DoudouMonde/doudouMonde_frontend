@@ -70,7 +70,7 @@ export const SearchPerformancesInput = ({
 
       {/* 검색 결과 드롭다운 */}
       {showSearchResults && (
-        <div className="absolute top-full left-0 w-[289px] mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-20 max-h-[300px] overflow-hidden">
+        <div className="absolute top-full left-0 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-20 max-h-[300px] overflow-hidden">
           {searchResults.length > 0 ? (
             <ul className="py-2 hide-scrollbar overflow-y-auto max-h-[300px]">
               {searchResults.slice(0, 30).map((performance) => (

@@ -32,7 +32,7 @@ export const SearchInput = ({
         placeholder={placeholder}
         onChange={handleChange}
         className="
-            w-[289px] 
+            w-full 
             h-[35px] 
             bg-white/50 
             border-[0.3px]

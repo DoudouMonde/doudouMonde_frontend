@@ -52,7 +52,12 @@ export default function ChildProfile({ child, isSelected, onClick }: Props) {
         </div>
       </div>
       {/* 이름 */}
-      <p className="text-center body-hak">{child.name}</p>
+      <p
+        className={`text-center body-hak ${
+          isSelected ? "":"title-secondary"}`}
+      >
+        {child.name}
+      </p>
     </li>
   );
 }
