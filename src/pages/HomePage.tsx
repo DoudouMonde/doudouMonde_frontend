@@ -1,3 +1,4 @@
+import { KoreanLogo } from "@/assets/icons";
 import ChildProfile from "@/domains/child/components/ChildProfile";
 import { useChildListQuery } from "@/domains/child/queries/useChildListQuery";
 import { ChildItem } from "@/domains/child/types";
@@ -9,7 +10,9 @@ import {
 } from "@/domains/performance/queries";
 
 import { SearchPerformancesInput } from "@/shared/components";
+import { AutoCarousel } from "@/shared/components/AutoCarousel";
 import { PATH } from "@/shared/constants/paths";
+import { getGenreLabel, getSidoLabel } from "@/shared/services";
 import { Gender, Genre, Profile, Sido } from "@/shared/types";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -58,79 +61,70 @@ export const HomePage = () => {
   // }
 
   return (
-    <div className="flex flex-col items-center p-0 px-6 w-full border-2">
-      <header className="flex fixed left-0 z-10 flex-row flex-1 justify-center items-center w-full h-16 bg-gray-200 border-2">
-        <p className="text-2xl text-black title-hak">두두몽드</p>
+    <div className="flex flex-col items-center p-0 w-full h-full border-2">
+      <header className="flex fixed left-0 z-10 flex-row flex-1 gap-2 justify-center items-center w-full h-16 bg-gray-200">
+        <KoreanLogo className="w-9" />
         <SearchPerformancesInput placeholder="공연 검색..." />
       </header>
-
       {/* 아이 선택 */}
-      <div className="flex flex-col gap-10 pt-[76px] w-full">
-        <ul className="flex overflow-x-auto flex-row gap-4 border-2">
-          {children.map((child) => (
-            <ChildProfile
-              key={child.id}
-              child={child}
-              isSelected={selectedChild?.id === child.id}
-              onClick={setSelectedChild}
-            />
-          ))}
-        </ul>
-
-        <div className="flex flex-col gap-12 w-full border-2">
-          {/*  장르별 공연 섹션 */}
-          <section className="flex flex-col gap-2">
-            <h2 className="text-black title-hak">
-              {/* 👩‍👧 {getGenreLabel(selectedChild.genre)}를 좋아하는{" "} */}
-              {selectedChild?.name}를 위해!
-            </h2>
-            <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
-              {genrePerformanceList.map((genrePerformance) => (
-                <Link
-                  to={PATH.PERFORMANCE_DETAIL(genrePerformance.performanceId)}
-                >
+      <main className="flex flex-col gap-4 pt-20 w-full">
+        <section className="flex flex-col gap-3">
+          <h2 className="px-6 text-black title-inter">
+            {selectedChild?.name}를 위한{" "}
+            {getGenreLabel(selectedChild?.genre ?? Genre.PLAY)}공연
+          </h2>
+          <AutoCarousel
+            genre={selectedChild?.genre ?? Genre.PLAY}
+            performances={genrePerformanceList.slice(0, 6)}
+            onPerformanceClick={handlePerformancePress}
+          />
+        </section>
+        <div className="flex flex-col gap-4 px-6 pt-5 w-full h-full bg-gray-200">
+          <ul className="flex overflow-x-auto flex-row gap-4 px-1 py-2">
+            {children.map((child) => (
+              <ChildProfile
+                key={child.id}
+                child={child}
+                isSelected={selectedChild?.id === child.id}
+                onClick={setSelectedChild}
+              />
+            ))}
+          </ul>
+          <div className="flex flex-col gap-12 w-full border-2">
+            {/*  지역별 공연 섹션 */}
+            <section className="flex flex-col gap-2">
+              <h2 className="text-black title-hak">
+                👩‍👧 {getSidoLabel(selectedChild?.sido ?? Sido.SEOUL)} 지역 인기
+                공연이에요
+              </h2>
+              <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
+                {sidoPerformanceList.map((sidoPerformance) => (
                   <PerformanceCard
-                    key={genrePerformance.performanceId}
-                    performance={genrePerformance}
+                    key={sidoPerformance.performanceId}
+                    performance={sidoPerformance}
                     onClick={handlePerformancePress}
                   />
-                </Link>
-              ))}
-            </ul>
-          </section>
+                ))}
+              </ul>
+            </section>
 
-          {/*  지역별 공연 섹션 */}
-          <section className="flex flex-col gap-2">
-            <h2 className="text-black title-hak">
-              {/* 👩‍👧 {getSidoLabel(selectedChild.sido)} 지역 인기 공연이에요 */}
-            </h2>
-            <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
-              {sidoPerformanceList.map((sidoPerformance) => (
-                <PerformanceCard
-                  key={sidoPerformance.performanceId}
-                  performance={sidoPerformance}
-                  onClick={handlePerformancePress}
-                />
-              ))}
-            </ul>
-          </section>
+            {/*  수상을 받은 공연 섹션 */}
 
-          {/*  수상을 받은 공연 섹션 */}
-
-          <section className="flex flex-col gap-2">
-            <h2 className="text-black title-hak">수상 받은 공연이에요</h2>
-            <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
-              {rewardPerformanceList.map((rewardPerformance) => (
-                <PerformanceCard
-                  key={rewardPerformance.performanceId}
-                  performance={rewardPerformance}
-                  onClick={handlePerformancePress}
-                />
-              ))}
-            </ul>
-          </section>
+            <section className="flex flex-col gap-2">
+              <h2 className="text-black title-hak">수상 받은 공연이에요</h2>
+              <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
+                {rewardPerformanceList.map((rewardPerformance) => (
+                  <PerformanceCard
+                    key={rewardPerformance.performanceId}
+                    performance={rewardPerformance}
+                    onClick={handlePerformancePress}
+                  />
+                ))}
+              </ul>
+            </section>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

@@ -1,5 +1,9 @@
 import { PerformanceListResponse } from "@/domains/performance/apis";
-import { PerformanceDetail } from "@/domains/performance/types";
+import {
+  PerformanceDetail,
+  CombinedLocationDto,
+  EnglishContentListResponse,
+} from "@/domains/performance/types";
 import { apiRequester } from "@/shared/apis/axiosInstance";
 import { Genre, Sido } from "@/shared/types";
 
@@ -52,6 +56,18 @@ export const performanceApi = {
           page,
         },
       }
+    );
+    return response.data;
+  },
+  getCombinedLocations: async (performanceId: number) => {
+    const response = await apiRequester.get<CombinedLocationDto>(
+      `/v1/performances/${performanceId}/locations`
+    );
+    return response.data;
+  },
+  getEnglishContents: async (performanceId: number) => {
+    const response = await apiRequester.get<EnglishContentListResponse>(
+      `/v1/performances/${performanceId}/english-contents`
     );
     return response.data;
   },

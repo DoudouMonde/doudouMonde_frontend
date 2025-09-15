@@ -1,6 +1,7 @@
 export * from "./BottomNavigation";
 export * from "./Chip";
 export * from "./ConfirmModal";
+export * from "./GradientOverlay";
 export * from "./ProfileSelectModal";
 export { default as NavigationButtons } from "./NavigationButtons";
 export * from "./MultiSelect";
@@ -9,3 +10,5 @@ export * from "./SearchPerformancesInput";
 export * from "./SingleSelect";
 export * from "./Tab";
 export * from "./SwitchCase";
+export * from "./CustomButton";
+export * from "./ButtonChip";

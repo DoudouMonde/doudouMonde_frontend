@@ -1,18 +1,19 @@
 import { TabsContext } from "@/shared/components/Tab/context";
-import { useState } from "react";
 
 type Props = {
   children: React.ReactNode;
   activeTab: string;
   className?: string;
+  setActiveTab: (tab: string) => void;
 };
 
 export const TabsContainer = ({
   children,
-  activeTab: initialActiveTab,
+  setActiveTab,
+  activeTab,
   className = "",
 }: Props) => {
-  const [activeTab, setActiveTab] = useState(initialActiveTab);
+  // const [activeTab, setActiveTab] = useState(initialActiveTab);
 
   return (
     <TabsContext.Provider value={{ activeTab, setActiveTab }}>

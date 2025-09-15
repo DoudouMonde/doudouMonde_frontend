@@ -15,7 +15,7 @@ export function useGenrePerformanceListQuery(
   >
 ) {
   return useQuery({
-    queryKey: [queryKeys.PERFORMANCE_LIST],
+    queryKey: [queryKeys.PERFORMANCE_LIST, genre],
     queryFn: async () => await performanceApi.getGenrePerformanceList(genre),
     ...queryOptions,
   });
