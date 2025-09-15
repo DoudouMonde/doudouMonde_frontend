@@ -11,12 +11,40 @@ export const FavoritesPage: React.FC = () => {
   console.log("🎯 FavoritesPage 컴포넌트가 렌더링되었습니다!");
 
   const navigate = useNavigate();
-  const { data: wishlist = [], isLoading, error } = useWishlistQuery();
+  const { data: rawWishlist = [], isLoading, error } = useWishlistQuery();
   const removeWishlistMutation = useRemoveWishlistMutation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedWishlistId, setSelectedWishlistId] = useState<number | null>(
     null
   );
+
+  // 중복 제거: performanceId 기준으로 중복 제거 (같은 공연은 하나만 표시)
+  // Map을 사용하여 더 효율적으로 중복 제거
+  const uniqueWishlistMap = new Map<number, (typeof rawWishlist)[0]>();
+
+  rawWishlist.forEach((item) => {
+    if (!uniqueWishlistMap.has(item.performanceId)) {
+      uniqueWishlistMap.set(item.performanceId, item);
+    }
+  });
+
+  const wishlist = Array.from(uniqueWishlistMap.values());
+
+  console.log("🔍 찜 목록 중복 제거:", {
+    원본개수: rawWishlist.length,
+    중복제거후개수: wishlist.length,
+    중복제거된개수: rawWishlist.length - wishlist.length,
+    원본데이터: rawWishlist.map((item) => ({
+      wishlistId: item.wishlistId,
+      performanceId: item.performanceId,
+      performanceName: item.performanceName,
+    })),
+    중복제거후데이터: wishlist.map((item) => ({
+      wishlistId: item.wishlistId,
+      performanceId: item.performanceId,
+      performanceName: item.performanceName,
+    })),
+  });
 
   const handlePerformanceClick = (performanceId: number) => {
     navigate(PATH.PERFORMANCE_DETAIL(performanceId));
