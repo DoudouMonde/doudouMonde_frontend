@@ -120,8 +120,7 @@ export const AutoCarousel: React.FC<AutoCarouselProps> = ({
           className={`flex gap-4 w-full ${
             isTransitioning
               ? "transition-transform duration-500 ease-in-out"
-              : ""
-          }`}
+              : ""}`}
           onMouseLeave={handleMouseLeave}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
@@ -154,9 +153,9 @@ export const AutoCarousel: React.FC<AutoCarouselProps> = ({
 
                 {/* 페이지 인디케이터 */}
                 <div className="absolute right-[18px] bottom-5">
-                  <div className="flex items-center justify-center w-[67px] h-[30px] bg-gray-100 rounded-[60px]">
-                    <p className="body-inter-b text-secondary-100">
-                      {currentIndex}/{performances.length}
+                  <div className="flex items-center justify-center w-[67px] h-[30px] bg-black/20 rounded-[60px]">
+                    <p className="text-gray-200 body-inter-r">
+                      {currentIndex} / {performances.length}
                     </p>
                   </div>
                 </div>
