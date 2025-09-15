@@ -8,6 +8,7 @@ import {
   useRewardPerformanceListQuery,
   useSidoPerformanceListQuery,
 } from "@/domains/performance/queries";
+import { apiRequester } from "@/shared/apis";
 
 import { SearchPerformancesInput } from "@/shared/components";
 import { AutoCarousel } from "@/shared/components/AutoCarousel";
@@ -59,6 +60,12 @@ export const HomePage = () => {
   // if (!selectedChild) {
   //   return null;
   // }
+  const savePerformance = async () => {
+    const response = await apiRequester.post(
+      `/v1/performances/save/7d467135319d4e57b69714067f7f5385`
+    );
+    console.log(response);
+  };
 
   return (
     <div className="flex flex-col items-center p-0 w-full h-full border-2">
@@ -90,6 +97,7 @@ export const HomePage = () => {
               />
             ))}
           </ul>
+          <button onClick={savePerformance}>savePerformance</button>
           <div className="flex flex-col gap-12 w-full border-2">
             {/*  지역별 공연 섹션 */}
             <section className="flex flex-col gap-2">

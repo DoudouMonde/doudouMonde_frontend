@@ -127,9 +127,9 @@ export const AutoCarousel: React.FC<AutoCarouselProps> = ({
           onTouchEnd={handleTouchEnd}
           style={{ width: `${extendedPerformances.length * 100}%` }}
         >
-          {extendedPerformances.map((performance) => (
+          {extendedPerformances.map((performance, index) => (
             <li
-              key={performance.performanceId}
+              key={performance.performanceId + index}
               className="flex flex-col flex-shrink-0 items-center cursor-pointer"
               // style={{ width: `${100 / performances.length}%` }}
               onClick={() => onPerformanceClick(performance.performanceId)}
