@@ -1,7 +1,6 @@
 import { usePerformanceDetailQuery } from "@/domains/performance/queries";
 
-import { Chip } from "@/shared/components";
-import { toYYYYMMDD, formatCurrency } from "@/shared/utils";
+import { formatCurrency } from "@/shared/utils";
 import { useParams } from "react-router-dom";
 
 type Props = {};
@@ -88,7 +87,16 @@ export const PerformanceOverview = () => {
                 value: getAgeLimitLabel(performanceDetail.ageLimit),
               },
               { label: "가격", value: formatCurrency(performanceDetail.price) },
-              { label: "시설정보", value: "장애인화장실, 수유실, 놀이방" },
+              {
+                label: "시설정보",
+                value: performanceDetail.hasPlayRoom
+                  ? "놀이방"
+                  : performanceDetail.hasNursingRoom
+                  ? "수유실"
+                  : performanceDetail.hasRestRoom
+                  ? "장애인화장실"
+                  : "없음",
+              },
             ].map((item, index) => (
               <div key={index} className="flex flex-row gap-4 items-center">
                 <p className="text-secondary-100  subtitle-b w-[44px] flex-shrink-0">

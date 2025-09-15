@@ -9,6 +9,7 @@ import {
 } from "@/domains/performance/queries";
 
 import { SearchPerformancesInput } from "@/shared/components";
+import { AutoCarousel } from "@/shared/components/AutoCarousel";
 import { PATH } from "@/shared/constants/paths";
 import { Gender, Genre, Profile, Sido } from "@/shared/types";
 import { useEffect, useState } from "react";
@@ -63,6 +64,12 @@ export const HomePage = () => {
         <p className="text-2xl text-black title-hak">두두몽드</p>
         <SearchPerformancesInput placeholder="공연 검색..." />
       </header>
+
+      <AutoCarousel
+        genre={selectedChild?.genre ?? Genre.PLAY}
+        performances={genrePerformanceList}
+        onPerformanceClick={() => {}}
+      />
 
       {/* 아이 선택 */}
       <div className="flex flex-col gap-10 pt-[76px] w-full">
