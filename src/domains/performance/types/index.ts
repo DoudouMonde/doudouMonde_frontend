@@ -24,10 +24,10 @@ export type PerformanceDetail = {
   performanceName: string;
   posterUrl: string;
   place: string;
-  startDate: [number, number, number];
-  endDate: [number, number, number];
+  startDate: string;
+  endDate: string;
   durationMinutes: number;
-  ageLimit: string;
+  ageLimit: number;
   price: number;
 
   genre: Genre;

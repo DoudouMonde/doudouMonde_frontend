@@ -23,7 +23,7 @@ import {
   HomePage,
   LoginRedirectPage,
 } from "@/pages";
-import { BottomNavigationLayout, PerformanceDetailLayout } from "@/app/layout";
+import { BottomNavigationLayout } from "@/app/layout";
 import { PATH } from "@/shared/constants";
 
 const router = createBrowserRouter([
