@@ -9,9 +9,24 @@ import { Genre, Sido } from "@/shared/types";
 
 export const performanceApi = {
   getPerformanceDetail: async (performanceId: number) => {
+    console.log("🎭 공연 상세 정보 API 요청:", {
+      performanceId,
+      performanceIdType: typeof performanceId,
+      url: `/v1/performances/${performanceId}`,
+      timestamp: new Date().toISOString(),
+    });
+
     const response = await apiRequester.get<PerformanceDetail>(
       `/v1/performances/${performanceId}`
     );
+
+    console.log("🎭 공연 상세 정보 API 응답:", {
+      performanceId,
+      status: response.status,
+      data: response.data,
+      timestamp: new Date().toISOString(),
+    });
+
     return response.data;
   },
   getGenrePerformanceList: async (genre: Genre) => {

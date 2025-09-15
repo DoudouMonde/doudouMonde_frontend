@@ -47,6 +47,12 @@ export const FavoritesPage: React.FC = () => {
   });
 
   const handlePerformanceClick = (performanceId: number) => {
+    console.log("🎭 공연 클릭:", {
+      performanceId,
+      performanceIdType: typeof performanceId,
+      targetPath: PATH.PERFORMANCE_DETAIL(performanceId),
+      timestamp: new Date().toISOString(),
+    });
     navigate(PATH.PERFORMANCE_DETAIL(performanceId));
   };
 
@@ -165,7 +171,9 @@ export const FavoritesPage: React.FC = () => {
             {wishlist.map((item) => (
               <div
                 key={item.wishlistId}
-                onClick={() => handlePerformanceClick(item.performanceId)}
+                onClick={() =>
+                  handlePerformanceClick(Number(item.performanceId))
+                }
                 className="flex p-4 rounded-[20px] transition-shadow cursor-pointer bg-gray-200/70 hover:shadow-md items-center"
               >
                 {/* 포스터 이미지 */}
