@@ -5,6 +5,7 @@ import { StorytownBookCoverEx } from "@/assets/icons/playroom/storytown_book";
 import { StorytownBookInsideEx } from "@/assets/icons/playroom/storytown_book";
 import { StorytownBookLogo } from "@/assets/icons/playroom/storytown_book";
 import { reviewApi } from "@/domains/review/apis/reviewApi";
+import { ButtonChip, SwitchCase } from "@/shared/components";
 
 export const StoryVillageBookPage = () => {
   const navigate = useNavigate();
@@ -78,28 +79,66 @@ export const StoryVillageBookPage = () => {
       </div>
 
       {/* 메인 컨텐츠 */}
-      <div className="relative z-10 px-6 py-4 pt-24">
+      <div className="relative z-10 px-6 py-4 pt-24 pb-24 bg-gray-200/70 rounded-[20px] w-full">
         <div className="flex flex-col gap-6">
           {/* 헤더 섹션 */}
           <div className="text-center">
             <h1 className="mb-2 text-2xl font-bold text-gray-800 title-hak">
               이야기 마을 북
             </h1>
-            <p className="text-gray-600 body-hak-r">
+            <StorytownBookLogo />
+            <p className="p-4 text-gray-600 body-hak-r">
               이야기마을을 오프라인 앨범으로 받아보세요
             </p>
+            <div className="flex flex-col gap-1">
+              <div className="flex gap-1">
+                <p className="text-secondary-100 subtitle-b">가격</p>
+                <p className="text-black bsubtitle-b">25,000원(배송비 포함)</p>
+              </div>
+              <div className="flex gap-1">
+                <p className="text-secondary-100 subtitle-b">구성</p>
+                <p className="text-black bsubtitle-b">
+                  공연 기록 9개 수록 + 상상 친구
+                </p>
+              </div>
+              <div className="flex gap-1">
+                <p className="text-secondary-100 subtitle-b">사이즈</p>
+                <p className="text-black bsubtitle-b">양면 기준 A4 가로</p>
+              </div>
+              <div className="flex gap-1">
+                <p className="text-secondary-100 subtitle-b">재질</p>
+                <p className="text-black bsubtitle-b">소프트 커버 포토북</p>
+              </div>
+              <div className="flex gap-1">
+                <p className="text-secondary-100 subtitle-b">배송기간</p>
+                <p className="text-black bsubtitle-b">2주 내 배송</p>
+              </div>
+              <div className="flex gap-1">
+                <p className="text-secondary-100 subtitle-b">주문방법</p>
+                <p className="text-black bsubtitle-b">
+                  '주문하기'버튼 클릭 후 구글폼 작성
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* 북 미리보기 카드 */}
           <div className="p-6 rounded-3xl shadow-lg backdrop-blur-sm bg-white/90">
+            <p className="pt-3 text-center body-hak-r">상품 예시 이미지</p>
             <div className="flex flex-col gap-4 items-center">
               <div className="relative">
-                <StorytownBookCoverEx />
+                <div className="flex flex-col gap-1">
+                  <p className="subtitle-b">▼ 표지 예시</p>
+                  <StorytownBookCoverEx />
+                </div>
                 <div className="absolute -top-2 -right-2 px-3 py-1 text-xs font-bold text-white bg-red-500 rounded-full shadow-md">
                   NEW
                 </div>
               </div>
-              <StorytownBookInsideEx />
+              <div className="flex flex-col gap-1">
+                <p className="subtitle-b">▼ 내지 예시</p>
+                <StorytownBookInsideEx />
+              </div>
             </div>
           </div>
 
@@ -127,48 +166,21 @@ export const StoryVillageBookPage = () => {
                 : "축하해요! 북을 받을 수 있어요! 🎉"}
             </p>
           </div>
-
-          {/* 구매 정보 카드 */}
-          <div className="p-6 rounded-3xl shadow-lg backdrop-blur-sm bg-white/90">
-            <div className="space-y-4 text-center">
-              <h3 className="text-lg font-semibold text-gray-800">
-                📚 특별한 추억을 책으로
-              </h3>
-              <p className="text-sm text-gray-600">
-                아이와 함께 한 공연 추억을
-                <br />
-                아름다운 책으로 간직할 수 있어요
-              </p>
-
-              <div className="flex gap-1 justify-center items-baseline">
-                <span className="text-4xl font-bold text-purple-600">
-                  25,000
-                </span>
-                <span className="text-lg text-gray-500">원</span>
-              </div>
-
-              <button
-                className={`w-full py-4 px-6 rounded-2xl font-semibold text-white transition-all duration-300 ${
-                  reviewCount >= 9
-                    ? "bg-gradient-to-r from-purple-500 to-pink-500 hover:shadow-lg"
-                    : "bg-gray-400 cursor-not-allowed"
-                }`}
-                disabled={reviewCount < 9}
-              >
-                {reviewCount >= 9
-                  ? "🛒 구매하기"
-                  : "후기 9개 작성 후 구매 가능"}
-              </button>
-
-              {reviewCount < 9 && (
-                <p className="text-xs text-gray-500">
-                  * 후기 9개 작성 후 구매 가능
-                </p>
-              )}
-            </div>
-          </div>
         </div>
       </div>
+      {/* 하단 네비게이션 바 */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 w-full h-[80px] bg-white rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.15)]">
+        <div className="flex justify-center items-center px-6 h-full">
+          <div className="flex flex-col gap-1 items-center">
+            <div className="flex justify-center items-center w-12 h-12 bg-gray-100 rounded-full">
+              <span className="text-2xl">📚</span>
+            </div>
+            <span className="text-xs font-medium text-gray-600">
+              이야기 마을 북
+            </span>
+          </div>
+        </div>
+      </nav>
     </div>
   );
 };
