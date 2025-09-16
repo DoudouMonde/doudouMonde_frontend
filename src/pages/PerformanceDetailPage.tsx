@@ -18,6 +18,15 @@ import { useParams } from "react-router-dom";
 export const PerformanceDetailPage = () => {
   const [activeTab, setActiveTab] = useState("transport");
   const { performanceId } = useParams();
+
+  console.log("🎭 PerformanceDetailPage 렌더링:", {
+    performanceId,
+    performanceIdType: typeof performanceId,
+    convertedPerformanceId: Number(performanceId),
+    isPerformanceIdValid: !!performanceId && !isNaN(Number(performanceId)),
+    timestamp: new Date().toISOString(),
+  });
+
   const { data: performanceDetail } = usePerformanceDetailQuery(
     Number(performanceId),
     {
@@ -39,8 +48,26 @@ export const PerformanceDetailPage = () => {
     },
   });
 
+  if (!performanceId || isNaN(Number(performanceId))) {
+    return (
+      <div className="flex flex-col items-center justify-center w-full h-64">
+        <p className="text-red-500">잘못된 공연 ID입니다.</p>
+        <p className="text-sm text-gray-500 mt-2">
+          performanceId: {performanceId}
+        </p>
+      </div>
+    );
+  }
+
   if (!performanceDetail) {
-    return null;
+    return (
+      <div className="flex flex-col items-center justify-center w-full h-64">
+        <p className="text-gray-500">공연 정보를 불러오는 중...</p>
+        <p className="text-sm text-gray-400 mt-2">
+          performanceId: {performanceId}
+        </p>
+      </div>
+    );
   }
 
   return (

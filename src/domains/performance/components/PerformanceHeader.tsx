@@ -23,7 +23,7 @@ export const PerformanceHeader = () => {
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full h-[60px] bg-white/70 bg-gray-200">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full h-[60px] bg-white/70 bg-gray-200/70">
       <div className="flex justify-between items-center px-6 w-full h-full">
         {/* 뒤로가기 버튼 */}
         <button
