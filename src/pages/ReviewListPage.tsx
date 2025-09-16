@@ -456,11 +456,11 @@ export const ReviewListPage = () => {
         )}
 
         {/* 홈으로 버튼 */}
-        <div className="absolute right-4 left-4 bottom-8">
+        <div className="absolute bottom-0 right-4 left-4">
           <div className="flex justify-center">
             <button
               onClick={handleNext}
-              className="flex items-center justify-center gap-2 w-full h-[34px] rounded-[20px] transition-all duration-200 active:scale-95 text-gray-200 bg-green-100 shadow-lg hover:scale-105 body-inter-r"
+              className="flex items-center justify-center gap-2 w-full h-[48px] rounded-[20px] transition-all duration-200 active:scale-95 text-gray-200 bg-green-100 shadow-lg hover:scale-105 body-inter-r"
             >
               <span className="text-base font-medium body-inter-r">홈으로</span>
             </button>

@@ -105,7 +105,7 @@ export function BottomNavigation() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 z-50 w-full h-[68px] rounded-t-3xl bg-gray-200 flex flex-col items-center justify-center shadow-[0_-10px_20px_rgba(0,0,0,0.25)]">
+    <nav className="fixed bottom-0 left-0 z-50 w-full h-[68px] rounded-t-3xl bg-gray-200 flex flex-col items-center justify-center shadow-[0_-10px_20px_rgba(73, 73, 73, 0.25)]">
       <div className="flex h-full">
         {tabItems.map((item) => {
           const isSelected =

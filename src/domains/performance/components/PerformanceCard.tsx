@@ -50,7 +50,7 @@ export default function PerformanceCard({ performance, onClick }: Props) {
         <p className="subtitle text-secondary-100">
           {getSidoLabel(performance.sido)}
         </p>
-        <p className="body-inter">{performance.performanceName}</p>
+        <p className="body-inter-r">{performance.performanceName}</p>
       </div>
     </li>
   );
