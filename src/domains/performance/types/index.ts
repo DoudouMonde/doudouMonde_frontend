@@ -6,7 +6,7 @@ export type PerformanceItem = {
   performanceName: string;
   posterUrl: string;
   sido: Sido;
-
+  genre: Genre;
   hasPlayRoom: boolean;
   hasNursingRoom: boolean;
   hasRestRoom: boolean;

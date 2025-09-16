@@ -5,3 +5,4 @@ export * from "./usePerformanceDetailQuery";
 export * from "./useSearchPerformancesQuery";
 export * from "./useCombinedLocationsQuery";
 export * from "./useEnglishContentsQuery";
+export * from "./useNewGenrePerformanceListQuery";

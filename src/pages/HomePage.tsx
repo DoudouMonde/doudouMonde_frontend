@@ -5,13 +5,14 @@ import {
   useChildTraitsQuery,
 } from "@/domains/child/queries";
 import { ChildItem } from "@/domains/child/types";
+import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import PerformanceCard from "@/domains/performance/components/PerformanceCard";
 import {
   useGenrePerformanceListQuery,
+  useNewGenrePerformanceListQuery,
   useRewardPerformanceListQuery,
   useSidoPerformanceListQuery,
 } from "@/domains/performance/queries";
-import { apiRequester } from "@/shared/apis";
 
 import { SearchPerformancesInput } from "@/shared/components";
 import { AutoCarousel } from "@/shared/components/AutoCarousel";
@@ -19,7 +20,7 @@ import { PATH } from "@/shared/constants/paths";
 import { getGenreLabel, getSidoLabel } from "@/shared/services";
 import { Gender, Genre, Profile, Sido } from "@/shared/types";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const HomePage = () => {
   const navigate = useNavigate();
@@ -92,10 +93,26 @@ export const HomePage = () => {
   const { data: { contents: rewardPerformanceList } = { contents: [] } } =
     useRewardPerformanceListQuery();
 
+  const { data: { contents: newGenrePerformanceList } = { contents: [] } } =
+    useNewGenrePerformanceListQuery(selectedChild?.id || null, {
+      enabled: !!selectedChild,
+    });
+
+  // ChildItemResponse를 ChildItem으로 변환하는 함수
+  const convertToChildItem = (childResponse: ChildItemResponse): ChildItem => ({
+    id: childResponse.id,
+    name: childResponse.name,
+    birthday: childResponse.birthday,
+    gender: childResponse.gender as Gender,
+    profile: childResponse.profile as Profile,
+    sido: childResponse.sido as Sido,
+    genre: Genre.PLAY, // 기본값 설정
+  });
+
   useEffect(
     function initializeSelectedChild() {
       if (children.length === 0) return;
-      setSelectedChild(children[0]);
+      setSelectedChild(convertToChildItem(children[0]));
     },
     [children]
   );
@@ -103,12 +120,6 @@ export const HomePage = () => {
   // if (!selectedChild) {
   //   return null;
   // }
-  const savePerformance = async () => {
-    const response = await apiRequester.post(
-      `/v1/performances/save/7d467135319d4e57b69714067f7f5385`
-    );
-    console.log(response);
-  };
 
   return (
     <div className="flex flex-col items-center p-0 m-0 w-full h-full">
@@ -135,9 +146,9 @@ export const HomePage = () => {
             {children.map((child) => (
               <ChildProfile
                 key={child.id}
-                child={child}
+                child={convertToChildItem(child)}
                 isSelected={selectedChild?.id === child.id}
-                onClick={setSelectedChild}
+                onClick={(childItem) => setSelectedChild(childItem)}
               />
             ))}
           </ul>
@@ -168,6 +179,22 @@ export const HomePage = () => {
                   <PerformanceCard
                     key={sidoPerformance.performanceId}
                     performance={sidoPerformance}
+                    onClick={handlePerformancePress}
+                  />
+                ))}
+              </ul>
+            </section>
+
+            {/*  새로운 장르 공연 섹션 */}
+            <section className="flex flex-col gap-2">
+              <h2 className="py-2 text-black title-inter-b">
+                {selectedChild?.name}을 위한 새로운 장르 공연
+              </h2>
+              <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
+                {newGenrePerformanceList.map((newGenrePerformance) => (
+                  <PerformanceCard
+                    key={newGenrePerformance.performanceId}
+                    performance={newGenrePerformance}
                     onClick={handlePerformancePress}
                   />
                 ))}

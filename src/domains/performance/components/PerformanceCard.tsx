@@ -1,6 +1,7 @@
 import { BabyIcon, BearIcon, RestroomIcon } from "@/assets/icons";
 import { PerformanceItem } from "@/domains/performance/types";
 import { DUMMY_IMAGES } from "@/shared/constants";
+import { getGenreLabel } from "@/shared/services";
 import { getSidoLabel } from "@/shared/services/address";
 
 // Props 타입
@@ -31,6 +32,9 @@ export default function PerformanceCard({ performance, onClick }: Props) {
         <div className="flex flex-row justify-between items-center">
           <p className="subtitle text-secondary-100">
             {getSidoLabel(performance.sido)}
+          </p>
+          <p className="text-red-100 subtitle">
+            {getGenreLabel(performance.genre)}
           </p>
 
           {/* 아이콘 레이어 (투명도 적용 안됨) */}

@@ -86,4 +86,10 @@ export const performanceApi = {
     );
     return response.data;
   },
+  getNewGenrePerformanceList: async (childId: number) => {
+    const response = await apiRequester.get<PerformanceListResponse>(
+      `/v1/performances/new-genre/${childId}`
+    );
+    return response.data;
+  },
 };
