@@ -39,8 +39,26 @@ export const PerformanceDetailPage = () => {
     },
   });
 
+  if (!performanceId || isNaN(Number(performanceId))) {
+    return (
+      <div className="flex flex-col justify-center items-center w-full h-64">
+        <p className="text-red-500">잘못된 공연 ID입니다.</p>
+        <p className="mt-2 text-sm text-gray-500">
+          performanceId: {performanceId}
+        </p>
+      </div>
+    );
+  }
+
   if (!performanceDetail) {
-    return null;
+    return (
+      <div className="flex flex-col justify-center items-center w-full h-64">
+        <p className="text-gray-500">공연 정보를 불러오는 중...</p>
+        <p className="mt-2 text-sm text-gray-400">
+          performanceId: {performanceId}
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -109,7 +127,7 @@ export const PerformanceDetailPage = () => {
               addWishlistMutation({ performanceId: Number(performanceId) });
             }
           }}
-          isActive={performanceDetail?.isLike || false}
+          isActive={!performanceDetail?.isLike || false}
         >
           보고싶어요
         </ButtonChip>

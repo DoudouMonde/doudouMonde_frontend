@@ -15,12 +15,12 @@ export const useRemoveWishlistMutation = (
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (wishlistId: number) => {
+    mutationFn: (performanceId: number) => {
       console.log("🔄 Mutation 시작 - 찜 삭제:", {
-        wishlistId,
+        performanceId,
         timestamp: new Date().toISOString(),
       });
-      return favoritesApi.removeWishlist(wishlistId);
+      return favoritesApi.removeWishlist(performanceId);
     },
     onSuccess: (data, wishlistId) => {
       console.log("🎉 Mutation 성공 - 찜 삭제:", {

@@ -21,16 +21,16 @@ export const favoritesApi = {
     );
     return response.data;
   },
-  removeWishlist: async (wishlistId: number): Promise<void> => {
+  removeWishlist: async (performanceId: number): Promise<void> => {
     console.log("🌐 API 요청 - 찜 삭제:", {
-      url: `/v1/wishlists?wishlistId=${wishlistId}`,
+      url: `/v1/wishlists?wishlistId=${performanceId}`,
       method: "DELETE",
-      wishlistId,
+      performanceId,
       timestamp: new Date().toISOString(),
     });
 
     const response = await apiRequester.delete(
-      `/v1/wishlists?wishlistId=${wishlistId}`
+      `/v1/wishlists?performanceId=${performanceId}`
     );
 
     console.log("🌐 API 응답 - 찜 삭제:", {
