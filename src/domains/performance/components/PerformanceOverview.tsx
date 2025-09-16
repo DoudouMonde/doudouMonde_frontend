@@ -68,64 +68,65 @@ export const PerformanceOverview = () => {
             className="object-cover w-full h-full rounded-lg shadow-lg"
           />
         </div>
+        <div className="flex justify-center">
+          <section className="flex flex-col gap-4 items-center px-6">
+            {/* 태그 */}
+            <div className="flex flex-col gap-2 items-center">
+              {/* <Chip>🌱 차차는 처음 보는 장르예요!</Chip> */}
 
-        <section className="flex flex-col gap-4 items-center px-6">
-          {/* 태그 */}
-          <div className="flex flex-col gap-2 items-center">
-            {/* <Chip>🌱 차차는 처음 보는 장르예요!</Chip> */}
-
-            <h1 className="p-3 title-hak">
-              {performanceDetail.performanceName}
-            </h1>
-          </div>
-          {/* 공연 정보 */}
-          <div className="flex flex-col gap-[7px] w-full">
-            {[
-              { label: "장소", value: performanceDetail.place },
-              {
-                label: "공연기간",
-                value:
-                  performanceDetail.startDate +
-                  " ~ " +
-                  (performanceDetail.endDate === "2099-12-31"
-                    ? performanceDetail.startDate
-                    : "미정"),
-              },
-              {
-                label: "공연시간",
-                value: performanceDetail.durationMinutes + "분",
-              },
-              {
-                label: "관람연령",
-                value: getAgeLimitLabel(performanceDetail.ageLimit),
-              },
-              {
-                label: "가격",
-                value:
-                  performanceDetail.price === 0
-                    ? "가격정보 없음"
-                    : formatCurrency(performanceDetail.price),
-              },
-              {
-                label: "시설정보",
-                value: performanceDetail.hasPlayRoom
-                  ? "놀이방"
-                  : performanceDetail.hasNursingRoom
-                  ? "수유실"
-                  : performanceDetail.hasRestRoom
-                  ? "장애인화장실"
-                  : "없음",
-              },
-            ].map((item, index) => (
-              <div key={index} className="flex flex-row gap-10 items-center">
-                <p className="text-secondary-100  subtitle-b w-[44px] flex-shrink-0">
-                  {item.label}
-                </p>
-                <p className="text-black/80 body-inter-r">{item.value}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+              <h1 className="p-3 title-hak">
+                {performanceDetail.performanceName}
+              </h1>
+            </div>
+            {/* 공연 정보 */}
+            <div className="flex flex-col gap-[7px] w-full">
+              {[
+                { label: "장소", value: performanceDetail.place },
+                {
+                  label: "공연기간",
+                  value:
+                    performanceDetail.startDate +
+                    " ~ " +
+                    (performanceDetail.endDate === "2099-12-31"
+                      ? performanceDetail.startDate
+                      : "미정"),
+                },
+                {
+                  label: "공연시간",
+                  value: performanceDetail.durationMinutes + "분",
+                },
+                {
+                  label: "관람연령",
+                  value: getAgeLimitLabel(performanceDetail.ageLimit),
+                },
+                {
+                  label: "가격",
+                  value:
+                    performanceDetail.price === 0
+                      ? "가격정보 없음"
+                      : formatCurrency(performanceDetail.price),
+                },
+                {
+                  label: "시설정보",
+                  value: performanceDetail.hasPlayRoom
+                    ? "놀이방"
+                    : performanceDetail.hasNursingRoom
+                    ? "수유실"
+                    : performanceDetail.hasRestRoom
+                    ? "장애인화장실"
+                    : "없음",
+                },
+              ].map((item, index) => (
+                <div key={index} className="flex flex-row gap-10 items-center">
+                  <p className="text-secondary-100  subtitle-b w-[44px] flex-shrink-0">
+                    {item.label}
+                  </p>
+                  <p className="text-black/80 body-inter-r">{item.value}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
       </article>
     </div>
   );
