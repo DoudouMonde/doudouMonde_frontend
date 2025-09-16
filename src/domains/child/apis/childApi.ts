@@ -33,6 +33,14 @@ export const childApi = {
     const response = await apiRequester.get<ChildListResponse>("/v1/child");
     return response.data;
   },
+  getChildTraits: async (
+    childId: number
+  ): Promise<UpdateChildTraitsResponse> => {
+    const response = await apiRequester.get<UpdateChildTraitsResponse>(
+      `/v1/child/${childId}/traits`
+    );
+    return response.data;
+  },
   updateChildName: async (
     childId: number,
     request: UpdateChildNameRequest
