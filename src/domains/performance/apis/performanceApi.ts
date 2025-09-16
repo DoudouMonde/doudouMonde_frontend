@@ -5,7 +5,7 @@ import {
   EnglishContentListResponse,
 } from "@/domains/performance/types";
 import { apiRequester } from "@/shared/apis/axiosInstance";
-import { Genre, Sido } from "@/shared/types";
+import { Genre, Sido, Trait } from "@/shared/types";
 
 export const performanceApi = {
   getPerformanceDetail: async (performanceId: number) => {
@@ -89,6 +89,17 @@ export const performanceApi = {
   getNewGenrePerformanceList: async (childId: number) => {
     const response = await apiRequester.get<PerformanceListResponse>(
       `/v1/performances/new-genre/${childId}`
+    );
+    return response.data;
+  },
+  getPerformancesByTrait: async (trait: Trait, childId: number) => {
+    const response = await apiRequester.get<PerformanceListResponse>(
+      `/v1/performances/trait/${trait}`,
+      {
+        params: {
+          childId,
+        },
+      }
     );
     return response.data;
   },

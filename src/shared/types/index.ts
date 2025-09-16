@@ -12,11 +12,15 @@ export enum Profile {
 }
 
 export enum Genre {
+  COMPOSITE = "COMPOSITE",
   PLAY = "PLAY",
-  PERFORMANCE = "PERFORMANCE",
   MUSICAL = "MUSICAL",
-  CIRCUS = "CIRCUS",
-  MAGIC = "MAGIC",
+  POP_DANCE = "POP_DANCE",
+  POP_MUSIC = "POP_MUSIC",
+  CLASSICAL_MUSIC = "CLASSICAL_MUSIC",
+  KOREAN_MUSIC = "KOREAN_MUSIC",
+  CIRCUS_MAGIC = "CIRCUS_MAGIC",
+  DANCE = "DANCE",
 }
 
 export enum Trait {

@@ -5,11 +5,11 @@ import {
   useChildTraitsQuery,
 } from "@/domains/child/queries";
 import { ChildItem } from "@/domains/child/types";
-import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import PerformanceCard from "@/domains/performance/components/PerformanceCard";
 import {
   useGenrePerformanceListQuery,
   useNewGenrePerformanceListQuery,
+  usePerformancesByTraitQuery,
   useRewardPerformanceListQuery,
   useSidoPerformanceListQuery,
 } from "@/domains/performance/queries";
@@ -18,7 +18,7 @@ import { SearchPerformancesInput } from "@/shared/components";
 import { AutoCarousel } from "@/shared/components/AutoCarousel";
 import { PATH } from "@/shared/constants/paths";
 import { getGenreLabel, getSidoLabel } from "@/shared/services";
-import { Gender, Genre, Profile, Sido } from "@/shared/types";
+import { Gender, Genre, Profile, Sido, Trait } from "@/shared/types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -39,30 +39,17 @@ export const HomePage = () => {
     birthday: "2025-01-01",
     gender: Gender.MALE,
     profile: Profile.CAT,
+    trait: Trait.MUSIC_LOVER,
   });
 
-  // 아이 취향 정보 가져오기
-  const {
-    data: childTraits,
-    isLoading: traitsLoading,
-    error: traitsError,
-  } = useChildTraitsQuery(selectedChild?.id || null);
-
-  // 디버깅용 로그
-  console.log("🎭 선택된 아이:", selectedChild);
-  console.log("🎯 아이 ID:", selectedChild?.id);
-  console.log("🎯 아이 취향:", childTraits);
-  console.log("🎯 취향 로딩 중:", traitsLoading);
-  console.log("🎯 취향 에러:", traitsError);
-
   // 취향 기반 추천 로직
-  const getRecommendationTitle = () => {
-    if (!childTraits?.traits)
+  const getTraitLabel = () => {
+    if (!selectedChild?.trait)
       return `${selectedChild?.name}에게 딱 맞는 ${getGenreLabel(
         selectedChild?.genre ?? Genre.PLAY
       )}공연`;
 
-    const traits = childTraits.traits;
+    const traits = selectedChild.trait;
     if (traits.includes("MUSIC_LOVER")) {
       return `${selectedChild?.name}을 위한 뮤지컬 추천`;
     }
@@ -98,21 +85,20 @@ export const HomePage = () => {
       enabled: !!selectedChild,
     });
 
-  // ChildItemResponse를 ChildItem으로 변환하는 함수
-  const convertToChildItem = (childResponse: ChildItemResponse): ChildItem => ({
-    id: childResponse.id,
-    name: childResponse.name,
-    birthday: childResponse.birthday,
-    gender: childResponse.gender as Gender,
-    profile: childResponse.profile as Profile,
-    sido: childResponse.sido as Sido,
-    genre: Genre.PLAY, // 기본값 설정
-  });
+  // 성향별 공연 데이터 가져오기
+  const { data: { contents: traitPerformances } = { contents: [] } } =
+    usePerformancesByTraitQuery(
+      selectedChild?.trait ?? Trait.MUSIC_LOVER,
+      selectedChild?.id ?? 0,
+      {
+        enabled: !!selectedChild,
+      }
+    );
 
   useEffect(
     function initializeSelectedChild() {
       if (children.length === 0) return;
-      setSelectedChild(convertToChildItem(children[0]));
+      setSelectedChild(children[0]);
     },
     [children]
   );
@@ -133,7 +119,7 @@ export const HomePage = () => {
       <main className="flex flex-col flex-1 gap-4 pt-16 w-full">
         <section className="flex flex-col gap-3">
           <h2 className="px-3 py-4 text-black title-inter-b">
-            {getRecommendationTitle()}
+            {getTraitLabel()}
           </h2>
           <AutoCarousel
             genre={selectedChild?.genre ?? Genre.PLAY}
@@ -146,7 +132,7 @@ export const HomePage = () => {
             {children.map((child) => (
               <ChildProfile
                 key={child.id}
-                child={convertToChildItem(child)}
+                child={child}
                 isSelected={selectedChild?.id === child.id}
                 onClick={(childItem) => setSelectedChild(childItem)}
               />
@@ -159,10 +145,11 @@ export const HomePage = () => {
                 성향에 딱 맞는 공연 추천
               </h2>
               <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
-                {sidoPerformanceList.map((sidoPerformance) => (
+                {/* 성향이 없거나 데이터가 없을 때 기본 공연 표시 */}
+                {traitPerformances.map((performance) => (
                   <PerformanceCard
-                    key={sidoPerformance.performanceId}
-                    performance={sidoPerformance}
+                    key={performance.performanceId}
+                    performance={performance}
                     onClick={handlePerformancePress}
                   />
                 ))}
