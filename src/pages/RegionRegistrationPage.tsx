@@ -143,6 +143,13 @@ export function RegionRegistrationPage() {
       const latitude = coords.latitude || 37.4979; // 서울 강남 기본값
       const address = detailedAddress.trim() || `${selectedRegion} 지역`;
 
+      alert(
+        `📍 사용할 위치 정보: ${JSON.stringify({
+          longitude,
+          latitude,
+          address,
+        })}`
+      );
       console.log("📍 사용할 위치 정보:", { longitude, latitude, address });
 
       // 위치 정보와 아이 정보를 함께 백엔드에 전송
@@ -385,18 +392,18 @@ export function RegionRegistrationPage() {
         </div>
 
         <>
-          {/* <div className="mb-8">
-              <label className="block mb-2 font-medium text-gray-700 body-inter-r">
-                상세주소 입력
-              </label>
-              <input
-                type="text"
-                value={detailedAddress}
-                onChange={(e) => setDetailedAddress(e.target.value)}
-                placeholder="예: 강남구 테헤란로 123, ○○아파트"
-                className="p-4 w-full bg-white rounded-lg border border-secondary-100 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
-              />
-            </div> */}
+          <div className="mb-8">
+            <label className="block mb-2 font-medium text-gray-700 body-inter-r">
+              상세주소 입력
+            </label>
+            <input
+              type="text"
+              value={detailedAddress}
+              onChange={(e) => setDetailedAddress(e.target.value)}
+              placeholder="예: 강남구 테헤란로 123, ○○아파트"
+              className="p-4 w-full bg-white rounded-lg border border-secondary-100 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
+            />
+          </div>
         </>
       </div>
     </div>
