@@ -41,16 +41,23 @@ export const HomePage = () => {
   });
 
   // 아이 취향 정보 가져오기
-  const { data: childTraits } = useChildTraitsQuery(selectedChild?.id || null);
+  const {
+    data: childTraits,
+    isLoading: traitsLoading,
+    error: traitsError,
+  } = useChildTraitsQuery(selectedChild?.id || null);
 
   // 디버깅용 로그
   console.log("🎭 선택된 아이:", selectedChild);
+  console.log("🎯 아이 ID:", selectedChild?.id);
   console.log("🎯 아이 취향:", childTraits);
+  console.log("🎯 취향 로딩 중:", traitsLoading);
+  console.log("🎯 취향 에러:", traitsError);
 
   // 취향 기반 추천 로직
   const getRecommendationTitle = () => {
     if (!childTraits?.traits)
-      return `${selectedChild?.name}을 위한 ${getGenreLabel(
+      return `${selectedChild?.name}에게 딱 맞는 ${getGenreLabel(
         selectedChild?.genre ?? Genre.PLAY
       )}공연`;
 
