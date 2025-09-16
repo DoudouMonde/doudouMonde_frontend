@@ -53,14 +53,6 @@ export const HomePage = () => {
     childTraits?.traits || []
   );
 
-  // 디버깅용 로그
-  console.log("🎭 선택된 아이:", selectedChild);
-  console.log("🎯 아이 ID:", selectedChild?.id);
-  console.log("🎯 아이 취향:", childTraits);
-  console.log("🎯 취향 로딩 중:", traitsLoading);
-  console.log("🎯 취향 에러:", traitsError);
-  console.log("🎪 성향별 공연 쿼리들:", traitPerformancesQueries);
-
   // 성향 라벨 반환 함수
   const getTraitLabel = (trait: string) => {
     switch (trait) {

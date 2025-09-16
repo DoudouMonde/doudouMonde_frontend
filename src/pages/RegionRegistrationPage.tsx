@@ -165,6 +165,21 @@ export function RegionRegistrationPage() {
 
       console.log("🚀 백엔드로 전송할 데이터:", signupData);
       console.log("🌐 API 엔드포인트: POST /auth/signup");
+      console.log("📊 상세 요청 데이터 분석:");
+      console.log("  - longitude:", signupData.longitude);
+      console.log("  - latitude:", signupData.latitude);
+      console.log("  - address:", signupData.address);
+      console.log("  - sido:", signupData.sido);
+      console.log("  - children 개수:", signupData.children.length);
+      console.log("  - 첫 번째 아이 정보:", signupData.children[0]);
+      if (signupData.children[0]) {
+        console.log("    - name:", signupData.children[0].name);
+        console.log("    - birthday:", signupData.children[0].birthday);
+        console.log("    - gender:", signupData.children[0].gender);
+        console.log("    - profile:", signupData.children[0].profile);
+        console.log("    - traits:", signupData.children[0].traits);
+        console.log("    - genres:", signupData.children[0].genres);
+      }
 
       const response = await signupApi.signup(signupData);
       console.log("✅ 회원가입 성공:", response);
@@ -173,7 +188,19 @@ export function RegionRegistrationPage() {
       localStorage.removeItem("childData");
       navigate(PATH.HOME);
     } catch (error) {
-      console.error("회원가입 실패:", error);
+      console.error("❌ 회원가입 실패:", error);
+      console.error("🔍 에러 상세 정보:");
+      console.error("  - 에러 타입:", typeof error);
+      console.error("  - 에러 메시지:", error.message);
+      if (error.response) {
+        console.error("  - 응답 상태:", error.response.status);
+        console.error("  - 응답 데이터:", error.response.data);
+        console.error("  - 응답 헤더:", error.response.headers);
+      }
+      if (error.request) {
+        console.error("  - 요청 정보:", error.request);
+      }
+      console.error("  - 요청 설정:", error.config);
       alert("회원가입에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setIsSubmitting(false);
@@ -394,7 +421,7 @@ export function RegionRegistrationPage() {
         </div>
 
         <>
-          <div className="mb-8">
+          {/* <div className="mb-8">
             <label className="block mb-2 font-medium text-gray-700 body-inter-r">
               상세주소 입력
             </label>
@@ -405,7 +432,7 @@ export function RegionRegistrationPage() {
               placeholder="예: 강남구 테헤란로 123, ○○아파트"
               className="p-4 w-full bg-white rounded-lg border border-secondary-100 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
             />
-          </div>
+          </div> */}
         </>
       </div>
     </div>
