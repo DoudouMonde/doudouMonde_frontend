@@ -66,12 +66,16 @@ export const childApi = {
       "🔍 백엔드가 /api/v1/{childId}/traits를 사용한다면:",
       `${apiRequester.defaults.baseURL}/${childId}/traits`
     );
+    console.log(
+      "🔍 백엔드가 /api/v1/child/{childId}/traits를 사용한다면:",
+      `${apiRequester.defaults.baseURL}/v1/child/${childId}/traits`
+    );
     console.log("👤 childId:", childId);
     console.log("🔑 요청 메서드: GET");
 
     try {
       const response = await apiRequester.get<UpdateChildTraitsResponse>(
-        `/${childId}/traits`
+        `/v1/${childId}/traits`
       );
       console.log("👶 아이 취향 API 응답 성공:", {
         status: response.status,
