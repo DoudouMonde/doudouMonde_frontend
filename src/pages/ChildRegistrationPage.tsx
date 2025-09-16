@@ -25,7 +25,7 @@ import { CustomButton } from "@/shared/components/CustomButton";
 const TRAITS = [
   { value: "MUSIC_LOVER", label: "음악을 좋아해요" },
   { value: "DANCE_LOVER", label: "춤을 좋아해요" },
-  { value: "CURIOUS", label: "호기심이 많아요" },
+  // { value: "CURIOUS", label: "호기심이 많아요" }, // 일시적으로 주석처리
   { value: "SHORT_ATTENTION", label: "집중시간이 짧아요" },
 ];
 

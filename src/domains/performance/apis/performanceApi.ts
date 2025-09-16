@@ -68,6 +68,34 @@ export const performanceApi = {
     );
     return response.data;
   },
+  getPerformancesByTrait: async (trait: string, childId: number) => {
+    console.log("🎭 성향별 공연 추천 API 요청:", {
+      trait,
+      childId,
+      url: `/v1/performances/trait/${trait}`,
+      timestamp: new Date().toISOString(),
+    });
+
+    const response = await apiRequester.get<PerformanceListResponse>(
+      `/v1/performances/trait/${trait}`,
+      {
+        params: {
+          childId,
+        },
+      }
+    );
+
+    console.log("🎭 성향별 공연 추천 API 응답:", {
+      trait,
+      childId,
+      status: response.status,
+      data: response.data,
+      performanceCount: response.data?.contents?.length || 0,
+      timestamp: new Date().toISOString(),
+    });
+
+    return response.data;
+  },
   searchPerformances: async (searchText?: string, page: number = 0) => {
     const response = await apiRequester.get<PerformanceListResponse>(
       `/v1/performances`,
