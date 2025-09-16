@@ -8,6 +8,8 @@ import { ChildItem } from "@/domains/child/types";
 import PerformanceCard from "@/domains/performance/components/PerformanceCard";
 import {
   useGenrePerformanceListQuery,
+  useNewGenrePerformanceListQuery,
+  usePerformancesByTraitQuery,
   useRewardPerformanceListQuery,
   useSidoPerformanceListQuery,
 } from "@/domains/performance/queries";
@@ -17,8 +19,9 @@ import { SearchPerformancesInput } from "@/shared/components";
 import { AutoCarousel } from "@/shared/components/AutoCarousel";
 import { PATH } from "@/shared/constants/paths";
 import { getGenreLabel, getSidoLabel } from "@/shared/services";
-import { Gender, Genre, Profile, Sido } from "@/shared/types";
+import { Gender, Genre, Profile, Sido, Trait } from "@/shared/types";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 export const HomePage = () => {
@@ -62,13 +65,13 @@ export const HomePage = () => {
   );
 
   // 취향 기반 추천 로직
-  const getRecommendationTitle = () => {
-    if (!childTraits?.traits)
+  const getTraitLabel = () => {
+    if (!selectedChild?.trait)
       return `${selectedChild?.name}에게 딱 맞는 ${getGenreLabel(
         selectedChild?.genre ?? Genre.PLAY
       )}공연`;
 
-    const traits = childTraits.traits;
+    const traits = selectedChild.trait;
     if (traits.includes("MUSIC_LOVER")) {
       return `${selectedChild?.name}에게 딱 맞는 뮤지컬 추천`;
     }
@@ -98,6 +101,21 @@ export const HomePage = () => {
 
   const { data: { contents: rewardPerformanceList } = { contents: [] } } =
     useRewardPerformanceListQuery();
+
+  const { data: { contents: newGenrePerformanceList } = { contents: [] } } =
+    useNewGenrePerformanceListQuery(selectedChild?.id || null, {
+      enabled: !!selectedChild,
+    });
+
+  // 성향별 공연 데이터 가져오기
+  const { data: { contents: traitPerformances } = { contents: [] } } =
+    usePerformancesByTraitQuery(
+      selectedChild?.trait ?? Trait.MUSIC_LOVER,
+      selectedChild?.id ?? 0,
+      {
+        enabled: !!selectedChild,
+      }
+    );
 
   useEffect(
     function initializeSelectedChild() {
@@ -172,7 +190,7 @@ export const HomePage = () => {
       <main className="flex flex-col flex-1 gap-4 pt-16 w-full">
         <section className="flex flex-col gap-3">
           <h2 className="px-3 py-4 text-black title-inter-b">
-            {getRecommendationTitle()}
+            {getTraitLabel()}
           </h2>
           <AutoCarousel
             genre={selectedChild?.genre ?? Genre.PLAY}
@@ -335,6 +353,22 @@ export const HomePage = () => {
                   <PerformanceCard
                     key={sidoPerformance.performanceId}
                     performance={sidoPerformance}
+                    onClick={handlePerformancePress}
+                  />
+                ))}
+              </ul>
+            </section>
+
+            {/*  새로운 장르 공연 섹션 */}
+            <section className="flex flex-col gap-2">
+              <h2 className="py-2 text-black title-inter-b">
+                {selectedChild?.name}을 위한 새로운 장르 공연
+              </h2>
+              <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
+                {newGenrePerformanceList.map((newGenrePerformance) => (
+                  <PerformanceCard
+                    key={newGenrePerformance.performanceId}
+                    performance={newGenrePerformance}
                     onClick={handlePerformancePress}
                   />
                 ))}
