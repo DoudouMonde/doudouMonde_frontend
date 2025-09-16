@@ -69,7 +69,7 @@ export const PerformanceOverview = () => {
           />
         </div>
 
-        <section className="flex flex-col gap-4 items-center px-4">
+        <section className="flex flex-col gap-4 items-center px-6">
           {/* 태그 */}
           <div className="flex flex-col gap-2 items-center">
             {/* <Chip>🌱 차차는 처음 보는 장르예요!</Chip> */}
@@ -79,7 +79,7 @@ export const PerformanceOverview = () => {
             </h1>
           </div>
           {/* 공연 정보 */}
-          <div className="flex flex-col gap-[7px] w-full px-4">
+          <div className="flex flex-col gap-[7px] w-full">
             {[
               { label: "장소", value: performanceDetail.place },
               {
