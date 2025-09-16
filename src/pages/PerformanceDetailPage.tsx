@@ -10,7 +10,6 @@ import {
   TransportSection,
 } from "@/domains/performance/components";
 import { usePerformanceDetailQuery } from "@/domains/performance/queries";
-import { queryClient, queryKeys } from "@/shared/apis";
 import { ButtonChip, SwitchCase } from "@/shared/components";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -24,20 +23,8 @@ export const PerformanceDetailPage = () => {
       enabled: !!performanceId,
     }
   );
-  const { mutate: addWishlistMutation } = useAddWishlistMutation({
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [queryKeys.PERFORMANCE_DETAIL, performanceId],
-      });
-    },
-  });
-  const { mutate: removeWishlistMutation } = useRemoveWishlistMutation({
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [queryKeys.PERFORMANCE_DETAIL, performanceId],
-      });
-    },
-  });
+  const { mutate: addWishlistMutation } = useAddWishlistMutation();
+  const { mutate: removeWishlistMutation } = useRemoveWishlistMutation();
 
   if (!performanceId || isNaN(Number(performanceId))) {
     return (
