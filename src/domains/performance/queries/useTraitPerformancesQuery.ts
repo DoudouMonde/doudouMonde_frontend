@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { performanceApi } from "../apis/performanceApi";
 import { queryKeys } from "@/shared/apis/queryKeys";
+import { Trait } from "@/shared/types";
 
 export const useTraitPerformancesQuery = (
-  trait: string,
+  trait: Trait,
   childId: number | null
 ) => {
   return useQuery({

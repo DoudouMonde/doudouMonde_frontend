@@ -9,7 +9,6 @@ import PerformanceCard from "@/domains/performance/components/PerformanceCard";
 import {
   useGenrePerformanceListQuery,
   useNewGenrePerformanceListQuery,
-  usePerformancesByTraitQuery,
   useRewardPerformanceListQuery,
   useSidoPerformanceListQuery,
 } from "@/domains/performance/queries";
@@ -21,7 +20,6 @@ import { PATH } from "@/shared/constants/paths";
 import { getGenreLabel, getSidoLabel } from "@/shared/services";
 import { Gender, Genre, Profile, Sido, Trait } from "@/shared/types";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 export const HomePage = () => {
@@ -52,15 +50,15 @@ export const HomePage = () => {
 
   // 성향별 공연 데이터 가져오기 (개별 쿼리)
   const musicLoverQuery = useTraitPerformancesQuery(
-    "MUSIC_LOVER",
+    Trait.MUSIC_LOVER,
     selectedChild?.id || null
   );
   const danceLoverQuery = useTraitPerformancesQuery(
-    "DANCE_LOVER",
+    Trait.DANCE_LOVER,
     selectedChild?.id || null
   );
   const shortAttentionQuery = useTraitPerformancesQuery(
-    "SHORT_ATTENTION",
+    Trait.SHORT_ATTENTION,
     selectedChild?.id || null
   );
 
@@ -108,14 +106,6 @@ export const HomePage = () => {
     });
 
   // 성향별 공연 데이터 가져오기
-  const { data: { contents: traitPerformances } = { contents: [] } } =
-    usePerformancesByTraitQuery(
-      selectedChild?.trait ?? Trait.MUSIC_LOVER,
-      selectedChild?.id ?? 0,
-      {
-        enabled: !!selectedChild,
-      }
-    );
 
   useEffect(
     function initializeSelectedChild() {
@@ -130,6 +120,7 @@ export const HomePage = () => {
         profile: firstChild.profile as Profile,
         sido: firstChild.sido as Sido,
         genre: Genre.PLAY, // 기본값 설정
+        trait: Trait.MUSIC_LOVER, // 기본값 설정
       };
       setSelectedChild(convertedChild);
     },
@@ -209,6 +200,7 @@ export const HomePage = () => {
                 profile: child.profile as Profile,
                 sido: child.sido as Sido,
                 genre: Genre.PLAY,
+                trait: Trait.MUSIC_LOVER, // 기본값 설정
               };
               return (
                 <ChildProfile

@@ -56,10 +56,42 @@ export const childApi = {
   getChildTraits: async (
     childId: number
   ): Promise<UpdateChildTraitsResponse> => {
-    const response = await apiRequester.get<UpdateChildTraitsResponse>(
-      `/v1/child/${childId}/traits`
+    console.log("👶 아이 취향 API 요청 시작");
+    console.log("🌐 요청 URL:", `/v1/child/${childId}/traits`);
+    console.log(
+      "🌍 전체 URL:",
+      `${apiRequester.defaults.baseURL}/v1/child/${childId}/traits`
     );
-    return response.data;
+    console.log(
+      "🔍 백엔드가 /api/v1/{childId}/traits를 사용한다면:",
+      `${apiRequester.defaults.baseURL}/${childId}/traits`
+    );
+    console.log("👤 childId:", childId);
+    console.log("🔑 요청 메서드: GET");
+
+    try {
+      const response = await apiRequester.get<UpdateChildTraitsResponse>(
+        `/${childId}/traits`
+      );
+      console.log("👶 아이 취향 API 응답 성공:", {
+        status: response.status,
+        data: response.data,
+        traits: response.data?.traits || [],
+      });
+      return response.data;
+    } catch (error) {
+      console.error("❌ 아이 취향 API 요청 실패:", error);
+      console.error("🔍 에러 상세:", {
+        message: error.message,
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        url: error.config?.url,
+        method: error.config?.method,
+        headers: error.config?.headers,
+      });
+      throw error;
+    }
   },
   updateChildName: async (
     childId: number,

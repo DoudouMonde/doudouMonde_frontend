@@ -68,11 +68,12 @@ export const performanceApi = {
     );
     return response.data;
   },
-  getPerformancesByTrait: async (trait: string, childId: number) => {
+  getPerformancesByTrait: async (trait: Trait, childId: number) => {
     console.log("🎭 성향별 공연 추천 API 요청:", {
       trait,
       childId,
       url: `/v1/performances/trait/${trait}`,
+      fullUrl: `${apiRequester.defaults.baseURL}/v1/performances/trait/${trait}?childId=${childId}`,
       timestamp: new Date().toISOString(),
     });
 
@@ -123,17 +124,6 @@ export const performanceApi = {
   getNewGenrePerformanceList: async (childId: number) => {
     const response = await apiRequester.get<PerformanceListResponse>(
       `/v1/performances/new-genre/${childId}`
-    );
-    return response.data;
-  },
-  getPerformancesByTrait: async (trait: Trait, childId: number) => {
-    const response = await apiRequester.get<PerformanceListResponse>(
-      `/v1/performances/trait/${trait}`,
-      {
-        params: {
-          childId,
-        },
-      }
     );
     return response.data;
   },
