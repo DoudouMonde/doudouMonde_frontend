@@ -84,15 +84,28 @@ apiRequester.interceptors.response.use(
   (error) => {
     if (isAxiosError(error) && error.response?.status === 401) {
       // 상세한 401 오류 디버깅
+      console.error("🚨 401 인증 오류 발생:", {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        url: error.config?.url,
+        method: error.config?.method,
+        currentToken: localStorage.getItem("token"),
+      });
 
       // 토큰 제거
       localStorage.removeItem("token");
       console.warn("🗑️ 토큰이 제거되었습니다.");
 
       // 현재 페이지가 로그인 페이지가 아닌 경우에만 리다이렉트
-      if (window.location.pathname !== "/login") {
+      if (
+        window.location.pathname !== "/login" &&
+        process.env.NODE_ENV === "production"
+      ) {
         console.log("🔄 로그인 페이지로 리다이렉트합니다.");
         window.location.href = "/login";
+      } else {
+        console.log("🔧 개발 모드: 리다이렉트를 건너뜁니다.");
       }
     }
     return Promise.reject(error);

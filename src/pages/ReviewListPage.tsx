@@ -275,7 +275,7 @@ export const ReviewListPage = () => {
   return (
     <div className="flex min-h-screen">
       {/* Main Content */}
-      <div className="relative w-full p-4 rounded-[40px] mt-20 mb-24">
+      <div className="relative w-full p-7 rounded-[40px] mt-20 mb-24 bg-gray-200/70 ">
         {/* Header */}
         <div className="flex flex-col mb-6">
           <h1 className="mb-4 title-hak">내 리뷰 목록</h1>
@@ -334,11 +334,11 @@ export const ReviewListPage = () => {
                             <div
                               key={review.reviewId}
                               onClick={() => handleReviewClick(review.reviewId)}
-                              className="p-4 rounded-[20px] cursor-pointer bg-gray-200/70 hover:shadow-md shadow-sm min-h-[120px]"
+                              className=" cursor-pointer  hover:shadow-md shadow-sm min-h-[120px]"
                             >
                               <div className="flex gap-4 items-stretch">
                                 {/* 캐릭터 전신 모습 */}
-                                <div className="flex-shrink-0">
+                                <div className="flex-shrink-0 bg-gray-200 rounded-[8px]  shadow-sm">
                                   {(() => {
                                     // 액세사리가 적용된 최종 캐릭터 표시
                                     const AccessoryCharacter =
@@ -375,17 +375,16 @@ export const ReviewListPage = () => {
                                 </div>
 
                                 {/* 리뷰 정보 */}
-                                <div className="flex flex-col flex-1 justify-between items-stretch min-w-0 h-full">
+                                <div className="flex flex-col flex-1 justify-between items-stretch py-2 min-w-0 h-full">
+                                  <div className="mb-2">
+                                    <span className="text-sm font-medium inter">
+                                      {review.performanceName || "공연명 없음"}
+                                    </span>
+                                  </div>
                                   <div className="">
                                     <h3 className="text-gray-900 truncate body-inter-b">
                                       {review.characterName || "캐릭터명 없음"}
                                     </h3>
-                                  </div>
-
-                                  <div className="mb-2">
-                                    <span className="text-sm font-medium text-secondary-100 subtitle-b">
-                                      {review.performanceName || "공연명 없음"}
-                                    </span>
                                   </div>
 
                                   {/* 후기 텍스트와 날짜/아이콘을 같은 줄에 배치 */}
@@ -456,7 +455,7 @@ export const ReviewListPage = () => {
         )}
 
         {/* 홈으로 버튼 */}
-        <div className="absolute bottom-0 right-4 left-4">
+        <div className="absolute right-4 bottom-4 left-4">
           <div className="flex justify-center">
             <button
               onClick={handleNext}
