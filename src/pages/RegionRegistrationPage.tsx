@@ -192,15 +192,55 @@ export function RegionRegistrationPage() {
       console.error("🔍 에러 상세 정보:");
       console.error("  - 에러 타입:", typeof error);
       console.error("  - 에러 메시지:", error.message);
+      console.error("  - 에러 코드:", error.code);
+
       if (error.response) {
         console.error("  - 응답 상태:", error.response.status);
+        console.error("  - 응답 상태 텍스트:", error.response.statusText);
         console.error("  - 응답 데이터:", error.response.data);
         console.error("  - 응답 헤더:", error.response.headers);
+
+        // 백엔드에서 보낸 에러 메시지가 있는지 확인
+        if (error.response.data && typeof error.response.data === "object") {
+          console.error(
+            "  - 백엔드 에러 메시지:",
+            error.response.data.message ||
+              error.response.data.error ||
+              "메시지 없음"
+          );
+          console.error("  - 백엔드 에러 상세:", error.response.data);
+        }
       }
+
       if (error.request) {
         console.error("  - 요청 정보:", error.request);
+        console.error("  - 요청 URL:", error.request.url);
+        console.error("  - 요청 메서드:", error.request.method);
       }
+
       console.error("  - 요청 설정:", error.config);
+      console.error("  - 요청 URL (config):", error.config?.url);
+      console.error("  - 요청 baseURL:", error.config?.baseURL);
+      console.error("  - 요청 메서드 (config):", error.config?.method);
+      console.error("  - 요청 헤더:", error.config?.headers);
+
+      // 네트워크 에러인지 확인
+      if (
+        error.code === "NETWORK_ERROR" ||
+        error.message.includes("Network Error")
+      ) {
+        console.error("🌐 네트워크 에러: 서버에 연결할 수 없습니다.");
+        console.error("🔧 확인사항:");
+        console.error("  - 백엔드 서버가 실행 중인지 확인");
+        console.error("  - CORS 설정 확인");
+        console.error("  - API 엔드포인트 URL 확인");
+      }
+
+      // 타임아웃 에러인지 확인
+      if (error.code === "ECONNABORTED" || error.message.includes("timeout")) {
+        console.error("⏰ 타임아웃 에러: 요청 시간이 초과되었습니다.");
+      }
+
       alert("회원가입에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setIsSubmitting(false);
