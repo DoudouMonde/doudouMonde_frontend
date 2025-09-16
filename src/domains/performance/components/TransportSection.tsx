@@ -157,7 +157,7 @@ export const TransportSection = ({ performanceId }: Props) => {
     <div className="p-4 space-y-4">
       {/* 제목 */}
       <div className="mb-4">
-        <p className="text-sm text-black body-hak-r bg-yellow-200 rounded-[10px] p-2">
+        <p className="text-sm text-black body-hak-r bg-yellow-200 rounded-[10px] p-2 inline-block">
           {venueLocation.name}까지의 경로를 확인하세요
         </p>
       </div>

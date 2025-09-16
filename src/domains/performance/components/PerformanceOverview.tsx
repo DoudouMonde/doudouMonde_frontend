@@ -55,7 +55,7 @@ export const PerformanceOverview = () => {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          opacity: 0.5,
+          opacity: 0.7,
         }}
       />
 
