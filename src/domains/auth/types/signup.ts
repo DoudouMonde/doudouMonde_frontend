@@ -35,6 +35,11 @@ export const GENDER_MAPPING = {
 } as const;
 
 export const TRAIT_MAPPING = {
+  MUSIC_LOVER: "MUSIC_LOVER",
+  DANCE_LOVER: "DANCE_LOVER",
+  CURIOUS: "CURIOUS",
+  SHORT_ATTENTION: "SHORT_ATTENTION",
+  // 기존 매핑도 유지 (하위 호환성)
   music: "MUSIC_LOVER",
   sensitive: "SOUND_SENSITIVE",
   active: "ACTIVE",

@@ -10,6 +10,7 @@ import {
   useGenrePerformanceListQuery,
   useRewardPerformanceListQuery,
   useSidoPerformanceListQuery,
+  useMultipleTraitPerformancesQuery,
 } from "@/domains/performance/queries";
 import { apiRequester } from "@/shared/apis";
 
@@ -47,12 +48,34 @@ export const HomePage = () => {
     error: traitsError,
   } = useChildTraitsQuery(selectedChild?.id || null);
 
+  // 성향별 공연 데이터 가져오기
+  const traitPerformancesQueries = useMultipleTraitPerformancesQuery(
+    childTraits?.traits || []
+  );
+
   // 디버깅용 로그
   console.log("🎭 선택된 아이:", selectedChild);
   console.log("🎯 아이 ID:", selectedChild?.id);
   console.log("🎯 아이 취향:", childTraits);
   console.log("🎯 취향 로딩 중:", traitsLoading);
   console.log("🎯 취향 에러:", traitsError);
+  console.log("🎪 성향별 공연 쿼리들:", traitPerformancesQueries);
+
+  // 성향 라벨 반환 함수
+  const getTraitLabel = (trait: string) => {
+    switch (trait) {
+      case "MUSIC_LOVER":
+        return "음악을 좋아해요";
+      case "DANCE_LOVER":
+        return "춤을 좋아해요";
+      case "CURIOUS":
+        return "호기심이 많아요";
+      case "SHORT_ATTENTION":
+        return "집중시간이 짧아요";
+      default:
+        return trait;
+    }
+  };
 
   // 취향 기반 추천 로직
   const getRecommendationTitle = () => {
@@ -63,19 +86,19 @@ export const HomePage = () => {
 
     const traits = childTraits.traits;
     if (traits.includes("MUSIC_LOVER")) {
-      return `${selectedChild?.name}을 위한 뮤지컬 추천`;
+      return `${selectedChild?.name}에게 딱 맞는 뮤지컬 추천`;
     }
     if (traits.includes("SHORT_ATTENTION")) {
-      return `${selectedChild?.name}을 위한 짧은 공연 추천 (100분 이하)`;
+      return `${selectedChild?.name}에게 딱 맞는 짧은 공연 추천 (100분 이하)`;
     }
     if (traits.includes("CURIOUS")) {
-      return `${selectedChild?.name}을 위한 새로운 장르 추천`;
+      return `${selectedChild?.name}에게 딱 맞는 새로운 장르 추천`;
     }
     if (traits.includes("DANCE_LOVER")) {
-      return `${selectedChild?.name}을 위한 춤 공연 추천`;
+      return `${selectedChild?.name}에게 딱 맞는 춤 공연 추천`;
     }
 
-    return `${selectedChild?.name}을 위한 ${getGenreLabel(
+    return `${selectedChild?.name}에게 딱 맞는 ${getGenreLabel(
       selectedChild?.genre ?? Genre.PLAY
     )}공연`;
   };
@@ -143,20 +166,66 @@ export const HomePage = () => {
           </ul>
           <div className="flex flex-col gap-12 w-full">
             {/*  성향별 공연 섹션 */}
-            <section className="flex flex-col gap-2">
-              <h2 className="py-2 text-black title-inter-b">
-                성향에 딱 맞는 공연 추천
-              </h2>
-              <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
-                {sidoPerformanceList.map((sidoPerformance) => (
-                  <PerformanceCard
-                    key={sidoPerformance.performanceId}
-                    performance={sidoPerformance}
-                    onClick={handlePerformancePress}
-                  />
-                ))}
-              </ul>
-            </section>
+            {childTraits?.traits && childTraits.traits.length > 0 && (
+              <section className="flex flex-col gap-2">
+                <h2 className="py-2 text-black title-inter-b">
+                  성향에 딱 맞는 공연 추천
+                </h2>
+                <div className="flex flex-col gap-4">
+                  {traitPerformancesQueries.map((query, index) => {
+                    const trait = childTraits.traits[index];
+                    const performances = query.data?.contents || [];
+                    const isLoading = query.isLoading;
+                    const error = query.error;
+
+                    if (isLoading) {
+                      return (
+                        <div key={trait} className="flex flex-col gap-2">
+                          <h3 className="text-sm font-medium text-gray-600">
+                            {getTraitLabel(trait)} 공연 로딩 중...
+                          </h3>
+                          <div className="flex gap-4">
+                            <div className="w-48 h-32 bg-gray-200 rounded-lg animate-pulse" />
+                            <div className="w-48 h-32 bg-gray-200 rounded-lg animate-pulse" />
+                          </div>
+                        </div>
+                      );
+                    }
+
+                    if (error) {
+                      return (
+                        <div key={trait} className="flex flex-col gap-2">
+                          <h3 className="text-sm font-medium text-gray-600">
+                            {getTraitLabel(trait)} 공연을 불러올 수 없습니다.
+                          </h3>
+                        </div>
+                      );
+                    }
+
+                    if (performances.length === 0) {
+                      return null;
+                    }
+
+                    return (
+                      <div key={trait} className="flex flex-col gap-2">
+                        <h3 className="text-sm font-medium text-gray-600">
+                          {getTraitLabel(trait)} 추천 공연
+                        </h3>
+                        <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
+                          {performances.map((performance) => (
+                            <PerformanceCard
+                              key={performance.performanceId}
+                              performance={performance}
+                              onClick={handlePerformancePress}
+                            />
+                          ))}
+                        </ul>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            )}
 
             {/*  지역별 공연 섹션 */}
             <section className="flex flex-col gap-2">

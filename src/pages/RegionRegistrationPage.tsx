@@ -137,6 +137,8 @@ export function RegionRegistrationPage() {
 
       const childData: ChildRequest = JSON.parse(savedChildData);
       console.log("📋 저장된 아이 정보:", childData);
+      console.log("🎯 아이 성향들:", childData.traits);
+      console.log("🎭 아이 장르들:", childData.genres);
 
       // 실제 위치 정보 사용 (없으면 기본값)
       const longitude = coords.longitude || 127.0276; // 서울 강남 기본값

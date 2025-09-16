@@ -23,10 +23,10 @@ import { CustomButton } from "@/shared/components/CustomButton";
 
 // 개별 성향 목록
 const TRAITS = [
-  { value: "music", label: "음악을 좋아해요" },
-  { value: "active", label: "활동적이에요" },
-  { value: "sensitive", label: "소리에 민감해요" },
-  { value: "short-attention", label: "집중시간이 짧아요" },
+  { value: "MUSIC_LOVER", label: "음악을 좋아해요" },
+  { value: "DANCE_LOVER", label: "춤을 좋아해요" },
+  { value: "CURIOUS", label: "호기심이 많아요" },
+  { value: "SHORT_ATTENTION", label: "집중시간이 짧아요" },
 ];
 
 // 장르 목록
