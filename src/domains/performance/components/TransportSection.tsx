@@ -1,6 +1,9 @@
 import { useState } from "react";
 import KakaoMap from "@/shared/components/KakaoMap";
-import { useCombinedLocationsQuery } from "@/domains/performance/queries";
+import {
+  useCombinedLocationsQuery,
+  usePerformanceDetailQuery,
+} from "@/domains/performance/queries";
 
 type Props = {
   performanceId: number;
@@ -32,7 +35,12 @@ const transportOptions: Array<{
 export const TransportSection = ({ performanceId }: Props) => {
   const [selectedTransport, setSelectedTransport] =
     useState<TransportType>("transit");
-
+  const { data: performanceDetail } = usePerformanceDetailQuery(
+    Number(performanceId),
+    {
+      enabled: !!performanceId,
+    }
+  );
   // API에서 위치 정보 가져오기
   const {
     data: locationData,
@@ -156,11 +164,13 @@ export const TransportSection = ({ performanceId }: Props) => {
   return (
     <div className="p-4 space-y-4">
       {/* 제목 */}
-      <div className="mb-4">
-        <p className="text-sm text-black body-hak-r bg-yellow-200 rounded-[10px] p-2 inline-block">
-          {venueLocation.name}까지의 경로를 확인하세요
-        </p>
-      </div>
+      {performanceDetail?.hasPublicParking && (
+        <div className="mb-4">
+          <p className="text-sm text-black body-hak-r bg-yellow-200 rounded-[10px] p-2 inline-block">
+            자체 주차장이 있는 공연장이에요
+          </p>
+        </div>
+      )}
 
       {/* 교통수단 선택 */}
       <div className="mb-4">

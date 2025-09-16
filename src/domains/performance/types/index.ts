@@ -37,6 +37,7 @@ export type PerformanceDetail = {
   hasPlayRoom: boolean;
   hasNursingRoom: boolean;
   hasRestRoom: boolean;
+  hasPublicParking: boolean;
 };
 
 export type TabType = "transport" | "seats" | "content";
