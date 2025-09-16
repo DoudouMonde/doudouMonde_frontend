@@ -79,7 +79,7 @@ export const PerformanceOverview = () => {
             </h1>
           </div>
           {/* 공연 정보 */}
-          <div className="flex flex-col gap-[7px] w-full">
+          <div className="flex flex-col gap-[7px] w-full px-4">
             {[
               { label: "장소", value: performanceDetail.place },
               {
@@ -99,7 +99,13 @@ export const PerformanceOverview = () => {
                 label: "관람연령",
                 value: getAgeLimitLabel(performanceDetail.ageLimit),
               },
-              { label: "가격", value: formatCurrency(performanceDetail.price) },
+              {
+                label: "가격",
+                value:
+                  performanceDetail.price === 0
+                    ? "가격정보 없음"
+                    : formatCurrency(performanceDetail.price),
+              },
               {
                 label: "시설정보",
                 value: performanceDetail.hasPlayRoom

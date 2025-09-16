@@ -8,8 +8,6 @@ import { ConfirmModal } from "@/shared/components";
 import { useState } from "react";
 
 export const FavoritesPage: React.FC = () => {
-  console.log("🎯 FavoritesPage 컴포넌트가 렌더링되었습니다!");
-
   const navigate = useNavigate();
   const { data: rawWishlist = [], isLoading, error } = useWishlistQuery();
   const removeWishlistMutation = useRemoveWishlistMutation();
@@ -29,17 +27,6 @@ export const FavoritesPage: React.FC = () => {
   });
 
   const wishlist = Array.from(uniqueWishlistMap.values());
-
-  // wishlist 데이터 로그 출력
-  console.log("📋 찜 목록 데이터:", {
-    wishlistCount: wishlist.length,
-    wishlistData: wishlist.map((item) => ({
-      wishlistId: item.wishlistId,
-      performanceId: item.performanceId,
-      performanceName: item.performanceName,
-      performanceIdType: typeof item.performanceId,
-    })),
-  });
 
   const handlePerformanceClick = (performanceId: number) => {
     console.log("🎭 Favorites에서 공연 클릭:", {
