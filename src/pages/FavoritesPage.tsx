@@ -30,24 +30,19 @@ export const FavoritesPage: React.FC = () => {
 
   const wishlist = Array.from(uniqueWishlistMap.values());
 
-  console.log("🔍 찜 목록 중복 제거:", {
-    원본개수: rawWishlist.length,
-    중복제거후개수: wishlist.length,
-    중복제거된개수: rawWishlist.length - wishlist.length,
-    원본데이터: rawWishlist.map((item) => ({
+  // wishlist 데이터 로그 출력
+  console.log("📋 찜 목록 데이터:", {
+    wishlistCount: wishlist.length,
+    wishlistData: wishlist.map((item) => ({
       wishlistId: item.wishlistId,
       performanceId: item.performanceId,
       performanceName: item.performanceName,
-    })),
-    중복제거후데이터: wishlist.map((item) => ({
-      wishlistId: item.wishlistId,
-      performanceId: item.performanceId,
-      performanceName: item.performanceName,
+      performanceIdType: typeof item.performanceId,
     })),
   });
 
   const handlePerformanceClick = (performanceId: number) => {
-    console.log("🎭 공연 클릭:", {
+    console.log("🎭 Favorites에서 공연 클릭:", {
       performanceId,
       performanceIdType: typeof performanceId,
       targetPath: PATH.PERFORMANCE_DETAIL(performanceId),
