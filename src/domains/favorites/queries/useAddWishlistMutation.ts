@@ -17,10 +17,14 @@ export const useAddWishlistMutation = (
 
   return useMutation({
     mutationFn: (request: WishlistRequest) => favoritesApi.addWishlist(request),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       // 위시리스트 목록을 다시 불러오기
       queryClient.invalidateQueries({
         queryKey: queryKeys.favorites.wishlist(),
+      });
+      // 특정 공연 상세 정보 무효화 (isLike 상태 업데이트)
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.PERFORMANCE_DETAIL, variables.performanceId],
       });
     },
     ...mutationOptions,

@@ -10,7 +10,6 @@ import {
   TransportSection,
 } from "@/domains/performance/components";
 import { usePerformanceDetailQuery } from "@/domains/performance/queries";
-import { queryClient, queryKeys } from "@/shared/apis";
 import { ButtonChip, SwitchCase } from "@/shared/components";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -33,37 +32,25 @@ export const PerformanceDetailPage = () => {
       enabled: !!performanceId,
     }
   );
-  const { mutate: addWishlistMutation } = useAddWishlistMutation({
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [queryKeys.PERFORMANCE_DETAIL, performanceId],
-      });
-    },
-  });
-  const { mutate: removeWishlistMutation } = useRemoveWishlistMutation({
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [queryKeys.PERFORMANCE_DETAIL, performanceId],
-      });
-    },
-  });
+  const { mutate: addWishlistMutation } = useAddWishlistMutation();
+  const { mutate: removeWishlistMutation } = useRemoveWishlistMutation();
 
   if (!performanceId || isNaN(Number(performanceId))) {
     return (
-      <div className="flex flex-col items-center justify-center w-full h-64">
+      <div className="flex flex-col justify-center items-center w-full h-64">
         <p className="text-red-500">잘못된 공연 ID입니다.</p>
-        <p className="text-sm text-gray-500 mt-2">
+        <p className="mt-2 text-sm text-gray-500">
           performanceId: {performanceId}
         </p>
       </div>
     );
   }
 
-  if (!performanceDetail) {
+  if (!performanceId || isNaN(Number(performanceId))) {
     return (
-      <div className="flex flex-col items-center justify-center w-full h-64">
-        <p className="text-gray-500">공연 정보를 불러오는 중...</p>
-        <p className="text-sm text-gray-400 mt-2">
+      <div className="flex flex-col justify-center items-center w-full h-64">
+        <p className="text-red-500">잘못된 공연 ID입니다.</p>
+        <p className="mt-2 text-sm text-gray-500">
           performanceId: {performanceId}
         </p>
       </div>
@@ -136,7 +123,7 @@ export const PerformanceDetailPage = () => {
               addWishlistMutation({ performanceId: Number(performanceId) });
             }
           }}
-          isActive={performanceDetail?.isLike || false}
+          isActive={!performanceDetail?.isLike || false}
         >
           보고싶어요
         </ButtonChip>
