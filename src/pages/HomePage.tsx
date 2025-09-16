@@ -29,16 +29,20 @@ export const HomePage = () => {
     navigate(PATH.PERFORMANCE_DETAIL(performanceId));
   };
 
-  const { data: { contents: children } = { contents: [] } } =
-    useChildListQuery();
-  const [selectedChild, setSelectedChild] = useState<ChildItem | null>({
-    id: 1,
-    name: "테스트",
-    genre: Genre.PLAY,
-    sido: Sido.SEOUL,
-    birthday: "2025-01-01",
-    gender: Gender.MALE,
-    profile: Profile.CAT,
+  const {
+    data: { contents: children } = { contents: [] },
+    isLoading: childrenLoading,
+    error: childrenError,
+  } = useChildListQuery();
+
+  const [selectedChild, setSelectedChild] = useState<ChildItem | null>(null);
+
+  // 아이 조회 디버깅 로그
+  console.log("👶 아이 조회 상태:", {
+    children,
+    childrenLoading,
+    childrenError,
+    childrenCount: children?.length || 0,
   });
 
   // 아이 취향 정보 가져오기
@@ -115,9 +119,47 @@ export const HomePage = () => {
     [children]
   );
 
-  // if (!selectedChild) {
-  //   return null;
-  // }
+  // 로딩 상태 처리
+  if (childrenLoading) {
+    return (
+      <div className="flex flex-col justify-center items-center p-0 m-0 w-full h-full">
+        <div className="text-lg">아이 정보를 불러오는 중...</div>
+      </div>
+    );
+  }
+
+  // 에러 상태 처리
+  if (childrenError) {
+    return (
+      <div className="flex flex-col justify-center items-center p-0 m-0 w-full h-full">
+        <div className="text-lg text-red-500">
+          아이 정보를 불러올 수 없습니다.
+        </div>
+        <div className="mt-2 text-sm text-gray-500">
+          에러: {childrenError.message}
+        </div>
+      </div>
+    );
+  }
+
+  // 아이가 없는 경우
+  if (!children || children.length === 0) {
+    return (
+      <div className="flex flex-col justify-center items-center p-0 m-0 w-full h-full">
+        <div className="text-lg">등록된 아이가 없습니다.</div>
+        <div className="mt-2 text-sm text-gray-500">아이를 등록해주세요.</div>
+      </div>
+    );
+  }
+
+  // selectedChild가 없는 경우
+  if (!selectedChild) {
+    return (
+      <div className="flex flex-col justify-center items-center p-0 m-0 w-full h-full">
+        <div className="text-lg">아이를 선택해주세요.</div>
+      </div>
+    );
+  }
   const savePerformance = async () => {
     const response = await apiRequester.post(
       `/v1/performances/save/7d467135319d4e57b69714067f7f5385`
