@@ -12,6 +12,7 @@ import {
   usePerformancesByTraitQuery,
   useRewardPerformanceListQuery,
   useSidoPerformanceListQuery,
+  useMultipleTraitPerformancesQuery,
 } from "@/domains/performance/queries";
 
 import { SearchPerformancesInput } from "@/shared/components";
@@ -51,19 +52,19 @@ export const HomePage = () => {
 
     const traits = selectedChild.trait;
     if (traits.includes("MUSIC_LOVER")) {
-      return `${selectedChild?.name}을 위한 뮤지컬 추천`;
+      return `${selectedChild?.name}에게 딱 맞는 뮤지컬 추천`;
     }
     if (traits.includes("SHORT_ATTENTION")) {
-      return `${selectedChild?.name}을 위한 짧은 공연 추천 (100분 이하)`;
+      return `${selectedChild?.name}에게 딱 맞는 짧은 공연 추천 (100분 이하)`;
     }
     if (traits.includes("CURIOUS")) {
-      return `${selectedChild?.name}을 위한 새로운 장르 추천`;
+      return `${selectedChild?.name}에게 딱 맞는 새로운 장르 추천`;
     }
     if (traits.includes("DANCE_LOVER")) {
-      return `${selectedChild?.name}을 위한 춤 공연 추천`;
+      return `${selectedChild?.name}에게 딱 맞는 춤 공연 추천`;
     }
 
-    return `${selectedChild?.name}을 위한 ${getGenreLabel(
+    return `${selectedChild?.name}에게 딱 맞는 ${getGenreLabel(
       selectedChild?.genre ?? Genre.PLAY
     )}공연`;
   };

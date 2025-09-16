@@ -137,6 +137,8 @@ export function RegionRegistrationPage() {
 
       const childData: ChildRequest = JSON.parse(savedChildData);
       console.log("📋 저장된 아이 정보:", childData);
+      console.log("🎯 아이 성향들:", childData.traits);
+      console.log("🎭 아이 장르들:", childData.genres);
 
       // 실제 위치 정보 사용 (없으면 기본값)
       const longitude = coords.longitude || 127.0276; // 서울 강남 기본값
@@ -163,6 +165,21 @@ export function RegionRegistrationPage() {
 
       console.log("🚀 백엔드로 전송할 데이터:", signupData);
       console.log("🌐 API 엔드포인트: POST /auth/signup");
+      console.log("📊 상세 요청 데이터 분석:");
+      console.log("  - longitude:", signupData.longitude);
+      console.log("  - latitude:", signupData.latitude);
+      console.log("  - address:", signupData.address);
+      console.log("  - sido:", signupData.sido);
+      console.log("  - children 개수:", signupData.children.length);
+      console.log("  - 첫 번째 아이 정보:", signupData.children[0]);
+      if (signupData.children[0]) {
+        console.log("    - name:", signupData.children[0].name);
+        console.log("    - birthday:", signupData.children[0].birthday);
+        console.log("    - gender:", signupData.children[0].gender);
+        console.log("    - profile:", signupData.children[0].profile);
+        console.log("    - traits:", signupData.children[0].traits);
+        console.log("    - genres:", signupData.children[0].genres);
+      }
 
       const response = await signupApi.signup(signupData);
       console.log("✅ 회원가입 성공:", response);
@@ -171,7 +188,59 @@ export function RegionRegistrationPage() {
       localStorage.removeItem("childData");
       navigate(PATH.HOME);
     } catch (error) {
-      console.error("회원가입 실패:", error);
+      console.error("❌ 회원가입 실패:", error);
+      console.error("🔍 에러 상세 정보:");
+      console.error("  - 에러 타입:", typeof error);
+      console.error("  - 에러 메시지:", error.message);
+      console.error("  - 에러 코드:", error.code);
+
+      if (error.response) {
+        console.error("  - 응답 상태:", error.response.status);
+        console.error("  - 응답 상태 텍스트:", error.response.statusText);
+        console.error("  - 응답 데이터:", error.response.data);
+        console.error("  - 응답 헤더:", error.response.headers);
+
+        // 백엔드에서 보낸 에러 메시지가 있는지 확인
+        if (error.response.data && typeof error.response.data === "object") {
+          console.error(
+            "  - 백엔드 에러 메시지:",
+            error.response.data.message ||
+              error.response.data.error ||
+              "메시지 없음"
+          );
+          console.error("  - 백엔드 에러 상세:", error.response.data);
+        }
+      }
+
+      if (error.request) {
+        console.error("  - 요청 정보:", error.request);
+        console.error("  - 요청 URL:", error.request.url);
+        console.error("  - 요청 메서드:", error.request.method);
+      }
+
+      console.error("  - 요청 설정:", error.config);
+      console.error("  - 요청 URL (config):", error.config?.url);
+      console.error("  - 요청 baseURL:", error.config?.baseURL);
+      console.error("  - 요청 메서드 (config):", error.config?.method);
+      console.error("  - 요청 헤더:", error.config?.headers);
+
+      // 네트워크 에러인지 확인
+      if (
+        error.code === "NETWORK_ERROR" ||
+        error.message.includes("Network Error")
+      ) {
+        console.error("🌐 네트워크 에러: 서버에 연결할 수 없습니다.");
+        console.error("🔧 확인사항:");
+        console.error("  - 백엔드 서버가 실행 중인지 확인");
+        console.error("  - CORS 설정 확인");
+        console.error("  - API 엔드포인트 URL 확인");
+      }
+
+      // 타임아웃 에러인지 확인
+      if (error.code === "ECONNABORTED" || error.message.includes("timeout")) {
+        console.error("⏰ 타임아웃 에러: 요청 시간이 초과되었습니다.");
+      }
+
       alert("회원가입에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setIsSubmitting(false);
@@ -392,7 +461,7 @@ export function RegionRegistrationPage() {
         </div>
 
         <>
-          <div className="mb-8">
+          {/* <div className="mb-8">
             <label className="block mb-2 font-medium text-gray-700 body-inter-r">
               상세주소 입력
             </label>
@@ -403,7 +472,7 @@ export function RegionRegistrationPage() {
               placeholder="예: 강남구 테헤란로 123, ○○아파트"
               className="p-4 w-full bg-white rounded-lg border border-secondary-100 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
             />
-          </div>
+          </div> */}
         </>
       </div>
     </div>

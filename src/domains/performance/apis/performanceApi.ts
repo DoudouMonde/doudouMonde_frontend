@@ -62,6 +62,12 @@ export const performanceApi = {
     );
     return response.data;
   },
+  getShortDurationPerformances: async () => {
+    const response = await apiRequester.get<PerformanceListResponse>(
+      `/v1/performances/short-duration`
+    );
+    return response.data;
+  },
   searchPerformances: async (searchText?: string, page: number = 0) => {
     const response = await apiRequester.get<PerformanceListResponse>(
       `/v1/performances`,
