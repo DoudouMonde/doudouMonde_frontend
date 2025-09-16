@@ -71,22 +71,49 @@ export const TransportSection = ({ performanceId }: Props) => {
         name: "롯데콘서트홀",
       };
 
-  // 카카오맵 외부 링크로 이동
-  const openKakaoMapRoute = (transportType: TransportType) => {
-    // 교통수단별 카카오맵 URL 매핑
-    const transportModeMap = {
-      car: "car", // 자동차
-      transit: "publictransit", // 대중교통
-      walk: "walk", // 도보
-    };
-
-    const mode = transportModeMap[transportType];
-    const origin = `${userLocation.address},${userLocation.lat},${userLocation.lng}`;
-    const destination = `${venueLocation.name},${venueLocation.lat},${venueLocation.lng}`;
-    const url = `https://map.kakao.com/link/by/${mode}/${origin}/${destination}`;
-
-    window.open(url, "_blank");
+  // 교통수단별 모드 매핑 (공식)
+  const byMap: Record<TransportType, "car" | "publictransit" | "foot"> = {
+    car: "car",
+    transit: "publictransit",
+    walk: "foot",
   };
+
+  const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+
+  const openKakaoMapRoute = (transportType: TransportType) => {
+    const by = byMap[transportType];
+    const sp = `${userLocation.lat},${userLocation.lng}`;
+    const ep = `${venueLocation.lat},${venueLocation.lng}`;
+
+    const schemeUrl = `kakaomap://route?sp=${sp}&ep=${ep}&by=${by}`;
+    const webUrl = `https://m.map.kakao.com/scheme/route?sp=${sp}&ep=${ep}&by=${by}`;
+
+    if (isMobile) {
+      window.location.href = schemeUrl;
+      setTimeout(() => {
+        window.location.replace(webUrl);
+      }, 400);
+    } else {
+      window.open(webUrl, "_blank", "noopener,noreferrer");
+    }
+  };
+
+  // // 카카오맵 외부 링크로 이동
+  // const openKakaoMapRoute = (transportType: TransportType) => {
+  //   // 교통수단별 카카오맵 URL 매핑
+  //   const transportModeMap = {
+  //     car: "car", // 자동차
+  //     transit: "publictransit", // 대중교통
+  //     walk: "walk", // 도보
+  //   };
+
+  //   const mode = transportModeMap[transportType];
+  //   const origin = `${userLocation.address},${userLocation.lat},${userLocation.lng}`;
+  //   const destination = `${venueLocation.name},${venueLocation.lat},${venueLocation.lng}`;
+  //   const url = `https://map.kakao.com/link/by/${mode}/${origin}/${destination}`;
+
+  //   window.open(url, "_blank");
+  // };
 
   // 로딩 상태 처리
   if (isLoading) {

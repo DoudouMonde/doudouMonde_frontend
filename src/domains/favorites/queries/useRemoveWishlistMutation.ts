@@ -15,16 +15,16 @@ export const useRemoveWishlistMutation = (
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (wishlistId: number) => {
+    mutationFn: (performanceId: number) => {
       console.log("🔄 Mutation 시작 - 찜 삭제:", {
-        wishlistId,
+        performanceId,
         timestamp: new Date().toISOString(),
       });
-      return favoritesApi.removeWishlist(wishlistId);
+      return favoritesApi.removeWishlist(performanceId);
     },
-    onSuccess: (data, wishlistId) => {
+    onSuccess: (data, performanceId) => {
       console.log("🎉 Mutation 성공 - 찜 삭제:", {
-        wishlistId,
+        performanceId,
         data,
         timestamp: new Date().toISOString(),
       });
@@ -32,11 +32,15 @@ export const useRemoveWishlistMutation = (
       queryClient.invalidateQueries({
         queryKey: queryKeys.favorites.wishlist(),
       });
-      console.log("🔄 위시리스트 쿼리 무효화 완료");
+      // 특정 공연 상세 정보 무효화 (isLike 상태 업데이트)
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.PERFORMANCE_DETAIL, performanceId],
+      });
+      console.log("🔄 위시리스트 및 공연 상세 쿼리 무효화 완료");
     },
-    onError: (error, wishlistId) => {
+    onError: (error, performanceId) => {
       console.error("💥 Mutation 실패 - 찜 삭제:", {
-        wishlistId,
+        performanceId,
         error,
         timestamp: new Date().toISOString(),
       });
