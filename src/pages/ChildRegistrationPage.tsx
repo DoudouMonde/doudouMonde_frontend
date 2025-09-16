@@ -31,11 +31,15 @@ const TRAITS = [
 
 // 장르 목록
 const GENRES = [
+  { value: "COMPOSITE", label: "복합" },
   { value: "PLAY", label: "연극" },
-  { value: "PERFORMANCE", label: "퍼포먼스" },
   { value: "MUSICAL", label: "뮤지컬" },
-  { value: "CIRCUS", label: "서커스" },
-  { value: "MAGIC", label: "마술" },
+  { value: "POP_DANCE", label: "대중무용" },
+  { value: "POP_MUSIC", label: "대중음악" },
+  { value: "CLASSICAL_MUSIC", label: "서양음악(클래식)" },
+  { value: "KOREAN_MUSIC", label: "한국음악(국악)" },
+  { value: "CIRCUS_MAGIC", label: "서커스/마술" },
+  { value: "DANCE", label: "무용(서양/한국무용)" },
 ];
 
 // 프로필 옵션

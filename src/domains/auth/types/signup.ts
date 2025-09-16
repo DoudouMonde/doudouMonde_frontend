@@ -42,11 +42,15 @@ export const TRAIT_MAPPING = {
 } as const;
 
 export const GENRE_MAPPING = {
-  play: "PLAY",
-  performance: "PERFORMANCE",
-  musical: "MUSICAL",
-  circus: "CIRCUS",
-  magic: "MAGIC",
+  COMPOSITE: "COMPOSITE",
+  PLAY: "PLAY",
+  MUSICAL: "MUSICAL",
+  POP_DANCE: "POP_DANCE",
+  POP_MUSIC: "POP_MUSIC",
+  CLASSICAL_MUSIC: "CLASSICAL_MUSIC",
+  KOREAN_MUSIC: "KOREAN_MUSIC",
+  CIRCUS_MAGIC: "CIRCUS_MAGIC",
+  DANCE: "DANCE",
 } as const;
 
 export const PROFILE_MAPPING = {

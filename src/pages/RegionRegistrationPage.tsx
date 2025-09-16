@@ -272,7 +272,7 @@ export function RegionRegistrationPage() {
       {/* Content */}
       <div className="px-8 pt-24">
         {/* 위치 정보 수집 완료 시 표시 */}
-        {/* {coords.latitude && coords.longitude && (
+        {/* {/* {coords.latitude && coords.longitude && (
           <div className="p-4 mb-6 bg-green-50 rounded-lg border border-green-200">
             <div className="flex gap-2 items-center mb-2">
               <svg

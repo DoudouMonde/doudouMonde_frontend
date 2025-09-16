@@ -117,7 +117,6 @@ export const HomePage = () => {
             </section>
 
             {/*  수상을 받은 공연 섹션 */}
-
             <section className="flex flex-col gap-2">
               <h2 className="py-2 text-black title-inter-b">수상작 공연</h2>
               <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
