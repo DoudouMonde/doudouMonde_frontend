@@ -31,7 +31,7 @@ export const PerformanceOverview = () => {
   }
 
   return (
-    <div className="relative w-full flex flex-col gap-2 items-center pb-[32px]">
+    <div className="relative w-full flex flex-col gap-2 items-center pb-[32px] px-4">
       {/* 배경 이미지 (opacity 적용) */}
       <div
         className="absolute inset-0 w-full h-full -z-30"
