@@ -41,17 +41,15 @@ function CustomTabBarButton({
             }}
           />
         )}
-        <div className="flex flex-col justify-center items-center mt-4">
-          <span
-            className="text-xs"
-            style={{
-              fontFamily: "Inter",
-              fontWeight: "400",
-              color: isSelected ? COLORS.PRIMARY : COLORS.BLACK,
-            }}
-          >
-            {children}
-          </span>
+        <div
+          className="flex flex-col justify-center items-center mt-4 text-xs"
+          style={{
+            fontFamily: "Inter",
+            fontWeight: "400",
+            color: isSelected ? COLORS.PRIMARY : COLORS.BLACK,
+          }}
+        >
+          {children}
         </div>
       </div>
     </button>

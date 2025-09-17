@@ -26,7 +26,7 @@ const KakaoMapIcon = ({ placeName }: { placeName: string }) => {
 // 개별 장소 아이템 컴포넌트
 const PlaceItem = ({ facility }: { facility: NearbyFacility }) => (
   <li className="flex items-center justify-between px-0 py-2 min-h-[32px]">
-    <div className="flex flex-1 justify-between items-center">
+    <div className="flex flex-1 gap-2 justify-start items-center">
       {/* 장소명 */}
       <p className="text-black body-noto">{facility.facilityName}</p>
 

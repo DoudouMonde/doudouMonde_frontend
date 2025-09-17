@@ -6,3 +6,5 @@ export * from "./useSearchPerformancesQuery";
 export * from "./useCombinedLocationsQuery";
 export * from "./useEnglishContentsQuery";
 export * from "./useNearbyFacilitiesQuery";
+export * from "./useNewGenrePerformanceListQuery";
+export * from "./usePerformancesByTraitQuery";

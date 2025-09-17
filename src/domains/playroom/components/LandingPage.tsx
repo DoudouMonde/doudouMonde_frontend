@@ -24,7 +24,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   className = "",
 }) => {
   const baseClasses =
-    "w-[142px] h-[31px] rounded-[10px] font-['Hakgyoansim_Dunggeunmiso_OTF'] text-base font-normal tracking-[-0.03em] transition-all duration-200 hover:scale-105 active:scale-95";
+    "min-w-[120px] max-w-[142px] w-full h-[31px] rounded-[10px] font-['Hakgyoansim_Dunggeunmiso_OTF'] text-sm sm:text-base font-normal tracking-[-0.03em] transition-all duration-200 hover:scale-105 active:scale-95 px-2";
 
   const variantClasses =
     variant === "primary"
@@ -105,7 +105,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
     return treeComponents[treeCount];
   };
   return (
-    <div className={`overflow-hidden relative w-full h-screen`}>
+    <div className={`relative pb-24 w-full min-h-screen`}>
       {/* 팝업 오버레이 */}
       {showBookPopup && (
         <div className="flex fixed inset-0 z-50 justify-center items-center backdrop-blur-sm bg-black/50">
@@ -120,7 +120,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 <br />
                 우리 아이와 공연 추억을 담은
                 <br />
-                이야기마을 북을 구매할 수 있어요
+                이야기마을북을 구매할 수 있어요
               </p>
 
               <div className="flex gap-3 pt-2">
@@ -156,10 +156,10 @@ const LandingPage: React.FC<LandingPageProps> = ({
           })()}
         </div>
 
-        <div className="flex absolute inset-x-0 top-0 z-20 flex-col gap-0 justify-center items-center mx-auto translate-y-full">
+        <div className="flex z-20 flex-col gap-0 justify-center items-center mx-auto mt-4">
           {/* Speech Bubble */}
-          <div className="bg-gray-200/70 backdrop-blur-sm rounded-[40px] w-[80%] p-6 shadow-[0px_0px_12px_0px_rgba(255,246,165,1)]">
-            <p className="text-center text-black text-base font-normal body-inter-r leading-[1.3] tracking-[-0.04em] ">
+          <div className="bg-gray-200/70 backdrop-blur-sm rounded-[40px] w-[90%] sm:w-[80%] p-4 sm:p-6 shadow-[0px_0px_12px_0px_rgba(255,246,165,1)]">
+            <p className="text-center text-black text-sm sm:text-base font-normal body-inter-r leading-[1.3] tracking-[-0.04em]">
               안녕 {childNames}!
               <br />
               이야기마을에 온 걸 환영해.
@@ -171,15 +171,15 @@ const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           {/* Character - Doudou */}
-          <div className="flex z-20 gap-0 justify-evenly items-center w-full">
+          <div className="flex z-20 gap-2 justify-center items-center px-4 w-full sm:gap-0 sm:justify-evenly sm:px-0">
             <img
               src="/assets/characters/doudou.png"
               alt="두두 캐릭터"
-              className="animate-breathe w-[193px] h-[248px] object-contain drop-shadow-[0px_0px_10px_rgba(202, 255, 133, 0.1)]"
+              className="animate-breathe w-[150px] h-[190px] sm:w-[193px] sm:h-[248px] object-contain drop-shadow-[0px_0px_10px_rgba(202, 255, 133, 0.1)] flex-shrink-0"
             />
 
             {/* Action Buttons */}
-            <div className="flex flex-col gap-7 items-end pb-8">
+            <div className="flex flex-col flex-shrink-0 gap-4 items-center pb-8 sm:gap-7 sm:items-end">
               <ActionButton onClick={onStart || (() => {})}>좋아</ActionButton>
               <ActionButton onClick={onSkip || (() => {})}>
                 다음에 할래

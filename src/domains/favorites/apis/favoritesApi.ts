@@ -7,9 +7,23 @@ import {
 
 export const favoritesApi = {
   getWishlist: async (): Promise<WishlistResponse[]> => {
+    console.log("🌐 API 요청 - 찜 목록 조회:", {
+      url: "/v1/member/wishlists",
+      method: "GET",
+      timestamp: new Date().toISOString(),
+    });
+
     const response = await apiRequester.get<WishlistResponse[]>(
       "/v1/member/wishlists"
     );
+
+    console.log("🌐 API 응답 - 찜 목록 조회:", {
+      status: response.status,
+      data: response.data,
+      dataLength: response.data?.length,
+      timestamp: new Date().toISOString(),
+    });
+
     return response.data;
   },
   addWishlist: async (

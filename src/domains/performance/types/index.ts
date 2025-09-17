@@ -6,7 +6,7 @@ export type PerformanceItem = {
   performanceName: string;
   posterUrl: string;
   sido: Sido;
-
+  genre: Genre;
   hasPlayRoom: boolean;
   hasNursingRoom: boolean;
   hasRestRoom: boolean;
@@ -37,6 +37,7 @@ export type PerformanceDetail = {
   hasPlayRoom: boolean;
   hasNursingRoom: boolean;
   hasRestRoom: boolean;
+  hasPublicParking: boolean;
 };
 
 export type TabType = "transport" | "seats" | "content";

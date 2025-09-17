@@ -36,7 +36,7 @@ export function PlayroomLayout() {
         </div>
       </div>
 
-      <main className="px-6 pb-[72px] w-full relative z-10">
+      <main className="px-6 pb-[72px] w-full relative z-10 overflow-y-auto min-h-screen">
         <Outlet />
       </main>
 

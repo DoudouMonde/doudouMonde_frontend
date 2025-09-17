@@ -4,3 +4,4 @@ export * from "./NearbySection";
 export * from "./RouteInfoCard";
 export * from "./ContentSection";
 export * from "./PerformanceHeader";
+export * from "./PerformanceDetailBottomBar";

@@ -25,7 +25,9 @@ export default function ChildProfile({ child, isSelected, onClick }: Props) {
       <div className="relative">
         {/* 선택 테두리 - 바깥쪽 */}
         {isSelected ? (
-          <div className="absolute -inset-1 rounded-full border-4 border-pink-100" />
+          <>
+            <div className="absolute -inset-1 rounded-full border-4 border-green-200" />
+          </>
         ) : (
           <div className="absolute -inset-1 rounded-full border-2 border-gray-100" />
         )}
@@ -54,7 +56,8 @@ export default function ChildProfile({ child, isSelected, onClick }: Props) {
       {/* 이름 */}
       <p
         className={`text-center body-hak ${
-          isSelected ? "":"text-secondary-100"}`}
+          isSelected ? "" : "text-secondary-100"
+        }`}
       >
         {child.name}
       </p>

@@ -21,21 +21,20 @@ import {
 } from "@/domains/auth/types/signup";
 import { CustomButton } from "@/shared/components/CustomButton";
 
-// 개별 성향 목록
-const TRAITS = [
-  { value: "music", label: "음악을 좋아해요" },
-  { value: "active", label: "활동적이에요" },
-  { value: "sensitive", label: "소리에 민감해요" },
-  { value: "short-attention", label: "집중시간이 짧아요" },
-];
+// 개별 성향 목록 (공유 컴포넌트 참조)
+import { ChildTraitOptions } from "@/domains/child/components/TraitSelector";
 
 // 장르 목록
 const GENRES = [
+  { value: "COMPOSITE", label: "복합" },
   { value: "PLAY", label: "연극" },
-  { value: "PERFORMANCE", label: "퍼포먼스" },
   { value: "MUSICAL", label: "뮤지컬" },
-  { value: "CIRCUS", label: "서커스" },
-  { value: "MAGIC", label: "마술" },
+  { value: "POP_DANCE", label: "대중무용" },
+  { value: "POP_MUSIC", label: "대중음악" },
+  { value: "CLASSICAL_MUSIC", label: "서양음악(클래식)" },
+  { value: "KOREAN_MUSIC", label: "한국음악(국악)" },
+  { value: "CIRCUS_MAGIC", label: "서커스/마술" },
+  { value: "DANCE", label: "무용(서양/한국무용)" },
 ];
 
 // 프로필 옵션
@@ -48,13 +47,7 @@ const PROFILE_OPTIONS = [
 ];
 
 function TraitSelector() {
-  return (
-    <div className="grid grid-cols-2 gap-3">
-      {TRAITS.map((trait) => (
-        <MultiRadio key={trait.value} label={trait.label} value={trait.value} />
-      ))}
-    </div>
-  );
+  return <ChildTraitOptions />;
 }
 
 function GenreSelector() {
@@ -194,7 +187,7 @@ export const ChildRegistrationPage = () => {
   };
 
   return (
-    <div className="flex relative flex-col items-center px-6 w-full min-h-screen">
+    <div className="flex relative flex-col items-center w-full min-h-screen">
       {/* 배경 이미지 */}
       <div
         className="absolute inset-0 w-full h-full"
@@ -210,8 +203,8 @@ export const ChildRegistrationPage = () => {
       />
 
       {/* 컨텐츠 */}
-      <main className="relative z-10 max-w-[375px] flex flex-col items-center mb-20">
-        <div className="w-[375px] h-full mx-auto overflow-y-auto">
+      <main className="flex relative z-10 flex-col items-center mb-20 w-full">
+        <div className="overflow-y-auto w-full h-full">
           {/* 상단 바 */}
           <div
             className="fixed top-0 right-0 left-0 z-20 px-6 pb-2 h-[60px] bg-gray-200/70 shadow-sm"
@@ -233,7 +226,7 @@ export const ChildRegistrationPage = () => {
           </div>
 
           {/* 메인 컨텐츠 */}
-          <div className="py-4 pt-24">
+          <div className="px-6 py-4 pt-24">
             <div className="flex flex-col gap-6 justify-center">
               {/* 아이 정보 카드 */}
               <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-7 w-full h-auto">
@@ -372,7 +365,7 @@ export const ChildRegistrationPage = () => {
               </div>
 
               {/* 아이 성향 선택 카드 */}
-              <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-6 pb-8 w-full h-auto">
+              <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] py-6 px-5 pb-8 w-full h-auto">
                 <div className="flex flex-col gap-2">
                   <p className="title-hak">아이 성향</p>
                   <p className="subtitle-b text-secondary-100">

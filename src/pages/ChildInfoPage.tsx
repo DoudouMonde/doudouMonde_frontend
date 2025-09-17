@@ -5,8 +5,10 @@ import { useChildListQuery } from "@/domains/child/queries/useChildListQuery";
 import { useUpdateChildNameMutation } from "@/domains/child/queries/useUpdateChildNameMutation";
 import { useUpdateChildProfileMutation } from "@/domains/child/queries/useUpdateChildProfileMutation";
 import { useUpdateChildTraitsMutation } from "@/domains/child/queries/useUpdateChildTraitsMutation";
-import { ChildItem } from "@/domains/child/types";
+// import { ChildItem } from "@/domains/child/types";
+import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import { RadioTrue, RadioFalse } from "@/assets/icons";
+import { TRAIT_OPTIONS } from "@/domains/child/components/TraitSelector";
 import Pen from "@/assets/icons/Pen";
 import {
   CatIcon,
@@ -21,12 +23,11 @@ import {
   ConfirmModal,
 } from "@/shared/components";
 
-// 백엔드 enum과 매핑되는 상수
+// 백엔드 enum과 매핑되는 상수 (ChildRegistration과 동일 규칙 사용)
 const TRAIT_MAPPING = {
-  music: "MUSIC_LOVER",
-  active: "ACTIVE",
-  sensitive: "SOUND_SENSITIVE",
-  "short-attention": "SHORT_ATTENTION",
+  MUSIC_LOVER: "MUSIC_LOVER",
+  DANCE_LOVER: "DANCE_LOVER",
+  SHORT_ATTENTION: "SHORT_ATTENTION",
 } as const;
 
 const TraitSelector = ({
@@ -36,27 +37,20 @@ const TraitSelector = ({
   selectedTraits: string[];
   onTraitToggle: (trait: string) => void;
 }) => {
-  const traits = [
-    { value: "music", label: "음악을 좋아해요" },
-    { value: "active", label: "활동적이에요" },
-    { value: "sensitive", label: "소리에 민감해요" },
-    { value: "short-attention", label: "집중시간이 짧아요" },
-  ];
-
   return (
-    <div className="grid grid-cols-2 gap-1">
-      {traits.map((trait) => (
+    <div className="grid grid-cols-2 gap-2">
+      {TRAIT_OPTIONS.map((trait) => (
         <div
           key={trait.value}
           onClick={() => onTraitToggle(trait.value)}
-          className="flex gap-3 items-center p-3 bg-white rounded-lg transition-colors cursor-pointer body-hak-r hover:bg-gray-100"
+          className="flex gap-2 items-center bg-white rounded-lg transition-colors cursor-pointer body-hak-r hover:bg-gray-100"
         >
           {selectedTraits.includes(trait.value) ? (
             <RadioTrue className="flex-shrink-0 w-5 h-5" />
           ) : (
             <RadioFalse className="flex-shrink-0 w-5 h-5" />
           )}
-          <span className="text-sm text-center body-hak-r">{trait.label}</span>
+          <span className="text-sm text-center body-hak-sm">{trait.label}</span>
         </div>
       ))}
     </div>
@@ -77,8 +71,10 @@ export const ChildInfoPage = () => {
   const updateChildNameMutation = useUpdateChildNameMutation();
   const updateChildProfileMutation = useUpdateChildProfileMutation();
   const updateChildTraitsMutation = useUpdateChildTraitsMutation();
-  const [children, setChildren] = useState<ChildItem[]>([]);
-  const [selectedChild, setSelectedChild] = useState<ChildItem | null>(null);
+  const [children, setChildren] = useState<ChildItemResponse[]>([]);
+  const [selectedChild, setSelectedChild] = useState<ChildItemResponse | null>(
+    null
+  );
   const [selectedTraits, setSelectedTraits] = useState<string[]>([]);
   const [editingChildId, setEditingChildId] = useState<number | null>(null);
   const [editingName, setEditingName] = useState<string>("");
@@ -164,14 +160,14 @@ export const ChildInfoPage = () => {
             setChildren((prev) =>
               prev.map((child) =>
                 child.id === editingProfileChildId
-                  ? { ...child, profile: response.profile as any }
+                  ? { ...child, profile: response.profile }
                   : child
               )
             );
             // selectedChild도 업데이트
             setSelectedChild((prev) => {
               if (prev && prev.id === editingProfileChildId) {
-                return { ...prev, profile: response.profile as any };
+                return { ...prev, profile: response.profile };
               }
               return prev;
             });
@@ -276,7 +272,7 @@ export const ChildInfoPage = () => {
   }
 
   return (
-    <div className="w-[375px] h-full mx-auto overflow-y-auto">
+    <div className="w-[375px] h-full mx-auto overflow-y-auto px-6 py-4">
       {/* 상단 바 */}
       <div className="fixed top-0 right-0 left-0 z-20 px-6 pt-4 pb-2 h-[60px] bg-gray-200/70 shadow-sm">
         <div className="flex justify-between items-center">
@@ -363,12 +359,17 @@ export const ChildInfoPage = () => {
               </div>
             ))}
           </ul>
-          <p className="title-hak">아이 성향 변경</p>
-          <div className=" flex flex-col gap-4 bg-gray-200/70 rounded-[20px] p-4 w-full">
-            <TraitSelector
-              selectedTraits={selectedTraits}
-              onTraitToggle={handleTraitToggle}
-            />
+
+          <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] py-6 px-5 pb-8 w-full h-auto">
+            <div className="flex flex-col gap-2">
+              <p className="title-hak">아이 성향</p>
+            </div>
+            <div className="flex flex-col gap-4 w-full">
+              <TraitSelector
+                selectedTraits={selectedTraits}
+                onTraitToggle={handleTraitToggle}
+              />
+            </div>
           </div>
 
           {/* 저장 버튼 */}

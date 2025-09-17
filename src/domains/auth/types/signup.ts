@@ -35,6 +35,11 @@ export const GENDER_MAPPING = {
 } as const;
 
 export const TRAIT_MAPPING = {
+  MUSIC_LOVER: "MUSIC_LOVER",
+  DANCE_LOVER: "DANCE_LOVER",
+  CURIOUS: "CURIOUS",
+  SHORT_ATTENTION: "SHORT_ATTENTION",
+  // 기존 매핑도 유지 (하위 호환성)
   music: "MUSIC_LOVER",
   sensitive: "SOUND_SENSITIVE",
   active: "ACTIVE",
@@ -42,11 +47,15 @@ export const TRAIT_MAPPING = {
 } as const;
 
 export const GENRE_MAPPING = {
-  play: "PLAY",
-  performance: "PERFORMANCE",
-  musical: "MUSICAL",
-  circus: "CIRCUS",
-  magic: "MAGIC",
+  COMPOSITE: "COMPOSITE",
+  PLAY: "PLAY",
+  MUSICAL: "MUSICAL",
+  POP_DANCE: "POP_DANCE",
+  POP_MUSIC: "POP_MUSIC",
+  CLASSICAL_MUSIC: "CLASSICAL_MUSIC",
+  KOREAN_MUSIC: "KOREAN_MUSIC",
+  CIRCUS_MAGIC: "CIRCUS_MAGIC",
+  DANCE: "DANCE",
 } as const;
 
 export const PROFILE_MAPPING = {

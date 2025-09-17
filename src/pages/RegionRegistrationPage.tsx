@@ -138,12 +138,21 @@ export function RegionRegistrationPage() {
 
       const childData: ChildRequest = JSON.parse(savedChildData);
       console.log("📋 저장된 아이 정보:", childData);
+      console.log("🎯 아이 성향들:", childData.traits);
+      console.log("🎭 아이 장르들:", childData.genres);
 
       // 실제 위치 정보 사용 (없으면 기본값)
       const longitude = coords.longitude || 127.0276; // 서울 강남 기본값
       const latitude = coords.latitude || 37.4979; // 서울 강남 기본값
       const address = detailedAddress.trim() || `${selectedRegion} 지역`;
 
+      alert(
+        `📍 사용할 위치 정보: ${JSON.stringify({
+          longitude,
+          latitude,
+          address,
+        })}`
+      );
       console.log("📍 사용할 위치 정보:", { longitude, latitude, address });
 
       // 위치 정보와 아이 정보를 함께 백엔드에 전송
@@ -157,6 +166,21 @@ export function RegionRegistrationPage() {
 
       console.log("🚀 백엔드로 전송할 데이터:", signupData);
       console.log("🌐 API 엔드포인트: POST /auth/signup");
+      console.log("📊 상세 요청 데이터 분석:");
+      console.log("  - longitude:", signupData.longitude);
+      console.log("  - latitude:", signupData.latitude);
+      console.log("  - address:", signupData.address);
+      console.log("  - sido:", signupData.sido);
+      console.log("  - children 개수:", signupData.children.length);
+      console.log("  - 첫 번째 아이 정보:", signupData.children[0]);
+      if (signupData.children[0]) {
+        console.log("    - name:", signupData.children[0].name);
+        console.log("    - birthday:", signupData.children[0].birthday);
+        console.log("    - gender:", signupData.children[0].gender);
+        console.log("    - profile:", signupData.children[0].profile);
+        console.log("    - traits:", signupData.children[0].traits);
+        console.log("    - genres:", signupData.children[0].genres);
+      }
 
       const response = await signupApi.signup(signupData);
       console.log("✅ 회원가입 성공:", response);
@@ -165,7 +189,59 @@ export function RegionRegistrationPage() {
       localStorage.removeItem("childData");
       navigate(PATH.HOME);
     } catch (error) {
-      console.error("회원가입 실패:", error);
+      console.error("❌ 회원가입 실패:", error);
+      console.error("🔍 에러 상세 정보:");
+      console.error("  - 에러 타입:", typeof error);
+      console.error("  - 에러 메시지:", error.message);
+      console.error("  - 에러 코드:", error.code);
+
+      if (error.response) {
+        console.error("  - 응답 상태:", error.response.status);
+        console.error("  - 응답 상태 텍스트:", error.response.statusText);
+        console.error("  - 응답 데이터:", error.response.data);
+        console.error("  - 응답 헤더:", error.response.headers);
+
+        // 백엔드에서 보낸 에러 메시지가 있는지 확인
+        if (error.response.data && typeof error.response.data === "object") {
+          console.error(
+            "  - 백엔드 에러 메시지:",
+            error.response.data.message ||
+              error.response.data.error ||
+              "메시지 없음"
+          );
+          console.error("  - 백엔드 에러 상세:", error.response.data);
+        }
+      }
+
+      if (error.request) {
+        console.error("  - 요청 정보:", error.request);
+        console.error("  - 요청 URL:", error.request.url);
+        console.error("  - 요청 메서드:", error.request.method);
+      }
+
+      console.error("  - 요청 설정:", error.config);
+      console.error("  - 요청 URL (config):", error.config?.url);
+      console.error("  - 요청 baseURL:", error.config?.baseURL);
+      console.error("  - 요청 메서드 (config):", error.config?.method);
+      console.error("  - 요청 헤더:", error.config?.headers);
+
+      // 네트워크 에러인지 확인
+      if (
+        error.code === "NETWORK_ERROR" ||
+        error.message.includes("Network Error")
+      ) {
+        console.error("🌐 네트워크 에러: 서버에 연결할 수 없습니다.");
+        console.error("🔧 확인사항:");
+        console.error("  - 백엔드 서버가 실행 중인지 확인");
+        console.error("  - CORS 설정 확인");
+        console.error("  - API 엔드포인트 URL 확인");
+      }
+
+      // 타임아웃 에러인지 확인
+      if (error.code === "ECONNABORTED" || error.message.includes("timeout")) {
+        console.error("⏰ 타임아웃 에러: 요청 시간이 초과되었습니다.");
+      }
+
       alert("회원가입에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setIsSubmitting(false);
@@ -208,7 +284,7 @@ export function RegionRegistrationPage() {
                 <h2 className="mb-2 text-xl font-bold text-gray-900">
                   자동 위치 등록
                 </h2>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-secondary-100">
                   현재 위치를 기반으로 인기 공연과 <br /> 공연장까지의 소요시간
                   정보를 제공해드려요.
                 </p>
@@ -219,7 +295,7 @@ export function RegionRegistrationPage() {
               <button
                 onClick={handleLocationConsent}
                 disabled={isLocating || isLoadingAddress}
-                className={`w-full py-4 rounded-xl font-semibold text-gray-200 transition-colors ${
+                className={`w-full py-2 rounded-xl font-semibold text-gray-200 transition-colors ${
                   isLocating || isLoadingAddress
                     ? "bg-gray-400"
                     : "bg-green-200 hover:bg-green-600"
@@ -234,7 +310,7 @@ export function RegionRegistrationPage() {
 
               <button
                 onClick={handleManualInput}
-                className="py-4 w-full font-semibold text-gray-700 bg-gray-100 rounded-xl transition-colors hover:bg-gray-200"
+                className="py-2 w-full font-semibold bg-gray-100 rounded-xl transition-colors text-secondary-100 hover:bg-gray-200"
               >
                 직접 입력하기
               </button>
@@ -265,43 +341,6 @@ export function RegionRegistrationPage() {
 
       {/* Content */}
       <div className="px-8 pt-24">
-        {/* 위치 정보 수집 완료 시 표시 */}
-        {/* {coords.latitude && coords.longitude && (
-          <div className="p-4 mb-6 bg-green-50 rounded-lg border border-green-200">
-            <div className="flex gap-2 items-center mb-2">
-              <svg
-                className="w-5 h-5 text-green-100"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span className="text-sm font-medium text-green-100">
-                위치 정보 수집 완료
-              </span>
-            </div>
-            <div className="text-xs text-gray-600">
-              위도: {coords.latitude.toFixed(6)} / 경도:{" "}
-              {coords.longitude.toFixed(6)}
-            </div>
-            {!selectedRegion && !detailedAddress && (
-              <button
-                className="mt-2 text-xs text-gray-600 underline hover:text-gray-800"
-                onClick={() => setShowLocationModal(false)}
-              >
-                주소를 수동으로 입력하세요
-              </button>
-            )}
-          </div>
-        )} */}
-
-        {/* 수동 입력 (기본은 감춤, 오류나 수정 시 표시) */}
-        <AddressSearchInput />
-
         <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-6 pb-8 w-full h-auto">
           <div className="flex flex-col gap-2">
             <p className="title-hak">지역 선택</p>
@@ -321,7 +360,30 @@ export function RegionRegistrationPage() {
                 <select
                   value={selectedRegion}
                   onChange={(e) => handleRegionSelect(e.target.value)}
-                  className="p-4 pr-10 w-full bg-gray-200 rounded-lg border appearance-none border-secondary-100/30 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
+                  className="   w-full
+                  h-[35px]
+                  bg-white/50
+                  border-[0.3px]
+                  border-[#D9D9D9]
+                  rounded-[20px]
+                  pl-[16px]
+                  pr-4
+                  font-inter
+                  text-xs
+                  font-normal
+                  text-black
+                  placeholder:text-[#8C8C8C]
+                  placeholder:tracking-[-0.03em]
+                  focus:outline-none
+                  focus:ring-2
+                  focus:ring-green-100/30
+                  focus:border-green-100
+                  transition-all
+                  duration-200
+                  min-w-0
+                  appearance-none
+                  "
+                  // className="p-4 pr-10 w-full bg-gray-200 rounded-lg border appearance-none border-secondary-100/30 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
                 >
                   <option value="" disabled>
                     지역을 선택해주세요
@@ -334,7 +396,7 @@ export function RegionRegistrationPage() {
                 </select>
                 <div className="flex absolute inset-y-0 right-0 items-center pr-4 pointer-events-none">
                   <svg
-                    className="w-5 h-5 text-gray-400"
+                    className="w-5 h-5 text-secondary-100"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -350,24 +412,11 @@ export function RegionRegistrationPage() {
               </div>
             </div>
 
-            {/* 상세 주소 입력 (선택사항) */}
-            <div className="mb-6">
-              <label className="block mb-2 font-medium text-gray-700 body-inter-r">
-                상세 주소 (선택사항)
-                {isLoadingAddress && (
-                  <span className="ml-2 text-xs text-green-600">
-                    주소를 불러오는 중...
-                  </span>
-                )}
-              </label>
-              <input
-                type="text"
-                value={detailedAddress}
-                onChange={(e) => setDetailedAddress(e.target.value)}
-                placeholder="예: 강남구 테헤란로 123, ○○아파트"
-                className="p-4 w-full bg-gray-200 rounded-lg border border-secondary-100/30 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
-              />
-            </div>
+            <p className="title-hak">상세 주소</p>
+            <p className="subtitle-b text-secondary-100">
+              공연장까지의 경로 정보를 받을 수 있어요{" "}
+            </p>
+            <AddressSearchInput />
           </div>
           <div className="flex flex-col gap-2 w-full"></div>
 
@@ -375,7 +424,7 @@ export function RegionRegistrationPage() {
           <button
             onClick={handleNext}
             disabled={!selectedRegion || isSubmitting}
-            className={`w-full rounded-[20px] font-semibold transition-colors h-12
+            className={`w-full rounded-[20px] font-semibold transition-colors h-10
               ${
                 selectedRegion && !isSubmitting
                   ? "bg-green-200 hover:bg-green-600 text-gray-200"
@@ -386,20 +435,7 @@ export function RegionRegistrationPage() {
           </button>
         </div>
 
-        <>
-          {/* <div className="mb-8">
-              <label className="block mb-2 font-medium text-gray-700 body-inter-r">
-                상세주소 입력
-              </label>
-              <input
-                type="text"
-                value={detailedAddress}
-                onChange={(e) => setDetailedAddress(e.target.value)}
-                placeholder="예: 강남구 테헤란로 123, ○○아파트"
-                className="p-4 w-full bg-white rounded-lg border border-secondary-100 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
-              />
-            </div> */}
-        </>
+        <></>
       </div>
     </div>
   );

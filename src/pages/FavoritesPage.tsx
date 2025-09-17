@@ -8,17 +8,33 @@ import { ConfirmModal } from "@/shared/components";
 import { useState } from "react";
 
 export const FavoritesPage: React.FC = () => {
-  console.log("🎯 FavoritesPage 컴포넌트가 렌더링되었습니다!");
-
   const navigate = useNavigate();
-  const { data: wishlist = [], isLoading, error } = useWishlistQuery();
+  const { data: rawWishlist = [], isLoading, error } = useWishlistQuery();
   const removeWishlistMutation = useRemoveWishlistMutation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedWishlistId, setSelectedWishlistId] = useState<number | null>(
     null
   );
 
+  // 중복 제거: performanceId 기준으로 중복 제거 (같은 공연은 하나만 표시)
+  // Map을 사용하여 더 효율적으로 중복 제거
+  const uniqueWishlistMap = new Map<number, (typeof rawWishlist)[0]>();
+
+  rawWishlist.forEach((item) => {
+    if (!uniqueWishlistMap.has(item.performanceId)) {
+      uniqueWishlistMap.set(item.performanceId, item);
+    }
+  });
+
+  const wishlist = Array.from(uniqueWishlistMap.values());
+
   const handlePerformanceClick = (performanceId: number) => {
+    console.log("🎭 Favorites에서 공연 클릭:", {
+      performanceId,
+      performanceIdType: typeof performanceId,
+      targetPath: PATH.PERFORMANCE_DETAIL(performanceId),
+      timestamp: new Date().toISOString(),
+    });
     navigate(PATH.PERFORMANCE_DETAIL(performanceId));
   };
 
@@ -137,7 +153,9 @@ export const FavoritesPage: React.FC = () => {
             {wishlist.map((item) => (
               <div
                 key={item.wishlistId}
-                onClick={() => handlePerformanceClick(item.performanceId)}
+                onClick={() =>
+                  handlePerformanceClick(Number(item.performanceId))
+                }
                 className="flex p-4 rounded-[20px] transition-shadow cursor-pointer bg-gray-200/70 hover:shadow-md items-center"
               >
                 {/* 포스터 이미지 */}

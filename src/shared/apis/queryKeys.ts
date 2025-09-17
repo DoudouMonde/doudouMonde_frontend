@@ -5,14 +5,24 @@ export const queryKeys = {
   PERFORMANCE_LIST: "PERFORMANCE_LIST",
   PERFORMANCE_DETAIL: "PERFORMANCE_DETAIL",
 
-  favorites: {
-    wishlist: () => ["FAVORITES", "WISHLIST"] as const,
+  child: {
+    list: () => ["CHILD", "LIST"] as const,
+    traits: (childId: number | null) => ["CHILD", "TRAITS", childId] as const,
   },
 
   performance: {
-    detail: (performanceId: number) =>
-      ["PERFORMANCE", "DETAIL", performanceId] as const,
+    list: (genre?: string) => ["PERFORMANCE", "LIST", genre] as const,
+    detail: (id: number) => ["PERFORMANCE", "DETAIL", id] as const,
+    trait: (trait: string | null, childId: number | null) =>
+      ["PERFORMANCE", "TRAIT", trait, childId] as const,
     nearbyFacilities: (performanceId: number) =>
       ["PERFORMANCE", "NEARBY_FACILITIES", performanceId] as const,
+    auth: {
+      memberName: () => ["AUTH", "MEMBER_NAME"] as const,
+    },
+  },
+
+  favorites: {
+    wishlist: () => ["FAVORITES", "WISHLIST"] as const,
   },
 } as const;
