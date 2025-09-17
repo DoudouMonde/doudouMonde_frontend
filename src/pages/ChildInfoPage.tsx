@@ -50,7 +50,7 @@ const TraitSelector = ({
           ) : (
             <RadioFalse className="flex-shrink-0 w-5 h-5" />
           )}
-          <span className="text-sm text-center body-hak-r">{trait.label}</span>
+          <span className="text-sm text-center body-hak-sm">{trait.label}</span>
         </div>
       ))}
     </div>

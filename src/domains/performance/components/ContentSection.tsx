@@ -24,7 +24,7 @@ export const ContentSection = ({ performanceId }: Props) => {
   if (isLoading) {
     return (
       <div className="w-full">
-        <h3 className="text-base font-semibold text-black mb-4 ml-[19px] font-hakgyo">
+        <h3 className="body-inter-r text-black mb-4 ml-[19px] ">
           관련 영어 콘텐츠
         </h3>
         <div className="flex items-center justify-center h-[200px] bg-gray-200 rounded-lg mx-[19px]">
@@ -38,7 +38,7 @@ export const ContentSection = ({ performanceId }: Props) => {
   if (error) {
     return (
       <div className="w-full">
-        <h3 className="text-base font-semibold text-black mb-4 ml-[19px] font-hakgyo">
+        <h3 className="body-inter-r text-black mb-4 ml-[19px] ">
           관련 영어 콘텐츠
         </h3>
         <div className="flex items-center justify-center h-[200px] bg-gray-200 rounded-lg mx-[19px]">
@@ -52,7 +52,7 @@ export const ContentSection = ({ performanceId }: Props) => {
   if (!contentData?.contents || contentData.contents.length === 0) {
     return (
       <div className="w-full">
-        <h3 className="text-base font-semibold text-black mb-4 ml-[19px] font-hakgyo">
+        <h3 className="body-inter-r text-black mb-4 ml-[19px] ">
           관련 영어 콘텐츠
         </h3>
         <div className="flex items-center justify-center h-[200px] bg-gray-200 rounded-lg mx-[19px]">
@@ -65,7 +65,9 @@ export const ContentSection = ({ performanceId }: Props) => {
   return (
     <section className="px-5 w-full">
       {/* 섹션 제목 */}
-      <h3 className="text-base text-black body-hak-b">관련 영어 콘텐츠</h3>
+      <p className="body-inter-r text-black mb-4 ml-[19px] ">
+        관련 영어 콘텐츠
+      </p>
 
       {/* 콘텐츠 목록 */}
       <ul className="space-y-0">

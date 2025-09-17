@@ -287,12 +287,10 @@ export const ReviewListPage = () => {
         {/* 리뷰 목록 */}
         {reviews.length === 0 ? (
           <div className="flex flex-col justify-center items-center py-12">
-            <div className="mb-4 text-lg text-gray-600">
-              아직 작성한 리뷰가 없습니다
-            </div>
+            <div className="title-inter">아직 작성한 리뷰가 없습니다</div>
             <button
               onClick={() => navigate(PATH.HOME)}
-              className="px-6 py-3 text-white bg-blue-500 rounded-lg transition-colors hover:bg-blue-600"
+              className="px-6 py-3 body-inter-r"
             >
               첫 리뷰 작성하기
             </button>
@@ -459,7 +457,7 @@ export const ReviewListPage = () => {
           <div className="flex justify-center">
             <button
               onClick={handleNext}
-              className="flex items-center justify-center gap-2 w-full h-[48px] rounded-[20px] transition-all duration-200 active:scale-95 text-gray-200 bg-green-100 shadow-lg hover:scale-105 body-inter-r"
+              className="flex items-center justify-center gap-2 w-full h-[300px] rounded-[20px] transition-all duration-200 active:scale-95 text-gray-200 bg-green-100 shadow-lg hover:scale-105 body-inter-r"
             >
               <span className="text-base font-medium body-inter-r">홈으로</span>
             </button>

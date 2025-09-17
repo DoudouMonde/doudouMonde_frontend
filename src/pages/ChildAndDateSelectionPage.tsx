@@ -109,7 +109,7 @@ export const ChildAndDateSelectionPage: React.FC = () => {
       <div className="p-6 w-full bg-gray-200/70 rounded-[40px] mt-20 mb-24">
         {/* 아이 선택 섹션 */}
         <div className="">
-          <h2 className="pt-2 pb-5 title-inter">아이 선택</h2>
+          <h2 className="pt-2 pb-5 title-inter">누구와 함께 봤나요?</h2>
           <div className="space-y-3">
             {children.map((child: ChildItemResponse) => (
               <div
@@ -136,7 +136,7 @@ export const ChildAndDateSelectionPage: React.FC = () => {
 
         {/* 관람날짜 선택 섹션 */}
         <div className="">
-          <h2 className="mt-8 mb-6 title-inter">관람 날짜 선택</h2>
+          <h2 className="mt-8 mb-6 title-inter">언제 봤나요?</h2>
           <div className="flex justify-center">
             <Calendar onDateChange={handleDateChange} />
           </div>
