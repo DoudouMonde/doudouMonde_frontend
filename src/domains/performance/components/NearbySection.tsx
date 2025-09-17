@@ -58,7 +58,7 @@ const Section = ({
   places: NearbyPlace[];
 }) => (
   <div className="pb-6">
-    <p className="p-4 text-black body-hak-b">{title}</p>
+    <p className="text-black  body-hak-b">{title}</p>
     <ul className="space-y-0 body-inter-r">
       {places.map((place, index) => (
         <PlaceItem key={index} place={place} />
@@ -69,7 +69,7 @@ const Section = ({
 
 export const NearbySection = () => {
   return (
-    <div className="flex flex-col gap-0">
+    <div className="flex flex-col gap-0 p-4">
       {/* 가볼만한 키즈카페 섹션 */}
       <Section title="가볼만한 키즈카페" places={nearbyInfo.kidsCafes} />
       <hr className="border-secondary-100/30" />
