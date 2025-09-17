@@ -80,16 +80,17 @@ export type EnglishContentListResponse = {
 
 // 인근시설 타입
 export type NearbyFacility = {
-  facilityId: number;
-  facilityName: string;
-  facilityType: string; // "RESTAURANT" | "KIDS_CAFE"
-  distance: string;
-  hasHighChair?: boolean;
-  address: string;
-  phoneNumber?: string;
+  id: number;
+  name: string;
+  addressBase: string;
+  addressDetail: string;
+  latitude: number;
+  longitude: number;
+  type: string;
 };
 
 // 인근시설 응답 타입
 export type NearbyFacilityResponse = {
-  facilities: NearbyFacility[];
+  restaurants: NearbyFacility[];
+  kidsCafes: NearbyFacility[];
 };

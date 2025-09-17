@@ -5,8 +5,22 @@ import { useNearbyFacilitiesQuery } from "@/domains/performance/queries";
 const KakaoMapIcon = ({ placeName }: { placeName: string }) => {
   const handleKakaoMapClick = () => {
     const encodedPlaceName = encodeURIComponent(placeName);
-    const kakaoMapUrl = `https://map.kakao.com/link/search/${encodedPlaceName}`;
-    window.open(kakaoMapUrl, "_blank");
+    const isMobile =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+
+    const schemeUrl = `kakaomap://search?q=${encodedPlaceName}`;
+    const webUrl = `https://m.map.kakao.com/scheme/search?q=${encodedPlaceName}`;
+
+    if (isMobile) {
+      window.location.href = schemeUrl;
+      setTimeout(() => {
+        window.location.replace(webUrl);
+      }, 400);
+    } else {
+      window.open(webUrl, "_blank", "noopener,noreferrer");
+    }
   };
 
   return (
@@ -28,10 +42,10 @@ const PlaceItem = ({ facility }: { facility: NearbyFacility }) => (
   <li className="flex items-center justify-between px-0 py-2 min-h-[32px]">
     <div className="flex flex-1 gap-2 justify-start items-center">
       {/* 장소명 */}
-      <p className="text-black body-noto">{facility.facilityName}</p>
+      <p className="text-black body-noto">{facility.name}</p>
 
       {/* 카카오맵 아이콘 */}
-      <KakaoMapIcon placeName={facility.facilityName} />
+      <KakaoMapIcon placeName={facility.name} />
     </div>
   </li>
 );
@@ -48,7 +62,7 @@ const Section = ({
     <p className="p-4 text-black body-hak-b">{title}</p>
     <ul className="px-4 space-y-0 body-inter-r">
       {facilities.map((facility, index) => (
-        <PlaceItem key={facility.facilityId || index} facility={facility} />
+        <PlaceItem key={facility.id || index} facility={facility} />
       ))}
     </ul>
   </div>
@@ -60,11 +74,10 @@ interface NearbySectionProps {
 
 export const NearbySection = ({ performanceId }: NearbySectionProps) => {
   const {
-    data: nearbyFacilitiesData,
+    data: nearbyFacilities,
     isLoading,
     error,
   } = useNearbyFacilitiesQuery(performanceId);
-
   if (isLoading) {
     return (
       <div className="flex flex-col gap-0 p-4">
@@ -85,38 +98,19 @@ export const NearbySection = ({ performanceId }: NearbySectionProps) => {
     );
   }
 
-  if (!nearbyFacilitiesData?.facilities?.length) {
-    return (
-      <div className="flex flex-col gap-0 p-4">
-        <div className="flex justify-center items-center h-32">
-          <p className="text-gray-500">인근시설 정보가 없습니다.</p>
-        </div>
-      </div>
-    );
-  }
-
-  // 시설 타입별로 분류
-  const kidsCafes = nearbyFacilitiesData.facilities.filter(
-    (facility) => facility.facilityType === "KIDS_CAFE"
-  );
-  const restaurants = nearbyFacilitiesData.facilities.filter(
-    (facility) => facility.facilityType === "RESTAURANT"
-  );
-
   return (
     <div className="flex flex-col gap-0 p-4">
       {/* 가볼만한 키즈카페 섹션 */}
-      {kidsCafes.length > 0 && (
-        <>
-          <Section title="가볼만한 키즈카페" facilities={kidsCafes} />
-          {restaurants.length > 0 && <hr className="border-secondary-100/30" />}
-        </>
-      )}
 
-      {/* 아이와 가볼만한 맛집 섹션 */}
-      {restaurants.length > 0 && (
-        <Section title="아이와 가볼만한 맛집" facilities={restaurants} />
-      )}
+      <Section
+        title="가볼만한 키즈카페"
+        facilities={nearbyFacilities?.kidsCafes || []}
+      />
+
+      <Section
+        title="아이와 가볼만한 맛집"
+        facilities={nearbyFacilities?.restaurants || []}
+      />
     </div>
   );
 };
