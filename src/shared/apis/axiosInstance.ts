@@ -1,4 +1,5 @@
-import { SERVER_BASE_URL } from "@/shared/constants/api";
+import { KAKAO_REST_API_KEY, SERVER_BASE_URL } from "@/shared/constants/api";
+
 import axios, {
   AxiosInstance,
   AxiosRequestConfig,
@@ -6,6 +7,10 @@ import axios, {
   isAxiosError,
 } from "axios";
 
+export const kakaoInstance = axios.create({
+  baseURL: "https://dapi.kakao.com/v2/",
+  headers: { Authorization: `KakaoAK ${KAKAO_REST_API_KEY}` },
+});
 export const apiRequesterWithoutAuth: AxiosInstance = axios.create({
   baseURL: SERVER_BASE_URL + "/api",
   timeout: 10_000,

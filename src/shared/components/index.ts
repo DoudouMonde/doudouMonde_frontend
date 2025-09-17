@@ -6,6 +6,7 @@ export * from "./ProfileSelectModal";
 export { default as NavigationButtons } from "./NavigationButtons";
 export * from "./MultiSelect";
 export * from "./SearchInput";
+export * from "./AddressSearchInput";
 export * from "./SearchPerformancesInput";
 export * from "./SingleSelect";
 export * from "./Tab";
