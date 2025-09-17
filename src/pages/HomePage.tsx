@@ -8,13 +8,14 @@ import {
   useNewGenrePerformanceListQuery,
   useRewardPerformanceListQuery,
   useSidoPerformanceListQuery,
+  usePerformancesByTraitQuery,
 } from "@/domains/performance/queries";
 
 import { SearchPerformancesInput } from "@/shared/components";
 import { AutoCarousel } from "@/shared/components/AutoCarousel";
 import { PATH } from "@/shared/constants/paths";
 import { getGenreLabel, getSidoLabel } from "@/shared/services";
-import { Gender, Genre, Profile, Sido } from "@/shared/types";
+import { Gender, Genre, Profile, Sido, Trait } from "@/shared/types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -32,6 +33,7 @@ export const HomePage = () => {
   } = useChildListQuery();
 
   const [selectedChild, setSelectedChild] = useState<ChildItem | null>(null);
+  const [selectedTrait, setSelectedTrait] = useState<Trait | null>(null);
 
   // 아이 조회 디버깅 로그
   console.log("👶 아이 조회 상태:", {
@@ -48,10 +50,39 @@ export const HomePage = () => {
     )}공연`;
   };
 
+  // 성향 라벨 매핑
+  const getTraitLabel = (trait: Trait) => {
+    const traitLabels: Record<Trait, string> = {
+      [Trait.MUSIC_LOVER]: "음악을 좋아해요",
+      [Trait.DANCE_LOVER]: "춤을 좋아해요",
+      [Trait.SHORT_ATTENTION]: "집중력이 짧아요",
+      [Trait.SOUND_SENSITIVE]: "소리에 민감해요",
+      [Trait.ACTIVE]: "활동적이에요",
+    };
+    return traitLabels[trait] || trait;
+  };
+
+  // 사용 가능한 성향들 (하드코딩된 예시)
+  const availableTraits = [Trait.SHORT_ATTENTION, Trait.DANCE_LOVER];
+
+  // 아이가 선택되면 첫 번째 성향을 자동으로 선택
+  useEffect(() => {
+    if (selectedChild && availableTraits.length > 0 && !selectedTrait) {
+      setSelectedTrait(availableTraits[0]);
+    }
+  }, [selectedChild, selectedTrait]);
+
   const { data: { contents: genrePerformanceList } = { contents: [] } } =
     useGenrePerformanceListQuery(selectedChild?.genre ?? Genre.PLAY, {
       enabled: !!selectedChild,
     });
+
+  // 성향별 공연 쿼리
+  const {
+    data: { contents: traitPerformanceList } = { contents: [] },
+    isLoading: traitLoading,
+    error: traitError,
+  } = usePerformancesByTraitQuery(selectedTrait, selectedChild?.id || null);
   const { data: { contents: sidoPerformanceList } = { contents: [] } } =
     useSidoPerformanceListQuery(selectedChild?.sido ?? Sido.SEOUL, {
       enabled: !!selectedChild,
@@ -171,6 +202,70 @@ export const HomePage = () => {
             })}
           </ul>
           <div className="flex flex-col gap-12 w-full">
+            {/* 성향에 딱 맞는 공연 섹션 */}
+            <section className="flex flex-col gap-4">
+              <h2 className="py-2 text-black title-inter-b">
+                성향에 딱 맞는 공연이에요
+              </h2>
+
+              {/* 성향 버튼들 */}
+              <div className="flex flex-wrap gap-3">
+                {availableTraits.map((trait) => (
+                  <button
+                    key={trait}
+                    onClick={() =>
+                      setSelectedTrait(selectedTrait === trait ? null : trait)
+                    }
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                      selectedTrait === trait
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }`}
+                  >
+                    {getTraitLabel(trait)}
+                  </button>
+                ))}
+              </div>
+
+              {/* 선택된 성향의 공연 목록 */}
+              {selectedTrait && (
+                <div className="mt-4">
+                  {traitLoading ? (
+                    <div className="flex gap-4">
+                      {Array.from({ length: 3 }).map((_, index) => (
+                        <div
+                          key={index}
+                          className="w-48 h-32 bg-gray-200 rounded-lg animate-pulse"
+                        />
+                      ))}
+                    </div>
+                  ) : traitError ? (
+                    <div className="text-gray-500">
+                      {getTraitLabel(selectedTrait)} 공연을 불러올 수 없습니다.
+                    </div>
+                  ) : traitPerformanceList.length > 0 ? (
+                    <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
+                      {traitPerformanceList.map((performance) => (
+                        <li
+                          key={performance.performanceId}
+                          className="flex-shrink-0"
+                        >
+                          <PerformanceCard
+                            performance={performance}
+                            onClick={handlePerformancePress}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <div className="text-gray-500">
+                      {getTraitLabel(selectedTrait)}에 맞는 공연이 없습니다.
+                    </div>
+                  )}
+                </div>
+              )}
+            </section>
+
             {/*  지역별 공연 섹션 */}
             <section className="flex flex-col gap-2">
               <h2 className="py-2 text-black title-inter-b">
