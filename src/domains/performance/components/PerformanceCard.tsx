@@ -1,7 +1,6 @@
 import { BabyIcon, BearIcon, RestroomIcon } from "@/assets/icons";
 import { PerformanceItem } from "@/domains/performance/types";
 import { DUMMY_IMAGES } from "@/shared/constants";
-import { getGenreLabel } from "@/shared/services";
 import { getSidoLabel } from "@/shared/services/address";
 
 // Props 타입
@@ -12,7 +11,7 @@ type Props = {
 
 export default function PerformanceCard({ performance, onClick }: Props) {
   return (
-    <li
+    <article
       onClick={() => onClick?.(performance.performanceId)}
       className="w-[124px] flex flex-col gap-2"
     >
@@ -60,6 +59,6 @@ export default function PerformanceCard({ performance, onClick }: Props) {
         </div>
         <p className="body-inter-r">{performance.performanceName}</p>
       </div>
-    </li>
+    </article>
   );
 }

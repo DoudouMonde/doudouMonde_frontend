@@ -3,6 +3,7 @@ import {
   PerformanceDetail,
   CombinedLocationDto,
   EnglishContentListResponse,
+  NearbyFacilityResponse,
 } from "@/domains/performance/types";
 import { apiRequester } from "@/shared/apis/axiosInstance";
 import { Genre, Sido, Trait } from "@/shared/types";
@@ -121,6 +122,13 @@ export const performanceApi = {
     );
     return response.data;
   },
+  getNearbyFacilities: async (performanceId: number) => {
+    const response = await apiRequester.get<NearbyFacilityResponse>(
+      `/v1/performances/${performanceId}/nearByFacility`
+    );
+    return response.data;
+  },
+
   getNewGenrePerformanceList: async (childId: number) => {
     const response = await apiRequester.get<PerformanceListResponse>(
       `/v1/performances/new-genre/${childId}`
