@@ -4,6 +4,7 @@ import { PATH } from "@/shared/constants";
 import { signupApi } from "@/domains/auth/apis/signupApi";
 import { SignupRequest, ChildRequest } from "@/domains/auth/types/signup";
 import BackIcon from "@/assets/icons/Back";
+import { AddressSearchInput } from "@/shared/components";
 
 type Coords = { latitude: number | null; longitude: number | null };
 
@@ -375,6 +376,7 @@ export function RegionRegistrationPage() {
         )} */}
 
         {/* 수동 입력 (기본은 감춤, 오류나 수정 시 표시) */}
+        <AddressSearchInput />
 
         <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-6 pb-8 w-full h-auto">
           <div className="flex flex-col gap-2">
