@@ -90,7 +90,7 @@ export const CharacterCreationPage: React.FC = () => {
   // 감정 데이터 배열
   const emotions = [
     { id: "happy", name: "행복했어요", icon: Happy },
-    { id: "onemore", name: "또 보고싶어요", icon: Exited },
+    { id: "onemore", name: "또보고싶어요", icon: Exited },
     { id: "surprised", name: "놀랐어요", icon: Surprise },
     { id: "sad", name: "슬펐어요", icon: Sad },
     { id: "bored", name: "지루했어요", icon: Bored },
@@ -111,14 +111,16 @@ export const CharacterCreationPage: React.FC = () => {
   const [selectedAnimal, setSelectedAnimal] = useState("chick");
   // 선택된 감정 상태 (기본값: 행복)
   const [selectedEmotion, setSelectedEmotion] = useState("happy");
-  // 선택된 악세사리 상태 (기본값: 왕관)
-  const [selectedAccessory, setSelectedAccessory] = useState("crwon");
+  // 선택된 악세사리 상태 (기본값: 첫 번째 아이템)
+  const [selectedAccessory, setSelectedAccessory] = useState(accessories[0].id);
   // 현재 단계 상태 (animal, emotion, accessory)
   const [currentStep, setCurrentStep] = useState<
     "animal" | "emotion" | "accessory"
   >("animal");
   // 애니메이션 상태
   const [isAnimating, setIsAnimating] = useState(false);
+
+  // (효과 제거) 단계 전환 시에만 기본값을 보장하도록 처리
 
   // 선택이 바뀔 때마다 애니메이션 트리거
   useEffect(() => {
@@ -226,6 +228,11 @@ export const CharacterCreationPage: React.FC = () => {
       setCurrentStep("emotion");
     } else if (currentStep === "emotion") {
       // console.log("감정 → 악세사리로 이동");
+      // 악세사리 단계 진입 시 기본값 보장
+      const isValid = accessories.some((a) => a.id === selectedAccessory);
+      if (!isValid && accessories.length > 0) {
+        setSelectedAccessory(accessories[0].id);
+      }
       setCurrentStep("accessory");
     } else {
       // console.log("상상친구 만들기 완료!");
@@ -405,7 +412,7 @@ export const CharacterCreationPage: React.FC = () => {
               onChange={(value) => setSelectedEmotion(value as string)}
             >
               {/* 첫 번째 줄: 3개 감정 */}
-              <div className="grid grid-cols-3 gap-3 mb-4">
+              <div className="grid grid-cols-3 gap-2 mb-4">
                 {emotions.slice(0, 3).map((emotion) => {
                   const EmotionIcon = emotion.icon;
                   return (
@@ -413,7 +420,7 @@ export const CharacterCreationPage: React.FC = () => {
                       <div
                         className={`transition-all duration-200 cursor-pointer`}
                       >
-                        <div className="flex flex-col gap-2 items-center">
+                        <div className="flex flex-col gap-1 items-center">
                           {/* 감정 이미지 */}
                           <div className="flex-shrink-0">
                             <EmotionIcon className="w-20 h-20" />

@@ -71,7 +71,7 @@ export const ChildAndDateSelectionPage: React.FC = () => {
           <div className="flex justify-center items-center h-64">
             <div className="text-center">
               <p className="mb-4 text-red-500">
-                아이 정보를 불러오는데 실패했습니다.
+                아이 정보를 불러오는 데 실패했습니다.
               </p>
               <button
                 onClick={() => window.location.reload()}

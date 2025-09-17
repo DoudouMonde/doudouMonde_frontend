@@ -62,13 +62,13 @@ export const MyPage = () => {
           {/* 계정정보 */}
           <p className="text-black title-hak">계정</p>
           <div className="flex flex-col justify-center gap-6 bg-gray-200/70 rounded-[20px] p-5 w-full h-auto">
-            {/* <div
+            <div
               className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
               onClick={handleMemberInfoClick}
             >
               <p className="body-inter-r">회원 정보</p>
               <Arrow className="w-4 h-4" />
-            </div> */}
+            </div>
             <div
               className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
               onClick={handleChildInfoClick}

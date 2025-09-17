@@ -295,7 +295,7 @@ export const VoiceReviewPage = () => {
         </div>
 
         {/* 네비게이션 버튼 */}
-        <div className="absolute right-0 left-0 bottom-8">
+        <div className="mb-2">
           <NavigationButtons
             onPrevious={handlePrevious}
             onNext={handleNext}
