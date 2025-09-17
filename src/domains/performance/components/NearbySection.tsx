@@ -2,16 +2,15 @@ import { NearbyFacility } from "@/domains/performance/types";
 import { useNearbyFacilitiesQuery } from "@/domains/performance/queries";
 
 // 카카오맵 아이콘 컴포넌트
-const KakaoMapIcon = ({ placeName }: { placeName: string }) => {
+const KakaoMapIcon = ({ facility }: { facility: NearbyFacility }) => {
   const handleKakaoMapClick = () => {
-    const encodedPlaceName = encodeURIComponent(placeName);
-    const isMobile =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      );
+    const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
 
-    const schemeUrl = `kakaomap://search?q=${encodedPlaceName}`;
-    const webUrl = `https://m.map.kakao.com/scheme/search?q=${encodedPlaceName}`;
+    const lat = facility.latitude;
+    const lng = facility.longitude;
+
+    const schemeUrl = `kakaomap://look?p=${lat},${lng}`;
+    const webUrl = `https://m.map.kakao.com/scheme/look?p=${lat},${lng}`;
 
     if (isMobile) {
       window.location.href = schemeUrl;
@@ -45,7 +44,7 @@ const PlaceItem = ({ facility }: { facility: NearbyFacility }) => (
       <p className="text-black body-noto">{facility.name}</p>
 
       {/* 카카오맵 아이콘 */}
-      <KakaoMapIcon placeName={facility.name} />
+      <KakaoMapIcon facility={facility} />
     </div>
   </li>
 );
@@ -78,6 +77,7 @@ export const NearbySection = ({ performanceId }: NearbySectionProps) => {
     isLoading,
     error,
   } = useNearbyFacilitiesQuery(performanceId);
+
   if (isLoading) {
     return (
       <div className="flex flex-col gap-0 p-4">
@@ -101,7 +101,6 @@ export const NearbySection = ({ performanceId }: NearbySectionProps) => {
   return (
     <div className="flex flex-col gap-0 p-4">
       {/* 가볼만한 키즈카페 섹션 */}
-
       <Section
         title="가볼만한 키즈카페"
         facilities={nearbyFacilities?.kidsCafes || []}
