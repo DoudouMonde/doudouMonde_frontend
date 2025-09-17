@@ -213,7 +213,7 @@ export const HomePage = () => {
               </h2>
 
               {/* 성향 버튼들 */}
-              <div className="flex flex-wrap gap-3">
+              {/* <div className="flex flex-wrap gap-3">
                 {availableTraits.map((trait) => (
                   <button
                     key={trait}
@@ -229,7 +229,7 @@ export const HomePage = () => {
                     {getTraitLabel(trait)}
                   </button>
                 ))}
-              </div>
+              </div> */}
 
               {/* 선택된 성향의 공연 목록 */}
               {selectedTrait && (
