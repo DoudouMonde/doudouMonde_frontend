@@ -203,7 +203,7 @@ export const HomePage = () => {
           </ul>
           <div className="flex flex-col gap-12 w-full">
             {/* 성향에 딱 맞는 공연 섹션 */}
-            <section className="flex flex-col gap-4">
+            <section className="flex flex-col gap-2">
               <h2 className="py-2 text-black title-inter-b">
                 성향에 딱 맞는 공연이에요
               </h2>
@@ -216,10 +216,10 @@ export const HomePage = () => {
                     onClick={() =>
                       setSelectedTrait(selectedTrait === trait ? null : trait)
                     }
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                    className={`px-3 py-1 rounded-full font-medium transition-colors subtitle ${
                       selectedTrait === trait
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                        ? "bg-green-100 text-gray-200 "
+                        : "bg-gray-200 text-green-100 hover:bg-gray-300 border border-green-100"
                     }`}
                   >
                     {getTraitLabel(trait)}
@@ -235,7 +235,7 @@ export const HomePage = () => {
                       {Array.from({ length: 3 }).map((_, index) => (
                         <div
                           key={index}
-                          className="w-48 h-32 bg-gray-200 rounded-lg animate-pulse"
+                          className="w-48 h-32 bg-green-100 rounded-lg animate-pulse"
                         />
                       ))}
                     </div>

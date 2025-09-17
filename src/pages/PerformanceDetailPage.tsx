@@ -1,16 +1,13 @@
 import {
-  useAddWishlistMutation,
-  useRemoveWishlistMutation,
-} from "@/domains/favorites/queries";
-import {
   ContentSection,
   NearbySection,
   PerformanceOverview,
   PerformanceHeader,
+  PerformanceDetailBottomBar,
   TransportSection,
 } from "@/domains/performance/components";
 import { usePerformanceDetailQuery } from "@/domains/performance/queries";
-import { ButtonChip, SwitchCase } from "@/shared/components";
+import { SwitchCase } from "@/shared/components";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -32,8 +29,6 @@ export const PerformanceDetailPage = () => {
       enabled: !!performanceId,
     }
   );
-  const { mutate: addWishlistMutation } = useAddWishlistMutation();
-  const { mutate: removeWishlistMutation } = useRemoveWishlistMutation();
 
   if (!performanceId || isNaN(Number(performanceId))) {
     return (
@@ -114,27 +109,7 @@ export const PerformanceDetailPage = () => {
         </div>
       </div>
 
-      <nav className="fixed flex-row bottom-0 px-5 left-0 gap-3 z-50 w-full h-[64px] rounded-t-3xl bg-gray-200 flex items-center justify-center shadow-[0_-0px_20px_rgba(0,0,0,0.25)]">
-        <ButtonChip
-          onClick={() => {
-            if (performanceDetail?.isLike) {
-              removeWishlistMutation(Number(performanceId));
-            } else {
-              addWishlistMutation({ performanceId: Number(performanceId) });
-            }
-          }}
-          isActive={!performanceDetail?.isLike || false}
-        >
-          보고싶어요
-        </ButtonChip>
-
-        <ButtonChip
-          onClick={() => {}}
-          isActive={performanceDetail?.isView || false}
-        >
-          봤어요
-        </ButtonChip>
-      </nav>
+      <PerformanceDetailBottomBar performanceId={Number(performanceId)} />
     </div>
   );
 };

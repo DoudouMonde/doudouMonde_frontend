@@ -33,9 +33,9 @@ export default function PerformanceCard({ performance, onClick }: Props) {
           <p className="subtitle text-secondary-100">
             {getSidoLabel(performance.sido)}
           </p>
-          <p className="text-red-100 subtitle">
+          {/* <p className="text-red-100 subtitle">
             {getGenreLabel(performance.genre)}
-          </p>
+          </p> */}
 
           {/* 아이콘 레이어 (투명도 적용 안됨) */}
           {/* <div className="flex absolute bottom-0 left-0 gap-1 items-center px-2 py-2 w-full h-6 rounded-b-xl"> */}

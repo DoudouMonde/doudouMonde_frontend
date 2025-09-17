@@ -60,7 +60,7 @@ export const PerformanceOverview = () => {
       />
 
       {/* 포스터 */}
-      <article className="flex flex-col gap-5 items-center h-fit pt-[22px]">
+      <article className="flex flex-col gap-5 items-center h-fit pt-[22px] justify-center">
         <div className="w-[173px] h-[231px]">
           {/* <div className="w-[225px] h-[300px]"> */}
           <img
