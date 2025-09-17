@@ -174,7 +174,7 @@ export const TransportSection = ({ performanceId }: Props) => {
 
       {/* 교통수단 선택 */}
       <div className="mb-4">
-        <h4 className="mb-3 body-inter-r text-primary-100">교통수단 선택</h4>
+        <h4 className="mb-3 body-hak-b text-primary-100">교통수단 선택</h4>
         <div className="grid grid-cols-3 gap-2">
           {transportOptions.map((option) => (
             <button

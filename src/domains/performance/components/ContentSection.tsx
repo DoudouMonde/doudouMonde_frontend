@@ -24,9 +24,9 @@ export const ContentSection = ({ performanceId }: Props) => {
   if (isLoading) {
     return (
       <div className="w-full">
-        <h3 className="body-inter-r text-black mb-4 ml-[19px] ">
+        <p className="body-inter-b text-black mb-4 ml-[19px] ">
           관련 영어 콘텐츠
-        </h3>
+        </p>
         <div className="flex items-center justify-center h-[200px] bg-gray-200 rounded-lg mx-[19px]">
           <div className="text-secondary-100">로딩 중...</div>
         </div>
@@ -52,9 +52,7 @@ export const ContentSection = ({ performanceId }: Props) => {
   if (!contentData?.contents || contentData.contents.length === 0) {
     return (
       <div className="w-full">
-        <h3 className="body-inter-r text-black mb-4 ml-[19px] ">
-          관련 영어 콘텐츠
-        </h3>
+        <h3 className="text-black body-hak-b">관련 영어 콘텐츠</h3>
         <div className="flex items-center justify-center h-[200px] bg-gray-200 rounded-lg mx-[19px]">
           <div className="text-secondary-100">관련 콘텐츠가 없습니다.</div>
         </div>
@@ -65,9 +63,7 @@ export const ContentSection = ({ performanceId }: Props) => {
   return (
     <section className="px-5 w-full">
       {/* 섹션 제목 */}
-      <p className="body-inter-r text-black mb-4 ml-[19px] ">
-        관련 영어 콘텐츠
-      </p>
+      <p className="body-hak-b text-black mb-4 ml-[19px] ">관련 영어 콘텐츠</p>
 
       {/* 콘텐츠 목록 */}
       <ul className="space-y-0">
@@ -75,11 +71,11 @@ export const ContentSection = ({ performanceId }: Props) => {
           <li
             key={content.id}
             onClick={() => handleVideoClick(content.youtubeUrl)}
-            className="flex gap-4 items-start py-7 border-b-[0.5px] border-b-black"
+            className="flex gap-4 items-start py-3 border-b-[0.5px] border-secondary-100"
           >
             {/* <div className="flex gap-4 items-start py-4"> */}
             {/* 썸네일 */}
-            <div className="w-[166px] h-[93px] bg-gray-200 rounded-lg overflow-hidden transition-transform group-hover:scale-105">
+            <div className="w-[166px] h-[93px] bg-gray-200  overflow-hidden transition-transform group-hover:scale-105">
               <img
                 src={content.thumbnailUrl}
                 alt={content.englishTitle}
@@ -94,7 +90,7 @@ export const ContentSection = ({ performanceId }: Props) => {
               className="flex-1 min-w-0 cursor-pointer group"
               onClick={() => handleVideoClick(content.youtubeUrl)}
             >
-              <h4 className="text-black transition-colors body-inter-r">
+              <h4 className="text-black transition-colors body-inter-sm">
                 {content.englishTitle}
               </h4>
               <YoutubeIcon className="w-8 h-8" />
