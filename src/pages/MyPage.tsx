@@ -25,7 +25,7 @@ export const MyPage = () => {
   };
 
   const handleStoryVillageBookClick = () => {
-    console.log("이야기 마을 북 클릭:", PATH.STORY_VILLAGE_BOOK);
+    console.log("이야기 마을북 클릭:", PATH.STORY_VILLAGE_BOOK);
     navigate(PATH.STORY_VILLAGE_BOOK);
   };
 

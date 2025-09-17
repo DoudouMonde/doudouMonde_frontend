@@ -120,7 +120,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 <br />
                 우리 아이와 공연 추억을 담은
                 <br />
-                이야기마을 북을 구매할 수 있어요
+                이야기마을북을 구매할 수 있어요
               </p>
 
               <div className="flex gap-3 pt-2">

@@ -72,7 +72,7 @@ export const StoryVillageBookPage = () => {
             <BackIcon className="w-5 h-5 text-gray-700" />
           </button>
           <div className="flex flex-1 justify-center">
-            <div className="text-black title-hak">이야기 마을 북</div>
+            <div className="text-black title-hak">이야기 마을북</div>
           </div>
           <div className="w-10"></div>
         </div>
@@ -144,7 +144,7 @@ export const StoryVillageBookPage = () => {
             <p className="text-sm text-center text-gray-600">
               {remainingCount > 0
                 ? `${remainingCount}개 더 작성하면 이야기 마을 북을 받을 수 있어요!`
-                : "축하해요! 이야기 마을 북을 받을 수 있어요! 🎉"}
+                : "축하해요! 이야기 마을북을 받을 수 있어요! 🎉"}
             </p>
           </div>
         </div>
