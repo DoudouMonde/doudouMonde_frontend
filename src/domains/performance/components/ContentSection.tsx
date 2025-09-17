@@ -61,9 +61,9 @@ export const ContentSection = ({ performanceId }: Props) => {
   }
 
   return (
-    <section className="px-5 w-full">
+    <section className="p-4 w-full">
       {/* 섹션 제목 */}
-      <p className="body-hak-b text-black mb-4 ml-[19px] ">관련 영어 콘텐츠</p>
+      <p className="text-black body-hak-b">관련 영어 콘텐츠</p>
 
       {/* 콘텐츠 목록 */}
       <ul className="space-y-0">
