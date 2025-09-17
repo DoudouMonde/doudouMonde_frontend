@@ -193,9 +193,9 @@ export const TransportSection = ({ performanceId }: Props) => {
               <div className="text-center">
                 <div className="mb-1 text-2xl">{option.icon}</div>
                 <div className="text-xs font-medium">{option.label}</div>
-                <div className="mt-1 text-xs text-secondary-100">
+                {/* <div className="mt-1 text-xs text-secondary-100">
                   {option.description}
-                </div>
+                </div> */}
               </div>
             </button>
           ))}

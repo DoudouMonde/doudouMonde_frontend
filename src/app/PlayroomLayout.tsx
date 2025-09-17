@@ -1,13 +1,17 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { BottomNavigation } from "@/shared/components";
 import BackIcon from "@/assets/icons/Back";
 
 export function PlayroomLayout() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleBackClick = () => {
     navigate(-1);
   };
+
+  // PlayroomPage (LandingPage)인지 확인
+  const isPlayroomMainPage = location.pathname === "/playroom";
 
   return (
     <div
@@ -36,7 +40,11 @@ export function PlayroomLayout() {
         </div>
       </div>
 
-      <main className="px-6 pb-[72px] w-full relative z-10">
+      <main
+        className={`px-6 pb-[72px] w-full relative z-10 ${
+          isPlayroomMainPage ? "" : "overflow-y-auto min-h-screen"
+        }`}
+      >
         <Outlet />
       </main>
 
