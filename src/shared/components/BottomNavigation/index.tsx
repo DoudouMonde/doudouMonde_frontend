@@ -41,7 +41,14 @@ function CustomTabBarButton({
             }}
           />
         )}
-        <div className="flex flex-col justify-center items-center mt-4">
+        <div
+          className="flex flex-col justify-center items-center mt-4 text-xs"
+          style={{
+            fontFamily: "Inter",
+            fontWeight: "400",
+            color: isSelected ? COLORS.PRIMARY : COLORS.BLACK,
+          }}
+        >
           {children}
         </div>
       </div>
@@ -59,8 +66,7 @@ export function BottomNavigation() {
       title: "홈",
       icon: (isSelected: boolean) => (
         <HomeIcon
-          className="w-6 h-6"
-          style={{ color: isSelected ? COLORS.PRIMARY : COLORS.GRAY_400 }}
+          className={`w-6 h-6 ${isSelected ? COLORS.PRIMARY : "text-gray-400"}`}
         />
       ),
     },
@@ -70,8 +76,7 @@ export function BottomNavigation() {
       title: "놀이방",
       icon: (isSelected: boolean) => (
         <GamepadIcon
-          className="w-6 h-6"
-          style={{ color: isSelected ? COLORS.PRIMARY : COLORS.GRAY_400 }}
+          className={`w-6 h-6 ${isSelected ? COLORS.PRIMARY : "text-gray-400"}`}
         />
       ),
     },
@@ -81,8 +86,7 @@ export function BottomNavigation() {
       title: "찜",
       icon: (isSelected: boolean) => (
         <HeartIcon
-          className="w-6 h-6"
-          style={{ color: isSelected ? COLORS.PRIMARY : COLORS.GRAY_400 }}
+          className={`w-6 h-6 ${isSelected ? COLORS.PRIMARY : "text-gray-400"}`}
         />
       ),
     },
@@ -92,8 +96,7 @@ export function BottomNavigation() {
       title: "마이",
       icon: (isSelected: boolean) => (
         <UserIcon
-          className="w-6 h-6"
-          style={{ color: isSelected ? COLORS.PRIMARY : COLORS.GRAY_400 }}
+          className={`w-6 h-6 ${isSelected ? COLORS.PRIMARY : "text-gray-400"}`}
         />
       ),
     },
@@ -103,7 +106,9 @@ export function BottomNavigation() {
     <nav className="fixed bottom-0 left-0 z-50 w-full h-[68px] rounded-t-3xl bg-gray-200 flex flex-col items-center justify-center shadow-[0_-10px_20px_rgba(0,0,0,0.25)]">
       <div className="flex h-full">
         {tabItems.map((item) => {
-          const isSelected = location.pathname.startsWith(item.path);
+          const isSelected =
+            location.pathname === item.path ||
+            (item.path !== "/" && location.pathname.startsWith(item.path));
 
           return (
             <Link
@@ -115,17 +120,7 @@ export function BottomNavigation() {
               }}
             >
               <CustomTabBarButton onPress={() => {}} isSelected={isSelected}>
-                {item.icon(isSelected)}
-                <p
-                  className="mt-1 text-xs"
-                  style={{
-                    fontFamily: "Inter",
-                    fontWeight: "400",
-                    color: isSelected ? COLORS.PRIMARY : COLORS.BLACK,
-                  }}
-                >
-                  {item.title}
-                </p>
+                {item.icon(isSelected)} <p className="mt-1"> {item.title}</p>
               </CustomTabBarButton>
             </Link>
           );
