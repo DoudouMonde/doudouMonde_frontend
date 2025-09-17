@@ -76,3 +76,19 @@ export type EnglishContent = {
 export type EnglishContentListResponse = {
   contents: EnglishContent[];
 };
+
+// 인근시설 타입
+export type NearbyFacility = {
+  facilityId: number;
+  facilityName: string;
+  facilityType: string; // "RESTAURANT" | "KIDS_CAFE"
+  distance: string;
+  hasHighChair?: boolean;
+  address: string;
+  phoneNumber?: string;
+};
+
+// 인근시설 응답 타입
+export type NearbyFacilityResponse = {
+  facilities: NearbyFacility[];
+};

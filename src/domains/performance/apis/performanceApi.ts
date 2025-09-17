@@ -3,6 +3,7 @@ import {
   PerformanceDetail,
   CombinedLocationDto,
   EnglishContentListResponse,
+  NearbyFacilityResponse,
 } from "@/domains/performance/types";
 import { apiRequester } from "@/shared/apis/axiosInstance";
 import { Genre, Sido } from "@/shared/types";
@@ -68,6 +69,12 @@ export const performanceApi = {
   getEnglishContents: async (performanceId: number) => {
     const response = await apiRequester.get<EnglishContentListResponse>(
       `/v1/performances/${performanceId}/english-contents`
+    );
+    return response.data;
+  },
+  getNearbyFacilities: async (performanceId: number) => {
+    const response = await apiRequester.get<NearbyFacilityResponse>(
+      `/v1/performances/${performanceId}/nearByFacility`
     );
     return response.data;
   },

@@ -1,18 +1,5 @@
-import { NearbyInfo, NearbyPlace } from "@/domains/performance/types";
-
-// 더미 데이터
-const nearbyInfo: NearbyInfo = {
-  restaurants: [
-    { name: "맘스터치 강남점", distance: "", hasHighChair: false },
-    { name: "떡볶이 천국", distance: "", hasHighChair: false },
-    { name: "키즈 레스토랑", distance: "", hasHighChair: false },
-  ],
-  kidsCafes: [
-    { name: "점프점프 키즈카페", distance: "", hasHighChair: false },
-    { name: "플레이그라운드", distance: "", hasHighChair: false },
-    { name: "코코몽 키즈카페", distance: "", hasHighChair: false },
-  ],
-};
+import { NearbyFacility } from "@/domains/performance/types";
+import { useNearbyFacilitiesQuery } from "@/domains/performance/queries";
 
 // 카카오맵 아이콘 컴포넌트
 const KakaoMapIcon = ({ placeName }: { placeName: string }) => {
@@ -37,14 +24,14 @@ const KakaoMapIcon = ({ placeName }: { placeName: string }) => {
 };
 
 // 개별 장소 아이템 컴포넌트
-const PlaceItem = ({ place }: { place: NearbyPlace }) => (
+const PlaceItem = ({ facility }: { facility: NearbyFacility }) => (
   <li className="flex items-center justify-between px-0 py-2 min-h-[32px]">
     <div className="flex flex-1 justify-between items-center">
       {/* 장소명 */}
-      <p className="text-black body-noto">{place.name}</p>
+      <p className="text-black body-noto">{facility.facilityName}</p>
 
       {/* 카카오맵 아이콘 */}
-      <KakaoMapIcon placeName={place.name} />
+      <KakaoMapIcon placeName={facility.facilityName} />
     </div>
   </li>
 );
@@ -52,29 +39,84 @@ const PlaceItem = ({ place }: { place: NearbyPlace }) => (
 // 섹션 컴포넌트
 const Section = ({
   title,
-  places,
+  facilities,
 }: {
   title: string;
-  places: NearbyPlace[];
+  facilities: NearbyFacility[];
 }) => (
   <div className="pb-6">
     <p className="p-4 text-black body-hak-b">{title}</p>
     <ul className="px-4 space-y-0 body-inter-r">
-      {places.map((place, index) => (
-        <PlaceItem key={index} place={place} />
+      {facilities.map((facility, index) => (
+        <PlaceItem key={facility.facilityId || index} facility={facility} />
       ))}
     </ul>
   </div>
 );
 
-export const NearbySection = () => {
+interface NearbySectionProps {
+  performanceId: number;
+}
+
+export const NearbySection = ({ performanceId }: NearbySectionProps) => {
+  const {
+    data: nearbyFacilitiesData,
+    isLoading,
+    error,
+  } = useNearbyFacilitiesQuery(performanceId);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-0 p-4">
+        <div className="flex justify-center items-center h-32">
+          <p className="text-gray-500">인근시설 정보를 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col gap-0 p-4">
+        <div className="flex justify-center items-center h-32">
+          <p className="text-red-500">인근시설 정보를 불러올 수 없습니다.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!nearbyFacilitiesData?.facilities?.length) {
+    return (
+      <div className="flex flex-col gap-0 p-4">
+        <div className="flex justify-center items-center h-32">
+          <p className="text-gray-500">인근시설 정보가 없습니다.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 시설 타입별로 분류
+  const kidsCafes = nearbyFacilitiesData.facilities.filter(
+    (facility) => facility.facilityType === "KIDS_CAFE"
+  );
+  const restaurants = nearbyFacilitiesData.facilities.filter(
+    (facility) => facility.facilityType === "RESTAURANT"
+  );
+
   return (
     <div className="flex flex-col gap-0 p-4">
       {/* 가볼만한 키즈카페 섹션 */}
-      <Section title="가볼만한 키즈카페" places={nearbyInfo.kidsCafes} />
-      <hr className="border-secondary-100/30" />
+      {kidsCafes.length > 0 && (
+        <>
+          <Section title="가볼만한 키즈카페" facilities={kidsCafes} />
+          {restaurants.length > 0 && <hr className="border-secondary-100/30" />}
+        </>
+      )}
+
       {/* 아이와 가볼만한 맛집 섹션 */}
-      <Section title="아이와 가볼만한 맛집" places={nearbyInfo.restaurants} />
+      {restaurants.length > 0 && (
+        <Section title="아이와 가볼만한 맛집" facilities={restaurants} />
+      )}
     </div>
   );
 };
