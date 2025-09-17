@@ -20,4 +20,8 @@ export const queryKeys = {
   favorites: {
     wishlist: () => ["FAVORITES", "WISHLIST"] as const,
   },
+
+  auth: {
+    memberName: () => ["AUTH", "MEMBER_NAME"] as const,
+  },
 } as const;

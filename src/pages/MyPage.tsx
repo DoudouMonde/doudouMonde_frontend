@@ -2,11 +2,13 @@ import { useNavigate } from "react-router-dom";
 import BackIcon from "@/assets/icons/Back";
 import Arrow from "@/assets/icons/Arrow";
 import { PATH } from "@/shared/constants/paths";
+import { useMemberNameQuery } from "@/domains/auth/queries/useMemberNameQuery";
 
 export const MyPage = () => {
   console.log("🎯 MyPage 컴포넌트가 렌더링되었습니다!");
 
   const navigate = useNavigate();
+  const { data: memberName } = useMemberNameQuery();
 
   const handleBackClick = () => {
     navigate(-1);
@@ -56,11 +58,11 @@ export const MyPage = () => {
         <div className="flex flex-col gap-6 justify-center w-full">
           {/* 카카오톡 계정 연동 */}
           <div className="flex flex-col justify-center gap-2 bg-gray-200/70 rounded-[20px] p-7 w-full h-[120px]">
-            <p className="title-hak">김출신</p>
+            <p className="title-hak">{memberName ?? ""}</p>
             <p className="subtitle">카카오톡 계정 연동 중</p>
           </div>
           {/* 계정정보 */}
-          <p className="text-black title-hak">계정</p>
+          <p className="pl-2 text-black body-hak-b">계정</p>
           <div className="flex flex-col justify-center gap-6 bg-gray-200/70 rounded-[20px] p-5 w-full h-auto">
             <div
               className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
@@ -79,7 +81,7 @@ export const MyPage = () => {
           </div>
 
           {/* 추가 기능 */}
-          <p className="text-black title-hak">추가 기능</p>
+          <p className="pl-2 text-black body-hak-b">추가 기능</p>
           <div className="flex flex-col justify-center gap-6 bg-gray-200/70 rounded-[20px] p-5 w-full">
             <div
               className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
