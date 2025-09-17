@@ -284,7 +284,7 @@ export function RegionRegistrationPage() {
                 <h2 className="mb-2 text-xl font-bold text-gray-900">
                   자동 위치 등록
                 </h2>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-secondary-100">
                   현재 위치를 기반으로 인기 공연과 <br /> 공연장까지의 소요시간
                   정보를 제공해드려요.
                 </p>
@@ -295,7 +295,7 @@ export function RegionRegistrationPage() {
               <button
                 onClick={handleLocationConsent}
                 disabled={isLocating || isLoadingAddress}
-                className={`w-full py-4 rounded-xl font-semibold text-gray-200 transition-colors ${
+                className={`w-full py-2 rounded-xl font-semibold text-gray-200 transition-colors ${
                   isLocating || isLoadingAddress
                     ? "bg-gray-400"
                     : "bg-green-200 hover:bg-green-600"
@@ -310,7 +310,7 @@ export function RegionRegistrationPage() {
 
               <button
                 onClick={handleManualInput}
-                className="py-4 w-full font-semibold text-gray-700 bg-gray-100 rounded-xl transition-colors hover:bg-gray-200"
+                className="py-2 w-full font-semibold bg-gray-100 rounded-xl transition-colors text-secondary-100 hover:bg-gray-200"
               >
                 직접 입력하기
               </button>
@@ -341,42 +341,6 @@ export function RegionRegistrationPage() {
 
       {/* Content */}
       <div className="px-8 pt-24">
-        {/* 위치 정보 수집 완료 시 표시 */}
-        {/* {/* {coords.latitude && coords.longitude && (
-          <div className="p-4 mb-6 bg-green-50 rounded-lg border border-green-200">
-            <div className="flex gap-2 items-center mb-2">
-              <svg
-                className="w-5 h-5 text-green-100"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span className="text-sm font-medium text-green-100">
-                위치 정보 수집 완료
-              </span>
-            </div>
-            <div className="text-xs text-gray-600">
-              위도: {coords.latitude.toFixed(6)} / 경도:{" "}
-              {coords.longitude.toFixed(6)}
-            </div>
-            {!selectedRegion && !detailedAddress && (
-              <button
-                className="mt-2 text-xs text-gray-600 underline hover:text-gray-800"
-                onClick={() => setShowLocationModal(false)}
-              >
-                주소를 수동으로 입력하세요
-              </button>
-            )}
-          </div>
-        )} */}
-
-        {/* 수동 입력 (기본은 감춤, 오류나 수정 시 표시) */}
-
         <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-6 pb-8 w-full h-auto">
           <div className="flex flex-col gap-2">
             <p className="title-hak">지역 선택</p>
@@ -396,7 +360,30 @@ export function RegionRegistrationPage() {
                 <select
                   value={selectedRegion}
                   onChange={(e) => handleRegionSelect(e.target.value)}
-                  className="p-4 pr-10 w-full bg-gray-200 rounded-lg border appearance-none border-secondary-100/30 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
+                  className="   w-full
+                  h-[35px]
+                  bg-white/50
+                  border-[0.3px]
+                  border-[#D9D9D9]
+                  rounded-[20px]
+                  pl-[16px]
+                  pr-4
+                  font-inter
+                  text-xs
+                  font-normal
+                  text-black
+                  placeholder:text-[#8C8C8C]
+                  placeholder:tracking-[-0.03em]
+                  focus:outline-none
+                  focus:ring-2
+                  focus:ring-green-100/30
+                  focus:border-green-100
+                  transition-all
+                  duration-200
+                  min-w-0
+                  appearance-none
+                  "
+                  // className="p-4 pr-10 w-full bg-gray-200 rounded-lg border appearance-none border-secondary-100/30 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
                 >
                   <option value="" disabled>
                     지역을 선택해주세요
@@ -409,7 +396,7 @@ export function RegionRegistrationPage() {
                 </select>
                 <div className="flex absolute inset-y-0 right-0 items-center pr-4 pointer-events-none">
                   <svg
-                    className="w-5 h-5 text-gray-400"
+                    className="w-5 h-5 text-secondary-100"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -425,24 +412,10 @@ export function RegionRegistrationPage() {
               </div>
             </div>
 
-            {/* 상세 주소 입력 (선택사항) */}
-            {/* <div className="mb-6">
-              <label className="block mb-2 font-medium text-gray-700 body-inter-r">
-                상세 주소 (선택사항)
-                {isLoadingAddress && (
-                  <span className="ml-2 text-xs text-green-600">
-                    주소를 불러오는 중...
-                  </span>
-                )}
-              </label>
-              <input
-                type="text"
-                value={detailedAddress}
-                onChange={(e) => setDetailedAddress(e.target.value)}
-                placeholder="예: 강남구 테헤란로 123, ○○아파트"
-                className="p-4 w-full bg-gray-200 rounded-lg border border-secondary-100/30 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
-              />
-            </div> */}
+            <p className="title-hak">상세 주소</p>
+            <p className="subtitle-b text-secondary-100">
+              공연장까지의 경로 정보를 받을 수 있어요{" "}
+            </p>
             <AddressSearchInput />
           </div>
           <div className="flex flex-col gap-2 w-full"></div>
@@ -451,7 +424,7 @@ export function RegionRegistrationPage() {
           <button
             onClick={handleNext}
             disabled={!selectedRegion || isSubmitting}
-            className={`w-full rounded-[20px] font-semibold transition-colors h-12
+            className={`w-full rounded-[20px] font-semibold transition-colors h-10
               ${
                 selectedRegion && !isSubmitting
                   ? "bg-green-200 hover:bg-green-600 text-gray-200"
@@ -462,20 +435,7 @@ export function RegionRegistrationPage() {
           </button>
         </div>
 
-        <>
-          {/* <div className="mb-8">
-            <label className="block mb-2 font-medium text-gray-700 body-inter-r">
-              상세주소 입력
-            </label>
-            <input
-              type="text"
-              value={detailedAddress}
-              onChange={(e) => setDetailedAddress(e.target.value)}
-              placeholder="예: 강남구 테헤란로 123, ○○아파트"
-              className="p-4 w-full bg-white rounded-lg border border-secondary-100 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
-            />
-          </div> */}
-        </>
+        <></>
       </div>
     </div>
   );
