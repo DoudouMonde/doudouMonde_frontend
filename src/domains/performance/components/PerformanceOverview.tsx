@@ -69,7 +69,7 @@ export const PerformanceOverview = () => {
           />
         </div>
         <div className="flex justify-center">
-          <section className="flex flex-col gap-4 items-center px-6">
+          <section className="flex flex-col gap-4 justify-center items-center px-6">
             {/* 태그 */}
             <div className="flex flex-col gap-2 items-center">
               {/* <Chip>🌱 차차는 처음 보는 장르예요!</Chip> */}

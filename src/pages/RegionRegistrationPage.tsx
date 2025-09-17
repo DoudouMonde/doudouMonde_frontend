@@ -376,7 +376,6 @@ export function RegionRegistrationPage() {
         )} */}
 
         {/* 수동 입력 (기본은 감춤, 오류나 수정 시 표시) */}
-        <AddressSearchInput />
 
         <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-6 pb-8 w-full h-auto">
           <div className="flex flex-col gap-2">
@@ -427,7 +426,7 @@ export function RegionRegistrationPage() {
             </div>
 
             {/* 상세 주소 입력 (선택사항) */}
-            <div className="mb-6">
+            {/* <div className="mb-6">
               <label className="block mb-2 font-medium text-gray-700 body-inter-r">
                 상세 주소 (선택사항)
                 {isLoadingAddress && (
@@ -443,7 +442,8 @@ export function RegionRegistrationPage() {
                 placeholder="예: 강남구 테헤란로 123, ○○아파트"
                 className="p-4 w-full bg-gray-200 rounded-lg border border-secondary-100/30 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
               />
-            </div>
+            </div> */}
+            <AddressSearchInput />
           </div>
           <div className="flex flex-col gap-2 w-full"></div>
 
