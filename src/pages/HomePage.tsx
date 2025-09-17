@@ -1,9 +1,6 @@
 import { KoreanLogo } from "@/assets/icons";
 import ChildProfile from "@/domains/child/components/ChildProfile";
-import {
-  useChildListQuery,
-  useChildTraitsQuery,
-} from "@/domains/child/queries";
+import { useChildListQuery } from "@/domains/child/queries";
 import { ChildItem } from "@/domains/child/types";
 import PerformanceCard from "@/domains/performance/components/PerformanceCard";
 import {
@@ -12,13 +9,12 @@ import {
   useRewardPerformanceListQuery,
   useSidoPerformanceListQuery,
 } from "@/domains/performance/queries";
-import { useTraitPerformancesQuery } from "@/domains/performance/queries/useTraitPerformancesQuery";
 
 import { SearchPerformancesInput } from "@/shared/components";
 import { AutoCarousel } from "@/shared/components/AutoCarousel";
 import { PATH } from "@/shared/constants/paths";
 import { getGenreLabel, getSidoLabel } from "@/shared/services";
-import { Gender, Genre, Profile, Sido, Trait } from "@/shared/types";
+import { Gender, Genre, Profile, Sido } from "@/shared/types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -45,44 +41,8 @@ export const HomePage = () => {
     childrenCount: children?.length || 0,
   });
 
-  // 아이 취향 정보 가져오기
-  const { data: childTraits } = useChildTraitsQuery(selectedChild?.id || null);
-
-  // 성향별 공연 데이터 가져오기 (개별 쿼리)
-  const musicLoverQuery = useTraitPerformancesQuery(
-    Trait.MUSIC_LOVER,
-    selectedChild?.id || null
-  );
-  const danceLoverQuery = useTraitPerformancesQuery(
-    Trait.DANCE_LOVER,
-    selectedChild?.id || null
-  );
-  const shortAttentionQuery = useTraitPerformancesQuery(
-    Trait.SHORT_ATTENTION,
-    selectedChild?.id || null
-  );
-
-  // 취향 기반 추천 로직
-  const getTraitLabel = () => {
-    if (!selectedChild?.trait)
-      return `${selectedChild?.name}에게 딱 맞는 ${getGenreLabel(
-        selectedChild?.genre ?? Genre.PLAY
-      )}공연`;
-
-    const traits = selectedChild.trait;
-    if (traits.includes("MUSIC_LOVER")) {
-      return `${selectedChild?.name}에게 딱 맞는 뮤지컬 추천`;
-    }
-    if (traits.includes("SHORT_ATTENTION")) {
-      return `${selectedChild?.name}에게 딱 맞는 짧은 공연 추천 (100분 이하)`;
-    }
-    if (traits.includes("CURIOUS")) {
-      return `${selectedChild?.name}에게 딱 맞는 새로운 장르 추천`;
-    }
-    if (traits.includes("DANCE_LOVER")) {
-      return `${selectedChild?.name}에게 딱 맞는 춤 공연 추천`;
-    }
-
+  // 기본 추천 제목
+  const getRecommendationTitle = () => {
     return `${selectedChild?.name}에게 딱 맞는 ${getGenreLabel(
       selectedChild?.genre ?? Genre.PLAY
     )}공연`;
@@ -120,7 +80,6 @@ export const HomePage = () => {
         profile: firstChild.profile as Profile,
         sido: firstChild.sido as Sido,
         genre: Genre.PLAY, // 기본값 설정
-        trait: Trait.MUSIC_LOVER, // 기본값 설정
       };
       setSelectedChild(convertedChild);
     },
@@ -181,7 +140,7 @@ export const HomePage = () => {
       <main className="flex flex-col flex-1 gap-4 pt-16 w-full">
         <section className="flex flex-col gap-3">
           <h2 className="px-3 py-4 text-black title-inter-b">
-            {getTraitLabel()}
+            {getRecommendationTitle()}
           </h2>
           <AutoCarousel
             genre={selectedChild?.genre ?? Genre.PLAY}
@@ -200,7 +159,6 @@ export const HomePage = () => {
                 profile: child.profile as Profile,
                 sido: child.sido as Sido,
                 genre: Genre.PLAY,
-                trait: Trait.MUSIC_LOVER, // 기본값 설정
               };
               return (
                 <ChildProfile
@@ -213,128 +171,6 @@ export const HomePage = () => {
             })}
           </ul>
           <div className="flex flex-col gap-12 w-full">
-            {/* 성향별 공연 섹션 */}
-            {childTraits?.traits && childTraits.traits.length > 0 && (
-              <section className="flex flex-col gap-8">
-                {/* 음악을 좋아해요 */}
-                {childTraits.traits.includes("MUSIC_LOVER") && (
-                  <div className="flex flex-col gap-4">
-                    <h2 className="py-2 text-black title-inter-b">
-                      {selectedChild?.name}에게 딱 맞는 뮤지컬 공연 추천
-                    </h2>
-                    {musicLoverQuery.isLoading ? (
-                      <div className="flex gap-4">
-                        {Array.from({ length: 3 }).map((_, index) => (
-                          <div
-                            key={index}
-                            className="w-48 h-32 bg-gray-200 rounded-lg animate-pulse"
-                          />
-                        ))}
-                      </div>
-                    ) : musicLoverQuery.error ? (
-                      <div className="text-gray-500">
-                        뮤지컬 공연을 불러올 수 없습니다.
-                      </div>
-                    ) : (
-                      <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
-                        {(musicLoverQuery.data?.contents || []).map(
-                          (performance) => (
-                            <li
-                              key={performance.performanceId}
-                              className="flex-shrink-0"
-                            >
-                              <PerformanceCard
-                                performance={performance}
-                                onClick={handlePerformancePress}
-                              />
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    )}
-                  </div>
-                )}
-
-                {/* 춤을 좋아해요 */}
-                {childTraits.traits.includes("DANCE_LOVER") && (
-                  <div className="flex flex-col gap-4">
-                    <h2 className="py-2 text-black title-inter-b">
-                      {selectedChild?.name}에게 딱 맞는 댄스 공연 추천
-                    </h2>
-                    {danceLoverQuery.isLoading ? (
-                      <div className="flex gap-4">
-                        {Array.from({ length: 3 }).map((_, index) => (
-                          <div
-                            key={index}
-                            className="w-48 h-32 bg-gray-200 rounded-lg animate-pulse"
-                          />
-                        ))}
-                      </div>
-                    ) : danceLoverQuery.error ? (
-                      <div className="text-gray-500">
-                        댄스 공연을 불러올 수 없습니다.
-                      </div>
-                    ) : (
-                      <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
-                        {(danceLoverQuery.data?.contents || []).map(
-                          (performance) => (
-                            <li
-                              key={performance.performanceId}
-                              className="flex-shrink-0"
-                            >
-                              <PerformanceCard
-                                performance={performance}
-                                onClick={handlePerformancePress}
-                              />
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    )}
-                  </div>
-                )}
-
-                {/* 집중력이 짧아요 */}
-                {childTraits.traits.includes("SHORT_ATTENTION") && (
-                  <div className="flex flex-col gap-4">
-                    <h2 className="py-2 text-black title-inter-b">
-                      {selectedChild?.name}에게 딱 맞는 짧은 공연 추천
-                    </h2>
-                    {shortAttentionQuery.isLoading ? (
-                      <div className="flex gap-4">
-                        {Array.from({ length: 3 }).map((_, index) => (
-                          <div
-                            key={index}
-                            className="w-48 h-32 bg-gray-200 rounded-lg animate-pulse"
-                          />
-                        ))}
-                      </div>
-                    ) : shortAttentionQuery.error ? (
-                      <div className="text-gray-500">
-                        짧은 공연을 불러올 수 없습니다.
-                      </div>
-                    ) : (
-                      <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
-                        {(shortAttentionQuery.data?.contents || []).map(
-                          (performance) => (
-                            <li
-                              key={performance.performanceId}
-                              className="flex-shrink-0"
-                            >
-                              <PerformanceCard
-                                performance={performance}
-                                onClick={handlePerformancePress}
-                              />
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    )}
-                  </div>
-                )}
-              </section>
-            )}
-
             {/*  지역별 공연 섹션 */}
             <section className="flex flex-col gap-2">
               <h2 className="py-2 text-black title-inter-b">

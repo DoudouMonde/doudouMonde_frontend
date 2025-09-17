@@ -8,5 +8,5 @@ export type ChildItem = {
   profile: Profile;
   sido: Sido;
   genre: Genre;
-  trait: Trait;
+  trait?: Trait;
 };
