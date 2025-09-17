@@ -68,7 +68,7 @@ export const PerformanceOverview = () => {
             className="object-cover w-full h-full rounded-lg shadow-lg"
           />
         </div>
-        <div className="flex justify-center">
+        <div className="flex justify-center px-6">
           <section className="flex flex-col gap-4 justify-center items-center px-6">
             {/* 태그 */}
             <div className="flex flex-col gap-2 items-center">
