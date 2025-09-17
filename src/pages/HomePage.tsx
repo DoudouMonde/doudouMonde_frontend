@@ -16,7 +16,7 @@ import { AutoCarousel } from "@/shared/components/AutoCarousel";
 import { PATH } from "@/shared/constants/paths";
 import { getGenreLabel, getSidoLabel } from "@/shared/services";
 import { Gender, Genre, Profile, Sido, Trait } from "@/shared/types";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const HomePage = () => {
@@ -62,15 +62,19 @@ export const HomePage = () => {
     return traitLabels[trait] || trait;
   };
 
-  // 사용 가능한 성향들 (하드코딩된 예시)
-  const availableTraits = [Trait.SHORT_ATTENTION, Trait.DANCE_LOVER];
+  // 사용 가능한 성향들 (하드코딩된 예시) - 안정화
+  const availableTraits = useMemo(
+    () => [Trait.SHORT_ATTENTION, Trait.DANCE_LOVER],
+    []
+  );
 
-  // 아이가 선택되면 첫 번째 성향을 자동으로 선택
+  // 아이가 변경될 때마다 기본 성향을 첫 번째로 리셋하여 목록을 바로 갱신
   useEffect(() => {
-    if (selectedChild && availableTraits.length > 0 && !selectedTrait) {
+    if (!selectedChild) return;
+    if (availableTraits.length > 0) {
       setSelectedTrait(availableTraits[0]);
     }
-  }, [selectedChild, selectedTrait]);
+  }, [selectedChild, availableTraits]);
 
   const { data: { contents: genrePerformanceList } = { contents: [] } } =
     useGenrePerformanceListQuery(selectedChild?.genre ?? Genre.PLAY, {
