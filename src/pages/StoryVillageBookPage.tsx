@@ -5,12 +5,12 @@ import { StorytownBookCoverEx } from "@/assets/icons/playroom/storytown_book";
 import { StorytownBookInsideEx } from "@/assets/icons/playroom/storytown_book";
 import { StorytownBookLogo } from "@/assets/icons/playroom/storytown_book";
 import { reviewApi } from "@/domains/review/apis/reviewApi";
-import { ButtonChip, SwitchCase } from "@/shared/components";
+// import { ButtonChip, SwitchCase } from "@/shared/components";
 
 export const StoryVillageBookPage = () => {
   const navigate = useNavigate();
   const [reviewCount, setReviewCount] = useState(0);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
   // 리뷰 개수 가져오기
   useEffect(() => {
@@ -22,7 +22,7 @@ export const StoryVillageBookPage = () => {
         console.error("리뷰 개수 조회 실패:", error);
         setReviewCount(0);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
 
@@ -152,9 +152,15 @@ export const StoryVillageBookPage = () => {
       {/* 하단 네비게이션 바 */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 w-full h-[80px] bg-gray-200 rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.15)]">
         <div className="flex justify-center items-center px-6 h-full">
-          <div className="flex justify-center items-center w-full h-12 text-gray-200 bg-green-100 body-inter-b rounded-[20px]">
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSdsxlIhGRef-cOCsasslEN2MMDpOxjmUrJW-QBIST09hFDIdg/viewform"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex justify-center items-center w-full h-12 text-gray-200 bg-green-100 body-inter-b rounded-[20px] hover:bg-green-200 transition-colors"
+            aria-label="이야기마을북 주문하기 폼 열기"
+          >
             주문하기
-          </div>
+          </a>
         </div>
       </nav>
     </div>
