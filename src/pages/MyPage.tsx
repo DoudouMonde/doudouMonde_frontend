@@ -94,7 +94,7 @@ export const MyPage = () => {
               className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
               onClick={handleStoryVillageBookClick}
             >
-              <p className="body-inter-r">이야기 마을 북</p>
+              <p className="body-inter-r">이야기마을북</p>
               <Arrow className="w-4 h-4" />
             </div>
           </div>
