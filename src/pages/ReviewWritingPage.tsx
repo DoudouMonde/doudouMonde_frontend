@@ -167,11 +167,11 @@ export const ReviewWritingPage = () => {
               onChange={handleTextChange}
               placeholder="오랫동안 추억할 수 있게 간단한 메모를 남겨주세요."
               className="w-full text-gray-700 h-15 subtitle"
-              maxLength={500}
+              maxLength={300}
             />
             <div className="flex justify-end mt-2">
               <span className="text-sm text-black-100">
-                {reviewText.length}/500
+                {reviewText.length}/300
               </span>
             </div>
           </div>
