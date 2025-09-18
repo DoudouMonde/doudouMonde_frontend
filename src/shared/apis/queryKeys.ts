@@ -17,9 +17,10 @@ export const queryKeys = {
       ["PERFORMANCE", "TRAIT", trait, childId] as const,
     nearbyFacilities: (performanceId: number) =>
       ["PERFORMANCE", "NEARBY_FACILITIES", performanceId] as const,
-    auth: {
-      memberName: () => ["AUTH", "MEMBER_NAME"] as const,
-    },
+  },
+
+  auth: {
+    memberName: () => ["AUTH", "MEMBER_NAME"] as const,
   },
 
   favorites: {

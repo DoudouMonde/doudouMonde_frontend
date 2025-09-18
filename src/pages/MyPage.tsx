@@ -2,22 +2,22 @@ import { useNavigate } from "react-router-dom";
 import BackIcon from "@/assets/icons/Back";
 import Arrow from "@/assets/icons/Arrow";
 import { PATH } from "@/shared/constants/paths";
-import { useMemberNameQuery } from "@/domains/auth/queries/useMemberNameQuery";
+// import { useMemberNameQuery } from "@/domains/auth/queries/useMemberNameQuery";
 
 export const MyPage = () => {
   console.log("🎯 MyPage 컴포넌트가 렌더링되었습니다!");
 
   const navigate = useNavigate();
-  const { data: memberName } = useMemberNameQuery();
+  // const { data: memberName } = useMemberNameQuery();
 
   const handleBackClick = () => {
     navigate(-1);
   };
 
-  const handleMemberInfoClick = () => {
-    console.log("회원 정보 클릭:", PATH.MEMBER_INFO);
-    navigate(PATH.MEMBER_INFO);
-  };
+  // const handleMemberInfoClick = () => {
+  //   console.log("회원 정보 클릭:", PATH.MEMBER_INFO);
+  //   navigate(PATH.MEMBER_INFO);
+  // };
 
   const handleChildInfoClick = () => {
     console.log("아이 정보 클릭:", PATH.CHILD_INFO);
@@ -57,20 +57,20 @@ export const MyPage = () => {
       <div className="px-6 py-4 pt-24">
         <div className="flex flex-col gap-6 justify-center w-full">
           {/* 카카오톡 계정 연동 */}
-          <div className="flex flex-col justify-center gap-2 bg-gray-200/70 rounded-[20px] p-7 w-full h-[120px]">
-            <p className="title-hak">{memberName ?? ""}</p>
-            <p className="subtitle">카카오톡 계정 연동 중</p>
-          </div>
+          {/* <div className="flex flex-col justify-center gap-2 bg-gray-200/70 rounded-[20px] p-7 w-full h-[120px]"> */}
+          {/* <p className="title-hak">{memberName ?? ""}</p> */}
+          {/* <p className="subtitle">카카오톡 계정 연동 중</p> */}
+          {/* </div> */}
           {/* 계정정보 */}
           <p className="pl-2 text-black body-hak-b">계정</p>
           <div className="flex flex-col justify-center gap-6 bg-gray-200/70 rounded-[20px] p-5 w-full h-auto">
-            <div
+            {/* <div
               className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
               onClick={handleMemberInfoClick}
             >
               <p className="body-inter-r">회원 정보</p>
               <Arrow className="w-4 h-4" />
-            </div>
+            </div> */}
             <div
               className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
               onClick={handleChildInfoClick}
