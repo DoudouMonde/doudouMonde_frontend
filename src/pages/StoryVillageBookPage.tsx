@@ -143,8 +143,8 @@ export const StoryVillageBookPage = () => {
 
             <p className="text-sm text-center text-gray-600">
               {remainingCount > 0
-                ? `${remainingCount}개 더 작성하면 이야기 마을 북을 받을 수 있어요!`
-                : "축하해요! 이야기 마을북을 받을 수 있어요! 🎉"}
+                ? `${remainingCount}개 더 작성하면 이야기마을북을 받을 수 있어요!`
+                : "축하해요! 이야기마을북을 받을 수 있어요! 🎉"}
             </p>
           </div>
         </div>
