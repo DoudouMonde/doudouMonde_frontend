@@ -102,7 +102,7 @@ export const PerformanceDetailPage = () => {
                 content: (
                   <ContentSection performanceId={Number(performanceId)} />
                 ),
-                nearby: <NearbySection />,
+                nearby: <NearbySection performanceId={Number(performanceId)} />,
               }}
             />
           </div>

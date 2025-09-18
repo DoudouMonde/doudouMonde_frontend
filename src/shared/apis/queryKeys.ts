@@ -15,13 +15,14 @@ export const queryKeys = {
     detail: (id: number) => ["PERFORMANCE", "DETAIL", id] as const,
     trait: (trait: string | null, childId: number | null) =>
       ["PERFORMANCE", "TRAIT", trait, childId] as const,
+    nearbyFacilities: (performanceId: number) =>
+      ["PERFORMANCE", "NEARBY_FACILITIES", performanceId] as const,
+    auth: {
+      memberName: () => ["AUTH", "MEMBER_NAME"] as const,
+    },
   },
 
   favorites: {
     wishlist: () => ["FAVORITES", "WISHLIST"] as const,
-  },
-
-  auth: {
-    memberName: () => ["AUTH", "MEMBER_NAME"] as const,
   },
 } as const;

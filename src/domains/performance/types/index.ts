@@ -77,3 +77,20 @@ export type EnglishContent = {
 export type EnglishContentListResponse = {
   contents: EnglishContent[];
 };
+
+// 인근시설 타입
+export type NearbyFacility = {
+  id: number;
+  name: string;
+  addressBase: string;
+  addressDetail: string;
+  latitude: number;
+  longitude: number;
+  type: string;
+};
+
+// 인근시설 응답 타입
+export type NearbyFacilityResponse = {
+  restaurants: NearbyFacility[];
+  kidsCafes: NearbyFacility[];
+};
