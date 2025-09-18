@@ -457,7 +457,7 @@ export const ReviewListPage = () => {
           <div className="flex justify-center">
             <button
               onClick={handleNext}
-              className="flex items-center justify-center gap-2 w-full h-[300px] rounded-[20px] transition-all duration-200 active:scale-95 text-gray-200 bg-green-100 shadow-lg hover:scale-105 body-inter-r"
+              className="flex items-center justify-center gap-2 w-full h-[34px] rounded-[20px] transition-all duration-200 active:scale-95 text-gray-200 bg-green-100 shadow-lg hover:scale-105 body-inter-r"
             >
               <span className="text-base font-medium body-inter-r">홈으로</span>
             </button>
