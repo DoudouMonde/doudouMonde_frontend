@@ -21,6 +21,8 @@ import {
 } from "@/domains/auth/types/signup";
 import { CustomButton } from "@/shared/components/CustomButton";
 
+import { ChildInforRegistCard } from "@/shared/components/Child/ChildInforRegistCard";
+
 // 개별 성향 목록 (공유 컴포넌트 참조)
 import { ChildTraitOptions } from "@/domains/child/components/TraitSelector";
 
@@ -61,7 +63,7 @@ function GenreSelector() {
     </div>
   );
 }
-
+type Birth = { year: string; month: string; day: string };
 export const ChildRegistrationPage = () => {
   const navigate = useNavigate();
 
@@ -188,6 +190,14 @@ export const ChildRegistrationPage = () => {
     );
   };
 
+  // BirthdateSelect가 요구하는 형태로 래핑
+  const birth: Birth = { year: birthYear, month: birthMonth, day: birthDay };
+  const setBirth = (v: Birth) => {
+    setBirthYear(v.year);
+    setBirthMonth(v.month);
+    setBirthDay(v.day);
+  };
+
   return (
     <div className="flex relative flex-col items-center w-full min-h-screen">
       {/* 배경 이미지 */}
@@ -203,140 +213,14 @@ export const ChildRegistrationPage = () => {
           <div className="px-6 py-4 pt-24">
             <div className="flex flex-col gap-6 justify-center">
               {/* 아이 정보 카드 */}
-              <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-7 w-full h-auto">
-                <div className="flex flex-col gap-2">
-                  <p className="title-hak">아이 정보</p>
-                  <p className="subtitle-b text-secondary-100">
-                    아이의 기본 정보를 입력해주세요.
-                  </p>
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <p className="body-inter-b">이름</p>
-                  <input
-                    ref={nameInputRef}
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="예: 정불명"
-                    className="p-4  w-full h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
-                  />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <p className="body-inter-b">생년월일</p>
-                  <div className="flex gap-2">
-                    {/* 년도 */}
-                    <select
-                      value={birthYear}
-                      onChange={(e) => {
-                        setBirthYear(e.target.value);
-                        if (birthDay) {
-                          const newDayOptions = getDayOptions(
-                            e.target.value,
-                            birthMonth
-                          );
-                          if (parseInt(birthDay) > newDayOptions.length) {
-                            setBirthDay("");
-                          }
-                        }
-                      }}
-                      className="flex-1 p-2  h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
-                      style={{
-                        appearance: "none",
-                        backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
-                        backgroundPosition: "right 8px center",
-                        backgroundRepeat: "no-repeat",
-                        backgroundSize: "16px",
-                        paddingRight: "32px",
-                      }}
-                    >
-                      <option value="">년도</option>
-                      {yearOptions.map((year) => (
-                        <option key={year} value={year.toString()}>
-                          {year}년
-                        </option>
-                      ))}
-                    </select>
-
-                    {/* 월 */}
-                    <select
-                      value={birthMonth}
-                      onChange={(e) => {
-                        setBirthMonth(e.target.value);
-                        if (birthDay) {
-                          const newDayOptions = getDayOptions(
-                            birthYear,
-                            e.target.value
-                          );
-                          if (parseInt(birthDay) > newDayOptions.length) {
-                            setBirthDay("");
-                          }
-                        }
-                      }}
-                      className="flex-1 p-3 h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
-                      style={{
-                        appearance: "none",
-                        backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
-                        backgroundPosition: "right 8px center",
-                        backgroundRepeat: "no-repeat",
-                        backgroundSize: "16px",
-                        paddingRight: "32px",
-                      }}
-                    >
-                      <option value="">월</option>
-                      {monthOptions.map((month) => (
-                        <option key={month} value={month.toString()}>
-                          {month}월
-                        </option>
-                      ))}
-                    </select>
-
-                    {/* 일 */}
-                    <select
-                      value={birthDay}
-                      onChange={(e) => setBirthDay(e.target.value)}
-                      className="flex-1 p-3 h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
-                      style={{
-                        appearance: "none",
-                        backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
-                        backgroundPosition: "right 8px center",
-                        backgroundRepeat: "no-repeat",
-                        backgroundSize: "16px",
-                        paddingRight: "32px",
-                      }}
-                    >
-                      <option value="">일</option>
-                      {dayOptions.map((day) => (
-                        <option key={day} value={day.toString()}>
-                          {day}일
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <p className="body-inter-b">성별</p>
-                  <select
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value)}
-                    className="px-3 py-3 w-full h-10 subtitle text-secondary-100 bg-transparent border border-secondary-100/30 outline-none rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
-                    style={{
-                      appearance: "none",
-                      backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
-                      backgroundPosition: "right 8px center",
-                      backgroundRepeat: "no-repeat",
-                      backgroundSize: "16px",
-                      paddingRight: "32px",
-                    }}
-                  >
-                    <option value="">성별을 선택해주세요</option>
-                    <option value="MALE">남자</option>
-                    <option value="FEMALE">여자</option>
-                  </select>
-                </div>
-              </div>
+              <ChildInforRegistCard
+                name={name}
+                setName={setName}
+                birth={birth}
+                setBirth={setBirth}
+                gender={gender}
+                setGender={setGender}
+              />
 
               {/* 아이 성향 선택 카드 */}
               <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] py-6 px-5 pb-8 w-full h-auto">
