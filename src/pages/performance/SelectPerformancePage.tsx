@@ -6,7 +6,7 @@ import { useWishlistQuery } from "@/domains/favorites/queries/useWishlistQuery";
 import { getSidoLabel } from "@/shared/services";
 import { Sido } from "@/shared/types";
 import { Back, Arrow } from "@/assets/icons";
-import { SearchPerformanceForSelection } from "./SelectPerformancePage/SearchPerformanceForSelection";
+import { SearchPerformanceForSelection } from "../SelectPerformancePage/SearchPerformanceForSelection";
 
 export const SelectPerformancePage = () => {
   const navigate = useNavigate();
