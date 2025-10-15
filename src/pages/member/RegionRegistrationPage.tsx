@@ -5,7 +5,8 @@ import { signupApi } from "@/domains/auth/apis/signupApi";
 import { SignupRequest, ChildRequest } from "@/domains/auth/types/signup";
 import BackIcon from "@/assets/icons/Back";
 import { AddressSearchInput } from "@/shared/components";
-
+import { Background } from "@/shared/components/Background";
+import { LocationConsentModal } from "@/shared/components/Modal/LocationConsentModal";
 type Coords = { latitude: number | null; longitude: number | null };
 
 export function RegionRegistrationPage() {
@@ -137,9 +138,6 @@ export function RegionRegistrationPage() {
       }
 
       const childData: ChildRequest = JSON.parse(savedChildData);
-      console.log("📋 저장된 아이 정보:", childData);
-      console.log("🎯 아이 성향들:", childData.traits);
-      console.log("🎭 아이 장르들:", childData.genres);
 
       // 실제 위치 정보 사용 (없으면 기본값)
       const longitude = coords.longitude || 127.0276; // 서울 강남 기본값
@@ -164,84 +162,12 @@ export function RegionRegistrationPage() {
         children: [childData],
       };
 
-      console.log("🚀 백엔드로 전송할 데이터:", signupData);
-      console.log("🌐 API 엔드포인트: POST /auth/signup");
-      console.log("📊 상세 요청 데이터 분석:");
-      console.log("  - longitude:", signupData.longitude);
-      console.log("  - latitude:", signupData.latitude);
-      console.log("  - address:", signupData.address);
-      console.log("  - sido:", signupData.sido);
-      console.log("  - children 개수:", signupData.children.length);
-      console.log("  - 첫 번째 아이 정보:", signupData.children[0]);
-      if (signupData.children[0]) {
-        console.log("    - name:", signupData.children[0].name);
-        console.log("    - birthday:", signupData.children[0].birthday);
-        console.log("    - gender:", signupData.children[0].gender);
-        console.log("    - profile:", signupData.children[0].profile);
-        console.log("    - traits:", signupData.children[0].traits);
-        console.log("    - genres:", signupData.children[0].genres);
-      }
-
       const response = await signupApi.signup(signupData);
-      console.log("✅ 회원가입 성공:", response);
 
       // 성공 시 localStorage 정리 및 홈 페이지로 이동
       localStorage.removeItem("childData");
       navigate(PATH.HOME);
     } catch (error) {
-      console.error("❌ 회원가입 실패:", error);
-      console.error("🔍 에러 상세 정보:");
-      console.error("  - 에러 타입:", typeof error);
-      console.error("  - 에러 메시지:", error.message);
-      console.error("  - 에러 코드:", error.code);
-
-      if (error.response) {
-        console.error("  - 응답 상태:", error.response.status);
-        console.error("  - 응답 상태 텍스트:", error.response.statusText);
-        console.error("  - 응답 데이터:", error.response.data);
-        console.error("  - 응답 헤더:", error.response.headers);
-
-        // 백엔드에서 보낸 에러 메시지가 있는지 확인
-        if (error.response.data && typeof error.response.data === "object") {
-          console.error(
-            "  - 백엔드 에러 메시지:",
-            error.response.data.message ||
-              error.response.data.error ||
-              "메시지 없음"
-          );
-          console.error("  - 백엔드 에러 상세:", error.response.data);
-        }
-      }
-
-      if (error.request) {
-        console.error("  - 요청 정보:", error.request);
-        console.error("  - 요청 URL:", error.request.url);
-        console.error("  - 요청 메서드:", error.request.method);
-      }
-
-      console.error("  - 요청 설정:", error.config);
-      console.error("  - 요청 URL (config):", error.config?.url);
-      console.error("  - 요청 baseURL:", error.config?.baseURL);
-      console.error("  - 요청 메서드 (config):", error.config?.method);
-      console.error("  - 요청 헤더:", error.config?.headers);
-
-      // 네트워크 에러인지 확인
-      if (
-        error.code === "NETWORK_ERROR" ||
-        error.message.includes("Network Error")
-      ) {
-        console.error("🌐 네트워크 에러: 서버에 연결할 수 없습니다.");
-        console.error("🔧 확인사항:");
-        console.error("  - 백엔드 서버가 실행 중인지 확인");
-        console.error("  - CORS 설정 확인");
-        console.error("  - API 엔드포인트 URL 확인");
-      }
-
-      // 타임아웃 에러인지 확인
-      if (error.code === "ECONNABORTED" || error.message.includes("timeout")) {
-        console.error("⏰ 타임아웃 에러: 요청 시간이 초과되었습니다.");
-      }
-
       alert("회원가입에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setIsSubmitting(false);
@@ -250,73 +176,17 @@ export function RegionRegistrationPage() {
 
   return (
     <div className="flex relative flex-col w-full min-h-screen">
-      {/* 배경 이미지 */}
-      <div
-        className="absolute inset-0 w-full h-full -z-10"
-        style={{
-          backgroundImage:
-            "url('/assets/images/background/background_afternoon.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundAttachment: "fixed",
-          opacity: 0.7,
-        }}
-      />
+      <Background />
       {/* Location Consent Modal */}
       {showLocationModal && (
-        <div className="flex fixed inset-0 z-50 justify-center items-center bg-black bg-opacity-50">
-          <div className="p-6 mx-4 w-full max-w-sm bg-gray-200 rounded-2xl shadow-xl">
-            <div className="mb-6 text-center">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-              <div>
-                <h2 className="mb-2 text-xl font-bold text-gray-900">
-                  자동 위치 등록
-                </h2>
-                <p className="text-sm text-secondary-100">
-                  현재 위치를 기반으로 인기 공연과 <br /> 공연장까지의 소요시간
-                  정보를 제공해드려요.
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <button
-                onClick={handleLocationConsent}
-                disabled={isLocating || isLoadingAddress}
-                className={`w-full py-2 rounded-xl font-semibold text-gray-200 transition-colors ${
-                  isLocating || isLoadingAddress
-                    ? "bg-gray-400"
-                    : "bg-green-200 hover:bg-green-600"
-                }`}
-              >
-                {isLocating
-                  ? "현재 위치 확인 중…"
-                  : isLoadingAddress
-                  ? "주소 불러오는 중…"
-                  : "위치 정보 동의"}
-              </button>
-
-              <button
-                onClick={handleManualInput}
-                className="py-2 w-full font-semibold bg-gray-100 rounded-xl transition-colors text-secondary-100 hover:bg-gray-200"
-              >
-                직접 입력하기
-              </button>
-            </div>
-          </div>
-        </div>
+        <LocationConsentModal
+          open={showLocationModal}
+          onClose={() => setShowLocationModal(false)}
+          onConsent={handleLocationConsent}
+          onManual={handleManualInput}
+          isLocating={isLocating}
+          isLoadingAddress={isLoadingAddress}
+        />
       )}
 
       {/* Header */}
