@@ -14,7 +14,7 @@ export const SaveButton: React.FC<SaveButtonProps> = ({
   className,
 }) => {
   return (
-    <div className={["flex justify-center mt-6", className ?? ""].join(" ")}>
+    <div className={["flex justify-center ", className ?? ""].join(" ")}>
       <button
         type="button"
         onClick={onClick}

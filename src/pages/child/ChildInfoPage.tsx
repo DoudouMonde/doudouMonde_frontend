@@ -16,6 +16,12 @@ import { ChildTraitOptions } from "@/domains/child/components/TraitSelector";
 import { SaveButton } from "@/shared/components/Button/SaveButton";
 import { ChildProfileList } from "@/domains/child/components/ChildProfileList";
 
+import {
+  MainContainer,
+  PageContainer,
+  ContentSection,
+} from "@/shared/components/Layout";
+
 import Pen from "@/assets/icons/Pen";
 import {
   CatIcon,
@@ -245,15 +251,16 @@ export const ChildInfoPage = () => {
   }
 
   return (
-    <div className="w-[375px] h-full mx-auto overflow-y-auto px-6 py-4">
+    <PageContainer>
       {/* 상단 바 */}
-      <TopBar title="아이 정보" />
+      <Background />
 
       {/* 메인 컨텐츠 */}
-      <div className="py-4 pt-24">
-        <div className="flex flex-col gap-6">
-          {/* 아이 프로필 */}
-          {/* 아이 프로필 */}
+      <MainContainer>
+        <TopBar title="아이 정보" />
+        {/* 아이 프로필 */}
+        {/* 아이 프로필 */}
+        <ContentSection>
           <ChildProfileList
             childrenData={children}
             editingChildId={editingChildId}
@@ -283,9 +290,8 @@ export const ChildInfoPage = () => {
           /> */}
 
           <SaveButton onClick={handleSaveTraits} text="저장" />
-        </div>
-      </div>
-
+        </ContentSection>
+      </MainContainer>
       {/* 프로필 선택 모달 */}
       <ProfileSelectModal
         isOpen={isProfileModalOpen}
@@ -315,6 +321,6 @@ export const ChildInfoPage = () => {
         confirmText="확인"
         cancelText=""
       />
-    </div>
+    </PageContainer>
   );
 };

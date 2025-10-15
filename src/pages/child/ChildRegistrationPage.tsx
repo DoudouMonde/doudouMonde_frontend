@@ -5,6 +5,7 @@ import { MultiRadio } from "@/shared/components/Radio";
 import { MultiSelectCard } from "@/shared/components/MultiSelect/MultiSelectCard";
 import { GridOption } from "@/shared/components/GridSelectCard";
 import { GridSelectCard } from "@/shared/components/GridSelectCard";
+
 import {
   ChildRequest,
   GENDER_MAPPING,
@@ -18,11 +19,18 @@ import { BottomSheet } from "@/shared/components/BottomSheet";
 import { ChildTraitOptions } from "@/domains/child/components/TraitSelector";
 import { Background } from "@/shared/components/Background";
 import { TopBar } from "@/shared/components/TopBar";
-import { CatIcon } from "@/assets/icons/profile";
-import { ChickIcon } from "@/assets/icons/profile";
-import { DinosaurIcon } from "@/assets/icons/profile";
-import { DogIcon } from "@/assets/icons/profile";
-import { RabbitIcon } from "@/assets/icons/profile";
+import {
+  CatIcon,
+  ChickIcon,
+  DinosaurIcon,
+  DogIcon,
+  RabbitIcon,
+} from "@/assets/icons/profile";
+import {
+  MainContainer,
+  PageContainer,
+  ContentSection,
+} from "@/shared/components/Layout";
 // 장르 목록
 const GENRES = [
   { value: "COMPOSITE", label: "복합" },
@@ -192,60 +200,56 @@ export const ChildRegistrationPage = () => {
   };
 
   return (
-    <div className="flex relative flex-col items-center w-full min-h-screen">
+    <PageContainer>
       {/* 배경 이미지 */}
       <Background />
       {/* 컨텐츠 */}
-      <main className="flex relative z-10 flex-col items-center mb-20 w-full">
-        <div className="overflow-y-auto w-full h-full">
-          {/* 상단 바 */}
-          <TopBar title="아이 등록" />
+      <MainContainer>
+        {/* 상단 바 */}
+        <TopBar title="아이 등록" />
 
-          {/* 메인 컨텐츠 */}
-          <div className="px-6 py-4 pt-24">
-            <div className="flex flex-col gap-6 justify-center">
-              {/* 아이 정보 카드 */}
-              <ChildInforRegistCard
-                name={name}
-                setName={setName}
-                birth={birth}
-                setBirth={setBirth}
-                gender={gender}
-                setGender={setGender}
-              />
+        {/* 메인 컨텐츠 */}
+        <ContentSection>
+          {/* 아이 정보 카드 */}
+          <ChildInforRegistCard
+            name={name}
+            setName={setName}
+            birth={birth}
+            setBirth={setBirth}
+            gender={gender}
+            setGender={setGender}
+          />
 
-              {/* 아이 성향 선택 카드 */}
-              <MultiSelectCard
-                title="아이 성향"
-                subtitle="아이의 해당되는 특성을 선택해주세요."
-                selectedValues={selectedTraits}
-                onChange={(values) => setSelectedTraits(values)}
-              >
-                <TraitSelector />
-              </MultiSelectCard>
+          {/* 아이 성향 선택 카드 */}
+          <MultiSelectCard
+            title="아이 성향"
+            subtitle="아이의 해당되는 특성을 선택해주세요."
+            selectedValues={selectedTraits}
+            onChange={(values) => setSelectedTraits(values)}
+          >
+            <TraitSelector />
+          </MultiSelectCard>
 
-              {/* 장르 선택 카드 */}
-              <MultiSelectCard
-                title="좋아하는 장르"
-                subtitle="좋아하는 장르를 선택해주세요."
-                selectedValues={selectedGenres}
-                onChange={(values) => setSelectedGenres(values)}
-              >
-                <GenreSelector />
-              </MultiSelectCard>
+          {/* 장르 선택 카드 */}
+          <MultiSelectCard
+            title="좋아하는 장르"
+            subtitle="좋아하는 장르를 선택해주세요."
+            selectedValues={selectedGenres}
+            onChange={(values) => setSelectedGenres(values)}
+          >
+            <GenreSelector />
+          </MultiSelectCard>
 
-              {/* 프로필 사진 선택*/}
-              <GridSelectCard<ProfileValue>
-                title="프로필 사진 선택"
-                subtitle="아이의 프로필로 사용할 귀여운 캐릭터를 골라주세요."
-                options={PROFILE_OPTIONS}
-                selected={selectedProfile}
-                onChange={setSelectedProfile}
-              />
-            </div>
-          </div>
-        </div>
-      </main>
+          {/* 프로필 사진 선택*/}
+          <GridSelectCard<ProfileValue>
+            title="프로필 사진 선택"
+            subtitle="아이의 프로필로 사용할 귀여운 캐릭터를 골라주세요."
+            options={PROFILE_OPTIONS}
+            selected={selectedProfile}
+            onChange={setSelectedProfile}
+          />
+        </ContentSection>
+      </MainContainer>
 
       {/* 하단 고정 저장 버튼 */}
       <div className="fixed right-0 bottom-0 left-0 z-30 p-6">
@@ -273,6 +277,6 @@ export const ChildRegistrationPage = () => {
           field2="완료"
         />
       )}
-    </div>
+    </PageContainer>
   );
 };

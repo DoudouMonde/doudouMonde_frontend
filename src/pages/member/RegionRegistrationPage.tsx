@@ -3,10 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { PATH } from "@/shared/constants";
 import { signupApi } from "@/domains/auth/apis/signupApi";
 import { SignupRequest, ChildRequest } from "@/domains/auth/types/signup";
-import BackIcon from "@/assets/icons/Back";
 import { AddressSearchInput } from "@/shared/components";
 import { Background } from "@/shared/components/Background";
 import { LocationConsentModal } from "@/shared/components/Modal/LocationConsentModal";
+import { TopBar } from "@/shared/components/TopBar";
+import { SaveButton } from "@/shared/components/Button/SaveButton";
+import {
+  MainContainer,
+  PageContainer,
+  ContentSection,
+} from "@/shared/components/Layout";
+
 type Coords = { latitude: number | null; longitude: number | null };
 
 export function RegionRegistrationPage() {
@@ -175,7 +182,7 @@ export function RegionRegistrationPage() {
   }
 
   return (
-    <div className="flex relative flex-col w-full min-h-screen">
+    <PageContainer>
       <Background />
       {/* Location Consent Modal */}
       {showLocationModal && (
@@ -188,49 +195,31 @@ export function RegionRegistrationPage() {
           isLoadingAddress={isLoadingAddress}
         />
       )}
+      <MainContainer>
+        {/* Header */}
+        <TopBar title="지역 등록" />
+        {/* 메인 컨텐츠 */}
+        <ContentSection>
+          <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-6 pb-8 w-full h-auto">
+            <div className="flex flex-col gap-2">
+              <p className="title-hak">지역 선택</p>
+              <p className="subtitle-b text-secondary-100">
+                우리 지역의 인기공연을 추천받을 수 있어요
+              </p>
 
-      {/* Header */}
-      <div
-        className="fixed top-0 right-0 left-0 z-20 px-6 pb-2 h-[60px] bg-gray-200/70 shadow-sm"
-        style={{ paddingTop: `max(1rem, env(safe-area-inset-top))` }}
-      >
-        <div className="flex justify-between items-center">
-          <button
-            onClick={handleBackClick}
-            className="flex items-center w-10 h-10"
-            aria-label="이전으로 이동"
-          >
-            <BackIcon className="w-5 h-5 text-gray-700" />
-          </button>
-          <div className="flex flex-1 justify-center">
-            <div className="text-black title-hak">지역 등록</div>
-          </div>
-          <div className="w-10" />
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="px-8 pt-24">
-        <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-6 pb-8 w-full h-auto">
-          <div className="flex flex-col gap-2">
-            <p className="title-hak">지역 선택</p>
-            <p className="subtitle-b text-secondary-100">
-              우리 지역의 인기공연을 추천받을 수 있어요
-            </p>
-
-            <div className="mb-6">
-              <label className="block mb-2 font-medium text-gray-700 body-inter-r">
-                {isLoadingAddress && (
-                  <span className="ml-2 text-xs text-green-600">
-                    자동으로 불러오는 중…
-                  </span>
-                )}
-              </label>
-              <div className="relative">
-                <select
-                  value={selectedRegion}
-                  onChange={(e) => handleRegionSelect(e.target.value)}
-                  className="   w-full
+              <div className="mb-6">
+                <label className="block mb-2 font-medium text-gray-700 body-inter-r">
+                  {isLoadingAddress && (
+                    <span className="ml-2 text-xs text-green-600">
+                      자동으로 불러오는 중…
+                    </span>
+                  )}
+                </label>
+                <div className="relative">
+                  <select
+                    value={selectedRegion}
+                    onChange={(e) => handleRegionSelect(e.target.value)}
+                    className="   w-full
                   h-[35px]
                   bg-white/50
                   border-[0.3px]
@@ -253,60 +242,51 @@ export function RegionRegistrationPage() {
                   min-w-0
                   appearance-none
                   "
-                  // className="p-4 pr-10 w-full bg-gray-200 rounded-lg border appearance-none border-secondary-100/30 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
-                >
-                  <option value="" disabled>
-                    지역을 선택해주세요
-                  </option>
-                  {regions.map((region) => (
-                    <option key={region.value} value={region.value}>
-                      {region.label}
-                    </option>
-                  ))}
-                </select>
-                <div className="flex absolute inset-y-0 right-0 items-center pr-4 pointer-events-none">
-                  <svg
-                    className="w-5 h-5 text-secondary-100"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    // className="p-4 pr-10 w-full bg-gray-200 rounded-lg border appearance-none border-secondary-100/30 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
+                    <option value="" disabled>
+                      지역을 선택해주세요
+                    </option>
+                    {regions.map((region) => (
+                      <option key={region.value} value={region.value}>
+                        {region.label}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="flex absolute inset-y-0 right-0 items-center pr-4 pointer-events-none">
+                    <svg
+                      className="w-5 h-5 text-secondary-100"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
                 </div>
               </div>
+
+              <p className="title-hak">상세 주소</p>
+              <p className="subtitle-b text-secondary-100">
+                공연장까지의 경로 정보를 받을 수 있어요{" "}
+              </p>
+              <AddressSearchInput />
             </div>
-
-            <p className="title-hak">상세 주소</p>
-            <p className="subtitle-b text-secondary-100">
-              공연장까지의 경로 정보를 받을 수 있어요{" "}
-            </p>
-            <AddressSearchInput />
           </div>
-          <div className="flex flex-col gap-2 w-full"></div>
+        </ContentSection>
+      </MainContainer>
 
-          {/* Next */}
-          <button
-            onClick={handleNext}
-            disabled={!selectedRegion || isSubmitting}
-            className={`w-full rounded-[20px] font-semibold transition-colors h-10
-              ${
-                selectedRegion && !isSubmitting
-                  ? "bg-green-200 hover:bg-green-600 text-gray-200"
-                  : "bg-secondary-100 text-gray-200 cursor-not-allowed"
-              }`}
-          >
-            {isSubmitting ? "처리 중..." : "확인"}
-          </button>
-        </div>
-
-        <></>
-      </div>
-    </div>
+      {/* Next */}
+      <SaveButton
+        onClick={handleNext}
+        disabled={!selectedRegion || isSubmitting}
+        text={"확인"}
+      />
+    </PageContainer>
   );
 }
