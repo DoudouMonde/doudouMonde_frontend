@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import BackIcon from "@/assets/icons/Back";
 import Arrow from "@/assets/icons/Arrow";
 // import { useMemberNameQuery } from "@/domains/auth/queries/useMemberNameQuery";
 import { useState } from "react";
 // import { useUpdateMemberAddressMutation } from "@/domains/auth/queries/useUpdateMemberAddressMutation";
-import { AddressSearchInput } from "@/shared/components";
+import { AddressModal } from "@/shared/components/Modal/AddressModal";
+import { ActionListSection } from "@/shared/components/Section/ActionListSection";
 
 import {
   PageContainer,
@@ -58,143 +58,53 @@ export const MemberInfoPage = () => {
       <MainContainer>
         <TopBar title="회원 정보" />
         <ContentSection>
-          ={/* 카카오톡 계정 연동 */}
+          {/* 카카오톡 계정 연동 */}
           <div className="flex flex-col justify-center gap-2 bg-gray-200/70 rounded-[20px] p-7 w-full h-[120px]">
             <p className="title-hak">김출신</p>
             <p className="subtitle">카카오톡 계정 연동 중</p>
           </div>
           {/* 계정정보 */}
-          <section>
-            <p className="py-4 pl-2 text-black body-hak-b">이야기마을북</p>
-            <div className="flex flex-col justify-center">
-              <div className="flex flex-col justify-center gap-6 bg-gray-200/70 rounded-[20px] p-5 w-full">
-                <button
-                  type="button"
-                  className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
-                  onClick={handleOpenAddressModal}
-                >
-                  <p className="body-inter-r">주문하기</p>
-                  <Arrow className="w-4 h-4" />
-                </button>
-                <button
-                  type="button"
-                  className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
-                  onClick={handleOpenAddressModal}
-                >
-                  <p className="body-inter-r">주소 관리</p>
-                  <Arrow className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </section>
-          {/* 정보 관리 */}
-          <section>
-            <p className="py-4 pl-2 text-black body-hak-b">정보 관리</p>
-            <div className="flex flex-col justify-center">
-              <div className="flex flex-col justify-center gap-6 bg-gray-200/70 rounded-[20px] p-5 w-full">
-                <button
-                  type="button"
-                  className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
-                  onClick={handleOpenAddressModal}
-                >
-                  <p className="body-inter-r">거주지 변경</p>
-                  <Arrow className="w-4 h-4" />
-                </button>
-                <button
-                  type="button"
-                  className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
-                  onClick={handleOpenAddressModal}
-                >
-                  <p className="body-inter-r">로그아웃</p>
-                  <Arrow className="w-4 h-4" />
-                </button>
-                <button
-                  type="button"
-                  className="flex justify-between items-center p-2 rounded-lg transition-colors cursor-pointer hover:bg-gray-100/60"
-                  onClick={handleOpenAddressModal}
-                >
-                  <p className="body-inter-r">회원 탈퇴</p>
-                  <Arrow className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </section>
+
+          {/* 계정정보 섹션 */}
+          <ActionListSection
+            title="이야기마을북"
+            items={[
+              {
+                label: "주문하기",
+                onClick: handleOpenAddressModal,
+              },
+              {
+                label: "주소 관리",
+                onClick: handleOpenAddressModal,
+              },
+            ]}
+          />
+
+          {/* 정보 관리 섹션 */}
+          <ActionListSection
+            title="정보 관리"
+            items={[
+              { label: "거주지 변경", onClick: handleOpenAddressModal },
+              { label: "로그아웃", onClick: handleOpenAddressModal },
+              { label: "회원 탈퇴", onClick: handleOpenAddressModal },
+            ]}
+          />
         </ContentSection>
 
         {/* 주소 모달 */}
         {isAddressModalOpen && (
-          <div className="flex fixed inset-0 z-50 justify-center items-center bg-black/50">
-            <div className="p-6 mx-4 w-full max-w-sm bg-gray-200 rounded-2xl shadow-xl">
-              <div className="mb-4">
-                <p className="title-hak">지역/주소 설정</p>
-              </div>
-
-              <div className="mb-4">
-                <AddressSearchInput />
-              </div>
-
-              <div className="mb-4">
-                <label className="block mb-2 font-medium text-gray-700 body-inter-r">
-                  지역 선택
-                </label>
-                <select
-                  value={selectedRegion}
-                  onChange={(e) => handleRegionSelect(e.target.value)}
-                  className="p-4 w-full bg-gray-200 rounded-lg border border-secondary-100/30 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
-                >
-                  <option value="" disabled>
-                    지역을 선택해주세요
-                  </option>
-                  {regions.map((region) => (
-                    <option key={region.value} value={region.value}>
-                      {region.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="mb-6">
-                <label className="block mb-2 font-medium text-gray-700 body-inter-r">
-                  상세 주소
-                </label>
-                <input
-                  type="text"
-                  value={detailedAddress}
-                  onChange={(e) => setDetailedAddress(e.target.value)}
-                  placeholder="예: 중구 세종대로 110"
-                  className="p-4 w-full bg-gray-200 rounded-lg border border-secondary-100/30 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-200"
-                />
-              </div>
-
-              <div className="flex gap-3">
-                <button
-                  type="button"
-                  onClick={handleCloseAddressModal}
-                  className="flex-1 py-3 bg-gray-100 rounded-xl hover:bg-gray-200"
-                >
-                  취소
-                </button>
-                {/* <button
-                type="button"
-                // onClick={handleSaveAddress}
-                disabled={
-                  !selectedRegion ||
-                  !detailedAddress.trim() ||
-                  updateAddressMutation.isPending
-                }
-                className={`flex-1 py-3 rounded-xl text-gray-200 ${
-                  !selectedRegion ||
-                  !detailedAddress.trim() ||
-                  updateAddressMutation.isPending
-                    ? "bg-gray-400"
-                    : "bg-green-200 hover:bg-green-600"
-                }`}
-              >
-                {updateAddressMutation.isPending ? "저장 중..." : "저장"}
-              </button> */}
-              </div>
-            </div>
-          </div>
+          <AddressModal
+            open={isAddressModalOpen}
+            onClose={handleCloseAddressModal}
+            regions={regions}
+            selectedRegion={selectedRegion}
+            detailedAddress={detailedAddress}
+            onRegionChange={setSelectedRegion}
+            onDetailedAddressChange={setDetailedAddress}
+            // 필요시 활성화
+            // onSave={handleSaveAddress}
+            // isSaving={updateAddressMutation.isPending}
+          />
         )}
       </MainContainer>
     </PageContainer>
