@@ -1,17 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BackIcon from "@/assets/icons/Back";
 import { PATH } from "@/shared/constants/paths";
 import { MultiRadio } from "@/shared/components/Radio";
-import { MultiSelectGroup } from "@/shared/components/MultiSelect";
-import {
-  CatIcon,
-  ChickIcon,
-  DinosaurIcon,
-  DogIcon,
-  RabbitIcon,
-} from "@/assets/icons/profile";
-import { SwitchCase } from "@/shared/components";
+import { MultiSelectCard } from "@/shared/components/MultiSelect/MultiSelectCard";
+import { GridOption } from "@/shared/components/GridSelectCard";
+import { GridSelectCard } from "@/shared/components/GridSelectCard";
 import {
   ChildRequest,
   GENDER_MAPPING,
@@ -22,7 +15,7 @@ import {
 import { CustomButton } from "@/shared/components/CustomButton";
 
 import { ChildInforRegistCard } from "@/shared/components/Child/ChildInforRegistCard";
-
+import { BottomSheet } from "@/shared/components/BottomSheet";
 // 개별 성향 목록 (공유 컴포넌트 참조)
 import { ChildTraitOptions } from "@/domains/child/components/TraitSelector";
 
@@ -40,9 +33,9 @@ const GENRES = [
   { value: "CIRCUS_MAGIC", label: "서커스/마술" },
   { value: "DANCE", label: "무용(서양/한국무용)" },
 ];
-
+type ProfileValue = "CAT" | "CHICK" | "DINOSAUR" | "DOG" | "RABBIT";
 // 프로필 옵션
-const PROFILE_OPTIONS = [
+const PROFILE_OPTIONS: GridOption<ProfileValue>[] = [
   { value: "CAT", label: "고양이" },
   { value: "CHICK", label: "병아리" },
   { value: "DINOSAUR", label: "공룡" },
@@ -67,6 +60,10 @@ type Birth = { year: string; month: string; day: string };
 export const ChildRegistrationPage = () => {
   const navigate = useNavigate();
 
+  const [selectedProfile, setSelectedProfile] = useState<ProfileValue | null>(
+    null
+  );
+
   // 생년월일 상태
   const [birthYear, setBirthYear] = useState<string>("");
   const [birthMonth, setBirthMonth] = useState<string>("");
@@ -80,9 +77,6 @@ export const ChildRegistrationPage = () => {
 
   // 장르 상태
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-
-  // 프로필 상태
-  const [selectedProfile, setSelectedProfile] = useState<string>("CAT");
 
   // 바텀시트 상태
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false);
@@ -202,7 +196,6 @@ export const ChildRegistrationPage = () => {
     <div className="flex relative flex-col items-center w-full min-h-screen">
       {/* 배경 이미지 */}
       <Background />
-
       {/* 컨텐츠 */}
       <main className="flex relative z-10 flex-col items-center mb-20 w-full">
         <div className="overflow-y-auto w-full h-full">
@@ -223,81 +216,33 @@ export const ChildRegistrationPage = () => {
               />
 
               {/* 아이 성향 선택 카드 */}
-              <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] py-6 px-5 pb-8 w-full h-auto">
-                <div className="flex flex-col gap-2">
-                  <p className="title-hak">아이 성향</p>
-                  <p className="subtitle-b text-secondary-100">
-                    아이의 해당되는 특성을 선택해주세요.
-                  </p>
-                </div>
-                <div className="flex flex-col gap-2 w-full">
-                  <MultiSelectGroup
-                    selectedValues={selectedTraits}
-                    onChange={(values) => setSelectedTraits(values as string[])}
-                  >
-                    <TraitSelector />
-                  </MultiSelectGroup>
-                </div>
-              </div>
+              <MultiSelectCard
+                title="아이 성향"
+                subtitle="아이의 해당되는 특성을 선택해주세요."
+                selectedValues={selectedTraits}
+                onChange={(values) => setSelectedTraits(values)}
+              >
+                <TraitSelector />
+              </MultiSelectCard>
 
               {/* 장르 선택 카드 */}
-              <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-6 pb-8 w-full h-auto">
-                <div className="flex flex-col gap-2">
-                  <p className="title-hak">좋아하는 장르</p>
-                  <p className="subtitle-b text-secondary-100">
-                    좋아하는 장르를 선택해주세요
-                  </p>
-                </div>
-                <div className="flex flex-col gap-2 w-full">
-                  <MultiSelectGroup
-                    selectedValues={selectedGenres}
-                    onChange={(values) => setSelectedGenres(values as string[])}
-                  >
-                    <GenreSelector />
-                  </MultiSelectGroup>
-                </div>
-              </div>
+              <MultiSelectCard
+                title="좋아하는 장르"
+                subtitle="좋아하는 장르를 선택해주세요."
+                selectedValues={selectedGenres}
+                onChange={(values) => setSelectedGenres(values)}
+              >
+                <GenreSelector />
+              </MultiSelectCard>
 
               {/* 프로필 사진 선택*/}
-              <div className="flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-6 pb-8 w-full h-auto">
-                <div className="flex flex-col gap-2">
-                  <p className="title-hak">프로필 사진 선택</p>
-                  <p className="subtitle-b text-secondary-100">
-                    아이의 프로필로 사용할 귀여운 캐릭터를 골라주세요.
-                  </p>
-                </div>
-
-                {/* 프로필 선택 그리드 */}
-                <div className="grid grid-cols-3 gap-4">
-                  {PROFILE_OPTIONS.map((option) => (
-                    <div
-                      key={option.value}
-                      onClick={() => setSelectedProfile(option.value)}
-                      className={`flex flex-col items-center p-3 rounded-lg cursor-pointer transition-colors ${
-                        selectedProfile === option.value
-                          ? "bg-blue-100 border-2 border-blue-300"
-                          : "bg-white hover:bg-gray-50"
-                      }`}
-                    >
-                      <div className="flex justify-center items-center mb-2 w-16 h-16 bg-gray-200 rounded-full">
-                        <SwitchCase
-                          value={option.value}
-                          case={{
-                            CAT: <CatIcon className="w-12 h-12" />,
-                            CHICK: <ChickIcon className="w-12 h-12" />,
-                            DINOSAUR: <DinosaurIcon className="w-12 h-12" />,
-                            DOG: <DogIcon className="w-12 h-12" />,
-                            RABBIT: <RabbitIcon className="w-12 h-12" />,
-                          }}
-                        />
-                      </div>
-                      <span className="text-gray-700 text-ceker body-hak-r">
-                        {option.label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <GridSelectCard<ProfileValue>
+                title="프로필 사진 선택"
+                subtitle="아이의 프로필로 사용할 귀여운 캐릭터를 골라주세요."
+                options={PROFILE_OPTIONS}
+                selected={selectedProfile}
+                onChange={setSelectedProfile}
+              />
             </div>
           </div>
         </div>
@@ -320,33 +265,14 @@ export const ChildRegistrationPage = () => {
 
       {/* 바텀시트 */}
       {isBottomSheetOpen && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-gray-200 rounded-t-3xl p-6 max-h-[50vh]">
-          <div className="flex justify-center mb-4">
-            <div className="w-12 h-1 bg-gray-300 rounded-full" />
-          </div>
-
-          <div className="mb-6 text-center">
-            <h3 className="mb-2 text-lg font-semibold">
-              아이 정보가 저장됐어요.
-            </h3>
-            <p className="text-gray-600">다른 아이도 이어서 등록할까요?</p>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <button
-              onClick={handleAddAnotherChild}
-              className="py-4 w-full font-semibold text-green-100  border transition-colors border-green-100 hover:bg-primary-200 rounded-[20px]"
-            >
-              다른 아이 등록하기
-            </button>
-            <button
-              onClick={handleComplete}
-              className="py-4 w-full font-semibold text-gray-100 border border-gray-300 transition-colors rounded-[20px] bg-green-100 hover:bg-green-200"
-            >
-              완료
-            </button>
-          </div>
-        </div>
+        <BottomSheet
+          onClick1={handleAddAnotherChild}
+          onClick2={handleComplete}
+          title=" 아이 정보가 저장됐어요."
+          content="다른 아이도 이어서 등록할까요?"
+          field1="다른 아이 등록하기"
+          field2="완료"
+        />
       )}
     </div>
   );
