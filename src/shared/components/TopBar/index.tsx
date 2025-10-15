@@ -1,7 +1,7 @@
 import BackIcon from "@/assets/icons/Back";
 import { useNavigate } from "react-router-dom";
 
-export const TopBar = () => {
+export const TopBar = ({ title }: { title: string }) => {
   const navigate = useNavigate();
   // 내비게이션
   const handleBackClick = () => navigate(-1);
@@ -19,7 +19,7 @@ export const TopBar = () => {
           <BackIcon className="w-5 h-5 text-gray-700" />
         </button>
         <div className="flex flex-1 justify-center">
-          <div className="text-black title-hak">아이 등록</div>
+          <div className="text-black title-hak">{title}</div>
         </div>
         <div className="w-10" />
       </div>

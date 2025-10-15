@@ -13,14 +13,16 @@ import {
   PROFILE_MAPPING,
 } from "@/domains/auth/types/signup";
 import { CustomButton } from "@/shared/components/CustomButton";
-
 import { ChildInforRegistCard } from "@/shared/components/Child/ChildInforRegistCard";
 import { BottomSheet } from "@/shared/components/BottomSheet";
-// 개별 성향 목록 (공유 컴포넌트 참조)
 import { ChildTraitOptions } from "@/domains/child/components/TraitSelector";
-
 import { Background } from "@/shared/components/Background";
 import { TopBar } from "@/shared/components/TopBar";
+import { CatIcon } from "@/assets/icons/profile";
+import { ChickIcon } from "@/assets/icons/profile";
+import { DinosaurIcon } from "@/assets/icons/profile";
+import { DogIcon } from "@/assets/icons/profile";
+import { RabbitIcon } from "@/assets/icons/profile";
 // 장르 목록
 const GENRES = [
   { value: "COMPOSITE", label: "복합" },
@@ -36,13 +38,24 @@ const GENRES = [
 type ProfileValue = "CAT" | "CHICK" | "DINOSAUR" | "DOG" | "RABBIT";
 // 프로필 옵션
 const PROFILE_OPTIONS: GridOption<ProfileValue>[] = [
-  { value: "CAT", label: "고양이" },
-  { value: "CHICK", label: "병아리" },
-  { value: "DINOSAUR", label: "공룡" },
-  { value: "DOG", label: "강아지" },
-  { value: "RABBIT", label: "토끼" },
+  { value: "CAT", label: "고양이", icon: <CatIcon className="w-12 h-12" /> },
+  {
+    value: "CHICK",
+    label: "병아리",
+    icon: <ChickIcon className="w-12 h-12" />,
+  },
+  {
+    value: "DINOSAUR",
+    label: "공룡",
+    icon: <DinosaurIcon className="w-12 h-12" />,
+  },
+  { value: "DOG", label: "강아지", icon: <DogIcon className="w-12 h-12" /> },
+  {
+    value: "RABBIT",
+    label: "토끼",
+    icon: <RabbitIcon className="w-12 h-12" />,
+  },
 ];
-
 function TraitSelector() {
   return <ChildTraitOptions />;
 }
@@ -88,20 +101,6 @@ export const ChildRegistrationPage = () => {
 
   // 이름 입력 ref
   const nameInputRef = React.useRef<HTMLInputElement>(null);
-
-  // 년도/월/일 옵션
-  const currentYear = new Date().getFullYear();
-  const yearOptions = Array.from({ length: 21 }, (_, i) => currentYear - i);
-  const monthOptions = Array.from({ length: 12 }, (_, i) => i + 1);
-  const getDayOptions = (year: string, month: string) => {
-    if (!year || !month) return Array.from({ length: 31 }, (_, i) => i + 1);
-    const daysInMonth = new Date(parseInt(year), parseInt(month), 0).getDate();
-    return Array.from({ length: daysInMonth }, (_, i) => i + 1);
-  };
-  const dayOptions = getDayOptions(birthYear, birthMonth);
-
-  // 내비게이션
-  const handleBackClick = () => navigate(-1);
 
   // 저장하기 핸들러
   const handleSave = () => {
@@ -200,7 +199,7 @@ export const ChildRegistrationPage = () => {
       <main className="flex relative z-10 flex-col items-center mb-20 w-full">
         <div className="overflow-y-auto w-full h-full">
           {/* 상단 바 */}
-          <TopBar />
+          <TopBar title="아이 등록" />
 
           {/* 메인 컨텐츠 */}
           <div className="px-6 py-4 pt-24">
