@@ -48,7 +48,7 @@ import {
 } from "@/shared/components/SingleSelect";
 import { RadioTrue, RadioFalse, PlayingCardsIcon } from "@/assets/icons";
 
-export const CharacterCreationPage: React.FC = () => {
+export const CharAccSelectPage: React.FC = () => {
   const navigate = useNavigate();
 
   // 공연 정보 가져오기

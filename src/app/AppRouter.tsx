@@ -16,7 +16,9 @@ import {
   ChildAndDateSelectionPage,
   ReviewWritingPage,
   VoiceReviewPage,
-  CharacterCreationPage,
+  CharTypeSelectPage,
+  CharEmotionSelectPage,
+  CharAccSelectPage,
   CharacterPreviewPage,
   ReviewDetailPage,
   ReviewListPage,
@@ -108,8 +110,16 @@ const router = createBrowserRouter([
         element: <VoiceReviewPage />,
       },
       {
-        path: "character-creation",
-        element: <CharacterCreationPage />,
+        path: "character-type-select",
+        element: <CharTypeSelectPage />,
+      },
+      {
+        path: "character-emotion-select",
+        element: <CharEmotionSelectPage />,
+      },
+      {
+        path: "character-acc-select",
+        element: <CharAccSelectPage />,
       },
       {
         path: "character-preview",
