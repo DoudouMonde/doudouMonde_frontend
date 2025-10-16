@@ -6,6 +6,13 @@ import { RadioTrue, RadioFalse } from "@/assets/icons";
 import { PATH } from "@/shared/constants";
 import { useChildListQuery } from "@/domains/child/queries/useChildListQuery";
 import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
+import { TopBar } from "@/shared/components/TopBar";
+import { Background } from "@/shared/components/Background";
+import {
+  PageContainer,
+  MainContainer,
+  ContentSection,
+} from "@/shared/components/Layout";
 
 export const ChildAndDateSelectionPage: React.FC = () => {
   const navigate = useNavigate();

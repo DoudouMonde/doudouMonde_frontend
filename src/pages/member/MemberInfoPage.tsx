@@ -37,19 +37,6 @@ export const MemberInfoPage = () => {
   const handleCloseAddressModal = () => setIsAddressModalOpen(false);
   const handleRegionSelect = (region: string) => setSelectedRegion(region);
 
-  // const handleSaveAddress = async () => {
-  //   if (!selectedRegion || !detailedAddress.trim()) return;
-  //   try {
-  //     await updateAddressMutation.mutateAsync({
-  //       address: detailedAddress.trim(),
-  //       sido: selectedRegion,
-  //     });
-  //     setIsAddressModalOpen(false);
-  //   } catch (e) {
-  //     console.error("주소 업데이트 실패", e);
-  //   }
-  // };
-
   const handleBackClick = () => navigate(-1);
 
   return (
