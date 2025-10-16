@@ -5,7 +5,13 @@ import { StorytownBookCoverEx } from "@/assets/icons/playroom/storytown_book";
 import { StorytownBookInsideEx } from "@/assets/icons/playroom/storytown_book";
 import { StorytownBookLogo } from "@/assets/icons/playroom/storytown_book";
 import { reviewApi } from "@/domains/review/apis/reviewApi";
-// import { ButtonChip, SwitchCase } from "@/shared/components";
+import {
+  PageContainer,
+  MainContainer,
+  ContentSection,
+} from "@/shared/components/Layout";
+import { TopBar } from "@/shared/components/TopBar";
+import { Background } from "@/shared/components/Background";
 
 export const StoryVillageBookPage = () => {
   const navigate = useNavigate();
@@ -47,36 +53,13 @@ export const StoryVillageBookPage = () => {
   };
 
   return (
-    <div className="overflow-y-auto relative px-8 mx-auto w-full h-full">
+    <PageContainer>
+      {/* <div className="overflow-y-auto relative px-8 mx-auto w-full h-full"> */}
       {/* 배경 이미지 */}
-      <div
-        className="fixed inset-0 w-full h-full -z-30"
-        style={{
-          backgroundImage:
-            "url('/assets/images/background/background_afternoon.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          opacity: 0.5,
-        }}
-      />
+      <Background />
 
       {/* 상단 바 */}
-      <div className="fixed top-0 right-0 left-0 z-20 px-4 sm:px-6 lg:px-8 pt-4 pb-2 h-[60px] bg-gray-200/70 shadow-sm">
-        <div className="flex justify-between items-center">
-          <button
-            onClick={handleBackClick}
-            className="flex items-center w-10 h-10"
-            aria-label="이전으로 이동"
-          >
-            <BackIcon className="w-5 h-5 text-gray-700" />
-          </button>
-          <div className="flex flex-1 justify-center">
-            <div className="text-black title-hak">이야기마을북</div>
-          </div>
-          <div className="w-10"></div>
-        </div>
-      </div>
+      <TopBar title="이야기마을북" />
 
       {/* 메인 컨텐츠 */}
       <div className="relative z-10 px-4 sm:px-6 lg:px-8 py-4 mt-24 pb-24 bg-gray-200/70 rounded-[20px] w-full min-h-screen">
@@ -163,6 +146,7 @@ export const StoryVillageBookPage = () => {
           </a>
         </div>
       </nav>
-    </div>
+      {/* </div> */}
+    </PageContainer>
   );
 };

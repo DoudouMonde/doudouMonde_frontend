@@ -18,11 +18,7 @@ import {
 } from "@/assets/icons/playroom/storytown_tree";
 import { BookMakeModal } from "@/shared/components/Modal/BookMakeModal";
 
-import {
-  PageContainer,
-  ContentSectionm,
-  MainContainer,
-} from "@/shared/components/Layout";
+import { PageContainer } from "@/shared/components/Layout";
 
 const ActionButton: React.FC<ActionButtonProps> = ({
   onClick,
@@ -114,10 +110,12 @@ const LandingPage: React.FC<LandingPageProps> = ({
   return (
     <PageContainer>
       {/* 팝업 오버레이 */}
-      <BookMakeModal
-        onClose={handleCancelClick}
-        onPurchase={handlePurchaseClick}
-      />
+      {showBookPopup && (
+        <BookMakeModal
+          onClose={handleCancelClick}
+          onPurchase={handlePurchaseClick}
+        />
+      )}
 
       <div className="relative pt-[64px]">
         {/* 나무 이미지 */}

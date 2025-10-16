@@ -1,8 +1,4 @@
-import { useNavigate } from "react-router-dom";
-import Arrow from "@/assets/icons/Arrow";
-// import { useMemberNameQuery } from "@/domains/auth/queries/useMemberNameQuery";
 import { useState } from "react";
-// import { useUpdateMemberAddressMutation } from "@/domains/auth/queries/useUpdateMemberAddressMutation";
 import { AddressModal } from "@/shared/components/Modal/AddressModal";
 import { ActionListSection } from "@/shared/components/Section/ActionListSection";
 
@@ -15,7 +11,6 @@ import { TopBar } from "@/shared/components/TopBar";
 import { Background } from "@/shared/components/Background";
 
 export const MemberInfoPage = () => {
-  const navigate = useNavigate();
   // const { data: memberName } = useMemberNameQuery();
   // const updateAddressMutation = useUpdateMemberAddressMutation();
 
@@ -35,9 +30,6 @@ export const MemberInfoPage = () => {
 
   const handleOpenAddressModal = () => setIsAddressModalOpen(true);
   const handleCloseAddressModal = () => setIsAddressModalOpen(false);
-  const handleRegionSelect = (region: string) => setSelectedRegion(region);
-
-  const handleBackClick = () => navigate(-1);
 
   return (
     <PageContainer>
