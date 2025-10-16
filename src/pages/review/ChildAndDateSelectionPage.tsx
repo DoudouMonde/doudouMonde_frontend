@@ -5,6 +5,7 @@ import { RadioTrue, RadioFalse } from "@/assets/icons";
 // import { useChildListQuery } from "@/domains/child/queries/useChildListQuery";
 import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
+import { REVIEW_FLOW } from "@/shared/routes/flow";
 // 🔌 NETWORK-OFF: 로딩 플레이스홀더 사용 안 함
 // import { PlaceholderPage } from "@/shared/components/PlaceholderPage";
 
@@ -87,7 +88,7 @@ export const ChildAndDateSelectionPage: React.FC = () => {
   }
 
   return (
-    <ReviewContainer title="아이 선택">
+    <ReviewContainer title="아이 선택" flow={REVIEW_FLOW}>
       {/* 아이 선택 섹션 */}
       <div>
         <h2 className="pt-2 pb-5 title-inter">누구와 함께 봤나요?</h2>

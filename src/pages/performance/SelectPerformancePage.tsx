@@ -9,6 +9,7 @@ import { Sido } from "@/shared/types";
 import { Back, Arrow } from "@/assets/icons";
 import { SearchPerformanceForSelection } from "../SelectPerformancePage/SearchPerformanceForSelection";
 import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
+import { REVIEW_FLOW } from "@/shared/routes/flow";
 
 /** ----------------------------
  * 🧪 오프라인/로컬 목 데이터
@@ -192,7 +193,7 @@ export const SelectPerformancePage = () => {
   };
 
   return (
-    <ReviewContainer title="공연 선택">
+    <ReviewContainer title="공연 선택" flow={REVIEW_FLOW}>
       {/* 선택된 공연 표시 */}
       <div>
         {selectedPerformanceData ? (

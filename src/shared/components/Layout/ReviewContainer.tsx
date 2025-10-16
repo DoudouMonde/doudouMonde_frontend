@@ -1,27 +1,55 @@
+// ReviewContainer.tsx (flow 지원 확장)
+import { useLocation, useNavigate } from "react-router-dom";
 import { NavigationButtons } from "@/shared/components";
 import { PATH } from "@/shared/constants";
-import { useNavigate } from "react-router-dom";
+import type { ReactNode } from "react";
 
 type ReviewContainerProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   title: string;
+  onNext?: () => void;
+  onPrevious?: () => void;
+  isNextDisabled?: boolean;
+  nextTo?: string;
+  prevTo?: string | number;
+  /** 플로우 경로 배열을 넘기면 현재 경로를 기준으로 이전/다음 자동 계산 */
+  flow?: string[];
 };
 
-export const ReviewContainer = ({ children, title }: ReviewContainerProps) => {
+export function ReviewContainer({
+  children,
+  title,
+  onNext,
+  onPrevious,
+  isNextDisabled = false,
+  nextTo,
+  prevTo = -1,
+  flow,
+}: ReviewContainerProps): JSX.Element {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  const idx = flow ? flow.indexOf(pathname) : -1;
+  const autoPrev = flow && idx > 0 ? flow[idx - 1] : undefined;
+  const autoNext =
+    flow && idx >= 0 && idx < flow.length - 1 ? flow[idx + 1] : undefined;
 
   const handlePrevious = () => {
-    navigate(-1); // 브라우저 히스토리에서 이전 페이지로 이동
+    if (onPrevious) return onPrevious();
+    if (flow && autoPrev) return navigate(autoPrev);
+    if (typeof prevTo === "string") return navigate(prevTo);
+    return navigate(prevTo); // 기본: -1
   };
 
   const handleNext = () => {
-    // VoiceReview 페이지로 이동 (이미 Zustand store에 저장됨)
-    navigate(PATH.VOICE_REVIEW);
+    if (onNext) return onNext();
+    if (flow && autoNext) return navigate(autoNext);
+    if (nextTo) return navigate(nextTo);
+    return navigate(PATH.VOICE_REVIEW); // 기본 이동
   };
 
   return (
     <div className="flex min-h-screen">
-      {/* 흰색 콘테이너 */}
       <div className="p-6 w-full bg-gray-200/70 rounded-[40px] mt-20 mb-24">
         <div className="flex flex-col gap-4">
           <h2 className="title-inter">{title}</h2>
@@ -29,15 +57,14 @@ export const ReviewContainer = ({ children, title }: ReviewContainerProps) => {
 
         {children}
 
-        {/* 네비게이션 버튼 */}
         <div className="mb-2">
           <NavigationButtons
             onPrevious={handlePrevious}
             onNext={handleNext}
-            isNextDisabled={false}
+            isNextDisabled={isNextDisabled}
           />
         </div>
       </div>
     </div>
   );
-};
+}

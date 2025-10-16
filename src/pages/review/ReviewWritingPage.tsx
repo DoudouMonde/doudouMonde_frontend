@@ -4,6 +4,7 @@ import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
 import { ReviewPerformanceInfo } from "@/shared/components/Review/ReviewPerformanceInfo";
 import { PhotoGridUploader } from "@/shared/components/Review/UploadPhoto";
 import { ReviewMemoTextarea } from "@/shared/components/Review/ReviewMemoTextare";
+import { REVIEW_FLOW } from "@/shared/routes/flow";
 
 export const ReviewWritingPage = () => {
   // const navigate = useNavigate();
@@ -59,7 +60,7 @@ export const ReviewWritingPage = () => {
   };
 
   return (
-    <ReviewContainer title="후기 입력">
+    <ReviewContainer title="후기 입력" flow={REVIEW_FLOW}>
       {/* 공연명, 관람날짜 */}
       <ReviewPerformanceInfo
         title={selectedPerformance?.title ?? null}

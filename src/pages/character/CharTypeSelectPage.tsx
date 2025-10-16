@@ -27,6 +27,7 @@ import {
   SingleSelectItem,
 } from "@/shared/components/SingleSelect";
 import { RadioTrue, RadioFalse } from "@/assets/icons";
+import { REVIEW_FLOW } from "@/shared/routes/flow";
 
 type AnimalId = "chick" | "cat" | "dino" | "dog" | "rabbit";
 
@@ -87,7 +88,7 @@ export const CharTypeSelectPage: React.FC = () => {
   }, [selectedAnimal]);
 
   return (
-    <ReviewContainer title="상상친구 만들기">
+    <ReviewContainer title="상상친구 만들기" flow={REVIEW_FLOW}>
       {/* Header */}
       <div className="flex flex-col mb-6">
         <p className="subtitle text-secondary-100">
