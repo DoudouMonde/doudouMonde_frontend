@@ -28,11 +28,6 @@ import {
 } from "@/shared/components/SingleSelect";
 import { RadioTrue, RadioFalse } from "@/assets/icons";
 
-/** 🔧 감정/액세서리 관련 import 전부 제거
- *  - EmotionCharacters, Crown/Cap/Flower/Glasses/Ribbon/Wizhat 등
- *  - 감정/액세서리 조합 함수(getEmotionCharacter/getAccessoryCharacter) 제거
- */
-
 type AnimalId = "chick" | "cat" | "dino" | "dog" | "rabbit";
 
 export const CharTypeSelectPage: React.FC = () => {
