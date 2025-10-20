@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { PATH } from "@/shared/constants/paths";
 import { MultiRadio } from "@/shared/components/Radio";
 import { MultiSelectCard } from "@/shared/components/MultiSelect/MultiSelectCard";
-import { GridOption } from "@/shared/components/GridSelectCard";
 import { GridSelectCard } from "@/shared/components/GridSelectCard";
 
 import {
@@ -20,50 +19,15 @@ import { ChildTraitOptions } from "@/domains/child/components/TraitSelector";
 import { Background } from "@/shared/components/Background";
 import { TopBar } from "@/shared/components/TopBar";
 import {
-  CatIcon,
-  ChickIcon,
-  DinosaurIcon,
-  DogIcon,
-  RabbitIcon,
-} from "@/assets/icons/profile";
-import {
   MainContainer,
   PageContainer,
   ContentSection,
 } from "@/shared/components/Layout";
-// 장르 목록
-const GENRES = [
-  { value: "COMPOSITE", label: "복합" },
-  { value: "PLAY", label: "연극" },
-  { value: "MUSICAL", label: "뮤지컬" },
-  { value: "POP_DANCE", label: "대중무용" },
-  { value: "POP_MUSIC", label: "대중음악" },
-  { value: "CLASSICAL_MUSIC", label: "서양음악(클래식)" },
-  { value: "KOREAN_MUSIC", label: "한국음악(국악)" },
-  { value: "CIRCUS_MAGIC", label: "서커스/마술" },
-  { value: "DANCE", label: "무용(서양/한국무용)" },
-];
+import { GENRES } from "@/shared/constants/genres";
+import { PROFILE_OPTIONS_UI } from "@/shared/ui/profile/profileOptions";
+
 type ProfileValue = "CAT" | "CHICK" | "DINOSAUR" | "DOG" | "RABBIT";
-// 프로필 옵션
-const PROFILE_OPTIONS: GridOption<ProfileValue>[] = [
-  { value: "CAT", label: "고양이", icon: <CatIcon className="w-12 h-12" /> },
-  {
-    value: "CHICK",
-    label: "병아리",
-    icon: <ChickIcon className="w-12 h-12" />,
-  },
-  {
-    value: "DINOSAUR",
-    label: "공룡",
-    icon: <DinosaurIcon className="w-12 h-12" />,
-  },
-  { value: "DOG", label: "강아지", icon: <DogIcon className="w-12 h-12" /> },
-  {
-    value: "RABBIT",
-    label: "토끼",
-    icon: <RabbitIcon className="w-12 h-12" />,
-  },
-];
+
 function TraitSelector() {
   return <ChildTraitOptions />;
 }
@@ -244,7 +208,7 @@ export const ChildRegistrationPage = () => {
           <GridSelectCard<ProfileValue>
             title="프로필 사진 선택"
             subtitle="아이의 프로필로 사용할 귀여운 캐릭터를 골라주세요."
-            options={PROFILE_OPTIONS}
+            options={PROFILE_OPTIONS_UI}
             selected={selectedProfile}
             onChange={setSelectedProfile}
           />

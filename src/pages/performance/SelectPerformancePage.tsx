@@ -388,15 +388,6 @@ export const SelectPerformancePage = () => {
           </div>
         )}
       </div>
-
-      {/* 네비게이션 버튼 */}
-      <div className="mt-8">
-        <NavigationButtons
-          onPrevious={handlePrevious}
-          onNext={handleNext}
-          isNextDisabled={!selectedPerformance}
-        />
-      </div>
     </ReviewContainer>
   );
 };

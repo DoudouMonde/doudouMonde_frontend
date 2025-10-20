@@ -22,7 +22,7 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
       {/* 이전 버튼 */}
       <button
         onClick={onPrevious}
-        className="flex items-center justify-center gap-2 w-full h-[34px] bg-secondary-100 backdrop-blur-sm rounded-[20px]  hover:bg-white/80 hover:border-gray-400 transition-all duration-200 active:scale-95"
+        className="flex items-center justify-center gap-2 w-full h-[34px] bg-secondary-100 backdrop-blur-sm rounded-[20px]  hover:bg-white/80 hover:border-gray-400 transition-all duration-200"
       >
         <span className="text-base font-medium text-gray-200 body-inter-r">
           {previousText}
