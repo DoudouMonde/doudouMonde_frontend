@@ -19,6 +19,7 @@ type ChildInforRegistCardProps = {
   setBirth: (v: Birth) => void;
   genderValue: string;
   setGender: (v: string) => void;
+  nameErrorMessage?: string;
 };
 
 export const ChildInforRegistCard = ({
@@ -30,6 +31,7 @@ export const ChildInforRegistCard = ({
   setBirth,
   genderValue,
   setGender,
+  nameErrorMessage,
 }: ChildInforRegistCardProps) => {
   return (
     <FormCard title="아이 정보" subtitle="아이의 기본 정보를 입력해주세요.">
@@ -43,6 +45,12 @@ export const ChildInforRegistCard = ({
           onBlur={nameOnBlur}
           placeholder="예: 정불명"
         />
+        {/* 오류 메시지를 FormInput 바로 아래에 출력 */}
+        {nameErrorMessage && (
+          <p className="text-red-100 body-inter-sm mt-1 px-1">
+            * {nameErrorMessage}
+          </p>
+        )}
       </div>
       <BirthdateSelect value={birthValue} onChange={setBirth} />
       <GenderSelect value={genderValue} onChange={setGender} />

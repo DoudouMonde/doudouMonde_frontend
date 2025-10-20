@@ -51,7 +51,7 @@ export const useChildRegistration = () => {
     reset,
     watch,
     setValue,
-    formState: { isValid },
+    formState: { isValid, errors },
   } = formMethods;
 
   const formValues = watch(); // 폼 값 전체를 watch
@@ -104,7 +104,7 @@ export const useChildRegistration = () => {
     control,
     setValue,
     formValues,
-
+    errors,
     // 로직/상태 관련 값 반환
     isBottomSheetOpen,
     setIsBottomSheetOpen,

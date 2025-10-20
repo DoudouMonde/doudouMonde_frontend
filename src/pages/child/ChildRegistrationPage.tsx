@@ -18,6 +18,7 @@ export const ChildRegistrationPage = () => {
     control,
     setValue,
     formValues,
+    errors,
     isBottomSheetOpen,
     setIsBottomSheetOpen,
     handleSave,
@@ -41,6 +42,7 @@ export const ChildRegistrationPage = () => {
               control={control}
               formValues={formValues}
               setValue={setValue}
+              errors={errors}
             />
           </ContentSection>
         </form>
