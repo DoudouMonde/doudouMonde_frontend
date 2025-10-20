@@ -1,7 +1,4 @@
-// ChildRegistrationPage.tsx 최종본
-
 import React from "react";
-// 필요한 UI/Layout 컴포넌트만 남깁니다.
 import { CustomButton } from "@/shared/components/CustomButton";
 import { BottomSheet } from "@/shared/components/BottomSheet";
 import { Background } from "@/shared/components/Background";
@@ -12,14 +9,14 @@ import {
   ContentSection,
 } from "@/shared/components/Layout";
 
-// 새로 만든 훅과 컴포넌트를 임포트합니다.
+//구현한 훅
 import { useChildRegistration } from "@/domains/child/hooks/useChildRegistration";
 import { ChildFormFields } from "@/domains/child/components/ChildFormFields";
 
 export const ChildRegistrationPage = () => {
   const {
-    control, // 👈 추가
-    setValue, // 👈 추가
+    control,
+    setValue,
     formValues,
     isBottomSheetOpen,
     setIsBottomSheetOpen,

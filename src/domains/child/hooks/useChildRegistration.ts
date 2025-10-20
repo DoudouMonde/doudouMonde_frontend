@@ -25,16 +25,11 @@ export type ChildFormValues = {
   selectedProfile: ProfileValue;
 };
 
-// useFormReturn 타입에서 필요한 것만 부분적으로 가져오기 (ChildRegistrationPage에서 사용할 RHF 함수들을 위한 타입 명시)
-type FormMethods = Pick<
-  UseFormReturn<ChildFormValues>,
-  "control" | "handleSubmit" | "setValue" | "watch" | "reset" | "formState"
->;
-
 export const useChildRegistration = () => {
   const navigate = useNavigate();
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false);
 
+  //useForm 초기화
   const formMethods = useForm<ChildFormValues>({
     defaultValues: {
       name: "",
@@ -57,11 +52,12 @@ export const useChildRegistration = () => {
     watch,
     setValue,
     formState: { isValid },
-  } = formMethods as FormMethods;
+  } = formMethods;
 
   const formValues = watch(); // 폼 값 전체를 watch
 
   // 폼 제출 핸들러 (BottomSheet 열기)
+  //handleSubmit에 전달할 함수
   const onSubmit = (data: ChildFormValues) => {
     console.log("저장할 데이터:", data);
     setIsBottomSheetOpen(true);
@@ -71,7 +67,7 @@ export const useChildRegistration = () => {
 
   // 최종 완료 핸들러 (localstorage 저장 및 페이지 이동)
   const handleComplete = () => {
-    const data = formValues;
+    const data = formValues; //watch를 사용하여 최신 데이터를 가져온다.
     const childData: ChildRequest = {
       name: data.name.trim(),
       birthday: `${data.birthYear}-${data.birthMonth.padStart(
@@ -91,6 +87,7 @@ export const useChildRegistration = () => {
       ),
     };
 
+    //데이터를 localstorage에 저장하고 다음 페이지로 이동
     localStorage.setItem("childData", JSON.stringify(childData));
     navigate(PATH.REGION_REGISTRATION);
   };
