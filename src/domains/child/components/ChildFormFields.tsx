@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Controller,
-  FieldErrors,
-  UseFormReturn,
-  UseFormSetError,
-  UseFormClearErrors,
-} from "react-hook-form";
+import { Controller, FieldErrors, UseFormReturn } from "react-hook-form";
 import { MultiRadio } from "@/shared/components/Radio";
 import { MultiSelectCard } from "@/shared/components/MultiSelect/MultiSelectCard";
 import { GridSelectCard } from "@/shared/components/GridSelectCard";
@@ -37,6 +31,9 @@ type ChildFormFieldsProps = {
   formValues: ChildFormValues;
   setValue: UseFormReturn<ChildFormValues>["setValue"];
   errors: FieldErrors<ChildFormValues>;
+  isDuplicateName: (value: string) => boolean;
+  isLimitReached: boolean;
+  maxChildrend: number;
 };
 
 const getMaxLength = (trimmedValue: string): number => {
@@ -50,6 +47,9 @@ export const ChildFormFields = ({
   control,
   formValues,
   setValue,
+  isDuplicateName,
+  isLimitReached,
+  maxChildrend,
 }: ChildFormFieldsProps) => {
   //입력 제한 핸들러
   const handleNameChange = (
@@ -57,10 +57,8 @@ export const ChildFormFields = ({
     rhfOnChange: (value: string) => void
   ) => {
     const MAX_LENGTH_WITH_SPACES = getMaxLength(newValue);
-
     if (newValue.length > MAX_LENGTH_WITH_SPACES) {
       const finalValue = newValue.substring(0, MAX_LENGTH_WITH_SPACES);
-
       rhfOnChange(finalValue);
     } else {
       rhfOnChange(newValue);
@@ -105,6 +103,10 @@ export const ChildFormFields = ({
               }
               return true;
             },
+
+            //즉시 중복 검사
+            duplicateCheck: (value) =>
+              isDuplicateName(value) ? "이미 등록된 이름이에요" : true,
           },
         }}
         render={({ field, fieldState: { error } }) => (

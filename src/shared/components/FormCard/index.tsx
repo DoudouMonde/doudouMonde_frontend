@@ -13,7 +13,6 @@ export const FormCard = ({ title, subtitle, children }: FormCardProps) => {
           {subtitle && (
             <p className="subtitle-b text-secondary-100">{subtitle}</p>
           )}
-          <p className="subtitle-b text-secondary-100">{subtitle}</p>
         </div>
       )}
       {children}

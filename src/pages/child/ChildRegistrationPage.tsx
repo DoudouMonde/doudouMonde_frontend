@@ -25,6 +25,9 @@ export const ChildRegistrationPage = () => {
     handleComplete,
     handleAddAnotherChild,
     isButtonActive,
+    isDuplicateName,
+    isLimitReached,
+    maxChildren,
   } = useChildRegistration();
 
   return (
@@ -43,6 +46,9 @@ export const ChildRegistrationPage = () => {
               formValues={formValues}
               setValue={setValue}
               errors={errors}
+              isDuplicateName={isDuplicateName}
+              isLimitReached={isLimitReached}
+              maxChildrend={maxChildren}
             />
           </ContentSection>
         </form>

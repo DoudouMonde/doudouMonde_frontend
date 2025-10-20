@@ -7,9 +7,6 @@ import { GenderSelect } from "@/pages/child/GenderSelect";
 
 type Birth = { year: string; month: string; day: string };
 
-//RHF의 Controller가 제고앟는 필드 props를 받도록 타입 변경
-type RHFFieldProps = ControllerRenderProps<FieldValues, string>;
-
 type ChildInforRegistCardProps = {
   nameValue: string;
   nameOnChange: (value: string) => void;
@@ -47,7 +44,7 @@ export const ChildInforRegistCard = ({
         />
         {/* 오류 메시지를 FormInput 바로 아래에 출력 */}
         {nameErrorMessage && (
-          <p className="text-red-100 body-inter-sm mt-1 px-1">
+          <p className="px-1 mt-1 text-red-100 body-inter-sm">
             * {nameErrorMessage}
           </p>
         )}
