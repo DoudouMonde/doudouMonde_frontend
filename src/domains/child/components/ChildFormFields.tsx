@@ -11,7 +11,6 @@ import {
   ChildFormValues,
   Birth,
 } from "@/domains/child/hooks/useChildRegistration";
-
 type ProfileValue = ChildFormValues["selectedProfile"];
 
 const NAME_ALLOWED_REGEX = /^[\uac00-\ud7a3a-zA-Z\s]+$/;
@@ -48,8 +47,6 @@ export const ChildFormFields = ({
   formValues,
   setValue,
   isDuplicateName,
-  isLimitReached,
-  maxChildrend,
 }: ChildFormFieldsProps) => {
   //입력 제한 핸들러
   const handleNameChange = (
