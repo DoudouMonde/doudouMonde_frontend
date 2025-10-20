@@ -1,11 +1,16 @@
-import React, { forwardRef } from "react";
-
+import React, {
+  ChangeEvent,
+  FocusEvent,
+  InputHTMLAttributes,
+  forwardRef,
+} from "react";
 type FormInputProps = {
   title?: string;
   type?: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
+  onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
 };
 
 // ✅ forwardRef를 사용하여 ref 전달 가능하게 만듦

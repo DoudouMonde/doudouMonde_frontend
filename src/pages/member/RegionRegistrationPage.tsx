@@ -130,7 +130,6 @@ export function RegionRegistrationPage() {
     // 수동 입력 모드로 전환
   }
   // 내비게이션
-  const handleBackClick = () => navigate(-1);
 
   async function handleNext() {
     if (!selectedRegion) return;

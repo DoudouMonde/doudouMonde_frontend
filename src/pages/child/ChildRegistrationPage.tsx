@@ -1,21 +1,9 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { PATH } from "@/shared/constants/paths";
-import { MultiRadio } from "@/shared/components/Radio";
-import { MultiSelectCard } from "@/shared/components/MultiSelect/MultiSelectCard";
-import { GridSelectCard } from "@/shared/components/GridSelectCard";
+// ChildRegistrationPage.tsx 최종본
 
-import {
-  ChildRequest,
-  GENDER_MAPPING,
-  TRAIT_MAPPING,
-  GENRE_MAPPING,
-  PROFILE_MAPPING,
-} from "@/domains/auth/types/signup";
+import React from "react";
+// 필요한 UI/Layout 컴포넌트만 남깁니다.
 import { CustomButton } from "@/shared/components/CustomButton";
-import { ChildInforRegistCard } from "@/shared/components/Child/ChildInforRegistCard";
 import { BottomSheet } from "@/shared/components/BottomSheet";
-import { ChildTraitOptions } from "@/domains/child/components/TraitSelector";
 import { Background } from "@/shared/components/Background";
 import { TopBar } from "@/shared/components/TopBar";
 import {
@@ -23,201 +11,47 @@ import {
   PageContainer,
   ContentSection,
 } from "@/shared/components/Layout";
-import { GENRES } from "@/shared/constants/genres";
-import { PROFILE_OPTIONS_UI } from "@/shared/ui/profile/profileOptions";
 
-type ProfileValue = "CAT" | "CHICK" | "DINOSAUR" | "DOG" | "RABBIT";
+// 새로 만든 훅과 컴포넌트를 임포트합니다.
+import { useChildRegistration } from "@/domains/child/hooks/useChildRegistration";
+import { ChildFormFields } from "@/domains/child/components/ChildFormFields";
 
-function TraitSelector() {
-  return <ChildTraitOptions />;
-}
-
-function GenreSelector() {
-  return (
-    <div className="grid grid-cols-2 gap-3">
-      {GENRES.map((genre) => (
-        <MultiRadio key={genre.value} label={genre.label} value={genre.value} />
-      ))}
-    </div>
-  );
-}
-type Birth = { year: string; month: string; day: string };
 export const ChildRegistrationPage = () => {
-  const navigate = useNavigate();
-
-  const [selectedProfile, setSelectedProfile] = useState<ProfileValue | null>(
-    null
-  );
-
-  // 생년월일 상태
-  const [birthYear, setBirthYear] = useState<string>("");
-  const [birthMonth, setBirthMonth] = useState<string>("");
-  const [birthDay, setBirthDay] = useState<string>("");
-
-  // 성별 상태
-  const [gender, setGender] = useState<string>("");
-
-  // 성향 상태
-  const [selectedTraits, setSelectedTraits] = useState<string[]>([]);
-
-  // 장르 상태
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-
-  // 바텀시트 상태
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false);
-
-  // 이름 입력 상태 (실시간 업데이트를 위해)
-  const [name, setName] = useState<string>("");
-
-  // 제출 상태
-
-  // 이름 입력 ref
-  const nameInputRef = React.useRef<HTMLInputElement>(null);
-
-  // 저장하기 핸들러
-  const handleSave = () => {
-    // TODO: 실제 저장 로직 구현
-    console.log("저장할 데이터:", {
-      name: nameInputRef.current?.value,
-      birthYear,
-      birthMonth,
-      birthDay,
-      gender,
-      selectedTraits,
-      selectedProfile,
-    });
-
-    // 저장 성공 시 바텀시트 열기
-    setIsBottomSheetOpen(true);
-  };
-
-  // 폼 초기화
-  const resetForm = () => {
-    setName("");
-    setBirthYear("");
-    setBirthMonth("");
-    setBirthDay("");
-    setGender("");
-    setSelectedTraits([]);
-    setSelectedGenres([]);
-    setSelectedProfile("CAT");
-    if (nameInputRef.current) {
-      nameInputRef.current.focus();
-    }
-  };
-
-  // 다른 아이 등록하기
-  const handleAddAnotherChild = () => {
-    setIsBottomSheetOpen(false);
-    resetForm();
-  };
-
-  // 완료
-  const handleComplete = () => {
-    if (!isFormValid()) return;
-
-    // 현재 아이 정보를 ChildRequest 형태로 변환
-    const childData: ChildRequest = {
-      name: name.trim(),
-      birthday: `${birthYear}-${birthMonth.padStart(
-        2,
-        "0"
-      )}-${birthDay.padStart(2, "0")}`,
-      gender: GENDER_MAPPING[gender as keyof typeof GENDER_MAPPING] || "MALE",
-      profile:
-        PROFILE_MAPPING[selectedProfile as keyof typeof PROFILE_MAPPING] ||
-        "CAT",
-      traits: selectedTraits.map(
-        (trait) => TRAIT_MAPPING[trait as keyof typeof TRAIT_MAPPING] || trait
-      ),
-      genres: selectedGenres.map(
-        (genre) => GENRE_MAPPING[genre as keyof typeof GENRE_MAPPING] || genre
-      ),
-    };
-
-    // 아이 정보를 localStorage에 저장
-    localStorage.setItem("childData", JSON.stringify(childData));
-
-    // 다음 페이지로 이동
-    navigate(PATH.REGION_REGISTRATION);
-  };
-
-  // 폼 유효성 검사
-  const isFormValid = () => {
-    return !!(
-      name.trim() &&
-      birthYear &&
-      birthMonth &&
-      birthDay &&
-      gender &&
-      selectedTraits.length > 0 &&
-      selectedGenres.length > 0
-    );
-  };
-
-  // BirthdateSelect가 요구하는 형태로 래핑
-  const birth: Birth = { year: birthYear, month: birthMonth, day: birthDay };
-  const setBirth = (v: Birth) => {
-    setBirthYear(v.year);
-    setBirthMonth(v.month);
-    setBirthDay(v.day);
-  };
+  const {
+    control, // 👈 추가
+    setValue, // 👈 추가
+    formValues,
+    isBottomSheetOpen,
+    setIsBottomSheetOpen,
+    handleSave,
+    handleComplete,
+    handleAddAnotherChild,
+    isButtonActive,
+  } = useChildRegistration();
 
   return (
     <PageContainer>
-      {/* 배경 이미지 */}
       <Background />
-      {/* 컨텐츠 */}
       <MainContainer>
-        {/* 상단 바 */}
         <TopBar title="아이 등록" />
 
         {/* 메인 컨텐츠 */}
-        <ContentSection>
-          {/* 아이 정보 카드 */}
-          <ChildInforRegistCard
-            name={name}
-            setName={setName}
-            birth={birth}
-            setBirth={setBirth}
-            gender={gender}
-            setGender={setGender}
-          />
-
-          {/* 아이 성향 선택 카드 */}
-          <MultiSelectCard
-            title="아이 성향"
-            subtitle="아이의 해당되는 특성을 선택해주세요."
-            selectedValues={selectedTraits}
-            onChange={(values) => setSelectedTraits(values)}
-          >
-            <TraitSelector />
-          </MultiSelectCard>
-
-          {/* 장르 선택 카드 */}
-          <MultiSelectCard
-            title="좋아하는 장르"
-            subtitle="좋아하는 장르를 선택해주세요."
-            selectedValues={selectedGenres}
-            onChange={(values) => setSelectedGenres(values)}
-          >
-            <GenreSelector />
-          </MultiSelectCard>
-
-          {/* 프로필 사진 선택*/}
-          <GridSelectCard<ProfileValue>
-            title="프로필 사진 선택"
-            subtitle="아이의 프로필로 사용할 귀여운 캐릭터를 골라주세요."
-            options={PROFILE_OPTIONS_UI}
-            selected={selectedProfile}
-            onChange={setSelectedProfile}
-          />
-        </ContentSection>
+        <form onSubmit={handleSave}>
+          {" "}
+          {/* 훅에서 정의된 handleSave 사용 */}
+          <ContentSection>
+            <ChildFormFields
+              control={control}
+              formValues={formValues}
+              setValue={setValue}
+            />
+          </ContentSection>
+        </form>
       </MainContainer>
 
       {/* 하단 고정 저장 버튼 */}
       <div className="fixed right-0 bottom-0 left-0 z-30 p-6">
-        <CustomButton onClick={handleSave} isActive={isFormValid()}>
+        <CustomButton onClick={handleSave} isActive={isButtonActive}>
           저장하기
         </CustomButton>
       </div>
