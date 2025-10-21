@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useRouteLeavingGuard } from "@/shared/hooks/useRouteLeavingGuard";
 import { PATH } from "@/shared/constants/paths";
 import {
   ChildRequest,
@@ -24,15 +25,12 @@ export type ChildFormValues = {
   selectedProfile: ProfileValue;
 };
 
-//이름 정규화 유틸
 const normalizeName = (raw: string) =>
   raw.normalize("NFKC").trim().replace(/\s+/g, " ").toLowerCase();
 
-//localstorage 키
 const STORAGE_KEY_NAMES = "childNames"; //정규화 전 원본 이름
 const STORAGE_KEY_NAMES_NORM = "childNamesNorm"; //정규화된 이름(중복 체크용)
 
-//fallback : 로드 실패/없음일 때 대신 쓸 기본값. 여기에선 []
 const loadJson = <T>(key: string, fallback: T): T => {
   try {
     const raw = localStorage.getItem(key);
@@ -41,7 +39,6 @@ const loadJson = <T>(key: string, fallback: T): T => {
     return fallback;
   }
 };
-//value 타입을 왜 Unknown으로 했을까? -> 무엇이든 올 수 있는 값
 const saveJson = (key: string, value: unknown) => {
   try {
     localStorage.setItem(key, JSON.stringify(value));
@@ -52,10 +49,8 @@ export const useChildRegistration = () => {
   const navigate = useNavigate();
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false);
 
-  //최대 등록 가능 수
   const MAX_CHILDREN = 4;
 
-  //페이지 마운트 시 1회 : 기존 이름 목록 로드(정규화/원본)
   const initialNormNames = useMemo(
     () => loadJson<string[]>(STORAGE_KEY_NAMES_NORM, []),
     []
@@ -64,12 +59,9 @@ export const useChildRegistration = () => {
     () => loadJson<string[]>(STORAGE_KEY_NAMES, []),
     []
   );
-  //궁금한 점 - 정규화한 이름만 불러오면 안되나? 왜 원본까지 불러오지?
-  //렌더 간 유지할 수 있도록 ref로 관리. useRef는 어떤 경우에도 리렌더링을 유발하지 않는다.
   const existingNamesNormRef = useRef<string[]>(initialNormNames);
   const existingNamesRawRef = useRef<string[]>(initialRawNames);
 
-  //useForm 초기화
   const formMethods = useForm<ChildFormValues>({
     defaultValues: {
       name: "",
@@ -84,7 +76,6 @@ export const useChildRegistration = () => {
     mode: "onChange",
   });
 
-  // 필요한 RHF 함수들을 구조 분해
   const {
     control,
     handleSubmit,
@@ -96,23 +87,15 @@ export const useChildRegistration = () => {
     formState: { isValid, errors, isDirty },
   } = formMethods;
 
-  //beforeunload 이벤트 핸들링 추가
-  useEffect(() => {
-    //폼에 변경사항이 있을 때맏 경고 활성화
-    if (isDirty) {
-      const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-        event.preventDefault();
-        event.returnValue = "";
-        return "";
-      };
-      window.addEventListener("beforeunload", handleBeforeUnload);
+  const handleResetDirtyState = () => {
+    reset(formValues, { keepValues: true });
+  };
 
-      //컴포넌트 언마운트시 또는 isDirty가 변경될 때 이벤트 리스너 제거
-      return () => {
-        window.removeEventListener("beforeunload", handleBeforeUnload);
-      };
-    }
-  }, [isDirty]);
+  useRouteLeavingGuard(
+    isDirty,
+    "저장되지 않은 아이 등록 정보가 있습니다. 정말 페이지를 이동하시겠습니까?",
+    handleResetDirtyState
+  );
 
   const formValues = watch();
 
@@ -146,7 +129,6 @@ export const useChildRegistration = () => {
 
   const handleSave = handleSubmit(onSubmit);
 
-  // 최종 완료 핸들러 (localstorage 저장 및 페이지 이동)
   const handleComplete = () => {
     const data = formValues;
     const childData: ChildRequest = {
@@ -178,7 +160,6 @@ export const useChildRegistration = () => {
         data.name.trim(),
       ];
 
-      // localStorage 반영
       saveJson(STORAGE_KEY_NAMES_NORM, existingNamesNormRef.current);
       saveJson(STORAGE_KEY_NAMES, existingNamesRawRef.current);
     }
@@ -188,7 +169,6 @@ export const useChildRegistration = () => {
     navigate(PATH.REGION_REGISTRATION);
   };
 
-  // 폼 초기화 및 바텀시트 닫기
   const resetForm = () => {
     reset();
     clearErrors();
