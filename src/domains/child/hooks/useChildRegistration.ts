@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "@/shared/constants/paths";
@@ -93,16 +93,31 @@ export const useChildRegistration = () => {
     setValue,
     setError,
     clearErrors,
-    formState: { isValid, errors },
+    formState: { isValid, errors, isDirty },
   } = formMethods;
+
+  //beforeunload 이벤트 핸들링 추가
+  useEffect(() => {
+    //폼에 변경사항이 있을 때맏 경고 활성화
+    if (isDirty) {
+      const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+        event.preventDefault();
+        event.returnValue = "";
+        return "";
+      };
+      window.addEventListener("beforeunload", handleBeforeUnload);
+
+      //컴포넌트 언마운트시 또는 isDirty가 변경될 때 이벤트 리스너 제거
+      return () => {
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+      };
+    }
+  }, [isDirty]);
 
   const formValues = watch();
 
-  //현재 등록된 아이 수
   const currentCount = existingNamesNormRef.current.length;
   const isLimitReached = currentCount >= MAX_CHILDREN;
-
-  //외부에서 사용할 중복 체크 함수 (childFormFields에 내려줌)
 
   const isDuplicateName = (value: string) => {
     const norm = normalizeName(value);
@@ -110,7 +125,6 @@ export const useChildRegistration = () => {
   };
 
   const onSubmit = (data: ChildFormValues) => {
-    //1) 최대 수 제한
     if (isLimitReached) {
       setError("name", {
         type: "validate",
@@ -119,8 +133,6 @@ export const useChildRegistration = () => {
       return;
     }
 
-    //2) 중복 검사 -> 여기말고
-    //중복된 이름은 이름 form 바로 밑에 출력하고 싶음 -> ChildInforRegistCard 파일에.
     if (isDuplicateName(data.name)) {
       setError("name", {
         type: "validate",
@@ -136,7 +148,7 @@ export const useChildRegistration = () => {
 
   // 최종 완료 핸들러 (localstorage 저장 및 페이지 이동)
   const handleComplete = () => {
-    const data = formValues; //watch를 사용하여 최신 데이터를 가져온다.
+    const data = formValues;
     const childData: ChildRequest = {
       name: data.name.trim(),
       birthday: `${data.birthYear}-${data.birthMonth.padStart(
@@ -156,10 +168,8 @@ export const useChildRegistration = () => {
       ),
     };
 
-    //데이터를 localstorage에 저장하고 다음 페이지로 이동
     localStorage.setItem("childData", JSON.stringify(childData));
 
-    //이름 목록 업데이트(정규화 / 원본 모두) -> 왜 둘 다?
     const norm = normalizeName(data.name);
     if (!existingNamesNormRef.current.includes(norm)) {
       existingNamesNormRef.current = [...existingNamesNormRef.current, norm];
@@ -172,6 +182,8 @@ export const useChildRegistration = () => {
       saveJson(STORAGE_KEY_NAMES_NORM, existingNamesNormRef.current);
       saveJson(STORAGE_KEY_NAMES, existingNamesRawRef.current);
     }
+
+    reset(formValues, { keepValues: true }); //값을 유지하며 dirty 상태만 리셋
 
     navigate(PATH.REGION_REGISTRATION);
   };
