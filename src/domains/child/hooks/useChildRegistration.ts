@@ -11,6 +11,7 @@ import {
   PROFILE_MAPPING,
 } from "@/domains/auth/types/signup";
 import { debounce } from "@/shared/utils/debounce";
+import { childApi } from "../apis/childApi";
 
 export type ProfileValue = "CAT" | "CHICK" | "DINOSAUR" | "DOG" | "RABBIT";
 export type Birth = { year: string; month: string; day: string };
@@ -155,7 +156,7 @@ export const useChildRegistration = () => {
 
   const handleSave = handleSubmit(onSubmit);
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
     const data = formValues;
     const childData: ChildRequest = {
       name: data.name.trim(),
@@ -176,8 +177,18 @@ export const useChildRegistration = () => {
       ),
     };
 
-    localStorage.setItem("childData", JSON.stringify(childData));
+    // localStorage.setItem("childData", JSON.stringify(childData));
 
+    try {
+      const result = await childApi.postChildRegistration(childData);
+      if (result.success) {
+        //성공시 로직
+        //뭐가 있지
+      } else {
+      }
+    } catch (error) {
+      console.error("아이 등록 중 오류 발생:", error);
+    }
     const norm = normalizeName(data.name);
     if (!existingNamesNormRef.current.includes(norm)) {
       existingNamesNormRef.current = [...existingNamesNormRef.current, norm];

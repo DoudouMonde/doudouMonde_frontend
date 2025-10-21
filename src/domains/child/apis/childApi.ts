@@ -1,5 +1,15 @@
+import { ChildRequest } from "@/domains/auth/types/signup";
 import { ChildListResponse } from "@/domains/child/types/childApiTypes";
 import { apiRequester } from "@/shared/apis/axiosInstance";
+
+//API 호출 환경 설정 및 Mocking 활성화
+const IS_MOCKING_ENABLED = true;
+
+//아이 등록 API 요청 결과 타입 -> api가 생성된 후 다시 수정
+export interface PostChildRegistrationResponse {
+  childId: number;
+  success: boolean;
+}
 
 export interface UpdateChildNameRequest {
   name: string;
@@ -19,28 +29,47 @@ export interface UpdateChildProfileResponse {
   profile: string;
 }
 
+//Mocking 함수
+const mockPostChildRegistration = async (
+  data: ChildRequest
+): Promise<PostChildRegistrationResponse> => {
+  console.log("--- MOCK API CALL: POST Child Registration ---");
+  console.log("Mocking: 아이 정보 등록 시도", data);
+
+  //2초 지연 시뮬레이션
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  //성공 응답 및 임시 ID 반환
+  return {
+    childId: Math.floor(Math.random() * 10000) + 1,
+    success: true,
+  };
+};
+
 export const childApi = {
-  getChildList: async () => {
-    console.log("👶 아이 목록 API 요청 시작");
-    console.log("🌐 요청 URL:", "/v1/child");
-    console.log("🌍 전체 URL:", `${apiRequester.defaults.baseURL}/v1/child`);
+  postChildRegistration: async (
+    data: ChildRequest
+  ): Promise<PostChildRegistrationResponse> => {
+    if (IS_MOCKING_ENABLED) {
+      return mockPostChildRegistration(data);
+    }
 
     try {
-      const response = await apiRequester.get<ChildListResponse>("/v1/child");
-      console.log("👶 아이 목록 API 응답 성공:", {
-        status: response.status,
-        data: response.data,
-        childrenCount: response.data?.contents?.length || 0,
-      });
+      const response = await apiRequester.post<PostChildRegistrationResponse>(
+        "/vi/child",
+        data
+      );
       return response.data;
     } catch (error) {
-      console.error("❌ 아이 목록 API 요청 실패:", error);
-      console.error("🔍 에러 상세:", {
-        message: error.message,
-        status: error.response?.status,
-        data: error.response?.data,
-        url: error.config?.url,
-      });
+      throw error;
+    }
+  },
+
+  getChildList: async () => {
+    try {
+      const response = await apiRequester.get<ChildListResponse>("/v1/child");
+      return response.data;
+    } catch (error) {
       throw error;
     }
   },
