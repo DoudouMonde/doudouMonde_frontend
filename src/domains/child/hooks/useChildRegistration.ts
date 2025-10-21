@@ -10,6 +10,7 @@ import {
   GENRE_MAPPING,
   PROFILE_MAPPING,
 } from "@/domains/auth/types/signup";
+import { debounce } from "@/shared/utils/debounce";
 
 export type ProfileValue = "CAT" | "CHICK" | "DINOSAUR" | "DOG" | "RABBIT";
 export type Birth = { year: string; month: string; day: string };
@@ -30,6 +31,7 @@ const normalizeName = (raw: string) =>
 
 const STORAGE_KEY_NAMES = "childNames"; //정규화 전 원본 이름
 const STORAGE_KEY_NAMES_NORM = "childNamesNorm"; //정규화된 이름(중복 체크용)
+const STORAGE_KEY_AUTOSAVE = "childFormAutoSave"; //자동 저장 데이터의 임시 저장을 위한 키
 
 const loadJson = <T>(key: string, fallback: T): T => {
   try {
@@ -99,6 +101,30 @@ export const useChildRegistration = () => {
 
   const formValues = watch();
 
+  //자동 저장 로직
+  //1. 디바운드된 자동 저장 함수 생성 (3초 지연)
+  const debouncedAutosave = useMemo(
+    () =>
+      debounce((dataToSave) => {
+        //빈 폼이 아니라면
+        if (dataToSave.name || dataToSave.birthYear) {
+          //폼 데이터 전체를 임시 저장소에 저장
+          saveJson(STORAGE_KEY_AUTOSAVE, dataToSave);
+        } else {
+          //폼이 비어있으면 임시 저장 데이터 제거
+          localStorage.removeItem(STORAGE_KEY_AUTOSAVE);
+        }
+      }, 3000),
+    []
+  );
+
+  //폼 값 변경 시 자동 저장 트리거
+  useEffect(() => {
+    if (isDirty) {
+      debouncedAutosave(formValues);
+    }
+  }, [formValues, isDirty, debouncedAutosave]);
+
   const currentCount = existingNamesNormRef.current.length;
   const isLimitReached = currentCount >= MAX_CHILDREN;
 
@@ -163,6 +189,9 @@ export const useChildRegistration = () => {
       saveJson(STORAGE_KEY_NAMES_NORM, existingNamesNormRef.current);
       saveJson(STORAGE_KEY_NAMES, existingNamesRawRef.current);
     }
+
+    //최종 저장 완료 후 임시 자동 저장 데이터 제거
+    localStorage.removeItem(STORAGE_KEY_AUTOSAVE);
 
     reset(formValues, { keepValues: true }); //값을 유지하며 dirty 상태만 리셋
 
