@@ -1,6 +1,7 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useRouteLeavingGuard } from "@/shared/hooks/useRouteLeavingGuard";
 import { PATH } from "@/shared/constants/paths";
 import {
   ChildRequest,
@@ -9,6 +10,8 @@ import {
   GENRE_MAPPING,
   PROFILE_MAPPING,
 } from "@/domains/auth/types/signup";
+import { debounce } from "@/shared/utils/debounce";
+import { childApi } from "../apis/childApi";
 
 import { normalizeName } from "../utils/normalizeName";
 import {
@@ -24,7 +27,8 @@ export const useChildRegistration = () => {
   const navigate = useNavigate();
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
-  // 최초 1회 로드
+  const MAX_CHILDREN = 4;
+
   const initialNormNames = useMemo(
     () => loadJson<string[]>(STORAGE_KEY_NAMES_NORM, []),
     []
@@ -60,12 +64,47 @@ export const useChildRegistration = () => {
     setValue,
     setError,
     clearErrors,
-    formState: { isValid, errors },
+    formState: { isValid, errors, isDirty },
   } = formMethods;
+
+  const handleResetDirtyState = () => {
+    reset(formValues, { keepValues: true });
+  };
+
+  useRouteLeavingGuard(
+    isDirty,
+    "저장되지 않은 아이 등록 정보가 있습니다. 정말 페이지를 이동하시겠습니까?",
+    handleResetDirtyState
+  );
 
   const formValues = watch();
 
-  const isLimitReached = existingNamesNormRef.current.length >= MAX_CHILDREN;
+  //자동 저장 로직
+  //1. 디바운드된 자동 저장 함수 생성 (3초 지연)
+  const debouncedAutosave = useMemo(
+    () =>
+      debounce((dataToSave) => {
+        //빈 폼이 아니라면
+        if (dataToSave.name || dataToSave.birthYear) {
+          //폼 데이터 전체를 임시 저장소에 저장
+          saveJson(STORAGE_KEY_AUTOSAVE, dataToSave);
+        } else {
+          //폼이 비어있으면 임시 저장 데이터 제거
+          localStorage.removeItem(STORAGE_KEY_AUTOSAVE);
+        }
+      }, 3000),
+    []
+  );
+
+  //폼 값 변경 시 자동 저장 트리거
+  useEffect(() => {
+    if (isDirty) {
+      debouncedAutosave(formValues);
+    }
+  }, [formValues, isDirty, debouncedAutosave]);
+
+  const currentCount = existingNamesNormRef.current.length;
+  const isLimitReached = currentCount >= MAX_CHILDREN;
 
   const isDuplicateName = (value: string) =>
     existingNamesNormRef.current.includes(normalizeName(value));
@@ -78,6 +117,7 @@ export const useChildRegistration = () => {
       });
       return;
     }
+
     if (isDuplicateName(data.name)) {
       setError("name", {
         type: "validate",
@@ -90,7 +130,7 @@ export const useChildRegistration = () => {
 
   const handleSave = handleSubmit(onSubmit);
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
     const data = formValues;
     const childData: ChildRequest = {
       name: data.name.trim(),
@@ -111,8 +151,18 @@ export const useChildRegistration = () => {
       ),
     };
 
-    localStorage.setItem("childData", JSON.stringify(childData));
+    // localStorage.setItem("childData", JSON.stringify(childData));
 
+    try {
+      const result = await childApi.postChildRegistration(childData);
+      if (result.success) {
+        //성공시 로직
+        //뭐가 있지
+      } else {
+      }
+    } catch (error) {
+      console.error("아이 등록 중 오류 발생:", error);
+    }
     const norm = normalizeName(data.name);
     if (!existingNamesNormRef.current.includes(norm)) {
       existingNamesNormRef.current = [...existingNamesNormRef.current, norm];
@@ -120,9 +170,15 @@ export const useChildRegistration = () => {
         ...existingNamesRawRef.current,
         data.name.trim(),
       ];
+
       saveJson(STORAGE_KEY_NAMES_NORM, existingNamesNormRef.current);
       saveJson(STORAGE_KEY_NAMES, existingNamesRawRef.current);
     }
+
+    //최종 저장 완료 후 임시 자동 저장 데이터 제거
+    localStorage.removeItem(STORAGE_KEY_AUTOSAVE);
+
+    reset(formValues, { keepValues: true }); //값을 유지하며 dirty 상태만 리셋
 
     navigate(PATH.REGION_REGISTRATION);
   };
