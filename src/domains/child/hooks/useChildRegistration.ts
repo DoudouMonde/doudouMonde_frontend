@@ -1,18 +1,14 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useRouteLeavingGuard } from "@/shared/hooks/useRouteLeavingGuard";
 import { PATH } from "@/shared/constants/paths";
 import {
-  ChildRequest,
   GENDER_MAPPING,
   TRAIT_MAPPING,
   GENRE_MAPPING,
   PROFILE_MAPPING,
 } from "@/domains/auth/types/signup";
-import { debounce } from "@/shared/utils/debounce";
-import { childApi } from "../apis/childApi";
-
 import { normalizeName } from "../utils/normalizeName";
 import {
   loadJson,
@@ -22,25 +18,22 @@ import {
 } from "../utils/storage";
 import { MAX_CHILDREN } from "../constants/childRegistration";
 import { ChildFormValues } from "../types/childForm";
+import {
+  useAutosaveChildForm,
+  STORAGE_KEY_AUTOSAVE,
+} from "./useAutosaveChildForm.ts";
+import { useChildRegistrationMutation } from "./useChildRegistrationMutation";
 
 export const useChildRegistration = () => {
   const navigate = useNavigate();
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+  const { postRegistration } = useChildRegistrationMutation();
 
-  const MAX_CHILDREN = 4;
-
-  const initialNormNames = useMemo(
-    () => loadJson<string[]>(STORAGE_KEY_NAMES_NORM, []),
-    []
+  // 기존 이름 목록 로드
+  const existingNamesNormRef = useRef<string[]>(
+    loadJson(STORAGE_KEY_NAMES_NORM, [])
   );
-  const initialRawNames = useMemo(
-    () => loadJson<string[]>(STORAGE_KEY_NAMES, []),
-    []
-  );
-
-  // 렌더 간 유지
-  const existingNamesNormRef = useRef<string[]>(initialNormNames);
-  const existingNamesRawRef = useRef<string[]>(initialRawNames);
+  const existingNamesRawRef = useRef<string[]>(loadJson(STORAGE_KEY_NAMES, []));
 
   const formMethods = useForm<ChildFormValues>({
     defaultValues: {
@@ -63,49 +56,23 @@ export const useChildRegistration = () => {
     watch,
     setValue,
     setError,
-    clearErrors,
     formState: { isValid, errors, isDirty },
   } = formMethods;
 
-  const handleResetDirtyState = () => {
-    reset(formValues, { keepValues: true });
-  };
+  const formValues = watch();
 
+  // 페이지 이탈 방지
+  const handleResetDirtyState = () => reset(formValues, { keepValues: true });
   useRouteLeavingGuard(
     isDirty,
-    "저장되지 않은 아이 등록 정보가 있습니다. 정말 페이지를 이동하시겠습니까?",
+    "저장되지 않은 아이 등록 정보가 있습니다. 정말 이동하시겠습니까?",
     handleResetDirtyState
   );
 
-  const formValues = watch();
+  // 자동 저장 훅 연결
+  useAutosaveChildForm(formValues, isDirty);
 
-  //자동 저장 로직
-  //1. 디바운드된 자동 저장 함수 생성 (3초 지연)
-  const debouncedAutosave = useMemo(
-    () =>
-      debounce((dataToSave) => {
-        //빈 폼이 아니라면
-        if (dataToSave.name || dataToSave.birthYear) {
-          //폼 데이터 전체를 임시 저장소에 저장
-          saveJson(STORAGE_KEY_AUTOSAVE, dataToSave);
-        } else {
-          //폼이 비어있으면 임시 저장 데이터 제거
-          localStorage.removeItem(STORAGE_KEY_AUTOSAVE);
-        }
-      }, 3000),
-    []
-  );
-
-  //폼 값 변경 시 자동 저장 트리거
-  useEffect(() => {
-    if (isDirty) {
-      debouncedAutosave(formValues);
-    }
-  }, [formValues, isDirty, debouncedAutosave]);
-
-  const currentCount = existingNamesNormRef.current.length;
-  const isLimitReached = currentCount >= MAX_CHILDREN;
-
+  const isLimitReached = existingNamesNormRef.current.length >= MAX_CHILDREN;
   const isDuplicateName = (value: string) =>
     existingNamesNormRef.current.includes(normalizeName(value));
 
@@ -117,12 +84,8 @@ export const useChildRegistration = () => {
       });
       return;
     }
-
     if (isDuplicateName(data.name)) {
-      setError("name", {
-        type: "validate",
-        message: "이미 등록된 이름이에요",
-      });
+      setError("name", { type: "validate", message: "이미 등록된 이름이에요" });
       return;
     }
     setIsBottomSheetOpen(true);
@@ -132,7 +95,8 @@ export const useChildRegistration = () => {
 
   const handleComplete = async () => {
     const data = formValues;
-    const childData: ChildRequest = {
+
+    const childData = {
       name: data.name.trim(),
       birthday: `${data.birthYear}-${data.birthMonth.padStart(
         2,
@@ -151,46 +115,19 @@ export const useChildRegistration = () => {
       ),
     };
 
-    // localStorage.setItem("childData", JSON.stringify(childData));
+    await postRegistration(childData);
 
-    try {
-      const result = await childApi.postChildRegistration(childData);
-      if (result.success) {
-        //성공시 로직
-        //뭐가 있지
-      } else {
-      }
-    } catch (error) {
-      console.error("아이 등록 중 오류 발생:", error);
-    }
     const norm = normalizeName(data.name);
     if (!existingNamesNormRef.current.includes(norm)) {
-      existingNamesNormRef.current = [...existingNamesNormRef.current, norm];
-      existingNamesRawRef.current = [
-        ...existingNamesRawRef.current,
-        data.name.trim(),
-      ];
-
+      existingNamesNormRef.current.push(norm);
+      existingNamesRawRef.current.push(data.name.trim());
       saveJson(STORAGE_KEY_NAMES_NORM, existingNamesNormRef.current);
       saveJson(STORAGE_KEY_NAMES, existingNamesRawRef.current);
     }
 
-    //최종 저장 완료 후 임시 자동 저장 데이터 제거
     localStorage.removeItem(STORAGE_KEY_AUTOSAVE);
-
-    reset(formValues, { keepValues: true }); //값을 유지하며 dirty 상태만 리셋
-
+    reset(formValues, { keepValues: true });
     navigate(PATH.REGION_REGISTRATION);
-  };
-
-  const resetForm = () => {
-    reset();
-    clearErrors();
-  };
-
-  const handleAddAnotherChild = () => {
-    setIsBottomSheetOpen(false);
-    resetForm();
   };
 
   return {
@@ -202,7 +139,6 @@ export const useChildRegistration = () => {
     setIsBottomSheetOpen,
     handleSave,
     handleComplete,
-    handleAddAnotherChild,
     isButtonActive: isValid && !isLimitReached,
     isDuplicateName,
     isLimitReached,
