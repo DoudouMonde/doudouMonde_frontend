@@ -23,11 +23,13 @@ import {
   STORAGE_KEY_AUTOSAVE,
 } from "./useAutosaveChildForm.ts";
 import { useChildRegistrationMutation } from "./useChildRegistrationMutation";
+import { useToast } from "@/shared/hooks/useToast.tsx";
 
 export const useChildRegistration = () => {
   const navigate = useNavigate();
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const { postRegistration } = useChildRegistrationMutation();
+  const { showToast } = useToast();
 
   const existingNamesNormRef = useRef<string[]>(
     loadJson(STORAGE_KEY_NAMES_NORM, [])
@@ -72,7 +74,6 @@ export const useChildRegistration = () => {
   useAutosaveChildForm(formValues, isDirty);
 
   const isLimitReached = existingNamesNormRef.current.length >= MAX_CHILDREN;
-  console.log("현재 등록된 아이 수 :", existingNamesNormRef.current.length);
   const isDuplicateName = (value: string) =>
     existingNamesNormRef.current.includes(normalizeName(value));
 
@@ -133,9 +134,9 @@ export const useChildRegistration = () => {
   //다른 아이 등록하기 : 저장 후 폼 초기화 후 바텀시트 닫기
   const handleAddAnotherChild = async () => {
     if (isLimitReached) {
-      setError("name", {
-        type: "validate",
+      showToast({
         message: `아이는 최대 ${MAX_CHILDREN}명까지 등록할 수 있어요.`,
+        type: "error", // 에러 타입으로 표시 (선택 사항)
       });
       return;
     }
