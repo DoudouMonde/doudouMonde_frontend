@@ -8,6 +8,7 @@ import {
   ContentSection,
 } from "@/shared/components/Layout";
 
+//구현한 훅
 import { useChildRegistration } from "@/domains/child/hooks/useChildRegistration";
 import { ChildFormFields } from "@/domains/child/components/ChildFormFields";
 import { SaveButton } from "@/shared/components/Button/SaveButton";
@@ -34,7 +35,9 @@ export const ChildRegistrationPage = () => {
       <MainContainer>
         <TopBar title="아이 등록" />
 
+        {/* 메인 컨텐츠 */}
         <form onSubmit={handleSave}>
+          {/* 훅에서 정의된 handleSave 사용 */}
           <ContentSection>
             <ChildFormFields
               control={control}
@@ -48,8 +51,10 @@ export const ChildRegistrationPage = () => {
             <SaveButton onClick={handleSave} text={"등록하기"} />
           </ContentSection>
         </form>
+        {/* 하단 고정 저장 버튼 */}
       </MainContainer>
 
+      {/* 바텀시트 오버레이 */}
       {isBottomSheetOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/50"
@@ -57,6 +62,7 @@ export const ChildRegistrationPage = () => {
         />
       )}
 
+      {/* 바텀시트 */}
       {isBottomSheetOpen && (
         <BottomSheet
           onClick1={handleAddAnotherChild}

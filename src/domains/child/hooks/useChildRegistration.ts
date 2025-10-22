@@ -72,29 +72,12 @@ export const useChildRegistration = () => {
   useAutosaveChildForm(formValues, isDirty);
 
   const isLimitReached = existingNamesNormRef.current.length >= MAX_CHILDREN;
+  console.log("현재 등록된 아이 수 :", existingNamesNormRef.current.length);
   const isDuplicateName = (value: string) =>
     existingNamesNormRef.current.includes(normalizeName(value));
 
-  const onSubmit = (data: ChildFormValues) => {
-    if (isLimitReached) {
-      setError("name", {
-        type: "validate",
-        message: `아이는 최대 ${MAX_CHILDREN}명까지 등록할 수 있어요.`,
-      });
-      return;
-    }
-    if (isDuplicateName(data.name)) {
-      setError("name", { type: "validate", message: "이미 등록된 이름이에요" });
-      return;
-    }
-    setIsBottomSheetOpen(true);
-  };
-
-  const handleSave = handleSubmit(onSubmit);
-
-  const handleComplete = async () => {
-    const data = formValues;
-
+  //1. 저장 로직 분리
+  const saveChildData = async (data: ChildFormValues) => {
     const childData = {
       name: data.name.trim(),
       birthday: `${data.birthYear}-${data.birthMonth.padStart(
@@ -125,12 +108,39 @@ export const useChildRegistration = () => {
     }
 
     localStorage.removeItem(STORAGE_KEY_AUTOSAVE);
+  };
+
+  const onSubmit = async (data: ChildFormValues) => {
+    if (isDuplicateName(data.name)) {
+      setError("name", { type: "validate", message: "이미 등록된 이름이에요" });
+      return;
+    }
+
+    //등록하기 버튼 클릭 시 유효성 검사 후 저장 진행
+    await saveChildData(data);
+
+    setIsBottomSheetOpen(true);
+  };
+
+  const handleSave = handleSubmit(onSubmit);
+
+  const handleComplete = async () => {
+    setIsBottomSheetOpen(false);
     reset(formValues, { keepValues: true });
     navigate(PATH.REGION_REGISTRATION);
   };
 
   //다른 아이 등록하기 : 저장 후 폼 초기화 후 바텀시트 닫기
-  const handleAddAnotherChild = () => {
+  const handleAddAnotherChild = async () => {
+    if (isLimitReached) {
+      setError("name", {
+        type: "validate",
+        message: `아이는 최대 ${MAX_CHILDREN}명까지 등록할 수 있어요.`,
+      });
+      return;
+    }
+
+    setIsBottomSheetOpen(false);
     //폼 초기화
     reset({
       name: "",
@@ -152,10 +162,10 @@ export const useChildRegistration = () => {
     isBottomSheetOpen,
     setIsBottomSheetOpen,
     handleAddAnotherChild,
-    handleSave,
     handleComplete,
     isButtonActive: isValid && !isLimitReached,
     isDuplicateName,
+    handleSave,
     isLimitReached,
     maxChildren: MAX_CHILDREN,
   };
