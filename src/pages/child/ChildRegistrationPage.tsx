@@ -12,6 +12,7 @@ import {
 //구현한 훅
 import { useChildRegistration } from "@/domains/child/hooks/useChildRegistration";
 import { ChildFormFields } from "@/domains/child/components/ChildFormFields";
+import { SaveButton } from "@/shared/components/Button/SaveButton";
 
 export const ChildRegistrationPage = () => {
   const {
@@ -50,16 +51,11 @@ export const ChildRegistrationPage = () => {
               isLimitReached={isLimitReached}
               maxChildrend={maxChildren}
             />
+            <SaveButton onClick={handleSave} text={"등록하기"} />
           </ContentSection>
         </form>
+        {/* 하단 고정 저장 버튼 */}
       </MainContainer>
-
-      {/* 하단 고정 저장 버튼 */}
-      <div className="fixed right-0 bottom-0 left-0 z-30 p-6">
-        <CustomButton onClick={handleSave} isActive={isButtonActive}>
-          저장하기
-        </CustomButton>
-      </div>
 
       {/* 바텀시트 오버레이 */}
       {isBottomSheetOpen && (

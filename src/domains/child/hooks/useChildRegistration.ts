@@ -29,7 +29,6 @@ export const useChildRegistration = () => {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const { postRegistration } = useChildRegistrationMutation();
 
-  // 기존 이름 목록 로드
   const existingNamesNormRef = useRef<string[]>(
     loadJson(STORAGE_KEY_NAMES_NORM, [])
   );
@@ -130,6 +129,21 @@ export const useChildRegistration = () => {
     navigate(PATH.REGION_REGISTRATION);
   };
 
+  //다른 아이 등록하기 : 저장 후 폼 초기화 후 바텀시트 닫기
+  const handleAddAnotherChild = () => {
+    //폼 초기화
+    reset({
+      name: "",
+      birthYear: "",
+      birthMonth: "",
+      birthDay: "",
+      gender: "",
+      selectedTraits: [],
+      selectedGenres: [],
+      selectedProfile: "CAT",
+    });
+  };
+
   return {
     control,
     setValue,
@@ -137,6 +151,7 @@ export const useChildRegistration = () => {
     errors,
     isBottomSheetOpen,
     setIsBottomSheetOpen,
+    handleAddAnotherChild,
     handleSave,
     handleComplete,
     isButtonActive: isValid && !isLimitReached,

@@ -3,18 +3,16 @@ import { Controller, FieldErrors, UseFormReturn } from "react-hook-form";
 import { MultiRadio } from "@/shared/components/Radio";
 import { MultiSelectCard } from "@/shared/components/MultiSelect/MultiSelectCard";
 import { GridSelectCard } from "@/shared/components/GridSelectCard";
-import { ChildInforRegistCard } from "@/shared/components/Child/ChildInforRegistCard";
+import { ChildInfoRegistCard } from "@/shared/components/Child/ChildInfoRegistCard";
 import { ChildTraitOptions } from "@/domains/child/components/TraitSelector";
 import { GENRES } from "@/shared/constants/genres";
 import { PROFILE_OPTIONS_UI } from "@/shared/ui/profile/profileOptions";
-import {
-  ChildFormValues,
-  Birth,
-} from "@/domains/child/hooks/useChildRegistration";
+import { Birth } from "../types/childForm";
+import { ChildFormValues } from "../types/childForm";
 type ProfileValue = ChildFormValues["selectedProfile"];
 
-const NAME_ALLOWED_REGEX = /^[\uac00-\ud7a3a-zA-Z\s]+$/;
-const HANGUL_OR_SPACE_ONLY_REGEX = /^[\uac00-\ud7a3\s]+$/;
+const NAME_ALLOWED_REGEX = /^[\uac00-\ud7a3\u3131-\u318ea-zA-Z\s]+$/;
+const HANGUL_OR_SPACE_ONLY_REGEX = /^[\uac00-\ud7a3\u3131-\u318e\s]+$/;
 
 const TraitSelector = () => <ChildTraitOptions />;
 const GenreSelector = () => (
@@ -45,6 +43,7 @@ const getMaxLength = (trimmedValue: string): number => {
 export const ChildFormFields = ({
   control,
   formValues,
+  errors,
   setValue,
   isDuplicateName,
 }: ChildFormFieldsProps) => {
@@ -60,6 +59,24 @@ export const ChildFormFields = ({
     } else {
       rhfOnChange(newValue);
     }
+  };
+
+  //생년월일과 성별의 유효성 검사 메시지
+  const getCombinedInfoErrorMessage = () => {
+    //birthYear, birthMonth, birthday 중 하나라도 에러가 있으면 생년월일에러 메시지 반환
+    if (errors.birthYear || errors.birthMonth || errors.birthDay) {
+      return (
+        errors.birthYear?.message ||
+        errors.birthMonth?.message ||
+        errors.birthDay?.message ||
+        "생년월일을 입력해주세요."
+      );
+    }
+    //gender 에러가 있으면 성별 에러 메시지 반환
+    if (errors.gender) {
+      return errors.gender.message;
+    }
+    return undefined;
   };
 
   return (
@@ -108,7 +125,7 @@ export const ChildFormFields = ({
         }}
         render={({ field, fieldState: { error } }) => (
           <div className="space-y-2">
-            <ChildInforRegistCard
+            <ChildInfoRegistCard
               nameValue={field.value}
               nameOnChange={(value) => handleNameChange(value, field.onChange)}
               nameOnBlur={field.onBlur}
@@ -140,9 +157,40 @@ export const ChildFormFields = ({
                   shouldDirty: true,
                 });
               }}
+              //생년월일 및 성별 에러 메시지를 통합하여 ChildInfoRegistCard에 전달
+              combinedInfoErrorMessage={getCombinedInfoErrorMessage()}
             />
           </div>
         )}
+      />
+
+      {/* 유효성 검사를 위한 controller */}
+      <Controller
+        control={control}
+        name="birthYear"
+        rules={{ required: "생년월일(년)은 필수 입력입니다." }}
+        render={() => <></>}
+      />
+
+      <Controller
+        control={control}
+        name="birthMonth"
+        rules={{ required: "생년월일(월)은 필수 입력입니다." }}
+        render={() => <></>}
+      />
+
+      <Controller
+        control={control}
+        name="birthDay"
+        rules={{ required: "생년월일(일)은 필수 입력입니다." }}
+        render={() => <></>}
+      />
+
+      <Controller
+        control={control}
+        name="gender"
+        rules={{ required: "성별은 필수 입력입니다." }}
+        render={() => <></>}
       />
 
       {/* 2. 아이 성향 선택 카드 */}

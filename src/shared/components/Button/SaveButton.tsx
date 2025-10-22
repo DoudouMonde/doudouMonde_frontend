@@ -11,15 +11,13 @@ export const SaveButton: React.FC<SaveButtonProps> = ({
   onClick,
   disabled = false,
   text = "저장",
-  className,
 }) => {
   return (
-    <div className={["flex justify-center ", className ?? ""].join(" ")}>
+    <div className={"flex justify-center "}>
       <button
         type="button"
         onClick={onClick}
-        // disabled={disabled}
-        className="px-8 py-3 w-full font-semibold bg-green-100 rounded-full shadow-md transition-colors text-gray-2 00 hover:bg-blue-600 disabled:opacity-50"
+        className="px-8 py-3 w-full body-inter-r text-gray-200 bg-green-100/70 rounded-full 00 hover:bg-green-100"
         aria-disabled={disabled}
       >
         {/* {disabled ? "저장 중..." : text} */}

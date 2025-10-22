@@ -17,9 +17,10 @@ type ChildInforRegistCardProps = {
   genderValue: string;
   setGender: (v: string) => void;
   nameErrorMessage?: string;
+  combinedInfoErrorMessage?: string;
 };
 
-export const ChildInforRegistCard = ({
+export const ChildInfoRegistCard = ({
   nameValue,
   nameOnChange,
   nameOnBlur,
@@ -29,6 +30,7 @@ export const ChildInforRegistCard = ({
   genderValue,
   setGender,
   nameErrorMessage,
+  combinedInfoErrorMessage,
 }: ChildInforRegistCardProps) => {
   return (
     <FormCard title="아이 정보" subtitle="아이의 기본 정보를 입력해주세요.">
@@ -51,6 +53,12 @@ export const ChildInforRegistCard = ({
       </div>
       <BirthdateSelect value={birthValue} onChange={setBirth} />
       <GenderSelect value={genderValue} onChange={setGender} />
+
+      {combinedInfoErrorMessage && (
+        <p className="px-1 mt-2 text-red-100 body-inter-sm">
+          * {combinedInfoErrorMessage}
+        </p>
+      )}
     </FormCard>
   );
 };
