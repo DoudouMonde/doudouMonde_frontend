@@ -33,22 +33,22 @@ export const NameSection = ({ field, error }: Props) => {
       setBirth={(newBirth: Birth) => {
         setValue("birthYear", newBirth.year, {
           shouldValidate: true,
-          shouldDirty: true, //
+          shouldDirty: true,
         });
         setValue("birthMonth", newBirth.month, {
           shouldValidate: true,
-          shouldDirty: true, //
+          shouldDirty: true,
         });
         setValue("birthDay", newBirth.day, {
           shouldValidate: true,
-          shouldDirty: true, //
+          shouldDirty: true,
         });
       }}
       genderValue={formValues.gender}
       setGender={(value) => {
         setValue("gender", value, {
           shouldValidate: true,
-          shouldDirty: true, //
+          shouldDirty: true,
         });
       }}
       combinedInfoErrorMessage={getCombinedInfoErrorMessage()}

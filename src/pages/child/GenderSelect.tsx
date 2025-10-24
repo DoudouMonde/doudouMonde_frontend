@@ -7,6 +7,7 @@ type GenderSelectProps = {
   label?: string;
   options?: Option[]; // 기본 MALE/FEMALE, 필요 시 커스텀
   className?: string;
+  error?: string;
 };
 
 const DEFAULT_GENDER_OPTIONS: Option[] = [
@@ -19,10 +20,10 @@ export function GenderSelect({
   onChange,
   label = "성별",
   options = DEFAULT_GENDER_OPTIONS,
-  className,
+  error,
 }: GenderSelectProps) {
   return (
-    <div className={className}>
+    <div className="flex flex-col gap-2">
       <SelectField
         label={<span className="body-inter-b">{label}</span>}
         value={value}
@@ -30,6 +31,9 @@ export function GenderSelect({
         placeholder="성별을 선택해주세요"
         options={options}
       />
+      {error && (
+        <p className="px-1 mt-1 text-red-100 body-inter-sm">* {error}</p>
+      )}
     </div>
   );
 }

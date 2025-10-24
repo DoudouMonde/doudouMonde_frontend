@@ -51,13 +51,11 @@ export const ChildInfoRegistCard = ({
         )}
       </div>
       <BirthdateSelect value={birthValue} onChange={setBirth} />
-      <GenderSelect value={genderValue} onChange={setGender} />
-
-      {combinedInfoErrorMessage && (
-        <p className="px-1 mt-2 text-red-100 body-inter-sm">
-          * {combinedInfoErrorMessage}
-        </p>
-      )}
+      <GenderSelect
+        value={genderValue}
+        onChange={setGender}
+        error={combinedInfoErrorMessage}
+      />
     </FormCard>
   );
 };
