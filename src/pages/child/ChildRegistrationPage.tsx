@@ -8,53 +8,45 @@ import {
   ContentSection,
 } from "@/shared/components/Layout";
 
-//구현한 훅
 import { useChildRegistration } from "@/domains/child/hooks/useChildRegistration";
 import { ChildFormFields } from "@/domains/child/components/ChildFormFields";
 import { SaveButton } from "@/shared/components/Button/SaveButton";
+//생성한 Provider, Cosumer 훅 import 
+import { ChildRegistrationProvider, useChildRegistrationContext } from "@/domains/child/contexts/ChildRegistrationContext";
 
+//2. Page 컴포넌트는 Provider만 렌더링하도록 분리
 export const ChildRegistrationPage = () => {
+  return (
+    <ChildRegistrationProvider>
+      <ChildRegistrationView/>
+    </ChildRegistrationProvider>
+  )
+}
+//3. 기존의 Page의 JSX는 View 컴포넌트로 분리
+const ChildRegistrationView = () => {
+  //4. useChildRegistration 대신 Context 훅 사용
   const {
-    control,
-    setValue,
-    formValues,
-    errors,
+    handleSave,
     isBottomSheetOpen,
     setIsBottomSheetOpen,
-    handleSave,
-    handleComplete,
     handleAddAnotherChild,
-    isDuplicateName,
-    isLimitReached,
-    maxChildren,
-  } = useChildRegistration();
+    handleComplete,
+  } = useChildRegistrationContext();
 
   return (
     <PageContainer>
       <Background />
       <MainContainer>
         <TopBar title="아이 등록" />
-
-        {/* 메인 컨텐츠 */}
         <form onSubmit={handleSave}>
-          {/* 훅에서 정의된 handleSave 사용 */}
           <ContentSection>
-            <ChildFormFields
-              control={control}
-              formValues={formValues}
-              setValue={setValue}
-              errors={errors}
-              isDuplicateName={isDuplicateName}
-              isLimitReached={isLimitReached}
-              maxChildrend={maxChildren}
-            />
+            {/* 이전에 Props로 넘겼던 것을 이제 안 넘겨도 된다/  */}
+            <ChildFormFields/>
             <SaveButton onClick={handleSave} text={"등록하기"} />
           </ContentSection>
         </form>
-        {/* 하단 고정 저장 버튼 */}
       </MainContainer>
 
-      {/* 바텀시트 오버레이 */}
       {isBottomSheetOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/50"
@@ -62,7 +54,6 @@ export const ChildRegistrationPage = () => {
         />
       )}
 
-      {/* 바텀시트 */}
       {isBottomSheetOpen && (
         <BottomSheet
           onClick1={handleAddAnotherChild}

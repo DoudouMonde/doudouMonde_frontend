@@ -6,22 +6,16 @@ import {
   NAME_ALLOWED_REGEX,
   HANGUL_OR_SPACE_ONLY_REGEX,
 } from "../constants/childRegistration";
+//1. context 훅 import
+import { useChildRegistrationContext } from "../contexts/ChildRegistrationContext";
 
-type InfoInputSectionProps = {
-  control: UseFormReturn<ChildFormValues>["control"];
-  formValues: ChildFormValues;
-  setValue: UseFormReturn<ChildFormValues>["setValue"];
-  errors: FieldErrors<ChildFormValues>;
-  isDuplicateName: (value: string) => boolean;
-};
 
-export const BasicInfoInputSection = ({
-  control,
-  formValues,
-  setValue,
-  errors,
-  isDuplicateName,
-}: InfoInputSectionProps) => {
+//2. Props 타입 정의 삭제
+
+//3. Props 받지 않도록 수정
+export const BasicInfoInputSection = () => {
+  //4. Context 훅에서 필요한 값 모두 추출
+  const {control, formValues, setValue, errors, isDuplicateName} = useChildRegistrationContext();
   return (
     <>
       <Controller
@@ -63,13 +57,10 @@ export const BasicInfoInputSection = ({
           },
         }}
         render={({ field, fieldState: { error } }) => (
+          //NameSection에서 필요한 props 외에 넘길 필요가 없다,
           <NameSection
             field={field}
             error={error}
-            formValues={formValues}
-            setValue={setValue}
-            errors={errors}
-            isDuplicateName={isDuplicateName}
           />
         )}
       />

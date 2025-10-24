@@ -2,29 +2,26 @@ import React from "react";
 import {
   ControllerRenderProps,
   FieldError,
-  FieldErrors,
-  UseFormSetValue,
 } from "react-hook-form";
 import { ChildFormValues, Birth } from "../types/childForm";
 import { ChildInfoRegistCard } from "@/shared/components/Child/ChildInfoRegistCard";
 import { useNameValidation } from "../hooks/useNameValidation";
+//context import
+import { useChildRegistrationContext } from "../contexts/ChildRegistrationContext";
 
 type Props = {
   field: ControllerRenderProps<ChildFormValues, "name">;
   error?: FieldError;
-  formValues: ChildFormValues;
-  setValue: UseFormSetValue<ChildFormValues>;
-  errors: FieldErrors<ChildFormValues>;
-  isDuplicateName: (value: string) => boolean;
 };
 
 export const NameSection = ({
   field,
   error,
-  formValues,
-  setValue,
-  errors,
 }: Props) => {
+const {  formValues,
+  setValue,
+  errors} = useChildRegistrationContext();
+
   const { handleNameChange, getCombinedInfoErrorMessage } = useNameValidation({
     errors,
   });
