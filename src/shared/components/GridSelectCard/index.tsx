@@ -1,5 +1,6 @@
 // GridSelectCard.tsx
 import React from "react";
+import { FormCard } from "@/shared/components/FormCard";
 
 type Scalar = string | number;
 
@@ -26,25 +27,10 @@ export function GridSelectCard<T extends Scalar>({
   options,
   selected,
   onChange,
-  className,
   gridClassName,
 }: GridSelectCardProps<T>) {
   return (
-    <div
-      className={
-        className ??
-        "flex flex-col gap-5 justify-center p-6 pb-8 w-full h-auto bg-gray-200/70 rounded-[20px]"
-      }
-      role="group"
-      aria-label={title}
-    >
-      <div className="flex flex-col gap-2">
-        <p className="title-hak">{title}</p>
-        {subtitle ? (
-          <p className="subtitle-b text-secondary-100">{subtitle}</p>
-        ) : null}
-      </div>
-
+    <FormCard title={title} subtitle={subtitle}>
       {/* 옵션 그리드 */}
       <div className={gridClassName ?? "grid grid-cols-3 gap-4"}>
         {options.map(({ value, label, icon, disabled }) => {
@@ -73,6 +59,6 @@ export function GridSelectCard<T extends Scalar>({
           );
         })}
       </div>
-    </div>
+    </FormCard>
   );
 }

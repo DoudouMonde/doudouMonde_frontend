@@ -49,7 +49,9 @@ export const FormCard = ({
       )}
 
       {/* float 해제(클리어) + 본문 패딩/레이아웃 */}
-      <div className="flex clear-both flex-col gap-5 p-7">{children}</div>
+      <div className="flex clear-both flex-col gap-5 pt-5 pr-7 pb-7 pl-7">
+        {children}
+      </div>
     </fieldset>
   );
 };
