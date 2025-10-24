@@ -19,7 +19,9 @@ export const FormCard = ({
     <fieldset
       disabled={disabled}
       className={[
-        "flex flex-col justify-center gap-5 bg-gray-200/70 rounded-[20px] p-7 w-full h-auto",
+        // flex 제거! (legend가 float을 먹도록)
+        "w-full h-auto rounded-[20px] bg-gray-200/70",
+        "relative", // 필요하면
         className,
       ]
         .filter(Boolean)
@@ -28,20 +30,26 @@ export const FormCard = ({
       {(title || subtitle) && (
         <legend
           className={[
-            "flex items-center gap-2 px-2",
+            "float-left",
+            "pt-7 pl-7",
+            "bg-white",
             "text-base font-semibold",
             legendClassName,
           ]
             .filter(Boolean)
             .join(" ")}
         >
-          {title && <span className="title-hak">{title}</span>}
-          {subtitle && (
-            <p className="subtitle-b text-secondary-100">{subtitle}</p>
-          )}
+          <span className="inline-flex flex-col gap-2">
+            {title && <span className="title-hak">{title}</span>}
+            {subtitle && (
+              <span className="subtitle-b text-secondary-100">{subtitle}</span>
+            )}
+          </span>
         </legend>
       )}
-      {children}
+
+      {/* float 해제(클리어) + 본문 패딩/레이아웃 */}
+      <div className="flex clear-both flex-col gap-5 p-7">{children}</div>
     </fieldset>
   );
 };

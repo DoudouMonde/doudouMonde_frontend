@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  ControllerRenderProps,
-  FieldError,
-} from "react-hook-form";
+import { ControllerRenderProps, FieldError } from "react-hook-form";
 import { ChildFormValues, Birth } from "../types/childForm";
 import { ChildInfoRegistCard } from "@/shared/components/Child/ChildInfoRegistCard";
 import { useNameValidation } from "../hooks/useNameValidation";
@@ -14,13 +11,8 @@ type Props = {
   error?: FieldError;
 };
 
-export const NameSection = ({
-  field,
-  error,
-}: Props) => {
-const {  formValues,
-  setValue,
-  errors} = useChildRegistrationContext();
+export const NameSection = ({ field, error }: Props) => {
+  const { formValues, setValue, errors } = useChildRegistrationContext();
 
   const { handleNameChange, getCombinedInfoErrorMessage } = useNameValidation({
     errors,

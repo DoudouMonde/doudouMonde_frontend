@@ -1,5 +1,4 @@
 import React from "react";
-import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import { FormCard } from "../FormCard";
 import { FormInput } from "../Form/input";
 import { BirthdateSelect } from "@/pages/child/BirthdateSelect";
