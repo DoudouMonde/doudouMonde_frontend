@@ -4,7 +4,7 @@ import { ChildFormValues } from "../types/childForm";
 import { TraitSelectorSection } from "./TraitSelectorSection";
 import { GenreSelectorSection } from "./GenreSelectorSection";
 import { ProfileSelectorSection } from "./ProfileSelectorSection";
-import { BasicInforInputSection } from "./BasicInfoInputSection";
+import { BasicInfoInputSection } from "./BasicInfoInputSection";
 
 type ChildFormFieldsProps = {
   control: UseFormReturn<ChildFormValues>["control"];
@@ -26,7 +26,7 @@ export const ChildFormFields = ({
   return (
     <>
       {/* 이름, 생년월일, 성별 */}
-      <BasicInforInputSection
+      <BasicInfoInputSection
         control={control}
         formValues={formValues}
         setValue={setValue}

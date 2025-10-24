@@ -7,7 +7,7 @@ import { GenderSelect } from "@/pages/child/GenderSelect";
 
 type Birth = { year: string; month: string; day: string };
 
-type ChildInforRegistCardProps = {
+type ChildInfoRegistCardProps = {
   nameValue: string;
   nameOnChange: (value: string) => void;
   nameOnBlur: () => void;
@@ -31,7 +31,7 @@ export const ChildInfoRegistCard = ({
   setGender,
   nameErrorMessage,
   combinedInfoErrorMessage,
-}: ChildInforRegistCardProps) => {
+}: ChildInfoRegistCardProps) => {
   return (
     <FormCard title="아이 정보" subtitle="아이의 기본 정보를 입력해주세요.">
       <div className="flex flex-col gap-2">

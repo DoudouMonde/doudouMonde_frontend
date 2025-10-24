@@ -7,7 +7,7 @@ import {
   HANGUL_OR_SPACE_ONLY_REGEX,
 } from "../constants/childRegistration";
 
-type InforInputSectionProps = {
+type InfoInputSectionProps = {
   control: UseFormReturn<ChildFormValues>["control"];
   formValues: ChildFormValues;
   setValue: UseFormReturn<ChildFormValues>["setValue"];
@@ -15,13 +15,13 @@ type InforInputSectionProps = {
   isDuplicateName: (value: string) => boolean;
 };
 
-export const BasicInforInputSection = ({
+export const BasicInfoInputSection = ({
   control,
   formValues,
   setValue,
   errors,
   isDuplicateName,
-}: InforInputSectionProps) => {
+}: InfoInputSectionProps) => {
   return (
     <>
       <Controller
