@@ -8,13 +8,10 @@ import {
   ContentSection,
 } from "@/shared/components/Layout";
 
-import { useChildRegistration } from "@/domains/child/hooks/useChildRegistration";
 import { ChildFormFields } from "@/domains/child/components/ChildFormFields";
 import { SaveButton } from "@/shared/components/Button/SaveButton";
-//생성한 Provider, Cosumer 훅 import 
 import { ChildRegistrationProvider, useChildRegistrationContext } from "@/domains/child/contexts/ChildRegistrationContext";
 
-//2. Page 컴포넌트는 Provider만 렌더링하도록 분리
 export const ChildRegistrationPage = () => {
   return (
     <ChildRegistrationProvider>
@@ -22,9 +19,7 @@ export const ChildRegistrationPage = () => {
     </ChildRegistrationProvider>
   )
 }
-//3. 기존의 Page의 JSX는 View 컴포넌트로 분리
 const ChildRegistrationView = () => {
-  //4. useChildRegistration 대신 Context 훅 사용
   const {
     handleSave,
     isBottomSheetOpen,
@@ -40,7 +35,6 @@ const ChildRegistrationView = () => {
         <TopBar title="아이 등록" />
         <form onSubmit={handleSave}>
           <ContentSection>
-            {/* 이전에 Props로 넘겼던 것을 이제 안 넘겨도 된다/  */}
             <ChildFormFields/>
             <SaveButton onClick={handleSave} text={"등록하기"} />
           </ContentSection>
