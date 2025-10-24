@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { ProfileValue } from "../types/childForm";  // ChildFormValues 임포트
 import { GENDER_MAPPING, TRAIT_MAPPING, GENRE_MAPPING, PROFILE_MAPPING } from "@/domains/auth/types/signup";
 import { NAME_ALLOWED_REGEX, HANGUL_OR_SPACE_ONLY_REGEX } from "../constants/childRegistration";
 
