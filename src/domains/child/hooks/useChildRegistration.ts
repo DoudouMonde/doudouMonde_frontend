@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm } from "react-hook-form"; // setError는 이제 필요 없으므로 import에서 제거
 import { useNavigate } from "react-router-dom";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createChildFormSchema } from "../schemas/childFormSchema.ts";
 import { useRouteLeavingGuard } from "@/shared/hooks/useRouteLeavingGuard";
 import { PATH } from "@/shared/constants/paths";
 import {
@@ -36,13 +38,25 @@ export const useChildRegistration = () => {
   );
   const existingNamesRawRef = useRef<string[]>(loadJson(STORAGE_KEY_NAMES, []));
 
+  // --- (수정 1) ---
+  // isDuplicateName 함수를 useForm보다 먼저 정의합니다.
+  const isDuplicateName = (value: string) =>
+    existingNamesNormRef.current.includes(normalizeName(value));
+
+  // --- (수정 2) ---
+  // Zod 스키마를 useForm보다 먼저 생성합니다.
+  const childFormSchema = createChildFormSchema(isDuplicateName);
+  
+  // --- (수정 3) ---
+  // 이제 childFormSchema 변수를 올바르게 참조할 수 있습니다.
   const formMethods = useForm<ChildFormValues>({
+    resolver: zodResolver(childFormSchema), 
     defaultValues: {
       name: "",
       birthYear: "",
       birthMonth: "",
       birthDay: "",
-      gender: "",
+      gender: undefined,
       selectedTraits: [],
       selectedGenres: [],
       selectedProfile: "CAT",
@@ -56,7 +70,7 @@ export const useChildRegistration = () => {
     reset,
     watch,
     setValue,
-    setError,
+    // setError, // --- (수정 4) --- 수동 에러 처리가 필요 없으므로 제거
     formState: { isValid, errors, isDirty },
   } = formMethods;
 
@@ -74,10 +88,9 @@ export const useChildRegistration = () => {
   useAutosaveChildForm(formValues, isDirty);
 
   const isLimitReached = existingNamesNormRef.current.length >= MAX_CHILDREN;
-  const isDuplicateName = (value: string) =>
-    existingNamesNormRef.current.includes(normalizeName(value));
+  
+  // (isDuplicateName과 childFormSchema 정의를 위로 이동시켰습니다.)
 
-  //1. 저장 로직 분리
   const saveChildData = async (data: ChildFormValues) => {
     const childData = {
       name: data.name.trim(),
@@ -111,15 +124,13 @@ export const useChildRegistration = () => {
     localStorage.removeItem(STORAGE_KEY_AUTOSAVE);
   };
 
+  // --- (수정 5) ---
+  // Zod 스키마가 유효성 검증(중복 포함)을 모두 처리하므로
+  // onSubmit 내부의 수동 검사 로직을 제거합니다.
   const onSubmit = async (data: ChildFormValues) => {
-    if (isDuplicateName(data.name)) {
-      setError("name", { type: "validate", message: "이미 등록된 이름이에요" });
-      return;
-    }
-
-    //등록하기 버튼 클릭 시 유효성 검사 후 저장 진행
+    // if (isDuplicateName(data.name)) { ... } // <-- 이 블록 전체 제거
+    
     await saveChildData(data);
-
     setIsBottomSheetOpen(true);
   };
 
@@ -131,24 +142,22 @@ export const useChildRegistration = () => {
     navigate(PATH.REGION_REGISTRATION);
   };
 
-  //다른 아이 등록하기 : 저장 후 폼 초기화 후 바텀시트 닫기
   const handleAddAnotherChild = async () => {
     if (isLimitReached) {
       showToast({
         message: `아이는 최대 ${MAX_CHILDREN}명까지 등록할 수 있어요.`,
-        type: "error", // 에러 타입으로 표시 (선택 사항)
+        type: "error",
       });
       return;
     }
 
     setIsBottomSheetOpen(false);
-    //폼 초기화
     reset({
       name: "",
       birthYear: "",
       birthMonth: "",
       birthDay: "",
-      gender: "",
+      gender: undefined,
       selectedTraits: [],
       selectedGenres: [],
       selectedProfile: "CAT",
@@ -165,7 +174,7 @@ export const useChildRegistration = () => {
     handleAddAnotherChild,
     handleComplete,
     isButtonActive: isValid && !isLimitReached,
-    isDuplicateName,
+    isDuplicateName, // Context나 다른 곳에서 여전히 사용할 수 있으므로 일단 남겨둡니다.
     handleSave,
     isLimitReached,
     maxChildren: MAX_CHILDREN,

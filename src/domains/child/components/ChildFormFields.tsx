@@ -1,12 +1,9 @@
 import React from "react";
-import { FieldErrors, UseFormReturn } from "react-hook-form";
-import { ChildFormValues } from "../types/childForm";
 import { TraitSelectorSection } from "./TraitSelectorSection";
 import { GenreSelectorSection } from "./GenreSelectorSection";
 import { ProfileSelectorSection } from "./ProfileSelectorSection";
 import { BasicInfoInputSection } from "./BasicInfoInputSection";
 //1. Context 훅 import
-import { useChildRegistration } from "../hooks/useChildRegistration";
 import { useChildRegistrationContext } from "../contexts/ChildRegistrationContext";
 
 //2. Props 타입 정의 삭제 
