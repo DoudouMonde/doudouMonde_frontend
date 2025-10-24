@@ -61,25 +61,37 @@ export const useChildRegistration = () => {
   useAutosaveChildForm(formValues, isDirty);
 
   const onSubmit = async (data: ChildFormValues) => {
-    const childData = transformChildDataForApi(data);
-
-    await postRegistration(childData);
-
-    addChildName(data.name);
-
-    localStorage.removeItem(STORAGE_KEY_AUTOSAVE);
+    //api 요청을 보내기 전에 바텀 먼저 열기
     setIsBottomSheetOpen(true);
+    localStorage.removeItem(STORAGE_KEY_AUTOSAVE);
+
+    try {
+      const childData = transformChildDataForApi(data);
+
+      await postRegistration(childData);
+
+      addChildName(data.name);
+    } catch (error) {
+      //API 호출 실패 시
+      console.error("아이 등록 실패:", error);
+      showToast({
+        message: "아이 등록 중 오류가 발생했습니다. 다시 시도해주세요.",
+        type: "error",
+      });
+
+      setIsBottomSheetOpen(false);
+    }
   };
 
   const handleSave = handleSubmit(onSubmit);
 
-  const handleComplete = () => { 
+  const handleComplete = () => {
     setIsBottomSheetOpen(false);
     reset(formValues, { keepValues: true });
     navigate(PATH.REGION_REGISTRATION);
   };
 
-  const handleAddAnotherChild = () => { 
+  const handleAddAnotherChild = () => {
     if (isLimitReached) {
       showToast({
         message: `아이는 최대 ${maxChildren}명까지 등록할 수 있어요.`,
@@ -103,7 +115,7 @@ export const useChildRegistration = () => {
 
   return {
     control,
-    setValue, 
+    setValue,
     formValues,
     errors,
     isBottomSheetOpen,
@@ -111,8 +123,8 @@ export const useChildRegistration = () => {
     handleAddAnotherChild,
     handleComplete,
     isButtonActive: isValid && !isLimitReached,
-    handleSave, 
-    isLimitReached, 
-    maxChildren, 
+    handleSave,
+    isLimitReached,
+    maxChildren,
   };
 };

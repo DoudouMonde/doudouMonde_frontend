@@ -4,9 +4,6 @@ import { saveJson } from "../utils/storage";
 
 export const STORAGE_KEY_AUTOSAVE = "childFormAutosave";
 
-/**
- * formValues를 디바운스(3초)로 자동 저장하는 훅
- */
 export const useAutosaveChildForm = (formValues: any, isDirty: boolean) => {
   const debouncedAutosave = useMemo(
     () =>

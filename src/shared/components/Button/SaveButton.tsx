@@ -13,11 +13,11 @@ export const SaveButton: React.FC<SaveButtonProps> = ({
   text = "저장",
 }) => {
   return (
-    <div className={"flex justify-center "}>
+    <div className={"flex justify-center"}>
       <button
-        type="button"
+        type="submit"
         onClick={onClick}
-        className="px-8 py-3 w-full body-inter-r text-gray-200 bg-green-100/70 rounded-full 00 hover:bg-green-100"
+        className="px-8 py-3 w-full text-gray-200 rounded-full body-inter-r bg-green-100/70 00 hover:bg-green-100"
         aria-disabled={disabled}
       >
         {/* {disabled ? "저장 중..." : text} */}
