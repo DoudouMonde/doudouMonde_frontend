@@ -3,7 +3,7 @@ import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
 import { useReviewStore } from "@/stores/reviewStore";
 import { animals } from "@/domains/playroom/constants/animals";
 import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
-
+import { AnimalId } from "@/domains/playroom/constants/animals";
 import {
   SingleSelectGroup,
   SingleSelectItem,
@@ -11,6 +11,7 @@ import {
 import { RadioTrue, RadioFalse } from "@/assets/icons";
 import { REVIEW_FLOW } from "@/shared/routes/flow";
 import { Desc } from "@/domains/playroom/components/Desc";
+import { AnimalOption } from "@/domains/playroom/components/AnimalOption";
 
 export const CharTypeSelectPage: React.FC = () => {
   // 공연 정보 (전시용)
@@ -76,27 +77,14 @@ export const CharTypeSelectPage: React.FC = () => {
           {/* 첫 줄: 3개 */}
           <div className="grid grid-cols-3 gap-4 mb-4 sm:gap-6 md:gap-8 lg:gap-12">
             {animals.slice(0, 3).map((animal) => {
-              const HeadIcon = animal.headIcon;
               const active = selectedAnimal === animal.id;
               return (
                 <SingleSelectItem key={animal.id} value={animal.id}>
-                  <div className="transition-all duration-200 cursor-pointer">
-                    <div className="flex flex-col items-center">
-                      <div className="flex-shrink-0">
-                        <HeadIcon className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40" />
-                      </div>
-                      <div className="flex gap-2 items-center mt-[-12px]">
-                        {active ? (
-                          <RadioTrue className="w-6 h-6" />
-                        ) : (
-                          <RadioFalse className="w-6 h-6" />
-                        )}
-                        <h3 className="text-sm text-gray-900 body-hak-r">
-                          {animal.name}
-                        </h3>
-                      </div>
-                    </div>
-                  </div>
+                  <AnimalOption
+                    name={animal.name}
+                    HeadIcon={animal.headIcon}
+                    active={active}
+                  />
                 </SingleSelectItem>
               );
             })}
