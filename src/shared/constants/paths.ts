@@ -5,7 +5,7 @@ export const PATH = {
   CHILD_DATE_SELECTION: "/playroom/child-date-selection",
   REVIEW_WRITING: "/playroom/review-writing",
   VOICE_REVIEW: "/playroom/voice-review",
-  CHAR_TYPE: "/playroom/vcharacter-type-select",
+  CHAR_TYPE: "/playroom/character-type-select",
   CHAR_EMOTION: "character-emotion-select",
   CHAR_ACCESSORY: "character-acc-select",
   CHAR_PREV: "character-preview",

@@ -18,7 +18,7 @@ export const ReviewPerformanceInfo: React.FC<ReviewPerformanceInfoProps> = ({
 
   return (
     <>
-      <div className="flex flex-col mb-6">
+      <div className="flex flex-col pt-6">
         <div className="flex flex-col gap-2 w-auto">
           <div className="flex gap-1 items-center">
             <PlayingCardsIcon className="w-[13px] h-[13px]" />

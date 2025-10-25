@@ -90,8 +90,10 @@ export const ChildAndDateSelectionPage: React.FC = () => {
   return (
     <ReviewContainer title="아이 선택" flow={REVIEW_FLOW}>
       {/* 아이 선택 섹션 */}
-      <div>
-        <h2 className="pt-2 pb-5 title-inter">누구와 함께 봤나요?</h2>
+      <article>
+        <p className="pt-2 pb-5 text-primary-100 subtitle-b">
+          누구와 함께 봤나요?
+        </p>
         <div className="space-y-3">
           {children.map((child: ChildItemResponse) => (
             <div
@@ -112,15 +114,15 @@ export const ChildAndDateSelectionPage: React.FC = () => {
             </div>
           ))}
         </div>
-      </div>
+      </article>
 
       {/* 관람날짜 선택 섹션 */}
-      <div>
-        <h2 className="mt-8 mb-6 title-inter">언제 봤나요?</h2>
+      <article className="pt-4">
+        <p className="pt-2 pb-5 text-primary-100 subtitle-b">언제 봤나요?</p>
         <div className="flex justify-center">
           <Calendar onDateChange={handleDateChange} />
         </div>
-      </div>
+      </article>
     </ReviewContainer>
   );
 };

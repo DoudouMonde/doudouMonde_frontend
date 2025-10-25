@@ -45,19 +45,20 @@ export function ReviewContainer({
     if (onNext) return onNext();
     if (flow && autoNext) return navigate(autoNext);
     if (nextTo) return navigate(nextTo);
-    return navigate(PATH.VOICE_REVIEW); // 기본 이동
+    return navigate(PATH.CHAR_TYPE);
+    // return navigate(PATH.VOICE_REVIEW); 음성 후기는 일단 건너뛰기
   };
 
   return (
     <div className="flex min-h-screen">
-      <div className="relative p-6 w-full bg-gray-200/70 rounded-[40px] mt-20 mb-24">
+      <div className=" p-6 w-full bg-gray-200/70 rounded-[40px] mt-20 mb-4">
         <div className="flex flex-col gap-4">
           <h2 className="title-inter">{title}</h2>
         </div>
 
         {children}
 
-        <div className="absolute bottom-0 left-0 p-4 w-full">
+        <div className="bottom-0 left-0 pt-4 w-full">
           <NavigationButtons
             onPrevious={handlePrevious}
             onNext={handleNext}

@@ -105,10 +105,10 @@ const router = createBrowserRouter([
         path: "review-writing",
         element: <ReviewWritingPage />,
       },
-      {
-        path: "voice-review",
-        element: <VoiceReviewPage />,
-      },
+      // {
+      //   path: "voice-review",
+      //   element: <VoiceReviewPage />,
+      // },
       {
         path: "character-type-select",
         element: <CharTypeSelectPage />,

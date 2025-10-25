@@ -49,17 +49,14 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
   const Tree = Trees[Math.min(reviewCount, 9)];
   return (
     <PageContainer>
-      {/* {popup && ( */}
-      <BookMakeModal onClose={onClosePopup} onPurchase={onPurchase} />
-      {/* )} */}
-      {/* section 태그로 변경. aria-labelledby는 왜 하는건지 */}
+      {popup && (
+        <BookMakeModal onClose={onClosePopup} onPurchase={onPurchase} />
+      )}
       <section className="relative pt-[64px]">
-        {/* figure 태그,  */}
         <figure className="flex z-20 justify-center items-start w-full">
           <Tree className="w-full h-auto object-contain drop-shadow-[0px_0px_5px_rgba(0,0,0.5,0)]" />
         </figure>
 
-        {/* 메인 소개 요소 - article, header */}
         <article className="flex z-20 flex-col gap-0 justify-center items-center mx-auto mt-4">
           <header className="bg-gray-200/70 backdrop-blur-sm rounded-[40px] w-[90%] sm:w-[80%] p-4 sm:p-6 shadow-[0px_0px_12px_0px_rgba(255,246,165,1)]">
             <p className="text-center text-black text-sm sm:text-base font-normal body-inter-r leading-[1.3] tracking-[-0.04em]">
@@ -73,14 +70,12 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
             </p>
           </header>
 
-          {/* section 태그  */}
           <section className="flex z-20 gap-2 justify-center items-center px-4 w-full sm:gap-0 sm:justify-evenly sm:px-0">
             <img
               src="/assets/characters/doudou.png"
               alt="두두 캐릭터"
               className="animate-breathe w-[150px] h-[190px] sm:w-[193px] sm:h-[248px] object-contain drop-shadow-[0px_0px_10px_rgba(202, 255, 133, 0.1)] flex-shrink-0"
             />
-            {/* nav 태그 */}
             <nav className="flex flex-col flex-shrink-0 gap-4 items-center pb-8 sm:gap-7 sm:items-end">
               <ActionButton onClick={onStart}>좋아</ActionButton>
               <ActionButton onClick={onSkip}>다음에 할래</ActionButton>
