@@ -49,9 +49,9 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
   const Tree = Trees[Math.min(reviewCount, 9)];
   return (
     <PageContainer>
-      {popup && (
-        <BookMakeModal onClose={onClosePopup} onPurchase={onPurchase} />
-      )}
+      {/* {popup && ( */}
+      <BookMakeModal onClose={onClosePopup} onPurchase={onPurchase} />
+      {/* )} */}
       {/* section 태그로 변경. aria-labelledby는 왜 하는건지 */}
       <section className="relative pt-[64px]">
         {/* figure 태그,  */}

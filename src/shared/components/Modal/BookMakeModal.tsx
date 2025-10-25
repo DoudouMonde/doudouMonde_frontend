@@ -1,19 +1,14 @@
-import React from "react";
-
-type BookMakeModalProps = {
+export interface BookMakeModalProps {
   onClose: () => void; // ← Modal 시그니처에 맞춤
   onPurchase: () => void; // ← '구매하러 가기' 핸들러
-};
+}
 
-export const BookMakeModal: React.FC<BookMakeModalProps> = ({
-  onClose,
-  onPurchase,
-}) => {
+export const BookMakeModal = ({ onClose, onPurchase }: BookMakeModalProps) => {
   return (
-    <div className="flex fixed inset-0 z-50 justify-center items-center backdrop-blur-sm bg-black/50">
-      <div className="p-6 mx-4 w-full max-w-sm bg-gray-200 rounded-2xl shadow-2xl transition-all duration-300 transform scale-100">
-        <div className="space-y-4 text-center">
-          <div className="mb-2 text-4xl">🎉</div>
+    <section className="flex fixed inset-0 z-50 justify-center items-center backdrop-blur-sm bg-black/50">
+      <article className="p-6 mx-4 w-full max-w-sm bg-gray-200 rounded-2xl shadow-2xl transition-all duration-300 transform scale-100">
+        <section className="space-y-4 text-center">
+          <p className="mb-2 text-4xl">🎉</p>
           <h3 className="text-lg font-bold text-gray-800 title-hak">
             축하해요!
           </h3>
@@ -25,7 +20,7 @@ export const BookMakeModal: React.FC<BookMakeModalProps> = ({
             이야기마을북을 구매할 수 있어요
           </p>
 
-          <div className="flex gap-3 pt-2">
+          <nav className="flex gap-3 pt-2">
             <button
               onClick={onClose}
               className="flex-1 px-4 py-3 font-medium text-gray-700 bg-gray-100 rounded-xl transition-colors duration-200 hover:bg-gray-300"
@@ -38,9 +33,9 @@ export const BookMakeModal: React.FC<BookMakeModalProps> = ({
             >
               구매하러 가기
             </button>
-          </div>
-        </div>
-      </div>
-    </div>
+          </nav>
+        </section>
+      </article>
+    </section>
   );
 };
