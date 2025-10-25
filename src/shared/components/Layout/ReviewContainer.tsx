@@ -1,4 +1,3 @@
-// ReviewContainer.tsx (flow 지원 확장)
 import { useLocation, useNavigate } from "react-router-dom";
 import { NavigationButtons } from "@/shared/components";
 import { PATH } from "@/shared/constants";
