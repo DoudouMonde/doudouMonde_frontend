@@ -3,10 +3,3 @@ export interface LandingPageProps {
   onSkip?: () => void;
   className?: string;
 }
-
-export interface ActionButtonProps {
-  onClick: () => void;
-  children: React.ReactNode;
-  variant?: "primary" | "secondary";
-  className?: string;
-}
