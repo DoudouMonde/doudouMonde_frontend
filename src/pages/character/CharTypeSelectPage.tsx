@@ -1,24 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
 import { useReviewStore } from "@/stores/reviewStore";
-
-// ✅ 전신(Body) 및 프리뷰(Head)만 사용
-import {
-  ChickBody,
-  CatBody,
-  DinoBody,
-  DogBody,
-  RabbitBody,
-} from "@/assets/icons/playroom/type_body";
-import {
-  ChickPre,
-  CatPre,
-  DinoPre,
-  DogPre,
-  RabbitPre,
-} from "@/assets/icons/playroom/type_head";
-
-import { Shadow } from "@/assets/icons/playroom";
+import { animals } from "@/domains/playroom/constants/animals";
+import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
 
 import {
   SingleSelectGroup,
@@ -27,8 +11,6 @@ import {
 import { RadioTrue, RadioFalse } from "@/assets/icons";
 import { REVIEW_FLOW } from "@/shared/routes/flow";
 import { Desc } from "@/domains/playroom/components/Desc";
-
-type AnimalId = "chick" | "cat" | "dino" | "dog" | "rabbit";
 
 export const CharTypeSelectPage: React.FC = () => {
   // 공연 정보 (전시용)
@@ -55,20 +37,6 @@ export const CharTypeSelectPage: React.FC = () => {
     }
   }, [setSelectedDate, setSelectedPerformance]);
 
-  // ✅ 동물 데이터: 전신(Body) + 프리뷰(Head)만 필요
-  const animals: Array<{
-    id: AnimalId;
-    name: string;
-    headIcon: React.ComponentType<{ className?: string }>;
-    bodyIcon: React.ComponentType<{ className?: string }>;
-  }> = [
-    { id: "chick", name: "병아리", headIcon: ChickPre, bodyIcon: ChickBody },
-    { id: "cat", name: "고양이", headIcon: CatPre, bodyIcon: CatBody },
-    { id: "dino", name: "공룡", headIcon: DinoPre, bodyIcon: DinoBody },
-    { id: "dog", name: "강아지", headIcon: DogPre, bodyIcon: DogBody },
-    { id: "rabbit", name: "토끼", headIcon: RabbitPre, bodyIcon: RabbitBody },
-  ];
-
   // ✅ 선택된 동물 (기본: 병아리)
   const [selectedAnimal, setSelectedAnimal] = useState<AnimalId>("chick");
 
@@ -93,23 +61,10 @@ export const CharTypeSelectPage: React.FC = () => {
         }
       />
 
-      {/* ✅ 선택한 동물의 '전신'을 표시 */}
-      <div className="flex relative z-10 flex-col items-center">
-        <div className="flex justify-center">
-          {(() => {
-            const selected = animals.find((a) => a.id === selectedAnimal);
-            const BodyIcon = selected?.bodyIcon ?? ChickBody;
-            return (
-              <BodyIcon
-                className={`w-[350px] h-[250px] relative z-20 ${
-                  isAnimating ? "animate-gentle-bounce" : ""
-                }`}
-              />
-            );
-          })()}
-        </div>
-        <Shadow className="w-[147px] h-[40px] mt-[-40px] relative z-10" />
-      </div>
+      <AnimalPreview
+        isAnimating={isAnimating}
+        selectedAnimal={selectedAnimal}
+      />
       <hr className="my-4 mb-7 border-secondary-100/30" />
 
       {/* ✅ 동물 타입 단일 선택 (프리뷰는 head 아이콘) */}
