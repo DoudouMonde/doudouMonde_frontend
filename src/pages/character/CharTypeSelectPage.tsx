@@ -19,28 +19,21 @@ import {
 } from "@/assets/icons/playroom/type_head";
 
 import { Shadow } from "@/assets/icons/playroom";
-import { ReviewPerformanceInfo } from "@/shared/components/Review/ReviewPerformanceInfo";
 
-// ✅ 단일 선택 UI
 import {
   SingleSelectGroup,
   SingleSelectItem,
 } from "@/shared/components/SingleSelect";
 import { RadioTrue, RadioFalse } from "@/assets/icons";
 import { REVIEW_FLOW } from "@/shared/routes/flow";
+import { Desc } from "@/domains/playroom/components/Desc";
 
 type AnimalId = "chick" | "cat" | "dino" | "dog" | "rabbit";
 
 export const CharTypeSelectPage: React.FC = () => {
   // 공연 정보 (전시용)
-  const {
-    selectedDate,
-    selectedPerformance,
-    setSelectedDate,
-    setSelectedPerformance,
-  } = useReviewStore();
+  const { setSelectedDate, setSelectedPerformance } = useReviewStore();
 
-  // localStorage에서 선택된 날짜/공연 불러오기 (그대로 유지)
   useEffect(() => {
     const savedDate = localStorage.getItem("selectedDate");
     if (savedDate) {
@@ -90,20 +83,15 @@ export const CharTypeSelectPage: React.FC = () => {
   return (
     <ReviewContainer title="상상친구 만들기" flow={REVIEW_FLOW}>
       {/* Header */}
-      <div className="flex flex-col mb-6">
-        <p className="subtitle text-secondary-100">
-          오늘 공연을 함께 기억할 상상친구를 만들어 보세요.
-          <br />
-          먼저 친구 종류를 선택해볼까요?
-        </p>
-
-        {/* 공연명, 관람날짜 */}
-        <ReviewPerformanceInfo
-          title={selectedPerformance?.title ?? null}
-          date={selectedDate ?? null}
-        />
-      </div>
-      <hr className="my-4 mb-6 border-secondary-100/30" />
+      <Desc
+        content={
+          <>
+            오늘 공연을 함께 기억할 상상친구를 만들어 보세요.
+            <br />
+            먼저 친구 종류를 선택해볼까요?
+          </>
+        }
+      />
 
       {/* ✅ 선택한 동물의 '전신'을 표시 */}
       <div className="flex relative z-10 flex-col items-center">
@@ -114,7 +102,8 @@ export const CharTypeSelectPage: React.FC = () => {
             return (
               <BodyIcon
                 className={`w-[350px] h-[250px] relative z-20 ${
-                  isAnimating ? "animate-gentle-bounce" : ""}`}
+                  isAnimating ? "animate-gentle-bounce" : ""
+                }`}
               />
             );
           })()}

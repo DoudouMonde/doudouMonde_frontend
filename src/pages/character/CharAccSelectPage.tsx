@@ -39,14 +39,16 @@ import {
   RoundGlass,
   WizardHat,
 } from "@/assets/icons/playroom/accessories";
-
+import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
+import { Desc } from "@/domains/playroom/components/Desc";
+import { REVIEW_FLOW } from "@/shared/routes/flow";
 import { Shadow } from "@/assets/icons/playroom";
 
 import {
   SingleSelectGroup,
   SingleSelectItem,
 } from "@/shared/components/SingleSelect";
-import { RadioTrue, RadioFalse, PlayingCardsIcon } from "@/assets/icons";
+import { RadioTrue, RadioFalse } from "@/assets/icons";
 
 export const CharAccSelectPage: React.FC = () => {
   const navigate = useNavigate();
@@ -248,346 +250,336 @@ export const CharAccSelectPage: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen">
-      {/* Main Content */}
-      <div className="p-6 w-full bg-gray-200/70 rounded-[40px] mt-20 mb-24">
-        {/* Header */}
-        <div className="flex flex-col mb-6">
-          <h1 className="mb-4 title-inter">상상친구 만들기</h1>
-          <p className="subtitle text-secondary-100">
+    <ReviewContainer title="상상친구 만들기" flow={REVIEW_FLOW}>
+      {/* Header */}
+      <Desc
+        content={
+          <>
             {currentStep === "animal"
               ? "오늘 공연을 함께 기억할 상상친구를 만들어 보세요.\n먼저 친구 종류를 선택해볼까요?"
               : currentStep === "emotion"
               ? "친구의 표정을 선택해보세요.\n어떤 기분의 친구가 될까요?"
               : "친구의 악세사리를 선택해보세요.\n어떤 스타일의 친구가 될까요?"}
-          </p>
+          </>
+        }
+      />
 
-          {/* 공연 정보 표시 */}
-          {selectedPerformance && (
-            <div className="mt-4 p-3 bg-white/60 backdrop-blur-sm rounded-[16px] border border-secondary-100/30">
-              <div className="flex gap-1 items-center">
-                <PlayingCardsIcon className="w-[13px] h-[13px]" />
-                <p className="body-hak-r">{selectedPerformance.title}</p>
-              </div>
-            </div>
-          )}
-        </div>
-        <hr className="my-4 mb-6 border-secondary-100/30" />
+      {/* 선택한 동물 전신 모습으로 띄우기 */}
 
-        {/* 선택한 동물 전신 모습으로 띄우기 */}
+      <div className="flex relative z-10 flex-col items-center">
+        <div className="flex justify-center">
+          {(() => {
+            console.log("currentStep:", currentStep);
+            console.log("selectedAnimal:", selectedAnimal);
+            console.log("selectedEmotion:", selectedEmotion);
+            console.log("selectedAccessory:", selectedAccessory);
 
-        <div className="flex relative z-10 flex-col items-center">
-          <div className="flex justify-center">
-            {(() => {
-              console.log("currentStep:", currentStep);
-              console.log("selectedAnimal:", selectedAnimal);
-              console.log("selectedEmotion:", selectedEmotion);
-              console.log("selectedAccessory:", selectedAccessory);
-
-              if (currentStep === "accessory") {
-                // 액세사리 단계에서는 액세사리가 적용된 캐릭터 표시
-                const AccessoryCharacter = getAccessoryCharacter(
-                  selectedAnimal,
-                  selectedEmotion,
-                  selectedAccessory
+            if (currentStep === "accessory") {
+              // 액세사리 단계에서는 액세사리가 적용된 캐릭터 표시
+              const AccessoryCharacter = getAccessoryCharacter(
+                selectedAnimal,
+                selectedEmotion,
+                selectedAccessory
+              );
+              console.log("액세사리동물:", AccessoryCharacter);
+              if (AccessoryCharacter) {
+                return (
+                  <AccessoryCharacter
+                    className={`w-[350px] h-[250px] relative z-20 ${
+                      isAnimating ? "animate-gentle-bounce" : ""
+                    }`}
+                  />
                 );
-                console.log("액세사리동물:", AccessoryCharacter);
-                if (AccessoryCharacter) {
-                  return (
-                    <AccessoryCharacter
-                      className={`w-[350px] h-[250px] relative z-20 ${
-                        isAnimating ? "animate-gentle-bounce" : ""}`}
-                    />
-                  );
-                }
-              } else if (currentStep === "emotion") {
-                // 감정 단계에서는 감정이 적용된 캐릭터 표시
-                const EmotionCharacter = getEmotionCharacter(
-                  selectedAnimal,
-                  selectedEmotion
-                );
-                console.log("감정동물:", EmotionCharacter);
-                if (EmotionCharacter) {
-                  return (
-                    <EmotionCharacter
-                      className={`w-[350px] h-[250px] relative z-20 ${
-                        isAnimating ? "animate-gentle-bounce" : ""}`}
-                    />
-                  );
-                }
               }
-
-              // 동물 단계이거나 캐릭터를 찾을 수 없는 경우 기본 동물 표시
-              const selectedAnimalData = animals.find(
-                (animal) => animal.id === selectedAnimal
+            } else if (currentStep === "emotion") {
+              // 감정 단계에서는 감정이 적용된 캐릭터 표시
+              const EmotionCharacter = getEmotionCharacter(
+                selectedAnimal,
+                selectedEmotion
               );
-              const BodyIcon = selectedAnimalData?.bodyIcon || ChickBody;
-              return (
-                <BodyIcon
-                  className={`w-[350px] h-[250px] relative z-20 ${
-                    isAnimating ? "animate-gentle-bounce" : ""}`}
-                />
-              );
-            })()}
-          </div>
-          <Shadow className="w-[147px] h-[40px] mt-[-40px] relative z-10" />
+              console.log("감정동물:", EmotionCharacter);
+              if (EmotionCharacter) {
+                return (
+                  <EmotionCharacter
+                    className={`w-[350px] h-[250px] relative z-20 ${
+                      isAnimating ? "animate-gentle-bounce" : ""
+                    }`}
+                  />
+                );
+              }
+            }
+
+            // 동물 단계이거나 캐릭터를 찾을 수 없는 경우 기본 동물 표시
+            const selectedAnimalData = animals.find(
+              (animal) => animal.id === selectedAnimal
+            );
+            const BodyIcon = selectedAnimalData?.bodyIcon || ChickBody;
+            return (
+              <BodyIcon
+                className={`w-[350px] h-[250px] relative z-20 ${
+                  isAnimating ? "animate-gentle-bounce" : ""
+                }`}
+              />
+            );
+          })()}
         </div>
-        <hr className="my-4 mb-7 border-secondary-100/30" />
-
-        {/* 선택할 항목 preview 띄우기 */}
-
-        <div className="">
-          {currentStep === "animal" ? (
-            <SingleSelectGroup
-              selectedValue={selectedAnimal}
-              onChange={(value) => setSelectedAnimal(value as string)}
-            >
-              {/* 첫 번째 줄: 3개 동물 */}
-              <div className="grid grid-cols-3 gap-4 mb-4 sm:gap-6 md:gap-8 lg:gap-12">
-                {animals.slice(0, 3).map((animal) => {
-                  const HeadIcon = animal.headIcon;
-                  return (
-                    <SingleSelectItem key={animal.id} value={animal.id}>
-                      <div
-                        className={`transition-all duration-200 cursor-pointer`}
-                      >
-                        <div className="flex flex-col items-center">
-                          {/* 동물 head 이미지 */}
-                          <div className="flex-shrink-0">
-                            <HeadIcon className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40" />
-                          </div>
-                          {/* 선택 표시와 동물 이름을 한 줄로 */}
-                          <div className="flex gap-2 items-center mt-[-12px]">
-                            {selectedAnimal === animal.id ? (
-                              <RadioTrue className="w-6 h-6" />
-                            ) : (
-                              <RadioFalse className="w-6 h-6" />
-                            )}
-                            <h3 className="text-sm text-gray-900 body-hak-r">
-                              {animal.name}
-                            </h3>
-                          </div>
-                        </div>
-                      </div>
-                    </SingleSelectItem>
-                  );
-                })}
-              </div>
-
-              {/* 두 번째 줄: 2개 동물을 가운데 정렬 */}
-              <div className="flex gap-4 justify-center sm:gap-6 md:gap-8 lg:gap-12">
-                {animals.slice(3, 5).map((animal) => {
-                  const HeadIcon = animal.headIcon;
-                  return (
-                    <SingleSelectItem key={animal.id} value={animal.id}>
-                      <div
-                        className={`transition-all duration-200 cursor-pointer`}
-                      >
-                        <div className="flex flex-col justify-center items-center">
-                          {/* 동물 head 이미지 */}
-                          <div className="flex-shrink-0">
-                            <HeadIcon className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40" />
-                          </div>
-                          {/* 선택 표시와 동물 이름을 한 줄로 */}
-                          <div className="flex gap-2 items-center mt-[-12px]">
-                            {selectedAnimal === animal.id ? (
-                              <RadioTrue className="w-6 h-6" />
-                            ) : (
-                              <RadioFalse className="w-6 h-6" />
-                            )}
-                            <h3 className="text-sm text-gray-900 body-hak-r">
-                              {animal.name}
-                            </h3>
-                          </div>
-                        </div>
-                      </div>
-                    </SingleSelectItem>
-                  );
-                })}
-              </div>
-            </SingleSelectGroup>
-          ) : currentStep === "emotion" ? (
-            <SingleSelectGroup
-              selectedValue={selectedEmotion}
-              onChange={(value) => setSelectedEmotion(value as string)}
-            >
-              {/* 첫 번째 줄: 3개 감정 */}
-              <div className="grid grid-cols-3 gap-2 mb-4">
-                {emotions.slice(0, 3).map((emotion) => {
-                  const EmotionIcon = emotion.icon;
-                  return (
-                    <SingleSelectItem key={emotion.id} value={emotion.id}>
-                      <div
-                        className={`transition-all duration-200 cursor-pointer`}
-                      >
-                        <div className="flex flex-col gap-1 items-center">
-                          {/* 감정 이미지 */}
-                          <div className="flex-shrink-0">
-                            <EmotionIcon className="w-20 h-20" />
-                          </div>
-                          {/* 선택 표시와 감정 이름을 한 줄로 */}
-                          <div className="flex gap-2 items-center">
-                            {selectedEmotion === emotion.id ? (
-                              <RadioTrue className="w-6 h-6" />
-                            ) : (
-                              <RadioFalse className="w-6 h-6" />
-                            )}
-                            <h3 className="text-sm text-gray-900 body-hak-sm">
-                              {emotion.name}
-                            </h3>
-                          </div>
-                        </div>
-                      </div>
-                    </SingleSelectItem>
-                  );
-                })}
-              </div>
-
-              {/* 두 번째 줄: 2개 감정을 가운데 정렬 */}
-              <div className="flex gap-5 justify-center">
-                {emotions.slice(3, 6).map((emotion) => {
-                  const EmotionIcon = emotion.icon;
-                  return (
-                    <SingleSelectItem key={emotion.id} value={emotion.id}>
-                      <div
-                        className={`transition-all duration-200 cursor-pointer`}
-                      >
-                        <div className="flex flex-col gap-2 items-center">
-                          {/* 감정 이미지 */}
-                          <div className="flex-shrink-0">
-                            <EmotionIcon className="w-20 h-20" />
-                          </div>
-                          {/* 선택 표시와 감정 이름을 한 줄로 */}
-                          <div className="flex gap-2 items-center">
-                            {selectedEmotion === emotion.id ? (
-                              <RadioTrue className="w-6 h-6" />
-                            ) : (
-                              <RadioFalse className="w-6 h-6" />
-                            )}
-                            <h3 className="text-sm text-gray-900 body-hak-sm">
-                              {emotion.name}
-                            </h3>
-                          </div>
-                        </div>
-                      </div>
-                    </SingleSelectItem>
-                  );
-                })}
-              </div>
-            </SingleSelectGroup>
-          ) : (
-            <SingleSelectGroup
-              selectedValue={selectedAccessory}
-              onChange={(value) => setSelectedAccessory(value as string)}
-            >
-              {/* 첫 번째 줄: 3개 악세사리 */}
-              <div className="grid grid-cols-3 gap-3 mb-4">
-                {accessories.slice(0, 3).map((accessory) => {
-                  const AccessoryIcon = accessory.icon;
-                  return (
-                    <SingleSelectItem key={accessory.id} value={accessory.id}>
-                      <div
-                        className={`transition-all duration-200 cursor-pointer`}
-                      >
-                        <div className="flex flex-col gap-2 items-center">
-                          {/* 악세사리 이미지 */}
-                          <div className="flex-shrink-0">
-                            <AccessoryIcon className="w-16 h-16" />
-                          </div>
-                          {/* 선택 표시와 악세사리 이름을 한 줄로 */}
-                          <div className="flex gap-2 items-center">
-                            {selectedAccessory === accessory.id ? (
-                              <RadioTrue className="w-6 h-6" />
-                            ) : (
-                              <RadioFalse className="w-6 h-6" />
-                            )}
-                            {/* <h3 className="text-sm text-gray-900 body-inter">
-                              {accessory.name}
-                            </h3> */}
-                          </div>
-                        </div>
-                      </div>
-                    </SingleSelectItem>
-                  );
-                })}
-              </div>
-
-              {/* 두 번째 줄: 3개 악세사리 */}
-              <div className="grid grid-cols-3 gap-3 mb-4">
-                {accessories.slice(3, 6).map((accessory) => {
-                  const AccessoryIcon = accessory.icon;
-                  return (
-                    <SingleSelectItem key={accessory.id} value={accessory.id}>
-                      <div
-                        className={`transition-all duration-200 cursor-pointer`}
-                      >
-                        <div className="flex flex-col gap-2 items-center">
-                          {/* 악세사리 이미지 */}
-                          <div className="flex-shrink-0">
-                            <AccessoryIcon className="w-16 h-16" />
-                          </div>
-                          {/* 선택 표시와 악세사리 이름을 한 줄로 */}
-                          <div className="flex gap-2 items-center">
-                            {selectedAccessory === accessory.id ? (
-                              <RadioTrue className="w-6 h-6" />
-                            ) : (
-                              <RadioFalse className="w-6 h-6" />
-                            )}
-                            {/* <h3 className="text-sm text-gray-900 body-inter">
-                              {accessory.name}
-                            </h3> */}
-                          </div>
-                        </div>
-                      </div>
-                    </SingleSelectItem>
-                  );
-                })}
-              </div>
-
-              {/* 세 번째 줄: 2개 악세사리를 가운데 정렬 */}
-              <div className="flex gap-5 justify-center">
-                {accessories.slice(6, 8).map((accessory) => {
-                  const AccessoryIcon = accessory.icon;
-                  return (
-                    <SingleSelectItem key={accessory.id} value={accessory.id}>
-                      <div
-                        className={`transition-all duration-200 cursor-pointer`}
-                      >
-                        <div className="flex flex-col gap-2 items-center">
-                          {/* 악세사리 이미지 */}
-                          <div className="flex-shrink-0">
-                            <AccessoryIcon className="w-16 h-16" />
-                          </div>
-                          {/* 선택 표시와 악세사리 이름을 한 줄로 */}
-                          <div className="flex gap-2 items-center">
-                            {selectedAccessory === accessory.id ? (
-                              <RadioTrue className="w-6 h-6" />
-                            ) : (
-                              <RadioFalse className="w-6 h-6" />
-                            )}
-                            <h3 className="text-sm text-gray-900 body-inter">
-                              {accessory.name}
-                            </h3>
-                          </div>
-                        </div>
-                      </div>
-                    </SingleSelectItem>
-                  );
-                })}
-              </div>
-            </SingleSelectGroup>
-          )}
-        </div>
-
-        {/* 네비게이션 버튼 */}
-        <div className="mt-8">
-          <NavigationButtons
-            onPrevious={handlePrevious}
-            onNext={handleNext}
-            isNextDisabled={false}
-          />
-        </div>
+        <Shadow className="w-[147px] h-[40px] mt-[-40px] relative z-10" />
       </div>
-    </div>
+      <hr className="my-4 mb-7 border-secondary-100/30" />
+
+      {/* 선택할 항목 preview 띄우기 */}
+
+      <div className="">
+        {currentStep === "animal" ? (
+          <SingleSelectGroup
+            selectedValue={selectedAnimal}
+            onChange={(value) => setSelectedAnimal(value as string)}
+          >
+            {/* 첫 번째 줄: 3개 동물 */}
+            <div className="grid grid-cols-3 gap-4 mb-4 sm:gap-6 md:gap-8 lg:gap-12">
+              {animals.slice(0, 3).map((animal) => {
+                const HeadIcon = animal.headIcon;
+                return (
+                  <SingleSelectItem key={animal.id} value={animal.id}>
+                    <div
+                      className={`transition-all duration-200 cursor-pointer`}
+                    >
+                      <div className="flex flex-col items-center">
+                        {/* 동물 head 이미지 */}
+                        <div className="flex-shrink-0">
+                          <HeadIcon className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40" />
+                        </div>
+                        {/* 선택 표시와 동물 이름을 한 줄로 */}
+                        <div className="flex gap-2 items-center mt-[-12px]">
+                          {selectedAnimal === animal.id ? (
+                            <RadioTrue className="w-6 h-6" />
+                          ) : (
+                            <RadioFalse className="w-6 h-6" />
+                          )}
+                          <h3 className="text-sm text-gray-900 body-hak-r">
+                            {animal.name}
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+                  </SingleSelectItem>
+                );
+              })}
+            </div>
+
+            {/* 두 번째 줄: 2개 동물을 가운데 정렬 */}
+            <div className="flex gap-4 justify-center sm:gap-6 md:gap-8 lg:gap-12">
+              {animals.slice(3, 5).map((animal) => {
+                const HeadIcon = animal.headIcon;
+                return (
+                  <SingleSelectItem key={animal.id} value={animal.id}>
+                    <div
+                      className={`transition-all duration-200 cursor-pointer`}
+                    >
+                      <div className="flex flex-col justify-center items-center">
+                        {/* 동물 head 이미지 */}
+                        <div className="flex-shrink-0">
+                          <HeadIcon className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40" />
+                        </div>
+                        {/* 선택 표시와 동물 이름을 한 줄로 */}
+                        <div className="flex gap-2 items-center mt-[-12px]">
+                          {selectedAnimal === animal.id ? (
+                            <RadioTrue className="w-6 h-6" />
+                          ) : (
+                            <RadioFalse className="w-6 h-6" />
+                          )}
+                          <h3 className="text-sm text-gray-900 body-hak-r">
+                            {animal.name}
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+                  </SingleSelectItem>
+                );
+              })}
+            </div>
+          </SingleSelectGroup>
+        ) : currentStep === "emotion" ? (
+          <SingleSelectGroup
+            selectedValue={selectedEmotion}
+            onChange={(value) => setSelectedEmotion(value as string)}
+          >
+            {/* 첫 번째 줄: 3개 감정 */}
+            <div className="grid grid-cols-3 gap-2 mb-4">
+              {emotions.slice(0, 3).map((emotion) => {
+                const EmotionIcon = emotion.icon;
+                return (
+                  <SingleSelectItem key={emotion.id} value={emotion.id}>
+                    <div
+                      className={`transition-all duration-200 cursor-pointer`}
+                    >
+                      <div className="flex flex-col gap-1 items-center">
+                        {/* 감정 이미지 */}
+                        <div className="flex-shrink-0">
+                          <EmotionIcon className="w-20 h-20" />
+                        </div>
+                        {/* 선택 표시와 감정 이름을 한 줄로 */}
+                        <div className="flex gap-2 items-center">
+                          {selectedEmotion === emotion.id ? (
+                            <RadioTrue className="w-6 h-6" />
+                          ) : (
+                            <RadioFalse className="w-6 h-6" />
+                          )}
+                          <h3 className="text-sm text-gray-900 body-hak-sm">
+                            {emotion.name}
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+                  </SingleSelectItem>
+                );
+              })}
+            </div>
+
+            {/* 두 번째 줄: 2개 감정을 가운데 정렬 */}
+            <div className="flex gap-5 justify-center">
+              {emotions.slice(3, 6).map((emotion) => {
+                const EmotionIcon = emotion.icon;
+                return (
+                  <SingleSelectItem key={emotion.id} value={emotion.id}>
+                    <div
+                      className={`transition-all duration-200 cursor-pointer`}
+                    >
+                      <div className="flex flex-col gap-2 items-center">
+                        {/* 감정 이미지 */}
+                        <div className="flex-shrink-0">
+                          <EmotionIcon className="w-20 h-20" />
+                        </div>
+                        {/* 선택 표시와 감정 이름을 한 줄로 */}
+                        <div className="flex gap-2 items-center">
+                          {selectedEmotion === emotion.id ? (
+                            <RadioTrue className="w-6 h-6" />
+                          ) : (
+                            <RadioFalse className="w-6 h-6" />
+                          )}
+                          <h3 className="text-sm text-gray-900 body-hak-sm">
+                            {emotion.name}
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+                  </SingleSelectItem>
+                );
+              })}
+            </div>
+          </SingleSelectGroup>
+        ) : (
+          <SingleSelectGroup
+            selectedValue={selectedAccessory}
+            onChange={(value) => setSelectedAccessory(value as string)}
+          >
+            {/* 첫 번째 줄: 3개 악세사리 */}
+            <div className="grid grid-cols-3 gap-3 mb-4">
+              {accessories.slice(0, 3).map((accessory) => {
+                const AccessoryIcon = accessory.icon;
+                return (
+                  <SingleSelectItem key={accessory.id} value={accessory.id}>
+                    <div
+                      className={`transition-all duration-200 cursor-pointer`}
+                    >
+                      <div className="flex flex-col gap-2 items-center">
+                        {/* 악세사리 이미지 */}
+                        <div className="flex-shrink-0">
+                          <AccessoryIcon className="w-16 h-16" />
+                        </div>
+                        {/* 선택 표시와 악세사리 이름을 한 줄로 */}
+                        <div className="flex gap-2 items-center">
+                          {selectedAccessory === accessory.id ? (
+                            <RadioTrue className="w-6 h-6" />
+                          ) : (
+                            <RadioFalse className="w-6 h-6" />
+                          )}
+                          {/* <h3 className="text-sm text-gray-900 body-inter">
+                              {accessory.name}
+                            </h3> */}
+                        </div>
+                      </div>
+                    </div>
+                  </SingleSelectItem>
+                );
+              })}
+            </div>
+
+            {/* 두 번째 줄: 3개 악세사리 */}
+            <div className="grid grid-cols-3 gap-3 mb-4">
+              {accessories.slice(3, 6).map((accessory) => {
+                const AccessoryIcon = accessory.icon;
+                return (
+                  <SingleSelectItem key={accessory.id} value={accessory.id}>
+                    <div
+                      className={`transition-all duration-200 cursor-pointer`}
+                    >
+                      <div className="flex flex-col gap-2 items-center">
+                        {/* 악세사리 이미지 */}
+                        <div className="flex-shrink-0">
+                          <AccessoryIcon className="w-16 h-16" />
+                        </div>
+                        {/* 선택 표시와 악세사리 이름을 한 줄로 */}
+                        <div className="flex gap-2 items-center">
+                          {selectedAccessory === accessory.id ? (
+                            <RadioTrue className="w-6 h-6" />
+                          ) : (
+                            <RadioFalse className="w-6 h-6" />
+                          )}
+                          {/* <h3 className="text-sm text-gray-900 body-inter">
+                              {accessory.name}
+                            </h3> */}
+                        </div>
+                      </div>
+                    </div>
+                  </SingleSelectItem>
+                );
+              })}
+            </div>
+
+            {/* 세 번째 줄: 2개 악세사리를 가운데 정렬 */}
+            <div className="flex gap-5 justify-center">
+              {accessories.slice(6, 8).map((accessory) => {
+                const AccessoryIcon = accessory.icon;
+                return (
+                  <SingleSelectItem key={accessory.id} value={accessory.id}>
+                    <div
+                      className={`transition-all duration-200 cursor-pointer`}
+                    >
+                      <div className="flex flex-col gap-2 items-center">
+                        {/* 악세사리 이미지 */}
+                        <div className="flex-shrink-0">
+                          <AccessoryIcon className="w-16 h-16" />
+                        </div>
+                        {/* 선택 표시와 악세사리 이름을 한 줄로 */}
+                        <div className="flex gap-2 items-center">
+                          {selectedAccessory === accessory.id ? (
+                            <RadioTrue className="w-6 h-6" />
+                          ) : (
+                            <RadioFalse className="w-6 h-6" />
+                          )}
+                          <h3 className="text-sm text-gray-900 body-inter">
+                            {accessory.name}
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+                  </SingleSelectItem>
+                );
+              })}
+            </div>
+          </SingleSelectGroup>
+        )}
+      </div>
+
+      {/* 네비게이션 버튼 */}
+      <div className="mt-8">
+        <NavigationButtons
+          onPrevious={handlePrevious}
+          onNext={handleNext}
+          isNextDisabled={false}
+        />
+      </div>
+    </ReviewContainer>
   );
 };

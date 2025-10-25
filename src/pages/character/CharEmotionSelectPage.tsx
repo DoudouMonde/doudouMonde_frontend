@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { NavigationButtons } from "@/shared/components";
-
-// ✅ 감정 관련 임포트/로직 전부 제거
-// import * as EmotionCharacters from "...";
+import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
+import { Desc } from "@/domains/playroom/components/Desc";
+import { REVIEW_FLOW } from "@/shared/routes/flow";
 import {
   ChickBody,
   CatBody,
@@ -134,7 +134,8 @@ export const CharEmotionSelectPage: React.FC = () => {
         {/* 전신 */}
         <BodyIcon
           className={`w-[350px] h-[250px] relative z-20 ${
-            isAnimating ? "animate-gentle-bounce" : ""}`}
+            isAnimating ? "animate-gentle-bounce" : ""
+          }`}
         />
         {/* 악세사리 오버레이 (대략 머리 중앙 상단) */}
         <Overlay className="absolute left-1/2 -translate-x-1/2 top-[18%] w-[72px] h-[72px] z-30 pointer-events-none" />
@@ -162,74 +163,58 @@ export const CharEmotionSelectPage: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen">
-      <div className="p-6 w-full bg-gray-200/70 rounded-[40px] mt-20 mb-24">
-        {/* Header */}
-        <div className="flex flex-col mb-6">
-          <h1 className="mb-4 title-inter">상상친구 만들기</h1>
-          <p className="subtitle text-secondary-100">
-            악세사리를 선택하면, 앞서 고른 친구 타입에 적용돼요.
-          </p>
+    <ReviewContainer title="상상친구 만들기" flow={REVIEW_FLOW}>
+      {/* Header */}
+      <Desc
+        content={<>악세사리를 선택하면, 앞서 고른 친구 타입에 적용돼요.</>}
+      />
 
-          {/* 공연 정보 표시 */}
-          {selectedPerformance && (
-            <div className="mt-4 p-3 bg-white/60 backdrop-blur-sm rounded-[16px] border border-secondary-100/30">
-              <div className="flex gap-1 items-center">
-                <PlayingCardsIcon className="w-[13px] h-[13px]" />
-                <p className="body-hak-r">{selectedPerformance.title}</p>
-              </div>
-            </div>
-          )}
-        </div>
-        <hr className="my-4 mb-6 border-secondary-100/30" />
+      {/* 전신 + 악세사리 조합 미리보기 */}
+      <div className="flex relative z-10 flex-col items-center">
+        <div className="flex justify-center">{renderCharacter()}</div>
+        <Shadow className="w-[147px] h-[40px] mt-[-40px] relative z-10" />
+      </div>
+      <hr className="my-4 mb-7 border-secondary-100/30" />
 
-        {/* 전신 + 악세사리 조합 미리보기 */}
-        <div className="flex relative z-10 flex-col items-center">
-          <div className="flex justify-center">{renderCharacter()}</div>
-          <Shadow className="w-[147px] h-[40px] mt-[-40px] relative z-10" />
-        </div>
-        <hr className="my-4 mb-7 border-secondary-100/30" />
-
-        {/* 악세사리 선택 UI (단일 선택) */}
-        <SingleSelectGroup
-          selectedValue={selectedAccessory}
-          onChange={(value) => setSelectedAccessory(value as AccessoryId)}
-        >
-          <div className="grid grid-cols-3 gap-3 mb-4">
-            {accessories.map((acc) => {
-              const Icon = acc.icon;
-              const active = selectedAccessory === acc.id;
-              return (
-                <SingleSelectItem key={acc.id} value={acc.id}>
-                  <div className="transition-all duration-200 cursor-pointer">
-                    <div className="flex flex-col gap-2 items-center">
-                      <Icon className="w-16 h-16" />
-                      <div className="flex gap-2 items-center">
-                        {active ? (
-                          <RadioTrue className="w-6 h-6" />
-                        ) : (
-                          <RadioFalse className="w-6 h-6" />
-                        )}
-                        {/* 이름 노출 원하면 주석 해제 */}
-                        {/* <h3 className="text-sm text-gray-900 body-inter">{acc.name}</h3> */}
-                      </div>
+      {/* 악세사리 선택 UI (단일 선택) */}
+      <SingleSelectGroup
+        selectedValue={selectedAccessory}
+        onChange={(value) => setSelectedAccessory(value as AccessoryId)}
+      >
+        <div className="grid grid-cols-3 gap-3 mb-4">
+          {accessories.map((acc) => {
+            const Icon = acc.icon;
+            const active = selectedAccessory === acc.id;
+            return (
+              <SingleSelectItem key={acc.id} value={acc.id}>
+                <div className="transition-all duration-200 cursor-pointer">
+                  <div className="flex flex-col gap-2 items-center">
+                    <Icon className="w-16 h-16" />
+                    <div className="flex gap-2 items-center">
+                      {active ? (
+                        <RadioTrue className="w-6 h-6" />
+                      ) : (
+                        <RadioFalse className="w-6 h-6" />
+                      )}
+                      {/* 이름 노출 원하면 주석 해제 */}
+                      {/* <h3 className="text-sm text-gray-900 body-inter">{acc.name}</h3> */}
                     </div>
                   </div>
-                </SingleSelectItem>
-              );
-            })}
-          </div>
-        </SingleSelectGroup>
-
-        {/* 네비게이션 버튼 */}
-        <div className="mt-8">
-          <NavigationButtons
-            onPrevious={handlePrevious}
-            onNext={handleNext}
-            isNextDisabled={false}
-          />
+                </div>
+              </SingleSelectItem>
+            );
+          })}
         </div>
+      </SingleSelectGroup>
+
+      {/* 네비게이션 버튼 */}
+      <div className="mt-8">
+        <NavigationButtons
+          onPrevious={handlePrevious}
+          onNext={handleNext}
+          isNextDisabled={false}
+        />
       </div>
-    </div>
+    </ReviewContainer>
   );
 };

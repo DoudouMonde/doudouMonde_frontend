@@ -24,7 +24,9 @@ import * as FlowerCharacters from "@/assets/icons/playroom/storytown/character/e
 import * as GlassesCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/glasses";
 import * as RibbonCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/ribbon";
 import * as WizhatCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/wizhat";
-
+import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
+import { Desc } from "@/domains/playroom/components/Desc";
+import { REVIEW_FLOW } from "@/shared/routes/flow";
 interface CharacterData {
   animal: string;
   emotion: string;
@@ -452,111 +454,108 @@ export const CharacterPreviewPage: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen">
-      {/* Main Content */}
-      <div className="p-6 w-full bg-gray-200/70 rounded-[40px] mt-20 mb-24">
-        {/* Header */}
-        <div className="flex flex-col mb-6">
-          <h1 className="mb-4 title-inter">상상친구 완성!</h1>
-          <p className="subtitle text-secondary-100">
-            멋진 상상친구가 완성되었어요!
-            <br />
-            함께 공연을 즐겨보세요.
-          </p>
-        </div>
-        <hr className="my-4 mb-6 border-secondary-100/30" />
+    <ReviewContainer title="상상친구 완성!" flow={REVIEW_FLOW}>
+      {/* Header */}
+      <Desc
+        content={
+          <>
+            {" "}
+            멋진 상상친구가 완성되었어요! // <br />
+            // 함께 공연을 즐겨보세요.
+          </>
+        }
+      />
 
-        {/* 완성된 캐릭터 표시 */}
-        <div className="flex flex-col items-center mb-8">
-          <div className="flex relative z-10 flex-col items-center">
-            <div className="flex justify-center">
-              {(() => {
-                // 액세사리가 적용된 최종 캐릭터 표시
-                const AccessoryCharacter = getAccessoryCharacter(
-                  characterData.animal,
-                  characterData.emotion,
-                  characterData.accessory
+      {/* 완성된 캐릭터 표시 */}
+      <div className="flex flex-col items-center mb-8">
+        <div className="flex relative z-10 flex-col items-center">
+          <div className="flex justify-center">
+            {(() => {
+              // 액세사리가 적용된 최종 캐릭터 표시
+              const AccessoryCharacter = getAccessoryCharacter(
+                characterData.animal,
+                characterData.emotion,
+                characterData.accessory
+              );
+
+              if (AccessoryCharacter) {
+                return (
+                  <AccessoryCharacter className="w-[350px] h-[250px] relative z-20" />
                 );
+              }
 
-                if (AccessoryCharacter) {
-                  return (
-                    <AccessoryCharacter className="w-[350px] h-[250px] relative z-20" />
-                  );
-                }
+              // 액세사리 캐릭터를 찾을 수 없는 경우 감정 캐릭터 표시
+              const EmotionCharacter = getEmotionCharacter(
+                characterData.animal,
+                characterData.emotion
+              );
 
-                // 액세사리 캐릭터를 찾을 수 없는 경우 감정 캐릭터 표시
-                const EmotionCharacter = getEmotionCharacter(
-                  characterData.animal,
-                  characterData.emotion
+              if (EmotionCharacter) {
+                return (
+                  <EmotionCharacter className="w-[350px] h-[250px] relative z-20" />
                 );
+              }
 
-                if (EmotionCharacter) {
-                  return (
-                    <EmotionCharacter className="w-[350px] h-[250px] relative z-20" />
-                  );
-                }
+              // 기본 동물 전신 모습 표시
+              if (selectedAnimal) {
+                const BodyIcon = selectedAnimal.bodyIcon;
+                return (
+                  <BodyIcon className="w-[350px] h-[250px] relative z-20" />
+                );
+              }
 
-                // 기본 동물 전신 모습 표시
-                if (selectedAnimal) {
-                  const BodyIcon = selectedAnimal.bodyIcon;
-                  return (
-                    <BodyIcon className="w-[350px] h-[250px] relative z-20" />
-                  );
-                }
-
-                return null;
-              })()}
-            </div>
-            <Shadow className="w-[200px] h-[50px] mt-[-40px] relative z-10" />
+              return null;
+            })()}
           </div>
-        </div>
-
-        <div className="flex justify-center">
-          <div className="flex flex-col gap-2 w-auto">
-            <div className="flex gap-1 items-center">
-              <PlayingCardsIcon className="w-[13px] h-[13px]" />
-              <p className="body-hak-r">
-                {selectedPerformanceFromStorage?.title ||
-                  selectedPerformance?.title ||
-                  "공연이름"}
-              </p>
-            </div>
-            <div className="flex gap-1 items-center">
-              <Calendar className="w-[13px] h-[13px] flex-shrink-0" />
-              <p className="whitespace-nowrap body-hak-r">
-                {selectedDate || "선택날짜"}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <hr className="my-4 mb-6 border-secondary-100/30" />
-
-        <p className="mb-4 Inter">상상친구 이름 지어주기</p>
-        <p className="subtitle text-secondary-100">
-          축하해요 😍 <br />
-          공연 경험을 함께 추억해줄 상상친구가 완성되었어요! <br />
-          이제 이 상상친구의 이름을 지어주세요.
-        </p>
-
-        <input
-          type="text"
-          placeholder="이름을 입력하세요..."
-          value={characterName}
-          onChange={(e) => setCharacterName(e.target.value)}
-          className="p-4 mt-5 w-full h-10 subtitle text-gray-700 bg-transparent border border-secondary-100/30 outline-none body-inter rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
-        />
-
-        {/* 네비게이션 버튼 */}
-        <div className="mt-8">
-          <NavigationButtons
-            onPrevious={handlePrevious}
-            onNext={handleNext}
-            isNextDisabled={isSubmitting || !characterName.trim()}
-            nextText={isSubmitting ? "등록 중..." : "완료"}
-          />
+          <Shadow className="w-[200px] h-[50px] mt-[-40px] relative z-10" />
         </div>
       </div>
-    </div>
+
+      <div className="flex justify-center">
+        <div className="flex flex-col gap-2 w-auto">
+          <div className="flex gap-1 items-center">
+            <PlayingCardsIcon className="w-[13px] h-[13px]" />
+            <p className="body-hak-r">
+              {selectedPerformanceFromStorage?.title ||
+                selectedPerformance?.title ||
+                "공연이름"}
+            </p>
+          </div>
+          <div className="flex gap-1 items-center">
+            <Calendar className="w-[13px] h-[13px] flex-shrink-0" />
+            <p className="whitespace-nowrap body-hak-r">
+              {selectedDate || "선택날짜"}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <hr className="my-4 mb-6 border-secondary-100/30" />
+
+      <p className="mb-4 Inter">상상친구 이름 지어주기</p>
+      <p className="subtitle text-secondary-100">
+        축하해요 😍 <br />
+        공연 경험을 함께 추억해줄 상상친구가 완성되었어요! <br />
+        이제 이 상상친구의 이름을 지어주세요.
+      </p>
+
+      <input
+        type="text"
+        placeholder="이름을 입력하세요..."
+        value={characterName}
+        onChange={(e) => setCharacterName(e.target.value)}
+        className="p-4 mt-5 w-full h-10 subtitle text-gray-700 bg-transparent border border-secondary-100/30 outline-none body-inter rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
+      />
+
+      {/* 네비게이션 버튼 */}
+      <div className="mt-8">
+        <NavigationButtons
+          onPrevious={handlePrevious}
+          onNext={handleNext}
+          isNextDisabled={isSubmitting || !characterName.trim()}
+          nextText={isSubmitting ? "등록 중..." : "완료"}
+        />
+      </div>
+    </ReviewContainer>
   );
 };
