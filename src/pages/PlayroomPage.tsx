@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import React from "react";
 import { PATH } from "@/shared/constants/paths";
 
 import { LandingHero } from "@/domains/playroom/features/landing/LandingHero";
