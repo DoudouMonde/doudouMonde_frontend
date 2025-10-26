@@ -21,31 +21,37 @@ import {
 } from "@/assets/icons/playroom/type_head";
 
 import {
-  Crwon as CrownIcon,
-  Flower as FlowerIcon,
-  Hat as CapIcon,
-  Ribbon as RibbonIcon,
-  RoundGlass as GlassesIcon,
-  WizardHat as WizhatIcon,
-} from "@/assets/icons/playroom/accessories";
+  EmojiBored,
+  EmojiCurious,
+  EmojiHappy,
+  EmojiOnemore,
+  EmojiSad,
+  EmojiSurprised,
+} from "@/assets/icons/playroom/emotion";
 
 import { Shadow } from "@/assets/icons/playroom";
 import {
   SingleSelectGroup,
   SingleSelectItem,
 } from "@/shared/components/SingleSelect";
-import { RadioTrue, RadioFalse, PlayingCardsIcon } from "@/assets/icons";
+import { RadioTrue, RadioFalse } from "@/assets/icons";
 import { useReviewStore } from "@/stores/reviewStore";
 
 type AnimalId = "chick" | "cat" | "dino" | "dog" | "rabbit";
-type AccessoryId = "crown" | "flower" | "cap" | "ribbon" | "glasses" | "wizhat";
+type EmotionId =
+  | "bored"
+  | "curious"
+  | "happy"
+  | "onemore"
+  | "sad"
+  | "surprised";
 
 export const CharEmotionSelectPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation() as { state?: { animal?: AnimalId } };
 
   // 공연 정보 표시(그대로 유지)
-  const { selectedPerformance, setSelectedPerformance } = useReviewStore();
+  const { setSelectedPerformance } = useReviewStore();
 
   useEffect(() => {
     const savedPerformance = localStorage.getItem("selectedPerformance");
@@ -95,21 +101,21 @@ export const CharEmotionSelectPage: React.FC = () => {
   const [selectedAnimal] = useState<AnimalId>(initialAnimal);
 
   // ✅ 악세사리만 이 페이지에서 선택
-  const accessories: {
-    id: AccessoryId;
+  const emotions: {
+    id: EmotionId;
     name: string;
     icon: React.ComponentType<{ className?: string }>;
   }[] = [
-    { id: "crown", name: "왕관", icon: CrownIcon },
-    { id: "flower", name: "꽃", icon: FlowerIcon },
-    { id: "cap", name: "모자", icon: CapIcon },
-    { id: "ribbon", name: "리본", icon: RibbonIcon },
-    { id: "glasses", name: "둥근안경", icon: GlassesIcon },
-    { id: "wizhat", name: "마법사모자", icon: WizhatIcon },
+    { id: "bored", name: "지루함", icon: EmojiBored },
+    { id: "curious", name: "궁금", icon: EmojiCurious },
+    { id: "happy", name: "기쁨", icon: EmojiHappy },
+    { id: "onemore", name: "한 번 더", icon: EmojiOnemore },
+    { id: "sad", name: "슬픔", icon: EmojiSad },
+    { id: "surprised", name: "놀람", icon: EmojiSurprised },
   ];
 
-  const [selectedAccessory, setSelectedAccessory] = useState<AccessoryId>(
-    accessories[0].id
+  const [selectedEmotion, setSelectedEmotion] = useState<EmotionId>(
+    emotions[0].id
   );
 
   // 전신 변경/액세사리 변경 시 살짝 바운스 애니메이션
@@ -118,7 +124,7 @@ export const CharEmotionSelectPage: React.FC = () => {
     setIsAnimating(true);
     const t = setTimeout(() => setIsAnimating(false), 600);
     return () => clearTimeout(t);
-  }, [selectedAnimal, selectedAccessory]);
+  }, [selectedAnimal, selectedEmotion]);
 
   // ✅ 전신 + 악세사리 오버레이 렌더 (emotion 없이)
   const renderCharacter = () => {
@@ -126,8 +132,7 @@ export const CharEmotionSelectPage: React.FC = () => {
     const BodyIcon = selected?.bodyIcon ?? ChickBody;
 
     // 악세사리 오버레이 공통 컴포넌트
-    const Overlay =
-      accessories.find((a) => a.id === selectedAccessory)?.icon ?? CrownIcon;
+    const Overlay = emotions.find((a) => a.id === selectedEmotion)?.icon;
 
     return (
       <div className="relative w-[350px] h-[250px]">
@@ -152,7 +157,7 @@ export const CharEmotionSelectPage: React.FC = () => {
   const handleNext = () => {
     // 다음 페이지로 이동하며 동물/악세사리 전달
     localStorage.setItem("selectedAnimal", selectedAnimal);
-    localStorage.setItem("selectedAccessory", selectedAccessory);
+    localStorage.setItem("selectedEmotion", selectedEmotion);
 
     navigate("/playroom/character-preview", {
       state: {
@@ -178,15 +183,15 @@ export const CharEmotionSelectPage: React.FC = () => {
 
       {/* 악세사리 선택 UI (단일 선택) */}
       <SingleSelectGroup
-        selectedValue={selectedAccessory}
-        onChange={(value) => setSelectedAccessory(value as AccessoryId)}
+        selectedValue={selectedEmotion}
+        onChange={(value) => setSelectedEmotion(value as EmotionId)}
       >
         <div className="grid grid-cols-3 gap-3 mb-4">
-          {accessories.map((acc) => {
-            const Icon = acc.icon;
-            const active = selectedAccessory === acc.id;
+          {emotions.map((emo) => {
+            const Icon = emo.icon;
+            const active = selectedEmotion === emo.id;
             return (
-              <SingleSelectItem key={acc.id} value={acc.id}>
+              <SingleSelectItem key={emo.id} value={emo.id}>
                 <div className="transition-all duration-200 cursor-pointer">
                   <div className="flex flex-col gap-2 items-center">
                     <Icon className="w-16 h-16" />

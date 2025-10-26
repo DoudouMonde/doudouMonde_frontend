@@ -13,13 +13,9 @@ import { Desc } from "@/domains/playroom/components/Desc";
 import { AnimalOption } from "@/domains/playroom/components/AnimalOption";
 
 export const CharTypeSelectPage: React.FC = () => {
-  // 공연 정보 (전시용)
-
   useHydrateReviewFromStorage();
-  // ✅ 선택된 동물 (기본: 병아리)
-  const [selectedAnimal, setSelectedAnimal] = useState<AnimalId>("chick");
 
-  // ✅ 전신 변경 시 살짝 점프 애니메이션
+  const [selectedAnimal, setSelectedAnimal] = useState<AnimalId>("chick");
   const [isAnimating, setIsAnimating] = useState(false);
   useEffect(() => {
     setIsAnimating(true);
