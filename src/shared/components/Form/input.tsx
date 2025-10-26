@@ -14,6 +14,9 @@ type FormInputProps = {
 };
 
 // ✅ forwardRef를 사용하여 ref 전달 가능하게 만듦
+/**
+ * FeedBack: 현재 div태그로 감싸는데, input을 감쌀때는 <label> 태그가 좀 더 시맨틱한 태그입니다
+ */
 export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
   ({ title, type = "text", value, onChange, placeholder }, ref) => {
     return (

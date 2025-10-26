@@ -10,15 +10,18 @@ import {
 
 import { ChildFormFields } from "@/domains/child/components/ChildFormFields";
 import { SaveButton } from "@/shared/components/Button/SaveButton";
-import { ChildRegistrationProvider, useChildRegistrationContext } from "@/domains/child/contexts/ChildRegistrationContext";
+import {
+  ChildRegistrationProvider,
+  useChildRegistrationContext,
+} from "@/domains/child/contexts/ChildRegistrationContext";
 
 export const ChildRegistrationPage = () => {
   return (
     <ChildRegistrationProvider>
-      <ChildRegistrationView/>
+      <ChildRegistrationView />
     </ChildRegistrationProvider>
-  )
-}
+  );
+};
 const ChildRegistrationView = () => {
   const {
     handleSave,
@@ -35,7 +38,7 @@ const ChildRegistrationView = () => {
         <TopBar title="아이 등록" />
         <form onSubmit={handleSave}>
           <ContentSection>
-            <ChildFormFields/>
+            <ChildFormFields />
             <SaveButton onClick={handleSave} text={"등록하기"} />
           </ContentSection>
         </form>

@@ -28,6 +28,7 @@ import {
 } from "@/pages";
 import { BottomNavigationLayout } from "@/app/layout";
 import { PATH } from "@/shared/constants";
+import { ChildExamplePage } from "@/domains/child/example/page/ChildExamplePage";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,12 @@ const router = createBrowserRouter([
     path: PATH.CHILD_REGISTRATION,
     element: <ChildRegistrationPage />,
   },
+  /**예시페이지 필요없으면 삭제 */
+  {
+    path: "/child-registration/example",
+    element: <ChildExamplePage />,
+  },
+  /**예시페이지 끝*/
   {
     path: "/",
     element: <BottomNavigationLayout />,
