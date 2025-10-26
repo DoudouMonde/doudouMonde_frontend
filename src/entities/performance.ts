@@ -22,7 +22,9 @@ export const PerformanceEntity = z.object({
   id: z.number(),
 });
 
+export type PerformanceEntity = z.infer<typeof PerformanceEntity>;
+
 // pick 메서드에 전달할 객체의 타입을 엄격하게 정의
 export type PickPerformanceEntityKeys = {
-  [K in keyof typeof PerformanceEntity]?: true;
+  [K in keyof PerformanceEntity]?: true;
 };

@@ -15,7 +15,9 @@ export const CharacterEntity = z.object({
   id: z.number(),
 });
 
+export type CharacterEntity = z.infer<typeof CharacterEntity>;
+
 // pick 메서드에 전달할 객체의 타입을 엄격하게 정의
 export type PickCharacterEntityKeys = {
-  [K in keyof typeof CharacterEntity]?: true;
+  [K in keyof CharacterEntity]?: true;
 };

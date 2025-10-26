@@ -12,7 +12,9 @@ export const MemberEntity = z.object({
   id: z.number(),
 });
 
+export type MemberEntity = z.infer<typeof MemberEntity>;
+
 // pick 메서드에 전달할 객체의 타입을 엄격하게 정의
 export type PickMemberEntityKeys = {
-  [K in keyof typeof MemberEntity]?: true;
+  [K in keyof MemberEntity]?: true;
 };
