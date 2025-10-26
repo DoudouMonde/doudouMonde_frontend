@@ -1,0 +1,337 @@
+# Entity 생성 규칙
+
+백엔드 DB 정보를 기반으로 TypeScript entity를 생성하는 규칙입니다.
+
+## 파일 위치 및 네이밍
+
+- **위치**: `entities` 폴더에 생성
+- **파일명**: entity 이름을 snake_case로 작성
+  - 예: `CustomerGradeEntity` → `customer-grade.ts`
+  - 예: `CustomerGroupEntity` → `customer-group.ts`
+
+## 타입 매핑 규칙
+
+### 1. 날짜 타입
+
+- **LocalDate** → **Day.js**로 변환
+
+  ```typescript
+  import dayjs from "dayjs";
+
+  // LocalDate → dayjs.Dayjs
+  ```
+
+### 2. 이메일 필드
+
+- 필드명에 **email**이 포함된 경우 → **email** 타입 사용
+  ```typescript
+  email: string; // email validation 적용
+  ```
+
+### 3. Enum 타입
+
+- **@Enumerated** 어노테이션이 있는 경우:
+  1. `.enum()` 메서드로 처리
+  2. `types` 폴더에 해당 enum이 없으면 새로 생성
+  ```typescript
+  // 예시
+  status: CustomerStatus; // CustomerStatus enum 생성 필요
+  ```
+
+### 4. 기타 타입
+
+- 다른 타입의 경우 기존 schema를 검색하여 연결
+- 기존 schema가 있다면 해당 타입을 재사용
+- 없다면 적절한 기본 타입 사용
+
+## DB 타입 매핑
+
+### MySQL → TypeScript 타입 변환
+
+| MySQL 타입    | TypeScript 타입     |
+| ------------- | ------------------- |
+| `bigint`      | `z.number()`        |
+| `int`         | `z.number()`        |
+| `decimal`     | `z.number()`        |
+| `varchar(n)`  | `z.string()`        |
+| `date`        | `z.custom<Dayjs>()` |
+| `datetime(6)` | `z.custom<Dayjs>()` |
+| `bit`         | `z.boolean()`       |
+
+### NULL 허용 처리
+
+- `null` 허용 컬럼: `.nullable()` 추가
+- `not null` 컬럼: 기본 타입 사용
+
+## 필드 순서 규칙
+
+Entity 필드는 다음 순서로 배치:
+
+1. **일반 데이터 필드** (비즈니스 로직에 사용되는 모든 필드)
+2. **BaseEntity 필드** (createdAt, createdBy, modifiedAt, modifiedBy)
+3. **기본 키, 매장 ID, 외래키** (id, storeId, customerId, staffId 등 \_id로 끝나는 필드)
+
+**중요**: DDL에는 관계 객체가 정의되어 있지 않으므로, Entity에는 외래키 관계 객체(customer, staff 등)를 포함하지 않습니다. 외래키 ID만 포함합니다.
+
+## 생성 예시
+
+### DDL 구문 예시
+
+```sql
+-- 결제(고객 매출 입력)
+create table payment
+(
+    id                    bigint auto_increment comment 'id'
+        primary key,
+    store_id              bigint       not null comment '매장 id',
+    customer_id           bigint       null comment '고객 id',
+    payment_group_id      bigint       not null comment '결제 그룹 id',
+    item_id               bigint       not null comment '아이템 id',
+    staff_id              bigint       not null comment '스태프 id',
+    item_discount_id      bigint       null comment '할인 id',
+    coupon_issue_id       bigint       null comment '사용한 쿠폰 id',
+    customer_ticket_id    bigint       null comment '사용한 티켓 id',
+    purchase_item_type    varchar(50)  not null comment '구매 아이템 분류',
+    customer_name         varchar(255) null comment '고객명',
+    item_name             varchar(255) not null comment '구매 품목명',
+    item_description      varchar(255) not null comment '구매 품목 상세 설명',
+    discount_name         decimal      null comment '할인권 이름',
+    visit_type            varchar(50)  not null comment '방문 구분',
+    total_amount          decimal      not null comment '총 결제 금액',
+    card_payment_type     varchar(50)  not null comment '카드 결제 타입',
+    card_price            decimal      not null comment '카드 결제 금액',
+    cash_payment_type     varchar(50)  not null comment '현금 결제 타입',
+    cash_price            decimal      not null comment '현금 결제 금액',
+    account_payment_type  varchar(50)  not null comment '계좌이체 결제 타입',
+    account_price         decimal      not null comment '계좌이체 결제 금액',
+    other_payment_type    varchar(50)  null comment '기타 결제 타입',
+    other_price           decimal      not null comment '기타 결제 금액',
+    discount_amount       decimal      not null comment '할인 금액',
+    total_discount_amount decimal      not null comment '총 할인 금액',
+    item_price            decimal      not null comment '구매 품목 가격',
+    item_discount_price   decimal      null comment '할인권 할인 가격',
+    used_prepaid_price    decimal      null comment '사용된 정액권 가격',
+    used_ticket_price     decimal      null comment '사용된 티켓권 가격',
+    used_basic_point      decimal      null comment '사용된 기본 포인트 가격',
+    used_recommend_point  decimal      null comment '사용된 소개 포인트 가격',
+    used_coupon_price     decimal      null comment '사용된 쿠폰 가격',
+    quantity              int          not null comment '구매 수량',
+    cash_receipt_number   varchar(50)  null comment '현금 영수증 번호',
+    installments          int          not null comment '카드 할부 개월 수',
+    payment_date          date         not null comment '결제 일자',
+    approved_date         datetime(6)  not null comment '결제 승인 날짜',
+    van_track_data        varchar(100) null comment 'VAN Track Data',
+    van_approval_number   varchar(50)  null comment 'VAN 승인 번호',
+    approval_status       varchar(50)  not null comment '결제 상태',
+    is_delete             bit          not null comment '삭제 여부',
+    created_at            datetime(6)  not null comment '생성일자',
+    created_by            varchar(100) not null comment '생성자',
+    modified_at           datetime(6)  not null comment '수정일자',
+    modified_by           varchar(50)  not null comment '수정자'
+)
+    comment '결제(고객 매출 입력)' collate = utf8mb4_unicode_ci;
+```
+
+### 생성된 Entity 예시
+
+```typescript
+// payment.ts
+import { Dayjs } from "dayjs";
+import { VisitType } from "src/app/(afterLogin)/(customer)/customers/_models/types";
+import {
+  PaymentStatus,
+  VanPaymentType,
+} from "src/app/(afterLogin)/(payment)/_models/types";
+import { z } from "zod";
+
+// PurchaseItemType enum (DB의 purchase_item_type과 매핑)
+export const PurchaseItemType = {
+  COSMETIC: "COSMETIC",
+  PRODUCT: "PRODUCT",
+  PREPAID: "PREPAID",
+  TICKET: "TICKET",
+  PACKAGE: "PACKAGE",
+  DISCOUNT: "DISCOUNT",
+  CUSTOM: "CUSTOM",
+} as const;
+export type PurchaseItemType =
+  (typeof PurchaseItemType)[keyof typeof PurchaseItemType];
+
+// ApprovalStatus enum (DB의 approval_status와 매핑)
+export const ApprovalStatus = {
+  NONE: "NONE",
+  WAITING: "WAITING",
+  IN_PROGRESS: "IN_PROGRESS",
+  COMPLETE: "COMPLETE",
+  CANCEL: "CANCEL",
+  DELETE: "DELETE",
+} as const;
+export type ApprovalStatus =
+  (typeof ApprovalStatus)[keyof typeof ApprovalStatus];
+
+// Payment entity (DB의 payment 테이블과 매핑)
+export const PaymentEntity = z.object({
+  // 분류
+  purchaseItemType: z.enum(
+    Object.values(PurchaseItemType) as [string, ...string[]]
+  ),
+
+  // 구매한 고객 이름
+  customerName: z.string().nullable(),
+
+  // 구매한 아이템 이름
+  itemName: z.string(),
+
+  // 구매한 아이템 설명
+  itemDescription: z.string(),
+
+  // 사용한 할인권 이름
+  discountName: z.number().nullable(),
+
+  // 방문 구분
+  visitType: z.enum(Object.values(VisitType) as [string, ...string[]]),
+
+  // 총 결제 금액
+  totalAmount: z.number(),
+
+  // 카드 결제
+  cardPaymentType: z.enum(
+    Object.values(VanPaymentType) as [string, ...string[]]
+  ),
+  cardPrice: z.number(),
+
+  // 현금 결제
+  cashPaymentType: z.enum(
+    Object.values(VanPaymentType) as [string, ...string[]]
+  ),
+  cashPrice: z.number(),
+
+  // 계좌 이체
+  accountPaymentType: z.enum(
+    Object.values(VanPaymentType) as [string, ...string[]]
+  ),
+  accountPrice: z.number(),
+
+  // 기타 결제
+  otherPaymentType: z
+    .enum(Object.values(VanPaymentType) as [string, ...string[]])
+    .nullable(),
+  otherPrice: z.number(),
+
+  // 할인 금액
+  discountAmount: z.number(),
+
+  // 총 할인액
+  totalDiscountAmount: z.number(),
+
+  // 구매 품목 가격
+  itemPrice: z.number(),
+
+  // 할인권 할인 가격
+  itemDiscountPrice: z.number().nullable(),
+
+  // 사용된 정액권 가격
+  usedPrepaidPrice: z.number().nullable(),
+
+  // 사용된 티켓권 가격
+  usedTicketPrice: z.number().nullable(),
+
+  // 사용된 기본 포인트 가격
+  usedBasicPoint: z.number().nullable(),
+
+  // 사용된 소개 포인트 가격
+  usedRecommendPoint: z.number().nullable(),
+
+  // 사용된 쿠폰 가격
+  usedCouponPrice: z.number().nullable(),
+
+  // 구매 수량
+  quantity: z.number(),
+
+  // 현금 영수증 번호
+  cashReceiptNumber: z.string().nullable(),
+
+  // 카드 할부 개월 수
+  installments: z.number(),
+
+  // 결제 일자
+  paymentDate: z.custom<Dayjs>(),
+
+  // 결제 승인 날짜
+  approvedDate: z.custom<Dayjs>(),
+
+  // VAN 관련
+  vanTrackData: z.string().nullable(),
+  vanApprovalNumber: z.string().nullable(),
+
+  // 결제 상태
+  approvalStatus: z.enum(
+    Object.values(ApprovalStatus) as [string, ...string[]]
+  ),
+
+  isDelete: z.boolean(),
+
+  // BaseEntity 필드들
+  createdAt: z.custom<Dayjs>(),
+  createdBy: z.string(),
+  modifiedAt: z.custom<Dayjs>(),
+  modifiedBy: z.string(),
+
+  // 기본 키, 매장 ID, 외래키 (가장 아래)
+  id: z.number(),
+  storeId: z.number(),
+  customerId: z.number().nullable(),
+  paymentGroupId: z.number(),
+  itemId: z.number(),
+  staffId: z.number(),
+  itemDiscountId: z.number().nullable(),
+  couponIssueId: z.number().nullable(),
+  customerTicketId: z.number().nullable(),
+});
+
+export type PaymentEntity = z.infer<typeof PaymentEntity>;
+
+// pick 메서드에 전달할 객체의 타입을 엄격하게 정의
+export type PickPaymentEntityKeys = {
+  [K in keyof PaymentEntity]?: true;
+};
+```
+
+## Pick Entity Keys 타입
+
+모든 Entity에는 `PickEntityKeys` 타입을 추가해야 합니다. 이는 Zod의 `.pick()` 메서드 사용 시 타입 안전성을 보장합니다.
+
+```typescript
+// Entity 정의 후 항상 추가
+export type Pick[EntityName]Keys = {
+  [K in keyof [EntityName]]?: true;
+};
+```
+
+**예시:**
+
+```typescript
+export const CustomerEntity = z.object({
+  // ... 필드 정의
+});
+
+export type CustomerEntity = z.infer<typeof CustomerEntity>;
+
+// pick 메서드에 전달할 객체의 타입을 엄격하게 정의
+export type PickCustomerEntityKeys = {
+  [K in keyof CustomerEntity]?: true;
+};
+```
+
+## 주의사항
+
+1. **네이밍 컨벤션**: snake_case(DB) → camelCase(TypeScript)
+2. **타입 안전성**: Zod 스키마를 사용하여 런타임 검증 보장
+3. **NULL 처리**: DB의 null 허용 여부를 정확히 반영
+4. **Enum 타입**: 기존 프로젝트의 enum을 재사용하거나 새로 생성
+5. **필드 배치 순서**:
+   - 일반 데이터 필드 먼저
+   - BaseEntity 필드 그 다음
+   - id, storeId, 외래키 ID는 가장 아래에 배치
+6. **관계 객체 미포함**: DDL에는 관계 객체가 정의되지 않으므로, Entity에는 외래키 ID만 포함하고 관계 객체(customer, staff 등)는 포함하지 않음
+7. **클래스 미사용**: Entity는 순수 타입 정의만 포함 (비즈니스 로직은 Model/Service에서 처리)
