@@ -21,6 +21,15 @@ import {
   EmojiSad,
   EmojiSurprised,
 } from "@/assets/icons/playroom/emotion";
+import {
+  Crwon,
+  Flower,
+  Hat,
+  Ribbon,
+  RoundGlass,
+  WizardHat,
+} from "@/assets/icons/playroom/accessories";
+import { string } from "zod";
 
 export type AnimalId = "chick" | "cat" | "dino" | "dog" | "rabbit";
 export type EmotionId =
@@ -30,6 +39,13 @@ export type EmotionId =
   | "onemore"
   | "sad"
   | "surprised";
+export type AccessoryId =
+  | "crown"
+  | "flower"
+  | "cap"
+  | "ribbon"
+  | "glasses"
+  | "wizhat";
 
 export const animals: Array<{
   id: AnimalId;
@@ -44,15 +60,27 @@ export const animals: Array<{
   { id: "rabbit", name: "토끼", headIcon: RabbitPre, bodyIcon: RabbitBody },
 ];
 
-export const emotions: {
+export const emotions: Array<{
   id: EmotionId;
   name: string;
   icon: React.ComponentType<{ className?: string }>;
-}[] = [
+}> = [
   { id: "happy", name: "행복했어요", icon: EmojiHappy },
   { id: "onemore", name: "또보고싶어요", icon: EmojiOnemore },
   { id: "surprised", name: "놀랐어요", icon: EmojiSurprised },
   { id: "sad", name: "슬펐어요", icon: EmojiSad },
   { id: "bored", name: "지루했어요", icon: EmojiBored },
   { id: "curious", name: "궁금해요", icon: EmojiCurious },
+];
+export const accessories: Array<{
+  id: AccessoryId;
+  name: string;
+  icon: React.ComponentType<{ className?: string }>;
+}> = [
+  { id: "crown", name: "왕관", icon: Crwon },
+  { id: "flower", name: "꽃", icon: Flower },
+  { id: "cap", name: "모자", icon: Hat },
+  { id: "ribbon", name: "리본", icon: Ribbon },
+  { id: "glasses", name: "둥근안경", icon: RoundGlass },
+  { id: "wizhat", name: "마법사모자", icon: WizardHat },
 ];
