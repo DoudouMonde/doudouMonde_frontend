@@ -11,7 +11,26 @@ type FormValues = {
   name: string;
 };
 
-const CHAR_LIMIT = 10;
+const WEIGHT_LIMIT = 20;
+
+const HANGUL_RE = /[\u1100-\u11FF\u3130-\u318F\uAC00-\uD7AF]/;
+
+function charWeight(ch: string) {
+  return HANGUL_RE.test(ch) ? 2 : 1;
+}
+
+// 가중치 한도 안에서 자르기 (서로게이트 안전: for..of)
+function clampByWeight(s: string, limit = WEIGHT_LIMIT) {
+  let w = 0;
+  let out = "";
+  for (const ch of s) {
+    const c = charWeight(ch);
+    if (w + c > limit) break;
+    w += c;
+    out += ch;
+  }
+  return out;
+}
 
 export const CharacterPreviewPage: React.FC = () => {
   const { selectedAnimal, selectedEmotion, selectedAcc } = useCharaterFlowState(
@@ -25,7 +44,7 @@ export const CharacterPreviewPage: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { isValid },
     setFocus,
     watch,
     setValue,
@@ -58,8 +77,10 @@ export const CharacterPreviewPage: React.FC = () => {
   const isNextDisabled = nameValue.trim().length === 0;
 
   //초과 입력 강제 차단 유틸
-  const clampToLimit = (value: string) =>
-    value.length > CHAR_LIMIT ? value.slice(0, CHAR_LIMIT) : value;
+  const clampAndSet = (raw: string) => {
+    const clamped = clampByWeight(raw);
+    setValue("name", clamped, { shouldValidate: true, shouldDirty: true });
+  };
 
   return (
     <ReviewContainer
@@ -100,39 +121,25 @@ export const CharacterPreviewPage: React.FC = () => {
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <input
             id="friend-name"
-            aria-invalid={!!errors.name || undefined}
-            aria-describedby={errors.name ? "friend-name-error" : undefined}
-            placeholder="이름을 입력하세요... (최대 10자)"
+            placeholder="이름을 입력하세요... (한글 10자 / 영어 20자)"
             className="p-4 mt-5 w-full h-10 subtitle text-gray-700 bg-transparent border border-secondary-100/30 outline-none body-inter rounded-[20px] focus:border-secondary-100/50 transition-colors duration-200"
-            maxLength={CHAR_LIMIT}
             onInput={(e) => {
-              const target = e.currentTarget;
-              const clamped = clampToLimit(target.value);
-              if (clamped !== target.value) {
-                target.value = clamped;
-              }
-              // 여기 무슨 말인지 잘 모르겠다.
-              setValue("name", clamped, {
-                shouldValidate: true,
-                shouldDirty: true,
-              });
+              // 타이핑 중 초과분 자르기
+              clampAndSet(e.currentTarget.value);
             }}
-            // 이것도 무슨 소리지
             onPaste={(e) => {
+              // 붙여넣기 초과분 자르기
               e.preventDefault();
-              const text = (
-                e.clipboardData || (window as any).clipboardData
-              ).getData("text");
-              const clamped = clampToLimit((nameValue ?? "") + text);
-              setValue("name", clamped, {
-                shouldValidate: true,
-                shouldDirty: true,
-              });
+              const text = e.clipboardData?.getData("text") ?? "";
+              clampAndSet((nameValue ?? "") + text);
+            }}
+            onCompositionEnd={(e) => {
+              // 한글 조합(IME) 종료 시 최종 문자열을 한 번 더 자르기
+              clampAndSet(e.currentTarget.value);
             }}
             {...register("name", {
-              required: true,
-
-              validate: (v) => v.trim().length > 0,
+              required: true, // 필수(에러 메시지는 표시하지 않음)
+              validate: (v) => v.trim().length > 0, // 공백만 금지
             })}
           />
         </form>
