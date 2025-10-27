@@ -24,6 +24,7 @@ export const CharEmotionSelectPage: React.FC = () => {
 
   const [selectedAnimal] = useState<AnimalId>(initialAnimal);
 
+  //선택한 감정을 저장?
   const [selectedEmotion, setSelectedEmotion] = useState<EmotionId>(
     (localStorage.getItem("selectedEmotion") as EmotionId | null) ??
       emotions[0].id

@@ -11,17 +11,19 @@ import {
 import { REVIEW_FLOW } from "@/shared/routes/flow";
 import { Desc } from "@/domains/playroom/components/Desc";
 import { AnimalOption } from "@/domains/playroom/components/AnimalOption";
+import { useCharaterFlowState } from "@/domains/playroom/hooks/useCharacterFlowState";
 
 export const CharTypeSelectPage: React.FC = () => {
   useHydrateReviewFromStorage();
 
-  const [selectedAnimal, setSelectedAnimal] = useState<AnimalId>("chick");
-  const [isAnimating, setIsAnimating] = useState(false);
-  useEffect(() => {
-    setIsAnimating(true);
-    const timer = setTimeout(() => setIsAnimating(false), 600);
-    return () => clearTimeout(timer);
-  }, [selectedAnimal]);
+  const {
+    selectedAnimal,
+    setSelectedValue: setSelectedAnimal,
+    isAnimating,
+  } = useCharaterFlowState<AnimalId>({
+    stepName: "animal",
+    initialValue: animals[0].id,
+  });
 
   return (
     <ReviewContainer title="상상친구 만들기" flow={REVIEW_FLOW}>
