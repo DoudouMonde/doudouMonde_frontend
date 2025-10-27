@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
 import { useHydrateReviewFromStorage } from "@/domains/playroom/hooks/useHydrateReviewFromStorage";
 import { animals } from "@/domains/playroom/constants/animals";

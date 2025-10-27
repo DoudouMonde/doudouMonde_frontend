@@ -1,10 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import {
-  AnimalId,
-  EmotionId,
-  AccessoryId,
-} from "@/domains/playroom/constants/animals";
+import React from "react";
+import { AccessoryId } from "@/domains/playroom/constants/animals";
 import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
 import { REVIEW_FLOW } from "@/shared/routes/flow";
 import { Desc } from "@/domains/playroom/components/Desc";
@@ -13,40 +8,19 @@ import { SingleSelectGroup } from "@/shared/components";
 import { accessories } from "@/domains/playroom/constants/animals";
 import { SingleSelectItem } from "@/shared/components";
 import { RadioFalse, RadioTrue } from "@/assets/icons";
+import { useCharaterFlowState } from "@/domains/playroom/hooks/useCharacterFlowState";
 
 export const CharAccSelectPage: React.FC = () => {
-  //이전 페이지에서선택한 동물, 감정 타입 복구
-  const location = useLocation() as {
-    state?: { animal?: AnimalId; emotion?: EmotionId };
-  };
-
-  const initialAnimal: AnimalId =
-    location.state?.animal ??
-    (localStorage.getItem("selectedAnimal") as AnimalId | null) ??
-    "chick";
-
-  const [selectedAnimal] = useState<AnimalId>(initialAnimal);
-
-  const initialEmotion: EmotionId =
-    location.state?.emotion ??
-    (localStorage.getItem("selectedEmotion") as EmotionId | null) ??
-    "happy";
-
-  const [selectedEmotion] = useState<EmotionId>(initialEmotion);
-
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  //악세사리를 선택
-  const [selectedAccessory, setSelectedAccessory] = useState<AccessoryId>(
-    (localStorage.getItem("selectedAccessory") as AccessoryId | null) ??
-      accessories[0].id
-  );
-
-  useEffect(() => {
-    setIsAnimating(true);
-    const t = setTimeout(() => setIsAnimating(false), 600);
-    return () => clearTimeout(t);
-  }, [selectedAnimal, selectedEmotion, selectedAccessory]);
+  const {
+    selectedAnimal,
+    selectedEmotion,
+    selectedValue: selectedAccessory,
+    setSelectedValue: setSelectedAccessory,
+    isAnimating,
+  } = useCharaterFlowState<AccessoryId>({
+    stepName: "accessory",
+    initialValue: accessories[0].id,
+  });
 
   return (
     <ReviewContainer title="상상친구 만들기" flow={REVIEW_FLOW}>
@@ -58,7 +32,6 @@ export const CharAccSelectPage: React.FC = () => {
           </>
         }
       />
-
       <AnimalPreview
         step="accessory"
         isAnimating={isAnimating}
