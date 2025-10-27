@@ -1,6 +1,5 @@
 import React from "react";
 import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
-import { useHydrateReviewFromStorage } from "@/domains/playroom/hooks/useHydrateReviewFromStorage";
 import { animals } from "@/domains/playroom/constants/animals";
 import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
 import { AnimalId } from "@/domains/playroom/constants/animals";
@@ -17,8 +16,6 @@ import { useNavigate } from "react-router-dom";
 
 export const CharTypeSelectPage: React.FC = () => {
   const navigate = useNavigate(); //useNavigate 초기화
-
-  useHydrateReviewFromStorage();
 
   const {
     selectedValue: selectedAnimal,

@@ -9,8 +9,12 @@ import { accessories } from "@/domains/playroom/constants/animals";
 import { SingleSelectItem } from "@/shared/components";
 import { RadioFalse, RadioTrue } from "@/assets/icons";
 import { useCharaterFlowState } from "@/domains/playroom/hooks/useCharacterFlowState";
+import { useNavigate } from "react-router-dom";
+import { PATH } from "@/shared/constants";
 
 export const CharAccSelectPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const {
     selectedAnimal,
     selectedEmotion,
@@ -23,8 +27,20 @@ export const CharAccSelectPage: React.FC = () => {
     initialValue: accessories[0].id,
   });
 
+  const handleNext = () => {
+    navigate(PATH.CHAR_PREV, {
+      state: {
+        emotion: selectedEmotion,
+      },
+    });
+  };
+
   return (
-    <ReviewContainer title="상상친구 만들기" flow={REVIEW_FLOW}>
+    <ReviewContainer
+      title="상상친구 만들기"
+      flow={REVIEW_FLOW}
+      onNext={handleNext}
+    >
       <Desc
         content={
           <>

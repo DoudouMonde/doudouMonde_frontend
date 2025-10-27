@@ -12,8 +12,12 @@ import {
 import { RadioTrue, RadioFalse } from "@/assets/icons";
 import { emotions } from "@/domains/playroom/constants/animals";
 import { useCharaterFlowState } from "@/domains/playroom/hooks/useCharacterFlowState";
+import { useNavigate } from "react-router-dom";
+import { PATH } from "@/shared/constants";
 
 export const CharEmotionSelectPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const {
     selectedAnimal,
     selectedValue: selectedEmotion,
@@ -25,8 +29,20 @@ export const CharEmotionSelectPage: React.FC = () => {
     initialValue: emotions[0].id,
   });
 
+  const handleNext = () => {
+    navigate(PATH.CHAR_ACCESSORY, {
+      state: {
+        emotion: selectedEmotion,
+      },
+    });
+  };
+
   return (
-    <ReviewContainer title="상상친구 만들기" flow={REVIEW_FLOW}>
+    <ReviewContainer
+      title="상상친구 만들기"
+      flow={REVIEW_FLOW}
+      onNext={handleNext}
+    >
       <Desc
         content={
           <>
