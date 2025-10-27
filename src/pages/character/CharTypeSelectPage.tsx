@@ -36,7 +36,7 @@ export const CharTypeSelectPage: React.FC = () => {
       />
 
       <AnimalPreview
-        step="type"
+        step="animal"
         isAnimating={isAnimating}
         selectedAnimal={selectedAnimal}
       />
