@@ -12,8 +12,12 @@ import { REVIEW_FLOW } from "@/shared/routes/flow";
 import { Desc } from "@/domains/playroom/components/Desc";
 import { AnimalOption } from "@/domains/playroom/components/AnimalOption";
 import { useCharaterFlowState } from "@/domains/playroom/hooks/useCharacterFlowState";
+import { PATH } from "@/shared/constants";
+import { useNavigate } from "react-router-dom";
 
 export const CharTypeSelectPage: React.FC = () => {
+  const navigate = useNavigate(); //useNavigate 초기화
+
   useHydrateReviewFromStorage();
 
   const {
@@ -22,11 +26,25 @@ export const CharTypeSelectPage: React.FC = () => {
     isAnimating,
   } = useCharaterFlowState<AnimalId>({
     stepName: "animal",
+    storageKey: "selectedAnimal", //session storage 키 추가
     initialValue: animals[0].id,
   });
 
+  //다음 페이지로 이동하고 현재 선택 값을 state로 전달
+  const handleNext = () => {
+    navigate(PATH.CHAR_EMOTION, {
+      state: {
+        animal: selectedAnimal,
+      },
+    });
+  };
+
   return (
-    <ReviewContainer title="상상친구 만들기" flow={REVIEW_FLOW}>
+    <ReviewContainer
+      title="상상친구 만들기"
+      flow={REVIEW_FLOW}
+      onNext={handleNext}
+    >
       <Desc
         content={
           <>

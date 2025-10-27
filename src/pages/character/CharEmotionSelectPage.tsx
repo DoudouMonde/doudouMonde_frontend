@@ -21,6 +21,7 @@ export const CharEmotionSelectPage: React.FC = () => {
     isAnimating,
   } = useCharaterFlowState<EmotionId>({
     stepName: "emotion",
+    storageKey: "selectedEmotion",
     initialValue: emotions[0].id,
   });
 

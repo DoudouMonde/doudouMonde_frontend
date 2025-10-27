@@ -19,6 +19,7 @@ export const CharAccSelectPage: React.FC = () => {
     isAnimating,
   } = useCharaterFlowState<AccessoryId>({
     stepName: "accessory",
+    storageKey: "selectedAcc",
     initialValue: accessories[0].id,
   });
 

@@ -29,7 +29,6 @@ import {
   RoundGlass,
   WizardHat,
 } from "@/assets/icons/playroom/accessories";
-import { string } from "zod";
 
 export type AnimalId = "chick" | "cat" | "dino" | "dog" | "rabbit";
 export type EmotionId =
