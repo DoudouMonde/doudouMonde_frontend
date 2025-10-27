@@ -17,7 +17,7 @@ export const CharTypeSelectPage: React.FC = () => {
   useHydrateReviewFromStorage();
 
   const {
-    selectedAnimal,
+    selectedValue: selectedAnimal,
     setSelectedValue: setSelectedAnimal,
     isAnimating,
   } = useCharaterFlowState<AnimalId>({

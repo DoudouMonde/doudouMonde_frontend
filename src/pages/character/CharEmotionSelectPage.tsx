@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import React from "react";
 import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
 import { Desc } from "@/domains/playroom/components/Desc";
 import { REVIEW_FLOW } from "@/shared/routes/flow";
-import { AnimalId, EmotionId } from "@/domains/playroom/constants/animals";
+import { EmotionId } from "@/domains/playroom/constants/animals";
 
 import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
 import {
@@ -12,31 +11,18 @@ import {
 } from "@/shared/components/SingleSelect";
 import { RadioTrue, RadioFalse } from "@/assets/icons";
 import { emotions } from "@/domains/playroom/constants/animals";
+import { useCharaterFlowState } from "@/domains/playroom/hooks/useCharacterFlowState";
 
 export const CharEmotionSelectPage: React.FC = () => {
-  const location = useLocation() as { state?: { animal?: AnimalId } };
-
-  // ✅ 이전 페이지에서 선택한 동물 타입 복구: location.state.animal > localStorage > 기본값
-  const initialAnimal: AnimalId =
-    location.state?.animal ??
-    (localStorage.getItem("selectedAnimal") as AnimalId | null) ??
-    "chick";
-
-  const [selectedAnimal] = useState<AnimalId>(initialAnimal);
-
-  //선택한 감정을 저장?
-  const [selectedEmotion, setSelectedEmotion] = useState<EmotionId>(
-    (localStorage.getItem("selectedEmotion") as EmotionId | null) ??
-      emotions[0].id
-  );
-
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  useEffect(() => {
-    setIsAnimating(true);
-    const t = setTimeout(() => setIsAnimating(false), 600);
-    return () => clearTimeout(t);
-  }, [selectedAnimal, selectedEmotion]);
+  const {
+    selectedAnimal,
+    selectedValue: selectedEmotion,
+    setSelectedValue: setSelectedEmotion,
+    isAnimating,
+  } = useCharaterFlowState<EmotionId>({
+    stepName: "emotion",
+    initialValue: emotions[0].id,
+  });
 
   return (
     <ReviewContainer title="상상친구 만들기" flow={REVIEW_FLOW}>
