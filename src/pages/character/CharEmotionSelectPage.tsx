@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
 import { Desc } from "@/domains/playroom/components/Desc";
 import * as EmotionCharacters from "@/assets/icons/playroom/storytown/character/emotion";
@@ -28,8 +28,7 @@ import {
   EmojiSad,
   EmojiSurprised,
 } from "@/assets/icons/playroom/emotion";
-
-import { Shadow } from "@/assets/icons/playroom";
+import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
 import {
   SingleSelectGroup,
   SingleSelectItem,
@@ -65,7 +64,6 @@ type EmotionId =
 
 
 export const CharEmotionSelectPage: React.FC = () => {
-  const navigate = useNavigate();
   const location = useLocation() as { state?: { animal?: AnimalId } };
 
   // 공연 정보 표시(그대로 유지)
@@ -182,11 +180,19 @@ const renderCharacter = () => {
         content={<>좋은 선택이에요! <br/> 이제 감정을 기록해줄 표정을 선택해주세요.</>}
       />
 
-      <div className="flex relative z-10 flex-col items-center">
+            <AnimalPreview
+              step="emotion"
+              isAnimating={isAnimating}
+              selectedAnimal={selectedAnimal}
+              selectedEmotion={selectedEmotion}
+            />
+            <hr className="my-4 mb-7 border-secondary-100/30" />
+
+      {/* <div className="flex relative z-10 flex-col items-center">
         <div className="flex justify-center">{renderCharacter()}</div>
         <Shadow className="w-[147px] h-[40px] mt-[-40px] relative z-10" />
       </div>
-      <hr className="my-4 mb-7 border-secondary-100/30" />
+      <hr className="my-4 mb-7 border-secondary-100/30" /> */}
 
       <SingleSelectGroup
         selectedValue={selectedEmotion}

@@ -269,10 +269,6 @@ export const CharAccSelectPage: React.FC = () => {
       <div className="flex relative z-10 flex-col items-center">
         <div className="flex justify-center">
           {(() => {
-            console.log("currentStep:", currentStep);
-            console.log("selectedAnimal:", selectedAnimal);
-            console.log("selectedEmotion:", selectedEmotion);
-            console.log("selectedAccessory:", selectedAccessory);
 
             if (currentStep === "accessory") {
               // 액세사리 단계에서는 액세사리가 적용된 캐릭터 표시

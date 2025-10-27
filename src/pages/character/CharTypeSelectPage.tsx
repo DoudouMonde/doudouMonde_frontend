@@ -25,7 +25,6 @@ export const CharTypeSelectPage: React.FC = () => {
 
   return (
     <ReviewContainer title="상상친구 만들기" flow={REVIEW_FLOW}>
-      {/* Header */}
       <Desc
         content={
           <>
@@ -37,6 +36,7 @@ export const CharTypeSelectPage: React.FC = () => {
       />
 
       <AnimalPreview
+        step="type"
         isAnimating={isAnimating}
         selectedAnimal={selectedAnimal}
       />
