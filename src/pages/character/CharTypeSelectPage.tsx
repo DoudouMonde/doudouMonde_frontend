@@ -42,42 +42,40 @@ export const CharTypeSelectPage: React.FC = () => {
       />
       <hr className="my-4 mb-7 border-secondary-100/30" />
 
-      <div>
-        <SingleSelectGroup
-          selectedValue={selectedAnimal}
-          onChange={(value) => setSelectedAnimal(value as AnimalId)}
-        >
-          <div className="grid grid-cols-3 gap-4 mb-4 sm:gap-6 md:gap-8 lg:gap-12">
-            {animals.slice(0, 3).map((animal) => {
-              const active = selectedAnimal === animal.id;
-              return (
-                <SingleSelectItem key={animal.id} value={animal.id}>
-                  <AnimalOption
-                    name={animal.name}
-                    HeadIcon={animal.headIcon}
-                    active={active}
-                  />
-                </SingleSelectItem>
-              );
-            })}
-          </div>
+      <SingleSelectGroup
+        selectedValue={selectedAnimal}
+        onChange={(value) => setSelectedAnimal(value as AnimalId)}
+      >
+        <div className="grid grid-cols-3 gap-4 mb-4 sm:gap-6 md:gap-8 lg:gap-12">
+          {animals.slice(0, 3).map((animal) => {
+            const active = selectedAnimal === animal.id;
+            return (
+              <SingleSelectItem key={animal.id} value={animal.id}>
+                <AnimalOption
+                  name={animal.name}
+                  HeadIcon={animal.headIcon}
+                  active={active}
+                />
+              </SingleSelectItem>
+            );
+          })}
+        </div>
 
-          <div className="flex gap-4 justify-center sm:gap-6 md:gap-8 lg:gap-12">
-            {animals.slice(3, 5).map((animal) => {
-              const active = selectedAnimal === animal.id;
-              return (
-                <SingleSelectItem key={animal.id} value={animal.id}>
-                  <AnimalOption
-                    name={animal.name}
-                    HeadIcon={animal.headIcon}
-                    active={active}
-                  />
-                </SingleSelectItem>
-              );
-            })}
-          </div>
-        </SingleSelectGroup>
-      </div>
+        <div className="flex gap-4 justify-center sm:gap-6 md:gap-8 lg:gap-12">
+          {animals.slice(3, 5).map((animal) => {
+            const active = selectedAnimal === animal.id;
+            return (
+              <SingleSelectItem key={animal.id} value={animal.id}>
+                <AnimalOption
+                  name={animal.name}
+                  HeadIcon={animal.headIcon}
+                  active={active}
+                />
+              </SingleSelectItem>
+            );
+          })}
+        </div>
+      </SingleSelectGroup>
     </ReviewContainer>
   );
 };
