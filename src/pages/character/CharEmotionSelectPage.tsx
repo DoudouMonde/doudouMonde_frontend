@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { NavigationButtons } from "@/shared/components";
 import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
 import { Desc } from "@/domains/playroom/components/Desc";
+import * as EmotionCharacters from "@/assets/icons/playroom/storytown/character/emotion";
 import { REVIEW_FLOW } from "@/shared/routes/flow";
 import {
   ChickBody,
@@ -45,6 +45,24 @@ type EmotionId =
   | "onemore"
   | "sad"
   | "surprised";
+
+  // 동물과 감정을 조합해서 캐릭터 컴포넌트를 가져오는 함수
+  const getEmotionCharacter = (animal: string, emotion: string) => {
+    const animalName = animal.charAt(0).toUpperCase() + animal.slice(1);
+    const emotionName = emotion.charAt(0).toUpperCase() + emotion.slice(1);
+    const componentName = `${animalName}${emotionName}`;
+
+    // 컴포넌트 이름 매핑 (oneMore -> Onemore)
+    const mappedComponentName = componentName.replace("Onemore", "Onemore");
+
+    return (
+      EmotionCharacters as Record<
+        string,
+        React.ComponentType<{ className?: string }>
+      >
+    )[mappedComponentName];
+  };
+
 
 export const CharEmotionSelectPage: React.FC = () => {
   const navigate = useNavigate();
@@ -97,24 +115,24 @@ export const CharEmotionSelectPage: React.FC = () => {
     []
   );
 
-  // ✅ 동물은 이 페이지에서 고정(수정 불가): 이전 단계의 선택을 사용
   const [selectedAnimal] = useState<AnimalId>(initialAnimal);
 
-  // ✅ 악세사리만 이 페이지에서 선택
   const emotions: {
     id: EmotionId;
     name: string;
     icon: React.ComponentType<{ className?: string }>;
   }[] = [
-    { id: "bored", name: "지루함", icon: EmojiBored },
-    { id: "curious", name: "궁금", icon: EmojiCurious },
-    { id: "happy", name: "기쁨", icon: EmojiHappy },
-    { id: "onemore", name: "한 번 더", icon: EmojiOnemore },
-    { id: "sad", name: "슬픔", icon: EmojiSad },
-    { id: "surprised", name: "놀람", icon: EmojiSurprised },
-  ];
+      { id: "happy", name: "행복했어요", icon: EmojiHappy },
+      { id: "onemore", name: "또보고싶어요", icon: EmojiOnemore },
+      { id: "surprised", name: "놀랐어요", icon: EmojiSurprised },
+      { id: "sad", name: "슬펐어요", icon: EmojiSad },
+      { id: "bored", name: "지루했어요", icon: EmojiBored },
+      { id: "curious", name: "궁금해요", icon: EmojiCurious },
+    ];
+  
 
-  const [selectedEmotion, setSelectedEmotion] = useState<EmotionId>(
+const [selectedEmotion, setSelectedEmotion] = useState<EmotionId>(
+    (localStorage.getItem("selectedEmotion") as EmotionId | null) ??
     emotions[0].id
   );
 
@@ -127,61 +145,49 @@ export const CharEmotionSelectPage: React.FC = () => {
   }, [selectedAnimal, selectedEmotion]);
 
   // ✅ 전신 + 악세사리 오버레이 렌더 (emotion 없이)
-  const renderCharacter = () => {
-    const selected = animals.find((a) => a.id === selectedAnimal);
-    const BodyIcon = selected?.bodyIcon ?? ChickBody;
+const renderCharacter = () => {
+    // 1. 조합된 캐릭터 컴포넌트 가져오기
+    const EmotionCharacter = getEmotionCharacter(
+      selectedAnimal,
+      selectedEmotion
+    );
 
-    // 악세사리 오버레이 공통 컴포넌트
-    const Overlay = emotions.find((a) => a.id === selectedEmotion)?.icon;
-
-    return (
-      <div className="relative w-[350px] h-[250px]">
-        {/* 전신 */}
-        <BodyIcon
+    // 2. 캐릭터 컴포넌트가 존재하면 렌더링
+    if (EmotionCharacter) {
+      return (
+        <EmotionCharacter
           className={`w-[350px] h-[250px] relative z-20 ${
             isAnimating ? "animate-gentle-bounce" : ""
           }`}
         />
-        {/* 악세사리 오버레이 (대략 머리 중앙 상단) */}
-        <Overlay className="absolute left-1/2 -translate-x-1/2 top-[18%] w-[72px] h-[72px] z-30 pointer-events-none" />
-      </div>
+      );
+    }
+
+    // 3. 컴포넌트를 찾지 못했을 경우 기본 동물 Body 렌더링 (폴백)
+    const selected = animals.find((a) => a.id === selectedAnimal);
+    const BodyIcon = selected?.bodyIcon ?? ChickBody;
+    return (
+      <BodyIcon
+        className={`w-[350px] h-[250px] relative z-20 ${
+          isAnimating ? "animate-gentle-bounce" : ""
+        }`}
+      />
     );
   };
 
-  const handlePrevious = () => {
-    // 이전 단계(타입 선택)로 돌아갈 때, 현재 선택 악세사리 유지 필요시 localStorage 저장 가능
-    // localStorage.setItem("selectedAccessory", selectedAccessory);
-    navigate(-1);
-  };
-
-  const handleNext = () => {
-    // 다음 페이지로 이동하며 동물/악세사리 전달
-    localStorage.setItem("selectedAnimal", selectedAnimal);
-    localStorage.setItem("selectedEmotion", selectedEmotion);
-
-    navigate("/playroom/character-preview", {
-      state: {
-        animal: selectedAnimal,
-        accessory: selectedAccessory,
-      },
-    });
-  };
 
   return (
     <ReviewContainer title="상상친구 만들기" flow={REVIEW_FLOW}>
-      {/* Header */}
       <Desc
-        content={<>악세사리를 선택하면, 앞서 고른 친구 타입에 적용돼요.</>}
+        content={<>좋은 선택이에요! <br/> 이제 감정을 기록해줄 표정을 선택해주세요.</>}
       />
 
-      {/* 전신 + 악세사리 조합 미리보기 */}
       <div className="flex relative z-10 flex-col items-center">
         <div className="flex justify-center">{renderCharacter()}</div>
         <Shadow className="w-[147px] h-[40px] mt-[-40px] relative z-10" />
       </div>
       <hr className="my-4 mb-7 border-secondary-100/30" />
 
-      {/* 악세사리 선택 UI (단일 선택) */}
       <SingleSelectGroup
         selectedValue={selectedEmotion}
         onChange={(value) => setSelectedEmotion(value as EmotionId)}
@@ -201,8 +207,6 @@ export const CharEmotionSelectPage: React.FC = () => {
                       ) : (
                         <RadioFalse className="w-6 h-6" />
                       )}
-                      {/* 이름 노출 원하면 주석 해제 */}
-                      {/* <h3 className="text-sm text-gray-900 body-inter">{acc.name}</h3> */}
                     </div>
                   </div>
                 </div>
@@ -212,14 +216,7 @@ export const CharEmotionSelectPage: React.FC = () => {
         </div>
       </SingleSelectGroup>
 
-      {/* 네비게이션 버튼 */}
-      <div className="mt-8">
-        <NavigationButtons
-          onPrevious={handlePrevious}
-          onNext={handleNext}
-          isNextDisabled={false}
-        />
-      </div>
+
     </ReviewContainer>
   );
 };
