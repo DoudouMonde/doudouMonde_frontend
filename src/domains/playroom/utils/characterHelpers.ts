@@ -21,6 +21,15 @@ export const getEmotionCharacter = (animal: string, emotion: string) => {
   )[mappedComponentName];
 };
 
+const accessoryModules = {
+  crown: CrownCharacters,
+  cap: CapCharacters,
+  flower: FlowerCharacters,
+  glasses: GlassesCharacters,
+  ribbon: RibbonCharacters,
+  wizhat: WizhatCharacters,
+};
+
 export const getAccessoryCharacter = (
   animal: string,
   emotion: string,
@@ -31,51 +40,9 @@ export const getAccessoryCharacter = (
   const accessoryName = accessory.charAt(0).toUpperCase() + accessory.slice(1);
   const componentName = `${animalName}${emotionName}${accessoryName}`;
 
-  let characterModule: Record<
-    string,
-    React.ComponentType<{ className?: string }>
-  >;
+  let characterModule = (accessoryModules as any)[accessory];
 
-  switch (accessory) {
-    case "crown":
-      characterModule = CrownCharacters as Record<
-        string,
-        React.ComponentType<{ className?: string }>
-      >;
-      break;
-    case "cap":
-      characterModule = CapCharacters as Record<
-        string,
-        React.ComponentType<{ className?: string }>
-      >;
-      break;
-    case "flower":
-      characterModule = FlowerCharacters as Record<
-        string,
-        React.ComponentType<{ className?: string }>
-      >;
-      break;
-    case "glasses":
-      characterModule = GlassesCharacters as Record<
-        string,
-        React.ComponentType<{ className?: string }>
-      >;
-      break;
-    case "ribbon":
-      characterModule = RibbonCharacters as Record<
-        string,
-        React.ComponentType<{ className?: string }>
-      >;
-      break;
-    case "wizhat":
-      characterModule = WizhatCharacters as Record<
-        string,
-        React.ComponentType<{ className?: string }>
-      >;
-      break;
-    default:
-      return null;
-  }
+  if (!characterModule) return null;
 
   return characterModule[componentName];
 };
