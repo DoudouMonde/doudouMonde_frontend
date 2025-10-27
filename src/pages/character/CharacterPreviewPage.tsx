@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { NavigationButtons } from "@/shared/components";
-import { Calendar, PlayingCardsIcon } from "@/assets/icons";
+
 import { reviewApi } from "@/domains/review/apis/reviewApi";
 import {
   CharacterType,
@@ -9,33 +8,23 @@ import {
   CharacterAccessories,
 } from "@/domains/review/types/ReviewAddRequest";
 import { useReviewStore } from "@/stores/reviewStore";
-import {
-  ChickBody,
-  CatBody,
-  DinoBody,
-  DogBody,
-  RabbitBody,
-} from "@/assets/icons/playroom/type_body";
-import { Shadow } from "@/assets/icons/playroom";
-import * as EmotionCharacters from "@/assets/icons/playroom/storytown/character/emotion";
-import * as CrownCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/crown";
-import * as CapCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/cap";
-import * as FlowerCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/flower";
-import * as GlassesCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/glasses";
-import * as RibbonCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/ribbon";
-import * as WizhatCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/wizhat";
-import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
-import { Desc } from "@/domains/playroom/components/Desc";
-import { REVIEW_FLOW } from "@/shared/routes/flow";
-interface CharacterData {
-  animal: string;
-  emotion: string;
-  accessory: string;
-}
+import { useCharaterFlowState } from "@/domains/playroom/hooks/useCharacterFlowState";
+import { animals } from "@/domains/playroom/constants/animals";
 
 export const CharacterPreviewPage: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+    const {
+      selectedAnimal,
+      selectedEmotion,
+      selectedAcc
+    } = useCharaterFlowState({
+      stepName: "accessory",
+      storageKey: "selectedAcc",
+      initialValue: accessories[0].id,
+    });
+
+  
+
   const {
     reviewText,
     uploadedImages,
@@ -49,131 +38,6 @@ export const CharacterPreviewPage: React.FC = () => {
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  // CharacterCreation에서 전달받은 데이터
-  const characterData = (location.state as CharacterData) || {
-    animal: "chick",
-    emotion: "happy",
-    accessory: "crwon",
-  };
-
-  // localStorage에서 선택된 공연 정보 불러오기
-  const [selectedPerformanceFromStorage, setSelectedPerformanceFromStorage] =
-    React.useState<{
-      id: number;
-      title: string;
-      posterUrl: string;
-      location: string;
-    } | null>(null);
-
-  React.useEffect(() => {
-    // localStorage에서 선택된 공연 정보 불러오기
-    const storedPerformance = localStorage.getItem("selectedPerformance");
-    if (storedPerformance) {
-      try {
-        const performanceData = JSON.parse(storedPerformance);
-        setSelectedPerformanceFromStorage(performanceData);
-        console.log(
-          "CharacterPreview - localStorage에서 불러온 공연 정보:",
-          performanceData
-        );
-      } catch (error) {
-        console.error("공연 정보 파싱 오류:", error);
-      }
-    }
-  }, []);
-
-  // 동물 데이터
-  const animals = [
-    { id: "chick", name: "병아리", bodyIcon: ChickBody },
-    { id: "cat", name: "고양이", bodyIcon: CatBody },
-    { id: "dino", name: "공룡", bodyIcon: DinoBody },
-    { id: "dog", name: "강아지", bodyIcon: DogBody },
-    { id: "rabbit", name: "토끼", bodyIcon: RabbitBody },
-  ];
-
-  // 선택된 데이터 가져오기
-  const selectedAnimal = animals.find(
-    (animal) => animal.id === characterData.animal
-  );
-
-  // 동물과 감정을 조합해서 캐릭터 컴포넌트를 가져오는 함수
-  const getEmotionCharacter = (animal: string, emotion: string) => {
-    const animalName = animal.charAt(0).toUpperCase() + animal.slice(1);
-    const emotionName = emotion.charAt(0).toUpperCase() + emotion.slice(1);
-    const componentName = `${animalName}${emotionName}`;
-
-    // 컴포넌트 이름 매핑 (oneMore -> Onemore)
-    const mappedComponentName = componentName.replace("Onemore", "Onemore");
-
-    return (
-      EmotionCharacters as Record<
-        string,
-        React.ComponentType<{ className?: string }>
-      >
-    )[mappedComponentName];
-  };
-
-  // 동물, 감정, 액세사리를 조합해서 캐릭터 컴포넌트를 가져오는 함수
-  const getAccessoryCharacter = (
-    animal: string,
-    emotion: string,
-    accessory: string
-  ) => {
-    const animalName = animal.charAt(0).toUpperCase() + animal.slice(1);
-    const emotionName = emotion.charAt(0).toUpperCase() + emotion.slice(1);
-    const accessoryName =
-      accessory.charAt(0).toUpperCase() + accessory.slice(1);
-    const componentName = `${animalName}${emotionName}${accessoryName}`;
-
-    // 액세사리별로 다른 모듈에서 가져오기
-    let characterModule: Record<
-      string,
-      React.ComponentType<{ className?: string }>
-    >;
-
-    switch (accessory) {
-      case "crown":
-        characterModule = CrownCharacters as Record<
-          string,
-          React.ComponentType<{ className?: string }>
-        >;
-        break;
-      case "cap":
-        characterModule = CapCharacters as Record<
-          string,
-          React.ComponentType<{ className?: string }>
-        >;
-        break;
-      case "flower":
-        characterModule = FlowerCharacters as Record<
-          string,
-          React.ComponentType<{ className?: string }>
-        >;
-        break;
-      case "glasses":
-        characterModule = GlassesCharacters as Record<
-          string,
-          React.ComponentType<{ className?: string }>
-        >;
-        break;
-      case "ribbon":
-        characterModule = RibbonCharacters as Record<
-          string,
-          React.ComponentType<{ className?: string }>
-        >;
-        break;
-      case "wizhat":
-        characterModule = WizhatCharacters as Record<
-          string,
-          React.ComponentType<{ className?: string }>
-        >;
-        break;
-      default:
-        return null;
-    }
-
-    return characterModule[componentName];
-  };
 
   // 캐릭터 데이터를 API 형식으로 변환
   const convertToApiFormat = () => {
@@ -203,78 +67,7 @@ export const CharacterPreviewPage: React.FC = () => {
       wizardHat: CharacterAccessories.WIZARD_HAT,
     };
 
-    return {
-      seenPerformanceId:
-        selectedPerformanceFromStorage?.id || selectedPerformance?.id || 1, // 공연 ID 전송
-      performanceName:
-        selectedPerformanceFromStorage?.title ||
-        selectedPerformance?.title ||
-        "공연이름", // 공연 이름 전송
-      watchDate: (() => {
-        console.log("📅 날짜 처리 시작:", {
-          selectedDate,
-          selectedDateType: typeof selectedDate,
-          selectedDateValue: selectedDate,
-        });
-
-        if (!selectedDate) {
-          console.log("📅 selectedDate가 없음, 현재 시간 사용");
-          return new Date().toISOString().slice(0, 19);
-        }
-
-        // selectedDate가 이미 ISO 문자열인 경우 (ChildAndDateSelectionPage에서 저장된 경우)
-        if (typeof selectedDate === "string" && selectedDate.includes("T")) {
-          console.log("📅 ISO 문자열 형태의 날짜 처리:", selectedDate);
-          const result = new Date(selectedDate).toISOString().slice(0, 19);
-          console.log("📅 ISO 문자열 변환 결과:", result);
-          return result;
-        }
-
-        // selectedDate가 한국어 날짜 문자열인 경우 (ReviewWritingPage에서 변환된 경우)
-        if (typeof selectedDate === "string") {
-          console.log(
-            "📅 한국어 날짜 문자열 형태, localStorage에서 원본 가져오기"
-          );
-          // localStorage에서 원본 ISO 문자열을 가져와서 사용
-          const savedDate = localStorage.getItem("selectedDate");
-          console.log("📅 localStorage에서 가져온 원본 날짜:", savedDate);
-          if (savedDate) {
-            const result = new Date(savedDate).toISOString().slice(0, 19);
-            console.log("📅 localStorage 날짜 변환 결과:", result);
-            return result;
-          }
-        }
-
-        // 기본값으로 현재 시간 사용
-        console.log("📅 기본값으로 현재 시간 사용");
-        return new Date().toISOString().slice(0, 19);
-      })(),
-      content:
-        reviewText || `상상친구 ${characterName}와 함께한 공연 후기입니다.`,
-      characterName: characterName,
-      characterType: animalToType[characterData.animal] || CharacterType.CHICK,
-      characterEmotion:
-        emotionToApi[characterData.emotion] || CharacterEmotion.HAPPY,
-      characterAccessories:
-        accessoryToApi[characterData.accessory] || CharacterAccessories.CROWN,
-    };
   };
-
-  const handlePrevious = () => {
-    navigate(-1); // 이전 페이지로 이동
-  };
-
-  // CharacterPreview.tsx
-
-  const handleNext = async () => {
-    if (!characterName.trim()) {
-      alert("캐릭터 이름을 입력해주세요.");
-      return;
-    }
-    if (!selectedPerformanceFromStorage && !selectedPerformance) {
-      alert("공연 정보가 없습니다.");
-      return;
-    }
 
     setIsSubmitting(true);
 
@@ -467,49 +260,13 @@ export const CharacterPreviewPage: React.FC = () => {
       />
 
       {/* 완성된 캐릭터 표시 */}
-      <div className="flex flex-col items-center mb-8">
-        <div className="flex relative z-10 flex-col items-center">
-          <div className="flex justify-center">
-            {(() => {
-              // 액세사리가 적용된 최종 캐릭터 표시
-              const AccessoryCharacter = getAccessoryCharacter(
-                characterData.animal,
-                characterData.emotion,
-                characterData.accessory
-              );
-
-              if (AccessoryCharacter) {
-                return (
-                  <AccessoryCharacter className="w-[350px] h-[250px] relative z-20" />
-                );
-              }
-
-              // 액세사리 캐릭터를 찾을 수 없는 경우 감정 캐릭터 표시
-              const EmotionCharacter = getEmotionCharacter(
-                characterData.animal,
-                characterData.emotion
-              );
-
-              if (EmotionCharacter) {
-                return (
-                  <EmotionCharacter className="w-[350px] h-[250px] relative z-20" />
-                );
-              }
-
-              // 기본 동물 전신 모습 표시
-              if (selectedAnimal) {
-                const BodyIcon = selectedAnimal.bodyIcon;
-                return (
-                  <BodyIcon className="w-[350px] h-[250px] relative z-20" />
-                );
-              }
-
-              return null;
-            })()}
-          </div>
-          <Shadow className="w-[200px] h-[50px] mt-[-40px] relative z-10" />
-        </div>
-      </div>
+            <AnimalPreview
+              step="accessory"
+              isAnimating={isAnimating}
+              selectedAnimal={selectedAnimal}
+              selectedEmotion={selectedEmotion}
+              selectedAcc= {selectedAcc}
+            />
 
       <div className="flex justify-center">
         <div className="flex flex-col gap-2 w-auto">
