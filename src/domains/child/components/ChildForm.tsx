@@ -28,7 +28,9 @@ export const ChildForm = () => {
       <Background />
       <MainContainer>
         <TopBar title="아이 등록" />
-        <form onSubmit={handleSave}>
+        <form 
+        onSubmit={handleSave}
+        >
           <ContentSection>
             <ChildFormFields />
             <SaveButton onClick={handleSave} text={"등록하기"} />
