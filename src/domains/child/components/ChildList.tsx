@@ -18,10 +18,11 @@ const MOCK_CHILDREN: ChildItemResponse[] = [
 ];
 
 export const ChildList = () => {
-  // 🔁 로컬 대체 상태
+  // 🔁 로컬 대체 상태  // 🔁 로컬 대체 상태
   const childrenData: ChildItemResponse[] = MOCK_CHILDREN;
 
   const [children, setChildren] = useState<ChildItemResponse[]>([]);
+
   const [selectedChild, setSelectedChild] = useState<ChildItemResponse | null>(
     null
   );
