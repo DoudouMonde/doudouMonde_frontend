@@ -10,7 +10,9 @@ type Props = {
 };
 
 export const ChildForm = ({ onSubmit }: Props) => {
+  //Provider에서 제공한 RHF 요소 받아오기
   const { control } = useFormContext<ChildFormValues>();
+
   const {
     name,
     birthday,
@@ -19,11 +21,14 @@ export const ChildForm = ({ onSubmit }: Props) => {
     onChangeBirthday,
     onChangeGender,
   } = useChildFormValues(control);
+
   const {
     handleSubmit,
     reset,
     formState: { errors },
   } = useFormContext<ChildFormValues>();
+
+
   return (
     <form
       onSubmit={(e) => {

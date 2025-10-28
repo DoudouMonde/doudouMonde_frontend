@@ -10,18 +10,25 @@ import { DevTool } from "@hookform/devtools";
  *
  */
 export const CreateChildForm = () => {
+  
   const formMethods = useForm<ChildFormValues>({
-    defaultValues: createNewChild(), //초기값을 정해주는 factory 함수
-    resolver: zodResolver(ChildFormValues), //zodResolver에 넣은 schema의 유효성 검사를 수행하고, 유효하면 함수를 호출함
+    defaultValues: createNewChild(), 
+    resolver: zodResolver(ChildFormValues), 
+    //폼이 제출될 때 zodResolver가 폼 데이터의 규칙을 정의한 스키마(ChildFormValues)를 기반으로 입력된 폼 값 (formValues)의 유효성을 검증한다.   
   });
 
+  //폼 제출이 성공하고 유효성을 통과했을 때 실행
   const createChild = (formValues: ChildFormValues) => {
     //여기에 child 등록 API 호출하면 됨.
     console.log(formValues);
   };
   return (
+    //formMethods를 Provider의 value로 전달한다.
+    //이 컴포넌트 내부에 있는 모든 하위 컴포넌트는 useFormContext를 사용하여 전달받은 메소드를 Props 드릴링 없이 사용할 수 있다.
     <FormProvider {...formMethods}>
+      {/* 실제 폼 UI를 렌더링하는 프레젠테이션 컴포넌트 */}
       <ChildForm onSubmit={createChild} />
+      {/* 폼의 control 객체를 넘겨받아 개발자 도구에 시각적으로 보여주게 해준다.  */}
       <DevTool control={formMethods.control} />
     </FormProvider>
   );
