@@ -4,7 +4,7 @@ import {
   TRAIT_MAPPING,
   GENRE_MAPPING,
   PROFILE_MAPPING,
-} from "@/domains/auth/types/signup"; 
+} from "@/domains/auth/types/signup";
 
 export const transformChildDataForApi = (data: ChildFormValues) => {
   return {
@@ -18,11 +18,11 @@ export const transformChildDataForApi = (data: ChildFormValues) => {
     profile:
       PROFILE_MAPPING[data.selectedProfile as keyof typeof PROFILE_MAPPING] ||
       "CAT",
-    traits: data.selectedTraits.map(
-      (t) => TRAIT_MAPPING[t as keyof typeof TRAIT_MAPPING] || t 
-    ),
-    genres: data.selectedGenres.map(
-      (g) => GENRE_MAPPING[g as keyof typeof GENRE_MAPPING] || g 
-    ),
+    // traits: data.selectedTraits.map(
+    //   (t) => TRAIT_MAPPING[t as keyof typeof TRAIT_MAPPING] || t
+    // ),
+    // genres: data.selectedGenres.map(
+    //   (g) => GENRE_MAPPING[g as keyof typeof GENRE_MAPPING] || g
+    // ),
   };
 };

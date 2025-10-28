@@ -34,8 +34,8 @@ export const useChildRegistration = () => {
       birthMonth: "",
       birthDay: "",
       gender: undefined,
-      selectedTraits: [],
-      selectedGenres: [],
+      // selectedTraits: [],
+      // selectedGenres: [],
       selectedProfile: "CAT",
     },
     mode: "onChange",
@@ -61,6 +61,7 @@ export const useChildRegistration = () => {
   useAutosaveChildForm(formValues, isDirty);
 
   const onSubmit = async (data: ChildFormValues) => {
+    console.log("[Child] submit!", data);
     //api 요청을 보내기 전에 바텀 먼저 열기
     setIsBottomSheetOpen(true);
     localStorage.removeItem(STORAGE_KEY_AUTOSAVE);
@@ -83,7 +84,10 @@ export const useChildRegistration = () => {
     }
   };
 
-  const handleSave = handleSubmit(onSubmit);
+  // const handleSave = handleSubmit(onSubmit);
+  const handleSave = handleSubmit(onSubmit, (errors) => {
+    console.log("[Child] INVALID!", errors);
+  });
 
   const handleComplete = () => {
     setIsBottomSheetOpen(false);
@@ -107,8 +111,8 @@ export const useChildRegistration = () => {
       birthMonth: "",
       birthDay: "",
       gender: undefined,
-      selectedTraits: [],
-      selectedGenres: [],
+      // selectedTraits: [],
+      // selectedGenres: [],
       selectedProfile: "CAT",
     });
   };

@@ -10,6 +10,7 @@ export const useChildRegistrationMutation = () => {
       }
       return result;
     } catch (error) {
+      console.log("AXIOS URL:", error?.config?.baseURL, error?.config?.url); // 최종 URL 확인
       console.error("아이 등록 중 오류:", error);
       throw error;
     }

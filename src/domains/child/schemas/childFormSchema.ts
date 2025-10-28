@@ -1,15 +1,24 @@
 import { z } from "zod";
-import { GENDER_MAPPING, TRAIT_MAPPING, GENRE_MAPPING, PROFILE_MAPPING } from "@/domains/auth/types/signup";
-import { NAME_ALLOWED_REGEX, HANGUL_OR_SPACE_ONLY_REGEX } from "../constants/childRegistration";
+import {
+  GENDER_MAPPING,
+  TRAIT_MAPPING,
+  GENRE_MAPPING,
+  PROFILE_MAPPING,
+} from "@/domains/auth/types/signup";
+import {
+  NAME_ALLOWED_REGEX,
+  HANGUL_OR_SPACE_ONLY_REGEX,
+} from "../constants/childRegistration";
 
 // genderKeys와 profileKeys 타입을 정확하게 설정
 const profileKeys = Object.keys(PROFILE_MAPPING) as [string, ...string[]];
 const genderKeys = Object.keys(GENDER_MAPPING) as [string, ...string[]];
-const traitKeys = Object.keys(TRAIT_MAPPING) as [string, ...string[]];
-const genreKeys = Object.keys(GENRE_MAPPING) as [string, ...string[]];
+// const traitKeys = Object.keys(TRAIT_MAPPING) as [string, ...string[]];
+// const genreKeys = Object.keys(GENRE_MAPPING) as [string, ...string[]];
 
-
-export const createChildFormSchema = (isDuplicateName: (value: string) => boolean) => {
+export const createChildFormSchema = (
+  isDuplicateName: (value: string) => boolean
+) => {
   const nameValidation = z
     .string()
     .trim()
@@ -44,7 +53,7 @@ export const createChildFormSchema = (isDuplicateName: (value: string) => boolea
       message: "이미 등록된 이름이에요",
     });
 
-    const schema = z.object({
+  const schema = z.object({
     name: nameValidation,
     birthYear: z.string().min(1, "생년월일(년)은 필수 입력입니다."),
     birthMonth: z.string().min(1, "생년월일(월)은 필수 입력입니다."),
@@ -55,12 +64,12 @@ export const createChildFormSchema = (isDuplicateName: (value: string) => boolea
     selectedProfile: z.enum(profileKeys, {
       message: "프로필은 필수 선택입니다.",
     }),
-    selectedTraits: z
-      .array(z.enum(traitKeys))
-      .min(1, "성향은 최소 1개 이상 선택해야 합니다."),
-    selectedGenres: z
-      .array(z.enum(genreKeys))
-      .min(1, "장르는 최소 1개 이상 선택해야 합니다."),
+    // selectedTraits: z
+    //   .array(z.enum(traitKeys))
+    //   .min(1, "성향은 최소 1개 이상 선택해야 합니다."),
+    // selectedGenres: z
+    //   .array(z.enum(genreKeys))
+    //   .min(1, "장르는 최소 1개 이상 선택해야 합니다."),
   });
 
   return schema;

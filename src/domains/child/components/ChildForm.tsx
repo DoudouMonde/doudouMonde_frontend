@@ -10,9 +10,7 @@ import {
 
 import { ChildFormFields } from "@/domains/child/components/ChildFormFields";
 import { SaveButton } from "@/shared/components/Button/SaveButton";
-import {
-  useChildRegistrationContext,
-} from "@/domains/child/contexts/ChildRegistrationContext";
+import { useChildRegistrationContext } from "@/domains/child/contexts/ChildRegistrationContext";
 
 export const ChildForm = () => {
   const {
@@ -28,12 +26,10 @@ export const ChildForm = () => {
       <Background />
       <MainContainer>
         <TopBar title="아이 등록" />
-        <form 
-        onSubmit={handleSave}
-        >
+        <form onSubmit={handleSave}>
           <ContentSection>
             <ChildFormFields />
-            <SaveButton onClick={handleSave} text={"등록하기"} />
+            <SaveButton text={"등록하기"} />
           </ContentSection>
         </form>
       </MainContainer>
