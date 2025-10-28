@@ -11,8 +11,8 @@ export const ChildFormFields = () => {
   return (
     <>
       <BasicInfoInputSection />
-      <TraitSelectorSection control={control} />
-      <GenreSelectorSection control={control} />
+      {/* <TraitSelectorSection control={control} />
+      <GenreSelectorSection control={control} /> */}
       <ProfileSelectorSection control={control} />
     </>
   );
