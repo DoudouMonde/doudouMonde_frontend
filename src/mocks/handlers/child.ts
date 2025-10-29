@@ -68,7 +68,7 @@ export const childHandlers = [
     const list = childDb.list().map((c) => ({
       id: c.id,
       name: c.name,
-      profile: c.selectedProfile,
+      profile: c.profile,
     }));
 
     const payload = { contents: list };

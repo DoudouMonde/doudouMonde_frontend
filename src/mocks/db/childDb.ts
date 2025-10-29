@@ -80,10 +80,10 @@ export const childDb = {
     save(store);
     return store[idx];
   },
-  updateProfile(id: number, profile: string) {
+  updateProfile(id: number, profile: Profile) {
     const idx = store.findIndex((c) => c.id === id);
     if (idx < 0) return null;
-    store[idx] = { ...store[idx], selectedProfile: profile };
+    store[idx] = { ...store[idx], profile };
     save(store);
     return store[idx];
   },
