@@ -2,7 +2,6 @@ import { ChildRequest } from "@/domains/auth/types/signup";
 import { ChildListResponse } from "@/domains/child/types/childApiTypes";
 import { apiRequester } from "@/shared/apis/axiosInstance";
 
-//아이 등록 API 요청 결과 타입 -> api가 생성된 후 다시 수정
 export interface PostChildRegistrationResponse {
   childId: number;
   success: boolean;
@@ -24,6 +23,26 @@ export interface UpdateChildProfileRequest {
 export interface UpdateChildProfileResponse {
   childId: number;
   profile: string;
+}
+
+export interface UpdateChildBirthdayRequest {
+  childId: number;
+  birthday: string;
+}
+
+export interface UpdateChildBirthdayResponse {
+  childId: number;
+  birthday: string;
+}
+
+export interface UpdateChildGenderRequest {
+  childId: number;
+  gender: string;
+}
+
+export interface UpdateChildGenderResponse {
+  childId: number;
+  gender: string;
 }
 
 export const childApi = {
@@ -56,6 +75,28 @@ export const childApi = {
   ) => {
     const res = await apiRequester.patch<UpdateChildProfileResponse>(
       `/v1/child/${childId}/profile`,
+      request
+    );
+    return res.data;
+  },
+
+  updateChildBirthday: async (
+    childId: number,
+    request: UpdateChildBirthdayRequest
+  ) => {
+    const res = await apiRequester.patch<UpdateChildBirthdayResponse>(
+      `/v1/child/${childId}/birthday`,
+      request
+    );
+    return res.data;
+  },
+
+  updateChildGender: async (
+    childId: number,
+    request: UpdateChildGenderRequest
+  ) => {
+    const res = await apiRequester.patch<UpdateChildGenderResponse>(
+      `/v1/child/${childId}/gender`,
       request
     );
     return res.data;

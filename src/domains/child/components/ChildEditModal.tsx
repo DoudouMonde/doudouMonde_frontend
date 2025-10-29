@@ -1,8 +1,32 @@
-// src/domains/child/components/ChildEditModal.tsx
 import { useState } from "react";
 import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 
-// 간단한 모달 Wrapper 컴포넌트 (실제 프로젝트에서는 더 복잡할 수 있습니다)
+//아이 정보를 조회하는 api 필요
+//아이 정보를 수정하는 api 필요
+
+const MOCK_CHILDREN: ChildItemResponse[] = [
+  {
+    id: 1,
+    name: "도윤",
+    profile: "CAT",
+    birthday: "2025-10-10",
+    gender: "MALE" as const,
+  },
+  {
+    id: 2,
+    name: "서아",
+    profile: "RABBIT",
+    birthday: "2025-10-10",
+    gender: "FEMALE" as const,
+  },
+  {
+    id: 3,
+    name: "하준",
+    profile: "DOG",
+    birthday: "2025-10-10",
+    gender: "MALE" as const,
+  },
+];
 const ModalWrapper = ({ children, onClose }) => (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
     <div className="bg-white p-6 rounded-lg shadow-2xl w-full max-w-md">

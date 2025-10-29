@@ -13,9 +13,27 @@ import {
 } from "@/shared/components/Layout";
 
 const MOCK_CHILDREN: ChildItemResponse[] = [
-  { id: 1, name: "도윤", profile: "CAT" as const },
-  { id: 2, name: "서아", profile: "RABBIT" as const },
-  { id: 3, name: "하준", profile: "DOG" as const },
+  {
+    id: 1,
+    name: "도윤",
+    profile: "CAT",
+    birthday: "2025-10-10",
+    gender: "MALE" as const,
+  },
+  {
+    id: 2,
+    name: "서아",
+    profile: "RABBIT",
+    birthday: "2025-10-10",
+    gender: "FEMALE" as const,
+  },
+  {
+    id: 3,
+    name: "하준",
+    profile: "DOG",
+    birthday: "2025-10-10",
+    gender: "MALE" as const,
+  },
 ];
 
 export const ChildList = () => {
