@@ -28,14 +28,14 @@ export const PerformanceHeader = () => {
         {/* 뒤로가기 버튼 */}
         <button
           onClick={handleBackClick}
-          className="flex justify-center items-center w-6 h-6 text-black transition-transform active:scale-95"
+          className="flex justify-center items-center w-6 h-6 text-gray-900 transition-transform active:scale-95"
           aria-label="뒤로가기"
         >
           <Back className="w-6 h-6" />
         </button>
 
         {/* 공연 제목 */}
-        <h1 className="flex-1 text-center text-black  leading-[19px] body-inter-b">
+        <h1 className="flex-1 text-center text-gray-900  leading-[19px] body-inter-b">
           {performanceDetail.performanceName}
         </h1>
 

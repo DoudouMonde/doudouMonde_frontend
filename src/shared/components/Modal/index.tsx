@@ -47,7 +47,7 @@ export default function Modal({
 
   return (
     <div
-      className={`flex fixed inset-0 z-50 justify-center items-center bg-black/50 ${backdropClassName}`}
+      className={`flex fixed inset-0 z-50 justify-center items-center bg-gray-900/50 ${backdropClassName}`}
       onMouseDown={(e: React.MouseEvent<HTMLDivElement>) => {
         if (!closeOnBackdrop) return;
         // ✅ backdrop 클릭에서만 닫히도록 보호

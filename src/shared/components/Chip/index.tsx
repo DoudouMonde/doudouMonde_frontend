@@ -20,7 +20,7 @@ export const Chip = ({
 
   return (
     <button
-      className={`flex items-center px-4 py-1 whitespace-nowrap rounded-2xl w-fit ${variantClasses[variant]} font-hak text-black-100 ${className}`}
+      className={`flex items-center px-4 py-1 whitespace-nowrap rounded-2xl w-fit ${variantClasses[variant]} font-hak text-gray-900-100 ${className}`}
       onClick={onClick}
       role={onClick ? "button" : undefined}
     >

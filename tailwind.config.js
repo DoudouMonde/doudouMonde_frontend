@@ -56,8 +56,10 @@ export default {
       },
       gray: {
         100: "#ECECEB",
-        200: "#FFFFFF",
+        200: "#F9FAFB",
+        900: "#212427",
       },
+      white: "#FFFFFF",
       primary: {
         100: "#404040",
       },

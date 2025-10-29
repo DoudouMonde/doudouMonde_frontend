@@ -83,7 +83,7 @@ const Calendar: React.FC<CalendarProps> = ({
           {/* Left arrow */}
           <button
             onClick={handlePreviousMonth}
-            className="flex justify-center items-center w-6 h-6 transition-colors text-secondary-100 hover:text-black"
+            className="flex justify-center items-center w-6 h-6 transition-colors text-secondary-100 hover:text-gray-900"
             aria-label="이전 달"
           >
             <svg
@@ -106,7 +106,7 @@ const Calendar: React.FC<CalendarProps> = ({
 
           {/* Month/Year display */}
           <div className="text-center">
-            <span className="text-xl font-semibold text-black font-['Hakgyoansim_Dunggeunmiso_OTF'] tracking-[-0.02em]">
+            <span className="text-xl font-semibold text-gray-900 font-['Hakgyoansim_Dunggeunmiso_OTF'] tracking-[-0.02em]">
               {formatMonthYear(currentDate)}
             </span>
           </div>
@@ -114,7 +114,7 @@ const Calendar: React.FC<CalendarProps> = ({
           {/* Right arrow */}
           <button
             onClick={handleNextMonth}
-            className="w-6 h-6 flex items-center justify-center text-[#8C8C8C] hover:text-black transition-colors"
+            className="w-6 h-6 flex items-center justify-center text-[#8C8C8C] hover:text-gray-900 transition-colors"
             aria-label="다음 달"
           >
             <svg
@@ -143,7 +143,7 @@ const Calendar: React.FC<CalendarProps> = ({
             {dayNames.map((day) => (
               <div
                 key={day}
-                className="py-2 text-sm font-medium text-center text-black-100"
+                className="py-2 text-sm font-medium text-center text-gray-900-100"
               >
                 {day}
               </div>
@@ -170,8 +170,8 @@ const Calendar: React.FC<CalendarProps> = ({
                         : isFutureDate
                         ? "text-gray-300 cursor-not-allowed"
                         : calendarDate.isSelected
-                        ? "bg-green-100 text-gray-100 font-black"
-                        : "text-black-100 hover:bg-gray-100"
+                        ? "bg-green-100 text-gray-100 font-gray-900"
+                        : "text-gray-900 hover:bg-gray-100"
                     }
                   `}
                 >

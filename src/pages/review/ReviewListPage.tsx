@@ -279,7 +279,7 @@ export const ReviewListPage = () => {
         {/* Header */}
         <div className="flex flex-col mb-6">
           <h1 className="mb-4 title-hak">내 리뷰 목록</h1>
-          <p className="text-black subtitle">
+          <p className="text-gray-900 subtitle">
             지금까지 작성한 공연 리뷰들을 확인해보세요
           </p>
         </div>

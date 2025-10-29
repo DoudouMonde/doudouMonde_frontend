@@ -53,13 +53,10 @@ export const ChildList = () => {
 
   return (
     <PageContainer>
-      {/* 상단 바 */}
       <Background />
 
-      {/* 메인 컨텐츠 */}
       <MainContainer>
         <TopBar title="아이 정보" />
-        {/* 아이 프로필 */}
         <ContentSection>
           <ChildProfileList
             childrenData={children}

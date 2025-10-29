@@ -81,7 +81,7 @@ export const PerformanceDetailPage = () => {
               <li
                 className={`px-4 py-3 body-hak flex-1 text-center cursor-pointer transition-all duration-200  active:scale-95 ${
                   activeTab === item.value
-                    ? "text-black bg-white border-b-[4px] border-b-black"
+                    ? "text-bgray-900lack bg-white border-b-[4px] border-b-gray-900"
                     : "bg-gray-200 text-secondary-100 border-b-[1px] border-b-gray-100"
                 } `}
                 onClick={() => setActiveTab(item.value)}

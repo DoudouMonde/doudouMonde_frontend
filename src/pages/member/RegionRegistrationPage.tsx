@@ -229,7 +229,7 @@ export function RegionRegistrationPage() {
                   font-inter
                   text-xs
                   font-normal
-                  text-black
+                  text-gray-900
                   placeholder:text-[#8C8C8C]
                   placeholder:tracking-[-0.03em]
                   focus:outline-none

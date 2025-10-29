@@ -59,7 +59,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
 
         <article className="flex z-20 flex-col gap-0 justify-center items-center mx-auto mt-4">
           <header className="bg-gray-200/70 backdrop-blur-sm rounded-[40px] w-[90%] sm:w-[80%] p-4 sm:p-6 shadow-[0px_0px_12px_0px_rgba(255,246,165,1)]">
-            <p className="text-center text-black text-sm sm:text-base font-normal body-inter-r leading-[1.3] tracking-[-0.04em]">
+            <p className="text-center text-gray-900 text-sm sm:text-base font-normal body-inter-r leading-[1.3] tracking-[-0.04em]">
               안녕 {childNames}!
               <br />
               이야기마을에 온 걸 환영해.

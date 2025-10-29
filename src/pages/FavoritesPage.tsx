@@ -79,7 +79,7 @@ export const FavoritesPage: React.FC = () => {
               <BackIcon className="w-5 h-5 text-gray-700" />
             </button>
             <div className="flex flex-1 justify-center">
-              <div className="text-black title-hak">찜</div>
+              <div className="text-gray-900 title-hak">찜</div>
             </div>
             <div className="w-10"></div>
           </div>
@@ -105,7 +105,7 @@ export const FavoritesPage: React.FC = () => {
               <BackIcon className="w-5 h-5 text-gray-700" />
             </button>
             <div className="flex flex-1 justify-center">
-              <div className="text-black title-hak">찜</div>
+              <div className="text-gray-900 title-hak">찜</div>
             </div>
             <div className="w-10"></div>
           </div>
@@ -130,7 +130,7 @@ export const FavoritesPage: React.FC = () => {
             <BackIcon className="w-5 h-5 text-gray-700" />
           </button>
           <div className="flex flex-1 justify-center">
-            <div className="text-black title-hak">찜</div>
+            <div className="text-gray-900 title-hak">찜</div>
           </div>
           <div className="w-10"></div>
         </div>

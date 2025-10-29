@@ -41,7 +41,7 @@ const PlaceItem = ({ facility }: { facility: NearbyFacility }) => (
   <li className="flex items-center justify-between px-0 py-2 min-h-[32px]">
     <div className="flex flex-1 gap-2 justify-start items-center">
       {/* 장소명 */}
-      <p className="text-black body-noto">{facility.name}</p>
+      <p className="text-gray-900 body-noto">{facility.name}</p>
 
       {/* 카카오맵 아이콘 */}
       <KakaoMapIcon facility={facility} />
@@ -58,7 +58,7 @@ const Section = ({
   facilities: NearbyFacility[];
 }) => (
   <div className="pb-6">
-    <p className="p-4 text-black body-hak-b">{title}</p>
+    <p className="p-4 text-gray-900 body-hak-b">{title}</p>
     <ul className="px-4 space-y-0 body-inter-r">
       {facilities.map((facility, index) => (
         <PlaceItem key={facility.id || index} facility={facility} />

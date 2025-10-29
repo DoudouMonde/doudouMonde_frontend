@@ -5,7 +5,7 @@ export interface BookMakeModalProps {
 
 export const BookMakeModal = ({ onClose, onPurchase }: BookMakeModalProps) => {
   return (
-    <section className="flex fixed inset-0 z-50 justify-center items-center backdrop-blur-sm bg-black/50">
+    <section className="flex fixed inset-0 z-50 justify-center items-center backdrop-blur-sm bg-gray-900/50">
       <article className="p-6 mx-4 w-full max-w-sm bg-gray-200 rounded-2xl shadow-2xl transition-all duration-300 transform scale-100">
         <section className="space-y-4 text-center">
           <p className="mb-2 text-4xl">🎉</p>

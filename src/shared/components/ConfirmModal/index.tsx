@@ -26,7 +26,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   return (
     <div className="flex fixed inset-0 z-50 justify-center items-center">
       {/* 배경 오버레이 */}
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <div className="absolute inset-0 bg-gray-900/50" onClick={onClose} />
 
       {/* 모달 컨텐츠 */}
       <div className="relative p-6 mx-4 w-full max-w-sm bg-gray-200 rounded-lg">

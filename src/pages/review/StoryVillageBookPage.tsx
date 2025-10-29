@@ -79,14 +79,14 @@ export const StoryVillageBookPage = () => {
               <p className="text-secondary-100 subtitle-b">주문방법</p>
             </div>
             <div className="flex flex-col gap-2">
-              <p className="text-black subtitle-b">25,000원(배송비 포함)</p>
-              <p className="text-black subtitle-b">
+              <p className="text-gray-900 subtitle-b">25,000원(배송비 포함)</p>
+              <p className="text-gray-900 subtitle-b">
                 공연 기록 9개 수록 + 상상 친구
               </p>
-              <p className="text-black subtitle-b">양면 기준 A4 가로</p>
-              <p className="text-black subtitle-b">소프트 커버 포토북</p>
-              <p className="text-black subtitle-b">2주 내 배송</p>
-              <p className="text-black subtitle-b">
+              <p className="text-gray-900 subtitle-b">양면 기준 A4 가로</p>
+              <p className="text-gray-900 subtitle-b">소프트 커버 포토북</p>
+              <p className="text-gray-900 subtitle-b">2주 내 배송</p>
+              <p className="text-gray-900 subtitle-b">
                 '주문하기'버튼 클릭 후 구글폼 작성
               </p>
             </div>

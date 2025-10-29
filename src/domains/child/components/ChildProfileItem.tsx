@@ -20,7 +20,7 @@ export function ChildProfileItem({ child, onClickProfile }: Props) {
         className="relative cursor-pointer"
         onClick={() => onClickProfile(child.id)}
       >
-        <div className="absolute -inset-1 rounded-full border border-black" />
+        <div className="absolute -inset-1 rounded-full border border-gray-900" />
         <div className="flex items-center justify-center rounded-full w-[80px] h-[80px] bg-gray-200 hover:bg-gray-300 transition-colors">
           <SwitchCase
             value={child.profile}

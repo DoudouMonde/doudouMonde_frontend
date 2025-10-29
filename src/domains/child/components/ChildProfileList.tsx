@@ -9,7 +9,7 @@ type Props = {
 
 export function ChildProfileList({ childrenData, onClickProfile }: Props) {
   return (
-    <ul className="flex justify-around w-full h-40 bg-gray-200/70 rounded-[20px] p-4">
+    <ul className="flex justify-around w-full h-40 bg-gray-200 rounded-[20px] p-4">
       {childrenData.map((child) => (
         <ChildProfileItem
           key={child.id}

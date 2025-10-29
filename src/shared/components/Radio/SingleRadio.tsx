@@ -18,7 +18,7 @@ export const SingleRadio = ({ label, value }: Props) => {
       className="flex gap-2 items-center"
     >
       <RadioUI checked={getIsActive(value)} />
-      <p className="text-black body-inter">{label}</p>
+      <p className="text-gray-900 body-inter">{label}</p>
     </SingleSelectItem>
   );
 };

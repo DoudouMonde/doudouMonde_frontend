@@ -45,7 +45,7 @@ export const ReviewMemoTextarea: React.FC<ReviewMemoTextareaProps> = ({
           aria-label={label}
         />
         <div className="flex justify-end mt-2">
-          <span className="text-sm text-black-100">
+          <span className="text-sm text-gray-900">
             {value.length}/{maxLength}
           </span>
         </div>

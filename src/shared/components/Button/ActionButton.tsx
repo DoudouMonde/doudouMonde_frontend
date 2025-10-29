@@ -16,8 +16,8 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
 
   const variantClasses =
     variant === "primary"
-      ? "bg-[#FFF288] text-black shadow-lg"
-      : "bg-[#FFF288] text-black shadow-lg";
+      ? "bg-[#FFF288] text-gray-900 shadow-lg"
+      : "bg-[#FFF288] text-gray-900 shadow-lg";
 
   return (
     <button

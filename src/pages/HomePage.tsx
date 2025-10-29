@@ -174,7 +174,7 @@ export const HomePage = () => {
       {/* 아이 선택 */}
       <main className="flex flex-col flex-1 gap-4 pt-16 w-full">
         <section className="flex flex-col gap-3">
-          <h2 className="px-3 py-4 text-black title-inter-b">
+          <h2 className="px-3 py-4 text-gray-900 title-inter-b">
             {getRecommendationTitle()}
           </h2>
           <AutoCarousel
@@ -208,7 +208,7 @@ export const HomePage = () => {
           <div className="flex flex-col gap-12 w-full">
             {/* 성향에 딱 맞는 공연 섹션 */}
             <section className="flex flex-col gap-2">
-              <h2 className="py-2 text-black title-inter-b">
+              <h2 className="py-2 text-gray-900 title-inter-b">
                 성향에 딱 맞는 공연이에요
               </h2>
 
@@ -272,7 +272,7 @@ export const HomePage = () => {
 
             {/*  지역별 공연 섹션 */}
             <section className="flex flex-col gap-2">
-              <h2 className="py-2 text-black title-inter-b">
+              <h2 className="py-2 text-gray-900 title-inter-b">
                 {getSidoLabel(selectedChild?.sido ?? Sido.SEOUL)} 지역 인기 공연
               </h2>
               <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
@@ -288,7 +288,7 @@ export const HomePage = () => {
 
             {/*  새로운 장르 공연 섹션 */}
             <section className="flex flex-col gap-2">
-              <h2 className="py-2 text-black title-inter-b">
+              <h2 className="py-2 text-gray-900 title-inter-b">
                 {selectedChild?.name}을 위한 새로운 장르 공연
               </h2>
               <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
@@ -304,7 +304,7 @@ export const HomePage = () => {
 
             {/*  수상을 받은 공연 섹션 */}
             <section className="flex flex-col gap-2">
-              <h2 className="py-2 text-black title-inter-b">수상작 공연</h2>
+              <h2 className="py-2 text-gray-900 title-inter-b">수상작 공연</h2>
               <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
                 {rewardPerformanceList.map((rewardPerformance) => (
                   <PerformanceCard

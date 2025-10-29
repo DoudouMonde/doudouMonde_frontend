@@ -45,7 +45,7 @@ export function ActionListSection({
   return (
     <section className={clsx(sectionClassName)}>
       {/* 섹션 제목 */}
-      <p className="py-4 pl-2 text-black body-hak-b">{title}</p>
+      <p className="py-4 pl-2 text-gray-900 body-hak-b">{title}</p>
 
       {/* 카드 컨테이너 */}
       <div className="flex flex-col justify-center">

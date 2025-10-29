@@ -166,7 +166,7 @@ export const TransportSection = ({ performanceId }: Props) => {
       {/* 제목 */}
       {performanceDetail?.hasPublicParking && (
         <div className="mb-4">
-          <p className="text-sm text-black body-hak-r bg-yellow-200 rounded-[10px] p-2 inline-block">
+          <p className="text-sm text-gray-900 body-hak-r bg-yellow-200 rounded-[10px] p-2 inline-block">
             자체 주차장이 있는 공연장이에요
           </p>
         </div>

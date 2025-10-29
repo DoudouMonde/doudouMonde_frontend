@@ -244,7 +244,7 @@ export const VoiceReviewPage = () => {
           <div className="bg-white/60 backdrop-blur-sm rounded-[16px] p-6 border border-secondary-100/30 mt-5 h-52 flex items-center justify-center">
             {!recordedAudio ? (
               <div className="flex flex-col items-center">
-                <p className="mb-4 text-black-100 body-noto">
+                <p className="mb-4 text-gray-900-100 body-noto">
                   {isRecording
                     ? "녹음 중..."
                     : "마이크 버튼을 눌러 음성 후기를 녹음해주세요"}
@@ -256,7 +256,8 @@ export const VoiceReviewPage = () => {
                   className={`flex justify-center items-center w-16 h-16 rounded-full transition-all duration-200 ${
                     isRecording
                       ? "bg-red-500 animate-pulse hover:bg-red-600"
-                      : ""}`}
+                      : ""
+                  }`}
                 >
                   {isRecording ? <RecordStop /> : <RecordStart />}
                 </button>

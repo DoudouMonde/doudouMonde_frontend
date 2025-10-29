@@ -22,7 +22,7 @@ export const SearchInput = ({
     <div className={`block relative w-full min-w-0`}>
       {/* 검색 아이콘 */}
       <div className="absolute left-[14px] top-1/2 transform -translate-y-1/2 z-10">
-        <SearchIcon className="w-[18px] h-[19px] text-black" />
+        <SearchIcon className="w-[18px] h-[19px] text-gray-900" />
       </div>
 
       {/* 입력 필드 */}
@@ -43,7 +43,7 @@ export const SearchInput = ({
             font-inter 
             text-xs 
             font-normal 
-            text-black 
+            text-gray-900 
             placeholder:text-[#8C8C8C] 
             placeholder:tracking-[-0.03em]
             focus:outline-none 

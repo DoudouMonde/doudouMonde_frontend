@@ -234,7 +234,7 @@ export const SelectPerformancePage = () => {
               아직 선택된 공연이 없어요
             </h2>
             <div className="flex">
-              <div className="text-black subtitle">
+              <div className="text-gray-900 subtitle">
                 이야기마을에 기록할 공연을 선택해주세요.
                 <br />
                 공연을 직접 검색하거나

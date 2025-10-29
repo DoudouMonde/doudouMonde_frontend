@@ -489,7 +489,7 @@ export const ReviewDetailPage = () => {
 
             {/* 텍스트 후기 */}
             <div className="p-4">
-              <p className="text-black-100 body-inter-r">
+              <p className="text-gray-900-100 body-inter-r">
                 {reviewData.content}
               </p>
             </div>

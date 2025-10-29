@@ -38,7 +38,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   };
 
   return (
-    <div className="flex fixed inset-0 z-50 justify-center items-center bg-black bg-opacity-50">
+    <div className="flex fixed inset-0 z-50 justify-center items-center bg-gray-900 bg-opacity-50">
       <div className="p-6 mx-4 w-full max-w-sm bg-gray-200 rounded-2xl">
         <h3 className="mb-2 text-lg font-semibold text-gray-900">{title}</h3>
         <p className="mb-6 body-inter-r">{message}</p>

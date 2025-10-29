@@ -120,7 +120,8 @@ export const AutoCarousel: React.FC<AutoCarouselProps> = ({
           className={`flex gap-4 w-full ${
             isTransitioning
               ? "transition-transform duration-500 ease-in-out"
-              : ""}`}
+              : ""
+          }`}
           onMouseLeave={handleMouseLeave}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
@@ -153,7 +154,7 @@ export const AutoCarousel: React.FC<AutoCarouselProps> = ({
 
                 {/* 페이지 인디케이터 */}
                 <div className="absolute right-[18px] bottom-5">
-                  <div className="flex items-center justify-center w-[67px] h-[30px] bg-black/20 rounded-[60px]">
+                  <div className="flex items-center justify-center w-[67px] h-[30px] bg-gray-900/20 rounded-[60px]">
                     <p className="text-gray-200 body-inter-r">
                       {currentIndex} / {performances.length}
                     </p>
@@ -185,7 +186,7 @@ export const AutoCarousel: React.FC<AutoCarouselProps> = ({
               key={index}
               onClick={() => handleIndicatorClick(index)}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentIndex - 1 ? "bg-black w-6" : "bg-gray-200"
+                index === currentIndex - 1 ? "bg-gray-900 w-6" : "bg-gray-200"
               }`}
               aria-label={`${index + 1}번째 슬라이드로 이동`}
             />
