@@ -5,9 +5,14 @@ import { AddChild } from "@/assets/icons/mypage";
 type Props = {
   childrenData: ChildItemResponse[];
   onClickProfile: (id: number) => void;
+  onAddChildClick: () => void;
 };
 
-export function ChildProfileList({ childrenData, onClickProfile }: Props) {
+export function ChildProfileList({
+  childrenData,
+  onClickProfile,
+  onAddChildClick,
+}: Props) {
   const childCount = childrenData.length;
   const sholudShowAddButton = childCount < 4;
 
@@ -24,7 +29,7 @@ export function ChildProfileList({ childrenData, onClickProfile }: Props) {
       {sholudShowAddButton && (
         <li
           className="flex flex-col items-center justify-center cursor-pointer"
-          // onClick={onAddChildClick} // ⭐ 클릭 시 부모가 전달한 함수 호출
+          onClick={onAddChildClick}
         >
           <div className="relative">
             <div className="flex items-center justify-center rounded-full w-[80px] h-[80px] bg-secondary-100 hover:bg-gray-300 transition-colors shadow-md">

@@ -4,6 +4,7 @@ import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import { TopBar } from "@/shared/components/TopBar";
 import { Background } from "@/shared/components/Background";
 import { ChildProfileList } from "@/domains/child/components/ChildProfileList";
+import { ChildEditModal } from "./ChildEditModal";
 
 import {
   MainContainer,
@@ -22,18 +23,27 @@ export const ChildList = () => {
   const childrenData: ChildItemResponse[] = MOCK_CHILDREN;
 
   const [children, setChildren] = useState<ChildItemResponse[]>([]);
-
-  const [selectedChild, setSelectedChild] = useState<ChildItemResponse | null>(
+  const [editingChild, setEditingChild] = useState<ChildItemResponse | null>(
     null
   );
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-  const [editingProfileChildId, setEditingProfileChildId] = useState<
-    number | null
-  >(null);
 
   const handleProfileClick = (childId: number) => {
-    setEditingProfileChildId(childId);
-    setIsProfileModalOpen(true);
+    const childToEdit = children.find((child) => child.id === childId);
+    if (childToEdit) {
+      setEditingChild(childToEdit);
+      setIsProfileModalOpen(true);
+    }
+  };
+
+  const handleModalClose = () => {
+    setIsProfileModalOpen(false);
+    setEditingChild(null);
+  };
+
+  //아이 추가 버튼
+  const handleAddChildClick = () => {
+    //아이 추가 로직 구현
   };
 
   // childrenData가 변경될 때 children 상태 업데이트
@@ -42,15 +52,6 @@ export const ChildList = () => {
       setChildren(childrenData);
     }
   }, [childrenData]);
-
-  useEffect(
-    function initializeSelectedChild() {
-      if (children.length === 0) return;
-      setSelectedChild(children[0]);
-    },
-    [children]
-  );
-
   return (
     <PageContainer>
       <Background />
@@ -61,9 +62,14 @@ export const ChildList = () => {
           <ChildProfileList
             childrenData={children}
             onClickProfile={handleProfileClick}
+            onAddChildClick={handleAddChildClick}
           />
         </ContentSection>
       </MainContainer>
+
+      {isProfileModalOpen && editingChild && (
+        <ChildEditModal child={editingChild} onClose={handleModalClose} />
+      )}
     </PageContainer>
   );
 };
