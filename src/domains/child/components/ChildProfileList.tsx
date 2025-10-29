@@ -13,12 +13,13 @@ export function ChildProfileList({
   onClickProfile,
   onAddChildClick,
 }: Props) {
-  const childCount = childrenData.length;
+  const validChildren = childrenData || [];
+  const childCount = validChildren.length;
   const sholudShowAddButton = childCount < 4;
 
   return (
     <ul className="grid grid-cols-2 place-items-center w-full  bg-gray-200 rounded-[20px] p-4">
-      {childrenData.map((child) => (
+      {validChildren.map((child) => (
         <ChildProfileItem
           key={child.id}
           child={child}

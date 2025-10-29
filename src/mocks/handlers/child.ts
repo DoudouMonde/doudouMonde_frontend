@@ -71,8 +71,7 @@ export const childHandlers = [
       profile: c.selectedProfile,
     }));
 
-    // 스키마로 한 번 검증 (디버깅 편의)
-    const payload = { children: list };
+    const payload = { contents: list };
     const _ = ChildListResponseSchema.safeParse(payload);
 
     return HttpResponse.json(payload, { status: 200 });

@@ -4,7 +4,6 @@ export interface ChildItemResponse {
   birthday: string;
   gender: string;
   profile: string;
-  sido: string;
 }
 
 export interface ChildListResponse {
