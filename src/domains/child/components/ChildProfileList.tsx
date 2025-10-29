@@ -8,8 +8,11 @@ type Props = {
 };
 
 export function ChildProfileList({ childrenData, onClickProfile }: Props) {
+  const childCount = childrenData.length;
+  const sholudShowAddButton = childCount < 4;
+
   return (
-    <ul className="flex justify-around w-full h-40 bg-gray-200 rounded-[20px] p-4">
+    <ul className="grid grid-cols-2 place-items-center w-full  bg-gray-200 rounded-[20px] p-4">
       {childrenData.map((child) => (
         <ChildProfileItem
           key={child.id}
@@ -17,22 +20,25 @@ export function ChildProfileList({ childrenData, onClickProfile }: Props) {
           onClickProfile={onClickProfile}
         />
       ))}
-      {/* 아이 추가 프로필 영역 */}
-      {/* 2. ⭐ 아이 추가 프로필 영역 렌더링 */}
-      <li
-        className="flex flex-col items-center justify-center cursor-pointer"
-        // onClick={onAddChildClick} // ⭐ 클릭 시 부모가 전달한 함수 호출
-      >
-        {/* 무지 동그라미 아이콘 */}
-        <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-md">
-          <AddChild />
-        </div>
 
-        {/* 아이 추가하기 텍스트 */}
-        <p className="mt-2 text-xs font-semibold text-gray-700">
-          아이 추가하기
-        </p>
-      </li>
+      {sholudShowAddButton && (
+        <li
+          className="flex flex-col items-center justify-center cursor-pointer"
+          // onClick={onAddChildClick} // ⭐ 클릭 시 부모가 전달한 함수 호출
+        >
+          <div className="relative">
+            <div className="flex items-center justify-center rounded-full w-[80px] h-[80px] bg-secondary-100 hover:bg-gray-300 transition-colors shadow-md">
+              <AddChild className="w-[70px] h-[70px]" />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 justify-center items-center h-12">
+            <span className="text-lg font-semibold text-center body-hak">
+              아이 추가
+            </span>
+          </div>
+        </li>
+      )}
     </ul>
   );
 }
