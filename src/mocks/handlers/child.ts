@@ -39,7 +39,7 @@ const BASE = ""; // apiRequester의 baseURL을 쓰면 상대경로로도 매칭�
 
 export const childHandlers = [
   // 아이 등록
-  http.post("/api/v1/child", async ({ request }) => {
+  http.post(`${API}/v1/child`, async ({ request }) => {
     await delay(800); // 네트워크 지연 흉내
     const body = await request.json().catch(() => ({}));
     const parsed = ChildRequestSchema.safeParse(body);
