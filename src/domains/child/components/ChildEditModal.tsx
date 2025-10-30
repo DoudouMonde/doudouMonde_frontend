@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
-import { SaveButton } from "@/shared/components/Button/SaveButton";
-import { ProfileSelectorSection } from "./ProfileSelectorSection";
 import { useChildRegistrationContext } from "../contexts/ChildRegistrationContext";
 import { NameSection } from "./NameSection";
 import { NavigationButtons } from "@/shared/components";
 import { Controller } from "react-hook-form";
+import { ChildProfileItem } from "./ChildProfileItem";
 
 const ModalWrapper = ({ children, onClose }) => (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -35,10 +34,20 @@ export const ChildEditModal = ({ child, onClose /*, onSave*/ }: Props) => {
     onClose();
   };
 
+  const onClickProfile = () => {
+    console.log("프로필 사진 클릭");
+  };
+
   return (
     <ModalWrapper onClose={onClose}>
-      {/* 프로필 수정 필드 */}
-      <ProfileSelectorSection control={control} />
+      {/* 프로필 사진 */}
+      <ChildProfileItem
+        showName={false}
+        key={child.id}
+        child={child}
+        onClickProfile={onClickProfile}
+      />
+
       {/* 🌟 이름 수정 필드 */}
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -51,19 +60,14 @@ export const ChildEditModal = ({ child, onClose /*, onSave*/ }: Props) => {
           className="w-full p-2 border border-gray-300 rounded"
         />
       </div>
-      {/* 🌟 프로필 아이콘 선택 필드 등이 이곳에 추가됩니다. */}
       <Controller
         control={control}
         name="name"
         render={({ field, fieldState: { error } }) => (
-          //NameSection에서 필요한 props 외에 넘길 필요가 없다,
           <NameSection field={field} error={error} />
         )}
       />
 
-      {/* 버튼 */}
-      {/* <SaveButton text={"등록하기"} /> */}
-      {/* 두 개의 버튼이 필요하다면 */}
       <NavigationButtons
         previousText="취소"
         nextText="저장"

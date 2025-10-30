@@ -6,12 +6,14 @@ type Props = {
   childrenData: ChildItemResponse[];
   onClickProfile: (id: number) => void;
   onAddChildClick: () => void;
+  showName?: boolean;
 };
 
 export function ChildProfileList({
   childrenData,
   onClickProfile,
   onAddChildClick,
+  showName,
 }: Props) {
   const validChildren = childrenData || [];
   const childCount = validChildren.length;
@@ -21,6 +23,7 @@ export function ChildProfileList({
     <ul className="grid grid-cols-2 place-items-center w-full  bg-gray-200 rounded-[20px] p-4">
       {validChildren.map((child) => (
         <ChildProfileItem
+          showName={showName}
           key={child.id}
           child={child}
           onClickProfile={onClickProfile}

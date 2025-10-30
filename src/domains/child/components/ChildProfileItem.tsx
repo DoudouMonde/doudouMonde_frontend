@@ -11,9 +11,14 @@ import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 type Props = {
   child: ChildItemResponse;
   onClickProfile: (id: number) => void;
+  showName?: boolean;
 };
 
-export function ChildProfileItem({ child, onClickProfile }: Props) {
+export function ChildProfileItem({
+  child,
+  onClickProfile,
+  showName = true,
+}: Props) {
   return (
     <div className="flex flex-col gap-4 items-center">
       <div
@@ -34,14 +39,15 @@ export function ChildProfileItem({ child, onClickProfile }: Props) {
           />
         </div>
       </div>
-
-      <div className="flex flex-col gap-2 justify-center items-center h-12">
-        <div className="flex gap-2 items-center">
-          <span className="text-lg font-semibold text-center body-hak">
-            {child.name}
-          </span>
+      {showName && (
+        <div className="flex flex-col gap-2 justify-center items-center h-12">
+          <div className="flex gap-2 items-center">
+            <span className="text-lg font-semibold text-center body-hak">
+              {child.name}
+            </span>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
