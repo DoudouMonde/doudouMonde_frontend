@@ -1,4 +1,5 @@
-import { ChildRequest } from "@/domains/auth/types/signup";
+import { PostChildRegistrationRequest } from "@/domains/child/types/childApiTypes";
+
 import {
   ChildListResponse,
   PostChildRegistrationResponse,
@@ -15,7 +16,7 @@ import { apiRequester } from "@/shared/apis/axiosInstance";
 
 export const childApi = {
   postChildRegistration: async (
-    data: ChildRequest
+    data: PostChildRegistrationRequest
   ): Promise<PostChildRegistrationResponse> => {
     const res = await apiRequester.post<PostChildRegistrationResponse>(
       "/v1/child",

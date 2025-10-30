@@ -1,18 +1,13 @@
 import { z } from "zod";
-import {
-  GENDER_MAPPING,
-  TRAIT_MAPPING,
-  GENRE_MAPPING,
-  PROFILE_MAPPING,
-} from "@/domains/auth/types/signup";
+import { Gender, Profile } from "@/shared/types";
 import {
   NAME_ALLOWED_REGEX,
   HANGUL_OR_SPACE_ONLY_REGEX,
 } from "../constants/childRegistration";
 
 // genderKeys와 profileKeys 타입을 정확하게 설정
-const profileKeys = Object.keys(PROFILE_MAPPING) as [string, ...string[]];
-const genderKeys = Object.keys(GENDER_MAPPING) as [string, ...string[]];
+const profileKeys = Object.keys(Profile) as [string, ...string[]];
+const genderKeys = Object.keys(Gender) as [string, ...string[]];
 // const traitKeys = Object.keys(TRAIT_MAPPING) as [string, ...string[]];
 // const genreKeys = Object.keys(GENRE_MAPPING) as [string, ...string[]];
 

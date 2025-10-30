@@ -1,8 +1,9 @@
 import {
-  CharacterAccessory,
   CharacterAnimal,
+  CharacterAccessory,
   CharacterEmotion,
-} from "@/entities/types";
+} from "@/shared/types";
+
 import { z } from "zod";
 
 // Character entity (DB의 character 테이블과 매핑)

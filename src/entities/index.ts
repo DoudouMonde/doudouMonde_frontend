@@ -1,5 +1,5 @@
 // Export all entities and enums
-export * from "./types/gender";
+// export * from "./types/gender";
 export * from "./member";
 export * from "./character";
 export * from "./child";

@@ -60,16 +60,15 @@ export const useChildRegistration = () => {
   useAutosaveChildForm(formValues, isDirty);
 
   const onSubmit = async (data: ChildFormValues) => {
-    console.log("[Child] submit!", data);
+    console.log("[Child] submit 요청 전", data);
     //api 요청을 보내기 전에 바텀 먼저 열기
     setIsBottomSheetOpen(true);
     localStorage.removeItem(STORAGE_KEY_AUTOSAVE);
 
     try {
       const childData = transformChildDataForApi(data);
-
       const response = await childApi.postChildRegistration(childData);
-
+      console.log(response);
       addChildName(data.name);
     } catch (error) {
       //API 호출 실패 시

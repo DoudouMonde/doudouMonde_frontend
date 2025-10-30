@@ -1,4 +1,4 @@
-import { Gender, Profile } from "@/entities/types";
+import { Gender, Profile } from "@/shared/types";
 
 //목록 조회
 export interface ChildItemResponse {
@@ -15,6 +15,15 @@ export interface ChildDetailResponse extends ChildItemResponse {
 
 export interface ChildListResponse {
   items: ChildItemResponse[];
+}
+
+export interface PostChildRegistrationRequest {
+  name: string;
+  birthday: string;
+  gender: Gender;
+  profile: Profile;
+  // traits: string[];
+  // genres: string[];
 }
 
 export interface PostChildRegistrationResponse {

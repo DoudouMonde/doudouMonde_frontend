@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Gender, Profile } from "@/entities/types";
+import { Gender, Profile } from "@/shared/types";
 
 // Child entity (DB의 child 테이블과 매핑)
 export const ChildEntity = z.object({

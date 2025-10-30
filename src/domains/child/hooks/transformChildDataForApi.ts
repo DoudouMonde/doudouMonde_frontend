@@ -1,10 +1,12 @@
 import { ChildFormValues } from "../types/childForm";
-import {
-  GENDER_MAPPING,
-  TRAIT_MAPPING,
-  GENRE_MAPPING,
-  PROFILE_MAPPING,
-} from "@/domains/auth/types/signup";
+import { Gender, Profile } from "@/shared/types";
+
+// import {
+//   GENDER_MAPPING,
+//   TRAIT_MAPPING,
+//   GENRE_MAPPING,
+//   PROFILE_MAPPING,
+// } from "@/domains/auth/types/signup";
 
 export const transformChildDataForApi = (data: ChildFormValues) => {
   return {
@@ -13,11 +15,8 @@ export const transformChildDataForApi = (data: ChildFormValues) => {
       2,
       "0"
     )}-${data.birthDay.padStart(2, "0")}`,
-    gender:
-      GENDER_MAPPING[data.gender as keyof typeof GENDER_MAPPING] || "MALE",
-    profile:
-      PROFILE_MAPPING[data.selectedProfile as keyof typeof PROFILE_MAPPING] ||
-      "CAT",
+    gender: Gender[data.gender as keyof typeof Gender] || "MALE",
+    profile: Profile[data.selectedProfile as keyof typeof Profile] || "CAT",
     // traits: data.selectedTraits.map(
     //   (t) => TRAIT_MAPPING[t as keyof typeof TRAIT_MAPPING] || t
     // ),
