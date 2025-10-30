@@ -1,18 +1,10 @@
 import { http, HttpResponse, delay } from "msw";
-import { z } from "zod";
 import { childDb } from "../db/childDb";
 import { ChildRequestSchema } from "@/domains/child/schemas/ChildRequestSchema";
+import { PostChildRegistrationRequest } from "@/domains/child/types/childApiTypes";
 
 const ORIGIN = "http://localhost:8080";
 const API = `${ORIGIN}/api`;
-
-// PATCH 요청 스키마
-const UpdateChildNameRequestSchema = z.object({ name: z.string().min(1) });
-const UpdateChildProfileRequestSchema = z.object({
-  profile: z.string().min(1),
-});
-
-const BASE = ""; // apiRequester의 baseURL을 쓰면 상대경로로도 매칭됨.
 
 export const childHandlers = [
   // 아이 등록
@@ -28,9 +20,10 @@ export const childHandlers = [
       );
     }
 
-    const created = childDb.create({
-      ...parsed.data,
-    });
+    //타입 단언 적용
+    const requetsData = parsed.data as PostChildRegistrationRequest;
+
+    const created = childDb.create(requetsData);
 
     // 네 코드에 맞춘 성공 응답
     return HttpResponse.json(
@@ -54,52 +47,4 @@ export const childHandlers = [
     //4. 응답 반환
     return HttpResponse.json(payload, { status: 200 });
   }),
-
-  // 이름 변경
-  // http.patch(`${API}/v1/child/:id/name`, async ({ params, request }) => {
-  //   await delay(300);
-  //   const id = Number(params.id);
-  //   const body = await request.json().catch(() => ({}));
-  //   const parsed = UpdateChildNameRequestSchema.safeParse(body);
-
-  //   if (!parsed.success) {
-  //     return HttpResponse.json(
-  //       { message: "validation error", issues: parsed.error.format() },
-  //       { status: 400 }
-  //     );
-  //   }
-
-  //   const updated = childDb.updateName(id, parsed.data.name);
-  //   if (!updated)
-  //     return HttpResponse.json({ message: "Not Found" }, { status: 404 });
-
-  //   return HttpResponse.json(
-  //     { childId: updated.id, name: updated.name },
-  //     { status: 200 }
-  //   );
-  // }),
-
-  // 프로필 변경
-  // http.patch(`${BASE}/v1/child/:id/profile`, async ({ params, request }) => {
-  //   await delay(300);
-  //   const id = Number(params.id);
-  //   const body = await request.json().catch(() => ({}));
-  //   const parsed = UpdateChildProfileRequestSchema.safeParse(body);
-
-  //   if (!parsed.success) {
-  //     return HttpResponse.json(
-  //       { message: "validation error", issues: parsed.error.format() },
-  //       { status: 400 }
-  //     );
-  //   }
-
-  //   const updated = childDb.updateProfile(id, parsed.data.profile);
-  //   if (!updated)
-  //     return HttpResponse.json({ message: "Not Found" }, { status: 404 });
-
-  //   return HttpResponse.json(
-  //     { childId: updated.id, profile: updated.selectedProfile },
-  //     { status: 200 }
-  //   );
-  // }),
 ];

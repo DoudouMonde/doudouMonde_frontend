@@ -1,48 +1,50 @@
-import { z } from "zod";
 import { Gender, Profile } from "@/shared/types";
-import {
-  ChildItemResponse,
-  PostChildRegistrationRequest,
-  PostChildRegistrationResponse,
-} from "@/domains/child/types/childApiTypes";
+import { PostChildRegistrationRequest } from "@/domains/child/types/childApiTypes";
+import { ChildRecord } from "@/domains/child/types/childApiTypes";
 
 const KEY = "__mock_child_db__";
 
 // / 초기 목업 데이터 정의
-const INITIAL_MOCK_CHILDREN: ChildItemResponse[] = [
+const INITIAL_MOCK_CHILDREN: ChildRecord[] = [
   {
     id: 1,
     name: "도윤 (Mock)",
     profile: Profile.CAT,
+    birthday: "2020-05-15",
+    gender: Gender.MALE,
   },
   {
     id: 2,
     name: "서아 (Mock)",
     profile: Profile.RABBIT,
+    birthday: "2021-08-22",
+    gender: Gender.FEMALE,
   },
   {
     id: 3,
     name: "하준 (Mock)",
     profile: Profile.DOG,
+    birthday: "2019-11-01",
+    gender: Gender.MALE,
   },
 ];
 
-function load(): ChildItemResponse[] {
+function load(): ChildRecord[] {
   try {
     const raw = localStorage.getItem(KEY);
-    return raw ? (JSON.parse(raw) as ChildItemResponse[]) : [];
+    return raw ? (JSON.parse(raw) as ChildRecord[]) : [];
   } catch {
     return [];
   }
 }
-function save(data: PostChildRegistrationRequest[]) {
+function save(data: ChildRecord[]) {
   try {
     localStorage.setItem(KEY, JSON.stringify(data));
   } catch {}
 }
 
 let seq = 1000;
-let store: ChildItemResponse[] = load();
+let store: ChildRecord[] = load();
 
 //localstorage가 없을 때 Mock 데이터를 불러오도록 한다.
 if (store.length === 0) {
@@ -57,25 +59,11 @@ export const childDb = {
   list() {
     return store;
   },
-  create(input: Omit<PostChildRegistrationRequest, "id">) {
+  create(input: PostChildRegistrationRequest): ChildRecord {
     const id = ++seq;
-    const rec: PostChildRegistrationRequest = { id, ...input };
+    const rec: ChildRecord = { id, ...input };
     store = [rec, ...store];
     save(store);
     return rec;
   },
-  // updateName(id: number, name: string) {
-  //   const idx = store.findIndex((c) => c.id === id);
-  //   if (idx < 0) return null;
-  //   store[idx] = { ...store[idx], name };
-  //   save(store);
-  //   return store[idx];
-  // },
-  // updateProfile(id: number, profile: Profile) {
-  //   const idx = store.findIndex((c) => c.id === id);
-  //   if (idx < 0) return null;
-  //   store[idx] = { ...store[idx], profile };
-  //   save(store);
-  //   return store[idx];
-  // },
 };

@@ -1,6 +1,5 @@
 import { ChildFormValues } from "@/domains/child/example/models";
-import { Gender } from "@/entities";
-import { Profile } from "@/entities/types";
+import { Gender, Profile } from "@/shared/types";
 
 /**
  * FeedBack: 아이 생성시 초기값을 가진 객체를 반환하는 함수
