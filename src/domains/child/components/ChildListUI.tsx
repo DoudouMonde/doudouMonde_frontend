@@ -13,15 +13,11 @@ export const ChildListUI = () => {
   const {
     isLoading,
     error,
-    children,
-    handleProfileClick,
-    handleAddChildClick,
     isProfileModalOpen,
     editingChild,
     handleModalClose,
   } = useChildListContext();
 
-  // 로딩/에러 상태 UI 렌더링
   if (isLoading) {
     return (
       <PageContainer>
@@ -49,11 +45,7 @@ export const ChildListUI = () => {
       <MainContainer>
         <TopBar title="아이 정보" />
         <ContentSection>
-          <ChildProfileList
-            childrenData={children}
-            onClickProfile={handleProfileClick}
-            onAddChildClick={handleAddChildClick}
-          />
+          <ChildProfileList />
         </ContentSection>
       </MainContainer>
 

@@ -1,39 +1,27 @@
-import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import { ChildProfileItem } from "@/domains/child/components/ChildProfileItem";
 import { AddChild } from "@/assets/icons/mypage";
+import { useChildListContext } from "@/domains/child/contexts/ChildListContext";
 
 type Props = {
-  childrenData: ChildItemResponse[];
-  onClickProfile: (id: number) => void;
-  onAddChildClick: () => void;
   showName?: boolean;
 };
 
-export function ChildProfileList({
-  childrenData,
-  onClickProfile,
-  onAddChildClick,
-  showName,
-}: Props) {
-  const validChildren = childrenData || [];
+export function ChildProfileList({ showName }: Props) {
+  const { children, handleAddChildClick } = useChildListContext();
+  const validChildren = children || [];
   const childCount = validChildren.length;
   const sholudShowAddButton = childCount < 4;
 
   return (
     <ul className="grid grid-cols-2 place-items-center w-full  bg-gray-200 rounded-[20px] p-4">
       {validChildren.map((child) => (
-        <ChildProfileItem
-          showName={showName}
-          key={child.id}
-          child={child}
-          onClickProfile={onClickProfile}
-        />
+        <ChildProfileItem showName={showName} key={child.id} child={child} />
       ))}
 
       {sholudShowAddButton && (
         <li
-          className="flex flex-col items-center justify-center cursor-pointer"
-          onClick={onAddChildClick}
+          className="flex flex-col justify-center items-center cursor-pointer"
+          onClick={handleAddChildClick}
         >
           <div className="relative">
             <div className="flex items-center justify-center rounded-full w-[80px] h-[80px] bg-secondary-100 hover:bg-gray-300 transition-colors shadow-md">
