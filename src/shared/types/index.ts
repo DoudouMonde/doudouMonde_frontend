@@ -23,6 +23,32 @@ export enum Genre {
   DANCE = "DANCE",
 }
 
+export enum CharacterAnimal {
+  DOG = "DOG",
+  CAT = "CAT",
+  DINO = "DINO",
+  CHICK = "CHICK",
+  RABBIT = "RABBIT",
+}
+
+export enum CharacterEmotion {
+  HAPPY = "HAPPY",
+  SAD = "SAD",
+  SURPRISED = "SURPRISED",
+  BORED = "BORED",
+  CURIOUS = "CURIOUS",
+  ONEMORE = "ONEMORE",
+}
+
+export enum CharacterAccessory {
+  RIBBON = "RIBBON",
+  FLOWER = "FLOWER",
+  ROUND_GLASS = "ROUND_GLASS",
+  HAT = "HAT",
+  CROWN = "CROWN",
+  WIZARD_HAT = "WIZARD_HAT",
+}
+
 export enum Trait {
   MUSIC_LOVER = "MUSIC_LOVER",
   DANCE_LOVER = "DANCE_LOVER",

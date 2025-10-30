@@ -10,15 +10,14 @@ import {
   useAutosaveChildForm,
   STORAGE_KEY_AUTOSAVE,
 } from "./useAutosaveChildForm.ts";
-import { useChildRegistrationMutation } from "./useChildRegistrationMutation";
 import { useToast } from "@/shared/hooks/useToast.tsx";
 import { useChildNameManager } from "./useChildNameManager";
 import { transformChildDataForApi } from "./transformChildDataForApi.ts";
+import { childApi } from "../apis/childApi.ts";
 
 export const useChildRegistration = () => {
   const navigate = useNavigate();
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-  const { postRegistration } = useChildRegistrationMutation();
   const { showToast } = useToast();
 
   const { isDuplicateName, addChildName, isLimitReached, maxChildren } =
@@ -69,7 +68,7 @@ export const useChildRegistration = () => {
     try {
       const childData = transformChildDataForApi(data);
 
-      await postRegistration(childData);
+      const response = await childApi.postChildRegistration(childData);
 
       addChildName(data.name);
     } catch (error) {
@@ -84,7 +83,6 @@ export const useChildRegistration = () => {
     }
   };
 
-  // const handleSave = handleSubmit(onSubmit);
   const handleSave = handleSubmit(onSubmit, (errors) => {
     console.log("[Child] INVALID!", errors);
   });

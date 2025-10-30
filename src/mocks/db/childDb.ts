@@ -1,16 +1,11 @@
 import { z } from "zod";
 import { Gender, Profile } from "@/entities/types";
+import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 
-// 간단한 인메모리 + localStorage persist DB
-export type ChildListRecord = {
-  id: number;
-  name: string;
-  profile: Profile;
-};
 const KEY = "__mock_child_db__";
 
 // 🌟🌟🌟 초기 목업 데이터 정의 🌟🌟🌟
-const INITIAL_MOCK_CHILDREN: ChildListRecord[] = [
+const INITIAL_MOCK_CHILDREN: ChildItemResponse[] = [
   {
     id: 1,
     name: "도윤 (Mock)",
@@ -28,10 +23,10 @@ const INITIAL_MOCK_CHILDREN: ChildListRecord[] = [
   },
 ];
 
-function load(): ChildListRecord[] {
+function load(): ChildItemResponse[] {
   try {
     const raw = localStorage.getItem(KEY);
-    return raw ? (JSON.parse(raw) as ChildListRecord[]) : [];
+    return raw ? (JSON.parse(raw) as ChildItemResponse[]) : [];
   } catch {
     return [];
   }
@@ -43,7 +38,7 @@ function load(): ChildListRecord[] {
 // }
 
 let seq = 1000;
-let store: ChildListRecord[] = load();
+let store: ChildItemResponse[] = load();
 
 //localstorage가 없을 때 Mock 데이터를 불러오도록 한다.
 if (store.length === 0) {

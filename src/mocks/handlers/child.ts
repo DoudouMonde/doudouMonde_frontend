@@ -68,15 +68,17 @@ export const childHandlers = [
 
   // 아이 목록
   http.get(`${API}/v1/child`, async () => {
+    //1. 네트워크 지연 흉내
     await delay(300);
+    //2. Mcok DB에서 데이터 조회 및 가공
     const list = childDb.list().map((c) => ({
       id: c.id,
       name: c.name,
       profile: c.profile,
     }));
-
+    //3. 최종 응답 페이로드 생성
     const payload = { items: list };
-
+    //4. 응답 반환
     return HttpResponse.json(payload, { status: 200 });
   }),
 
