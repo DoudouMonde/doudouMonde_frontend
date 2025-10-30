@@ -2,8 +2,7 @@
 
 import { FieldErrors, UseFormReturn } from "react-hook-form";
 import { ChildFormValues } from "../types/childForm";
-import React, { createContext, useContext, ReactNode } from "react";
-import { useChildRegistration } from "../hooks/useChildRegistration";
+import React, { createContext, useContext } from "react";
 
 //1. Context가 제공할 값의 타입 정의
 type ChildRegistrationContextType = {
@@ -22,23 +21,8 @@ type ChildRegistrationContextType = {
 };
 
 //2. Context 생성
-const ChildRegistrationContext =
+export const ChildRegistrationContext =
   createContext<ChildRegistrationContextType | null>(null);
-
-//3. Provider 컴포넌트 생성
-export const ChildRegistrationProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
-  const registrationState = useChildRegistration();
-
-  return (
-    <ChildRegistrationContext.Provider value={registrationState}>
-      {children}
-    </ChildRegistrationContext.Provider>
-  );
-};
 
 //4. Consumer 커스텀 훅 생성
 export const useChildRegistrationContext = () => {

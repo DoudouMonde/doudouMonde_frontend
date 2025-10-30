@@ -1,4 +1,3 @@
-import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import { TopBar } from "@/shared/components/TopBar";
 import { Background } from "@/shared/components/Background";
 import { ChildProfileList } from "@/domains/child/components/ChildProfileList";
@@ -8,28 +7,20 @@ import {
   PageContainer,
   ContentSection,
 } from "@/shared/components/Layout";
+import { useChildListContext } from "@/domains/child/contexts/ChildListContext";
 
-interface ChildListUIProps {
-  children: ChildItemResponse[];
-  isLoading: boolean;
-  error: string | null;
-  editingChild: ChildItemResponse | null;
-  isProfileModalOpen: boolean;
-  onProfileClick: (childId: number) => void;
-  onModalClose: () => void;
-  onAddChildClick: () => void;
-}
+export const ChildListUI = () => {
+  const {
+    isLoading,
+    error,
+    children,
+    handleProfileClick,
+    handleAddChildClick,
+    isProfileModalOpen,
+    editingChild,
+    handleModalClose,
+  } = useChildListContext();
 
-export const ChildListUI = ({
-  children,
-  isLoading,
-  error,
-  editingChild,
-  isProfileModalOpen,
-  onProfileClick,
-  onModalClose,
-  onAddChildClick,
-}: ChildListUIProps) => {
   // 로딩/에러 상태 UI 렌더링
   if (isLoading) {
     return (
@@ -60,14 +51,14 @@ export const ChildListUI = ({
         <ContentSection>
           <ChildProfileList
             childrenData={children}
-            onClickProfile={onProfileClick}
-            onAddChildClick={onAddChildClick}
+            onClickProfile={handleProfileClick}
+            onAddChildClick={handleAddChildClick}
           />
         </ContentSection>
       </MainContainer>
 
       {isProfileModalOpen && editingChild && (
-        <ChildEditModal child={editingChild} onClose={onModalClose} />
+        <ChildEditModal child={editingChild} onClose={handleModalClose} />
       )}
     </PageContainer>
   );
