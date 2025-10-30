@@ -1,13 +1,6 @@
 import { ChildFormValues } from "../types/childForm";
 import { Gender, Profile } from "@/shared/types";
 
-// import {
-//   GENDER_MAPPING,
-//   TRAIT_MAPPING,
-//   GENRE_MAPPING,
-//   PROFILE_MAPPING,
-// } from "@/domains/auth/types/signup";
-
 export const transformChildDataForApi = (data: ChildFormValues) => {
   return {
     name: data.name.trim(),
