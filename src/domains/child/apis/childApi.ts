@@ -26,7 +26,7 @@ export const childApi = {
 
   getChildList: async () => {
     const res = await apiRequester.get<ChildListResponse>("/v1/child");
-    return res.data;
+    return res.data.items;
   },
 
   updateChildName: async (childId: number, request: UpdateChildNameRequest) => {
