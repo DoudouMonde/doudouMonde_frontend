@@ -1,10 +1,8 @@
-// src/domains/child/components/ChildListUI.tsx
-
 import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import { TopBar } from "@/shared/components/TopBar";
 import { Background } from "@/shared/components/Background";
 import { ChildProfileList } from "@/domains/child/components/ChildProfileList";
-import { ChildEditModal } from "./ChildEditModal"; // 동일 폴더/하위 폴더에 있다면 경로 조정
+import { ChildEditModal } from "./ChildEditModal";
 import {
   MainContainer,
   PageContainer,
