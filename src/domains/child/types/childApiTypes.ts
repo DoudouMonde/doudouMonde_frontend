@@ -1,17 +1,22 @@
 import { Gender, Profile } from "@/shared/types";
 
-//목록 조회
-export interface ChildItemResponse {
+//공통 베이스 타입
+export interface ChildBase {
   id: number;
   name: string;
   profile: Profile;
 }
 
+//목록 조회
+export interface ChildItemResponse extends ChildBase {}
+
 //단건 조회용
-export interface ChildDetailResponse extends ChildItemResponse {
+export interface ChildDetailResponse extends ChildBase {
   birthday: string;
   gender: Gender;
 }
+
+export type ChildRecord = ChildDetailResponse;
 
 export interface ChildListResponse {
   items: ChildItemResponse[];
@@ -27,44 +32,8 @@ export interface PostChildRegistrationRequest {
 }
 
 export interface PostChildRegistrationResponse {
-  childId: number;
+  id: number;
   success: boolean;
 }
 
-export interface UpdateChildNameRequest {
-  name: string;
-}
-
-export interface UpdateChildNameResponse {
-  childId: number;
-  name: string;
-}
-
-export interface UpdateChildProfileRequest {
-  profile: string;
-}
-
-export interface UpdateChildProfileResponse {
-  childId: number;
-  profile: string;
-}
-
-export interface UpdateChildBirthdayRequest {
-  childId: number;
-  birthday: string;
-}
-
-export interface UpdateChildBirthdayResponse {
-  childId: number;
-  birthday: string;
-}
-
-export interface UpdateChildGenderRequest {
-  childId: number;
-  gender: string;
-}
-
-export interface UpdateChildGenderResponse {
-  childId: number;
-  gender: string;
-}
+export interface UpdateChildRequest extends PostChildRegistrationRequest {}

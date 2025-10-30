@@ -1,6 +1,7 @@
 import { http, HttpResponse, delay } from "msw";
 import { z } from "zod";
 import { childDb } from "../db/childDb";
+import { ChildRequestSchema } from "@/domains/child/schemas/ChildRequestSchema";
 
 const ORIGIN = "http://localhost:8080";
 const API = `${ORIGIN}/api`;

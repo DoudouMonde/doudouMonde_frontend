@@ -1,10 +1,14 @@
 import { z } from "zod";
-import { Gender, Profile } from "@/entities/types";
-import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
+import { Gender, Profile } from "@/shared/types";
+import {
+  ChildItemResponse,
+  PostChildRegistrationRequest,
+  PostChildRegistrationResponse,
+} from "@/domains/child/types/childApiTypes";
 
 const KEY = "__mock_child_db__";
 
-// 🌟🌟🌟 초기 목업 데이터 정의 🌟🌟🌟
+// / 초기 목업 데이터 정의
 const INITIAL_MOCK_CHILDREN: ChildItemResponse[] = [
   {
     id: 1,
@@ -31,11 +35,11 @@ function load(): ChildItemResponse[] {
     return [];
   }
 }
-// function save(data: ChildRecord[]) {
-//   try {
-//     localStorage.setItem(KEY, JSON.stringify(data));
-//   } catch {}
-// }
+function save(data: PostChildRegistrationRequest[]) {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(data));
+  } catch {}
+}
 
 let seq = 1000;
 let store: ChildItemResponse[] = load();
@@ -53,13 +57,13 @@ export const childDb = {
   list() {
     return store;
   },
-  // create(input: Omit<ChildRecord, "id">) {
-  //   const id = ++seq;
-  //   const rec: ChildRecord = { id, ...input };
-  //   store = [rec, ...store];
-  //   save(store);
-  //   return rec;
-  // },
+  create(input: Omit<PostChildRegistrationRequest, "id">) {
+    const id = ++seq;
+    const rec: PostChildRegistrationRequest = { id, ...input };
+    store = [rec, ...store];
+    save(store);
+    return rec;
+  },
   // updateName(id: number, name: string) {
   //   const idx = store.findIndex((c) => c.id === id);
   //   if (idx < 0) return null;
