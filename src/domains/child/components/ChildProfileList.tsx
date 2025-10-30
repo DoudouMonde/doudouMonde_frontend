@@ -15,7 +15,12 @@ export function ChildProfileList({ showName }: Props) {
   return (
     <ul className="grid grid-cols-2 place-items-center w-full  bg-gray-200 rounded-[20px] p-4">
       {validChildren.map((child) => (
-        <ChildProfileItem showName={showName} key={child.id} child={child} />
+        <ChildProfileItem
+          showName={showName}
+          key={child.id}
+          child={child}
+          clickAction="openEdit"
+        />
       ))}
 
       {sholudShowAddButton && (

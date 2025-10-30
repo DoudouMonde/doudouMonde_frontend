@@ -10,13 +10,8 @@ import {
 import { useChildListContext } from "@/domains/child/contexts/ChildListContext";
 
 export const ChildListUI = () => {
-  const {
-    isLoading,
-    error,
-    isProfileModalOpen,
-    editingChild,
-    handleModalClose,
-  } = useChildListContext();
+  const { isLoading, error, isEditModalOpen, editingChild, closeEditModal } =
+    useChildListContext();
 
   if (isLoading) {
     return (
@@ -49,8 +44,8 @@ export const ChildListUI = () => {
         </ContentSection>
       </MainContainer>
 
-      {isProfileModalOpen && editingChild && (
-        <ChildEditModal child={editingChild} onClose={handleModalClose} />
+      {isEditModalOpen && editingChild && (
+        <ChildEditModal child={editingChild} onClose={closeEditModal} />
       )}
     </PageContainer>
   );

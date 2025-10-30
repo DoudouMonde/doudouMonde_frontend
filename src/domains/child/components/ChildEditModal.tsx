@@ -16,14 +16,15 @@ export const ChildEditModal: React.FC<Props> = ({ child, onClose }) => {
   const { control } = useChildRegistrationContext();
   const { handleEditSave } = useChildList();
 
-  // const onClickProfile = () => {
-  //   console.log("프로필 사진 클릭");
-  // };
-
   return (
     <ModalWrapper onClose={onClose}>
       {/* 프로필 사진 */}
-      <ChildProfileItem showName={false} key={child.id} child={child} />
+      <ChildProfileItem
+        showName={false}
+        key={child.id}
+        child={child}
+        clickAction="openAvatarPicker"
+      />
 
       <Controller
         control={control}
