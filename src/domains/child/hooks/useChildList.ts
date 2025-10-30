@@ -33,23 +33,30 @@ export const useChildList = () => {
     })();
   }, []);
 
-  // 공통: childId로 엔티티 찾기
   const findChild = (id: number) => children.find((c) => c.id === id) ?? null;
 
-  // ✅ 리스트에서 프로필 클릭 → 편집 모달
+  const resetAvatarPicker = () => {
+    setIsAvatarPickerOpen(false);
+    setAvatarTarget(null);
+  };
+
   const openEditModal = (childId: number) => {
     console.log(childId);
     const target = findChild(childId);
+    resetAvatarPicker();
     setEditingChild(target);
     setIsEditModalOpen(!!target); // !!: truthy → true, null → false
   };
   const closeEditModal = () => {
+    resetAvatarPicker();
     setIsEditModalOpen(false);
     setEditingChild(null);
   };
 
-  // ✅ 편집 모달에서 프로필 클릭 → 아바타 픽커
   const openAvatarPicker = (childId: number) => {
+    //편집 모달이 열려 있을 때만 전환
+    if (!isEditModalOpen) return;
+
     const target = findChild(childId);
     setAvatarTarget(target);
     setIsAvatarPickerOpen(!!target);
