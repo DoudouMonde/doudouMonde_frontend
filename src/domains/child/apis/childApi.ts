@@ -1,49 +1,17 @@
 import { ChildRequest } from "@/domains/auth/types/signup";
-import { ChildListResponse } from "@/domains/child/types/childApiTypes";
+import {
+  ChildListResponse,
+  PostChildRegistrationResponse,
+  UpdateChildNameRequest,
+  UpdateChildNameResponse,
+  UpdateChildProfileRequest,
+  UpdateChildProfileResponse,
+  UpdateChildBirthdayRequest,
+  UpdateChildBirthdayResponse,
+  UpdateChildGenderRequest,
+  UpdateChildGenderResponse,
+} from "@/domains/child/types/childApiTypes";
 import { apiRequester } from "@/shared/apis/axiosInstance";
-
-export interface PostChildRegistrationResponse {
-  childId: number;
-  success: boolean;
-}
-
-export interface UpdateChildNameRequest {
-  name: string;
-}
-
-export interface UpdateChildNameResponse {
-  childId: number;
-  name: string;
-}
-
-export interface UpdateChildProfileRequest {
-  profile: string;
-}
-
-export interface UpdateChildProfileResponse {
-  childId: number;
-  profile: string;
-}
-
-export interface UpdateChildBirthdayRequest {
-  childId: number;
-  birthday: string;
-}
-
-export interface UpdateChildBirthdayResponse {
-  childId: number;
-  birthday: string;
-}
-
-export interface UpdateChildGenderRequest {
-  childId: number;
-  gender: string;
-}
-
-export interface UpdateChildGenderResponse {
-  childId: number;
-  gender: string;
-}
 
 export const childApi = {
   postChildRegistration: async (
