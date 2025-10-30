@@ -26,6 +26,7 @@ export const useChildList = () => {
         const res = await childApi.getChildList();
         setChildren(res); // 또는 setChildren(res.children)
       } catch (e) {
+        console.error(e);
         setError("아이 목록을 불러오는 데 실패했습니다.");
       } finally {
         setIsLoading(false);

@@ -6,7 +6,7 @@ import { Controller } from "react-hook-form";
 import { ChildProfileItem } from "./ChildProfileItem";
 import { ModalWrapper } from "@/shared/components/Modal/ModalWrapper";
 import { useChildListContext } from "@/domains/child/contexts/ChildListContext";
-
+import { ProfileSelectorSection } from "./ProfileSelectorSection";
 type Props = {
   child: ChildItemResponse;
   onClose: () => void;
@@ -18,7 +18,6 @@ export const ChildEditModal: React.FC<Props> = ({ child, onClose }) => {
 
   return (
     <ModalWrapper onClose={onClose}>
-      {/* 프로필 사진 */}
       <ChildProfileItem
         showName={false}
         key={child.id}
@@ -27,7 +26,10 @@ export const ChildEditModal: React.FC<Props> = ({ child, onClose }) => {
       />
 
       {isAvatarPickerOpen ? (
-        <p>안녕</p>
+        <>
+          <p>프로필 사진 변경</p>
+          <ProfileSelectorSection control={control} />
+        </>
       ) : (
         <>
           {" "}
@@ -38,14 +40,14 @@ export const ChildEditModal: React.FC<Props> = ({ child, onClose }) => {
               <NameSection field={field} error={error} />
             )}
           />
-          <NavigationButtons
-            previousText="취소"
-            nextText="저장"
-            onPrevious={onClose}
-            onNext={handleEditSave}
-          />
         </>
       )}
+      <NavigationButtons
+        previousText="취소"
+        nextText="저장"
+        onPrevious={onClose}
+        onNext={handleEditSave}
+      />
     </ModalWrapper>
   );
 };
