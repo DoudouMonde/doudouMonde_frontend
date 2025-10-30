@@ -32,6 +32,10 @@ export const useChildList = () => {
     // ... 등록 모달 열기 로직
   };
 
+  const handleEditSave = () => {
+    handleModalClose();
+  };
+
   useEffect(() => {
     const fetchChildren = async () => {
       setIsLoading(true);
@@ -58,6 +62,7 @@ export const useChildList = () => {
     setIsProfileModalOpen,
     handleProfileClick,
     handleModalClose,
+    handleEditSave,
     handleAddChildClick,
     children,
     setChildren,

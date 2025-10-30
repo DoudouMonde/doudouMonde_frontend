@@ -11,6 +11,7 @@ type ChildListContextType = {
   setIsProfileModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleProfileClick: (childId: number) => void;
   handleModalClose: () => void;
+  handleEditSave: () => void;
   handleAddChildClick: () => void;
   children: ChildItemResponse[];
   setChildren: React.Dispatch<React.SetStateAction<ChildItemResponse[]>>;
