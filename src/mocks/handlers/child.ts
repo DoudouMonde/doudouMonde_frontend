@@ -71,7 +71,7 @@ export const childHandlers = [
       profile: c.profile,
     }));
 
-    const payload = { contents: list };
+    const payload = { items: list };
     const _ = ChildListResponseSchema.safeParse(payload);
 
     return HttpResponse.json(payload, { status: 200 });
