@@ -5,7 +5,6 @@ import { createContext, useContext } from "react";
 export type ChildListContextType = {
   // data
   children: ChildItemResponse[];
-  isLoading: boolean;
   error: string | null;
 
   // edit modal
