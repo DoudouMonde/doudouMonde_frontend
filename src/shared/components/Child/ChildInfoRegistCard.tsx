@@ -17,6 +17,12 @@ type ChildInfoRegistCardProps = {
   setGender: (v: string) => void;
   nameErrorMessage?: string;
   combinedInfoErrorMessage?: string;
+
+  showHeader?: boolean;
+  cardTitle?: React.ReactNode;
+  cardSubtitle?: React.ReactNode;
+  dense?: boolean;
+  className?: string;
 };
 
 export const ChildInfoRegistCard = ({
@@ -30,9 +36,21 @@ export const ChildInfoRegistCard = ({
   setGender,
   nameErrorMessage,
   combinedInfoErrorMessage,
+
+  showHeader = true,
+  cardTitle = "아이 정보",
+  cardSubtitle = "아이의 기본 정보를 입력해주세요.",
+  dense = false,
+  className,
 }: ChildInfoRegistCardProps) => {
   return (
-    <FormCard title="아이 정보" subtitle="아이의 기본 정보를 입력해주세요.">
+    <FormCard
+      title={cardTitle}
+      subtitle={cardSubtitle}
+      hideLegend={!showHeader} // 👈 헤더 토글 전달
+      dense={dense}
+      className={className}
+    >
       <div className="flex flex-col gap-2">
         <FormInput
           title="이름"

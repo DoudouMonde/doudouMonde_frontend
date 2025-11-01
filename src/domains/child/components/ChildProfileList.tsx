@@ -1,6 +1,7 @@
 import { ChildProfileItem } from "@/domains/child/components/ChildProfileItem";
 import { AddChild } from "@/assets/icons/mypage";
 import { useChildListContext } from "@/domains/child/contexts/ChildListContext";
+import { ErrorBoundary } from "react-error-boundary";
 
 type Props = {
   showName?: boolean;
@@ -14,14 +15,16 @@ export function ChildProfileList({ showName }: Props) {
 
   return (
     <ul className="grid grid-cols-2 place-items-center w-full  bg-gray-200 rounded-[20px] p-4">
-      {validChildren.map((child) => (
-        <ChildProfileItem
-          showName={showName}
-          key={child.id}
-          child={child}
-          clickAction="openEdit"
-        />
-      ))}
+      <ErrorBoundary fallback={<div>에러닷</div>}>
+        {validChildren.map((child) => (
+          <ChildProfileItem
+            showName={showName}
+            key={child.id}
+            child={child}
+            clickAction="openEdit"
+          />
+        ))}
+      </ErrorBoundary>
 
       {sholudShowAddButton && (
         <li

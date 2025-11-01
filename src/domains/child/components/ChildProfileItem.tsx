@@ -30,6 +30,7 @@ export function ChildProfileItem({
       openEditModal(child.id);
     }
   };
+  throw Error("에러");
 
   return (
     <div className="flex flex-col gap-4 items-center">
@@ -37,7 +38,7 @@ export function ChildProfileItem({
         <div className="absolute -inset-1 rounded-full border border-gray-900" />
         <div className="flex items-center justify-center rounded-full w-[80px] h-[80px] bg-gray-200 hover:bg-gray-300 transition-colors">
           <SwitchCase
-            value={child.profile}
+            value={child.profileA}
             case={{
               CAT: <CatIcon className="w-[70px] h-[70px]" />,
               CHICK: <ChickIcon className="w-[70px] h-[70px]" />,

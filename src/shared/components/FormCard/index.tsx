@@ -5,6 +5,8 @@ type FormCardProps = {
   disabled?: boolean;
   className?: string;
   legendClassName?: string;
+  hideLegend?: boolean;
+  dense?: boolean;
 };
 
 export const FormCard = ({
@@ -14,7 +16,11 @@ export const FormCard = ({
   disabled,
   className,
   legendClassName,
+  hideLegend = false,
+  dense = false,
 }: FormCardProps) => {
+  const pad = dense ? "pt-4 pr-5 pb-5 pl-5 gap-4" : "pt-5 pr-7 pb-7 pl-7 gap-5";
+
   return (
     <fieldset
       disabled={disabled}
@@ -27,7 +33,7 @@ export const FormCard = ({
         .filter(Boolean)
         .join(" ")}
     >
-      {(title || subtitle) && (
+      {!hideLegend && (title || subtitle) && (
         <legend
           className={[
             "float-left",
@@ -48,10 +54,7 @@ export const FormCard = ({
         </legend>
       )}
 
-      {/* float 해제(클리어) + 본문 패딩/레이아웃 */}
-      <div className="flex clear-both flex-col gap-5 pt-5 pr-7 pb-7 pl-7">
-        {children}
-      </div>
+      <div className={`flex clear-both flex-col ${pad}`}>{children}</div>
     </fieldset>
   );
 };
