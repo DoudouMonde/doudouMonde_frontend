@@ -1,4 +1,3 @@
-import React from "react";
 import { Controller, Control } from "react-hook-form";
 import { GridSelectCard } from "@/shared/components/GridSelectCard";
 import { PROFILE_OPTIONS_UI } from "@/shared/ui/profile/profileOptions";

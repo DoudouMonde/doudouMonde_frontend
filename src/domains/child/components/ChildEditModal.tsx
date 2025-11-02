@@ -11,14 +11,19 @@ import { ProfileSelectorSection } from "@/domains/child/components/ProfileSelect
 import { useChildDetailQuery } from "@/domains/child/queries/useChildDetailQuery";
 import { useEffect } from "react";
 import { toFormValues } from "@/domains/child/utils/toFormValues";
+import { OneButtonModal } from "@/shared/components/Modal/OneButtonModal";
 type Props = {
   selectedChild: ChildItemResponse;
 };
+import { useDialog } from "@/shared/dialog/useDialog";
 
 export const ChildEditModal: React.FC<Props> = ({ selectedChild }) => {
   const { data: child, isError } = useChildDetailQuery(selectedChild.id);
   const { control, reset } = useChildRegistrationContext();
   const {
+    setIsEditModalOpen,
+    isSaveModalOpen,
+    isEditModalOpen,
     handleEditSave,
     isAvatarPickerOpen,
     handleAvaterEditSave,
@@ -27,7 +32,9 @@ export const ChildEditModal: React.FC<Props> = ({ selectedChild }) => {
     isConfirmOpen,
     setConfirmOpen,
     confirmCloseAvatarPicker,
+    handleEditCancel,
   } = useChildListContext();
+  const { confirm, alert } = useDialog();
 
   useEffect(() => {
     if (!child) return;
@@ -82,7 +89,7 @@ export const ChildEditModal: React.FC<Props> = ({ selectedChild }) => {
             <NavigationButtons
               previousText="취소"
               nextText="저장"
-              onPrevious={closeEditModal}
+              onPrevious={handleEditCancel}
               onNext={handleEditSave}
             />
           </>
@@ -98,6 +105,12 @@ export const ChildEditModal: React.FC<Props> = ({ selectedChild }) => {
             onConfirm={confirmCloseAvatarPicker} // 확인 시 실제 처리
             onCancel={() => setConfirmOpen(false)}
             showCancel
+          />
+        )}
+        {isSaveModalOpen && isEditModalOpen && (
+          <OneButtonModal
+            isOpen={isSaveModalOpen}
+            onConfirm={() => setIsEditModalOpen(false)}
           />
         )}
       </ModalWrapper>

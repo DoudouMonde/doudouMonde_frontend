@@ -40,6 +40,7 @@ export const childApi = {
     const res = await apiRequester.get<ChildDetailResponse>(
       `/v1/child/${childId}`
     );
+
     return res.data;
   },
   updateChild: async (childId: number, payload: UpdateChildRequest) => {

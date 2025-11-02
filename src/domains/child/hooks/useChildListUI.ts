@@ -6,23 +6,19 @@ export function useChildListUI(children: ChildItemResponse[]) {
   const [editingChild, setEditingChild] = useState<ChildItemResponse | null>(
     null
   );
-
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
   const [avatarTarget, setAvatarTarget] = useState<ChildItemResponse | null>(
     null
   );
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [isAvatarPickerOpen, setIsAvatarPickerOpen] = useState(false);
-
   const [isConfirmOpen, setConfirmOpen] = useState(false);
-
   const byId = useMemo(
     () => new Map(children.map((c) => [c.id, c])),
     [children]
   );
 
   //modal
-
   const openEditModal = (childId: number) => {
     resetAvatarPicker();
     const target = byId.get(childId) ?? null;
@@ -36,12 +32,30 @@ export function useChildListUI(children: ChildItemResponse[]) {
     setEditingChild(null);
   };
 
+  //수정 모달에서 저장을 눌렀을 때,
   const handleEditSave = async () => {
+    //todo : update 요청 보내기
+
+    //저장되었습니다. 모달 띄우기
+    setIsSaveModalOpen(true);
+    //모달 닫기. 모달 띄우기
     closeEditModal();
+    setIsSaveModalOpen(false);
+  };
+
+  //수정 모달에서 취소를 눌렀을 때
+  const handleEditCancel = () => {
+    //팝업 띄우기
+    setConfirmOpen(true);
+  };
+
+  //수정 컨펌 모달에서 취소 확인 눌렀을때
+  const confirmCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    setConfirmOpen(false);
   };
 
   //avatar
-
   const resetAvatarPicker = () => {
     setIsAvatarPickerOpen(false);
     setAvatarTarget(null);
@@ -87,6 +101,8 @@ export function useChildListUI(children: ChildItemResponse[]) {
     openEditModal,
     closeEditModal,
     handleEditSave,
+    handleEditCancel,
+    setIsEditModalOpen,
     // avatar
     avatarTarget,
     isAvatarPickerOpen,
@@ -98,8 +114,11 @@ export function useChildListUI(children: ChildItemResponse[]) {
     confirmCloseAvatarPicker,
     isConfirmOpen,
     setConfirmOpen,
+    confirmCloseEditModal,
 
     //add Child
     handleAddChildClick,
+
+    isSaveModalOpen,
   };
 }
