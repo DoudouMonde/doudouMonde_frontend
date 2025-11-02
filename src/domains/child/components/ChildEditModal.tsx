@@ -14,7 +14,8 @@ type Props = {
 
 export const ChildEditModal: React.FC<Props> = ({ child, onClose }) => {
   const { control } = useChildRegistrationContext();
-  const { handleEditSave, isAvatarPickerOpen } = useChildListContext();
+  const { handleEditSave, isAvatarPickerOpen, closeAvatarPicker } =
+    useChildListContext();
 
   return (
     <ModalWrapper onClose={onClose}>
@@ -29,6 +30,13 @@ export const ChildEditModal: React.FC<Props> = ({ child, onClose }) => {
         <>
           <p>프로필 사진 변경</p>
           <ProfileSelectorSection control={control} />
+          <NavigationButtons
+            previousText="이전"
+            nextText="저장"
+            onPrevious={onClose}
+            onNext={closeAvatarPicker}
+          />
+          {/* handleEditSave가 아니라 다른 함수를 만들어야 함. 지금은 edit 함수 전체가 닫아져버림 */}
         </>
       ) : (
         <>
@@ -40,14 +48,14 @@ export const ChildEditModal: React.FC<Props> = ({ child, onClose }) => {
               <NameSection field={field} error={error} />
             )}
           />
+          <NavigationButtons
+            previousText="취소"
+            nextText="저장"
+            onPrevious={onClose}
+            onNext={handleEditSave}
+          />
         </>
       )}
-      <NavigationButtons
-        previousText="취소"
-        nextText="저장"
-        onPrevious={onClose}
-        onNext={handleEditSave}
-      />
     </ModalWrapper>
   );
 };

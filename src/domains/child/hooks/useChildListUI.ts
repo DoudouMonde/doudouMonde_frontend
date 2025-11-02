@@ -53,6 +53,10 @@ export function useChildListUI(children: ChildItemResponse[]) {
     closeEditModal();
   };
 
+  const handleAddChildClick = () => {
+    //구현 필요
+  };
+
   return {
     // modal
     editingChild,
@@ -65,5 +69,7 @@ export function useChildListUI(children: ChildItemResponse[]) {
     isAvatarPickerOpen,
     openAvatarPicker,
     closeAvatarPicker,
+    //add Child
+    handleAddChildClick,
   };
 }
