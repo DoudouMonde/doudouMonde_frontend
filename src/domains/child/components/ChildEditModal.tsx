@@ -19,7 +19,7 @@ export const ChildEditModal: React.FC<Props> = ({ child }) => {
     handleEditSave,
     isAvatarPickerOpen,
     handleAvaterEditSave,
-    closeAvatarPicker,
+    cancelAvatarPicker,
     closeEditModal,
     isConfirmOpen,
     setConfirmOpen,
@@ -43,7 +43,7 @@ export const ChildEditModal: React.FC<Props> = ({ child }) => {
             <NavigationButtons
               previousText="취소"
               nextText="저장"
-              onPrevious={closeAvatarPicker}
+              onPrevious={cancelAvatarPicker}
               onNext={handleAvaterEditSave}
             />
           </>

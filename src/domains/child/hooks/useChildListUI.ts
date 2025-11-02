@@ -54,18 +54,25 @@ export function useChildListUI(children: ChildItemResponse[]) {
     setIsAvatarPickerOpen(!!target);
   };
 
-  const closeAvatarPicker = () => {
+  //프로필 사진 모달에서 취소 눌렀을 때 -> 모달 창 띄우기
+  const cancelAvatarPicker = () => {
     setConfirmOpen(true);
   };
 
+  //모달창에서 취소 확인을 눌렀을 때
   // ✅ 확인 눌렀을 때 실제 닫기 로직
   const confirmCloseAvatarPicker = () => {
     setIsAvatarPickerOpen(false);
     setAvatarTarget(null);
+    setConfirmOpen(false);
   };
 
+  //프로필 사진 모달에서 저장 눌렀을 때
   const handleAvaterEditSave = async () => {
-    closeAvatarPicker();
+    //변경사항 저장하는 api 호출
+    //update api를 만들어야겟군
+    //아바타 피커 모달창 닫기
+    setIsAvatarPickerOpen(false);
   };
 
   //add child
@@ -84,7 +91,7 @@ export function useChildListUI(children: ChildItemResponse[]) {
     avatarTarget,
     isAvatarPickerOpen,
     openAvatarPicker,
-    closeAvatarPicker,
+    cancelAvatarPicker,
     handleAvaterEditSave,
 
     //confirm
