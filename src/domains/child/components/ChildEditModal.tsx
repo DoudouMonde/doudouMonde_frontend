@@ -107,7 +107,7 @@ export const ChildEditModal: React.FC<Props> = ({ selectedChild }) => {
               )}
             />
             <NavigationButtons
-              previousText="취소"
+              previousText="이전"
               nextText="저장"
               onPrevious={handleEditCancel}
               onNext={onClickSave}

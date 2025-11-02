@@ -22,7 +22,7 @@ export const ModalWrapper: React.FC<ModalWrapperProps> = ({
       onClick={onClose} // 바깥 클릭 닫기
     >
       <div
-        className="p-6 w-full max-w-md bg-white rounded-lg shadow-2xl"
+        className="p-6 mx-4 w-full max-w-md bg-white rounded-[40px] shadow-2xl"
         onClick={(e) => e.stopPropagation()} // 내용 클릭은 전파 방지
       >
         {children}

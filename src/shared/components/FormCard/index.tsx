@@ -19,17 +19,13 @@ export const FormCard = ({
   hideLegend = false,
   dense = false,
 }: FormCardProps) => {
-  const pad = dense ? "pt-4 pr-5 pb-5 pl-5 gap-4" : "pt-5 pr-7 pb-7 pl-7 gap-5";
+  // dense flase 상태는 아이 정보 수정 모달에서 했음
+  const pad = dense ? "pt-4 pr-5 pb-5 pl-5 gap-4" : "pt-5 pb-7 gap-5";
 
   return (
     <fieldset
       disabled={disabled}
-      className={[
-        // flex 제거! (legend가 float을 먹도록)
-        "w-full h-auto rounded-[20px] bg-gray-200/70",
-        "relative", // 필요하면
-        className,
-      ]
+      className={["w-full h-auto rounded-[20px] ", "relative", className]
         .filter(Boolean)
         .join(" ")}
     >
