@@ -3,8 +3,11 @@ import type { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import { useDialog } from "@/shared/dialog/useDialog";
 import { useUpdateChildMutation } from "@/domains/child/queries/useUpdateChildMutation";
 import { UpdateChildRequest } from "@/domains/child/types/childApiTypes";
+import { useDeleteChildMutation } from "@/domains/child/queries/useChildDeleteMutation";
 
 export function useChildListUI(children: ChildItemResponse[]) {
+  const deleteChild = useDeleteChildMutation();
+
   const { confirm, alert } = useDialog();
   const updateChild = useUpdateChildMutation();
   const [editingChild, setEditingChild] = useState<ChildItemResponse | null>(
@@ -131,6 +134,41 @@ export function useChildListUI(children: ChildItemResponse[]) {
     // 구현 필요
   };
 
+  const handleChildDelete = async (childId?: number) => {
+    const targetId = childId ?? editingChild?.id;
+    if (!targetId) return;
+
+    const ok = await confirm({
+      title: "아이 삭제",
+      message: "해당 아이 정보를 삭제할까요? 이 작업은 되돌릴 수 없습니다.",
+      confirmText: "삭제",
+      cancelText: "취소",
+    });
+    if (!ok) return;
+
+    try {
+      await deleteChild.mutateAsync(targetId);
+
+      await alert({
+        title: "삭제 완료",
+        message: "아이 정보가 삭제되었습니다.",
+        buttonText: "확인",
+      });
+
+      // 현재 편집 중이던 아이를 지웠다면 모달 닫기
+      if (editingChild?.id === targetId) {
+        closeEditModal();
+      }
+    } catch (e) {
+      console.error(e);
+      await alert({
+        title: "오류",
+        message: "삭제에 실패했습니다. 잠시 후 다시 시도해주세요.",
+        buttonText: "확인",
+      });
+    }
+  };
+
   return {
     // modal
     editingChild,
@@ -150,5 +188,8 @@ export function useChildListUI(children: ChildItemResponse[]) {
 
     // add child
     handleAddChildClick,
+
+    //delete child
+    handleChildDelete,
   };
 }

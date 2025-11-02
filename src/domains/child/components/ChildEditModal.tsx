@@ -76,7 +76,11 @@ export const ChildEditModal: React.FC<Props> = ({ selectedChild }) => {
 
   return (
     <>
-      <ModalWrapper onClose={closeEditModal}>
+      <ModalWrapper
+        onClose={closeEditModal}
+        deleteBtn={true}
+        selectedChildId={child.id}
+      >
         <ChildProfileItem
           showName={false}
           key={child.id}

@@ -46,7 +46,7 @@ export const childApi = {
   patchChild: async (childId: number, payload: UpdateChildRequest) => {
     //response는 확인 후 수정
     const res = await apiRequester.patch<childVoidResponse>(
-      `/api/v1/child/${childId}`,
+      `/v1/child/${childId}`,
       payload
     );
     if (res.status !== 200) throw new Error("아이 정보 수정 실패");
@@ -55,8 +55,12 @@ export const childApi = {
 
   deleteChild: async (childId: number) => {
     const res = await apiRequester.delete<childVoidResponse>(
-      `/api/v1/child/${childId}`
+      `/v1/child/${childId}`
     );
+    // 백엔드가 204를 주면 data가 없을 수도 있음
+    if (res.status !== 200 && res.status !== 204) {
+      throw new Error("아이 삭제 실패");
+    }
     return res.data;
   },
 };

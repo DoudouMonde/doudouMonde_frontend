@@ -1,14 +1,19 @@
 // ModalWrapper.tsx
+import { ChildDeleteBtn } from "@/domains/child/components/ChildDeleteBtn";
 import React, { useEffect } from "react";
 
 type ModalWrapperProps = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  selectedChildId: number;
   onClose: () => void;
+  deleteBtn?: boolean;
 };
 
 export const ModalWrapper: React.FC<ModalWrapperProps> = ({
   children,
   onClose,
+  selectedChildId,
+  deleteBtn = false,
 }) => {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -22,10 +27,11 @@ export const ModalWrapper: React.FC<ModalWrapperProps> = ({
       onClick={onClose} // 바깥 클릭 닫기
     >
       <div
-        className="p-6 mx-4 w-full max-w-md bg-white rounded-[40px] shadow-2xl"
+        className="mx-4 w-full max-w-md bg-white rounded-[40px] shadow-2xl"
         onClick={(e) => e.stopPropagation()} // 내용 클릭은 전파 방지
       >
-        {children}
+        <div className="p-6">{children}</div>
+        {deleteBtn && <ChildDeleteBtn childId={selectedChildId} />}
       </div>
     </div>
   );
