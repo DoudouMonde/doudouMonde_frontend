@@ -20,9 +20,7 @@ export const ChildItemResponse = ChildEntity.pick({
   id: true,
   name: true,
   profile: true,
-} satisfies PickChildEntityKeys).extend({
-  aaaa: ChildEntity.shape.name,
-});
+} satisfies PickChildEntityKeys).extend({});
 //typeof를 공부하자
 export type ChildItemResponse = z.infer<typeof ChildItemResponse>;
 
@@ -41,11 +39,11 @@ export type ChildRecord = ChildDetailResponse;
 //   items: ChildItemResponse[];
 // }
 
-export const ChildListReponse = z.object({
+export const ChildListResponse = z.object({
   items: z.array(ChildItemResponse),
 });
 
-export type ChildListReponse = z.infer<typeof ChildListReponse>;
+export type ChildListResponse = z.infer<typeof ChildListResponse>;
 
 export interface PostChildRegistrationRequest {
   name: string;
@@ -61,4 +59,4 @@ export interface PostChildRegistrationResponse {
   success: boolean;
 }
 
-export interface UpdateChildRequest extends PostChildRegistrationRequest {}
+// export interface UpdateChildRequest extends PostChildRegistrationRequest {}
