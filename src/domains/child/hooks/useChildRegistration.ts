@@ -116,6 +116,8 @@ export const useChildRegistration = () => {
     setValue,
     formValues,
     errors,
+    reset,
+    isDuplicateName,
     isBottomSheetOpen,
     setIsBottomSheetOpen,
     handleAddAnotherChild,

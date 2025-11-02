@@ -9,14 +9,15 @@ import { useChildListContext } from "@/domains/child/contexts/ChildListContext";
 import { ConfirmModal } from "@/shared/components";
 import { ProfileSelectorSection } from "@/domains/child/components/ProfileSelectorSection";
 import { useChildDetailQuery } from "@/domains/child/queries/useChildDetailQuery";
+import { useEffect } from "react";
 
 type Props = {
-  selectedChildId: ChildItemResponse;
+  selectedChild: ChildItemResponse;
 };
 
-export const ChildEditModal: React.FC<Props> = ({ selectedChildId }) => {
-  const { data: child, isLoading } = useChildDetailQuery(selectedChildId);
-  const { control } = useChildRegistrationContext();
+export const ChildEditModal: React.FC<Props> = ({ selectedChild }) => {
+  const { data: child, isError } = useChildDetailQuery(selectedChild.id);
+  const { control, reset } = useChildRegistrationContext();
   const {
     handleEditSave,
     isAvatarPickerOpen,
@@ -27,6 +28,22 @@ export const ChildEditModal: React.FC<Props> = ({ selectedChildId }) => {
     setConfirmOpen,
     confirmCloseAvatarPicker,
   } = useChildListContext();
+
+  // 데이터 도착 시 폼 초기화 (선택)
+  useEffect(() => {
+    if (child) {
+      console.log(child);
+      // reset(toFormValues(child)); // 필요하면 초기값 주입
+    }
+  }, [child, reset]);
+
+  if (isError || !child) {
+    return (
+      <ModalWrapper onClose={closeEditModal}>
+        <div className="p-6 text-red-500">아이 정보를 불러오지 못했습니다.</div>
+      </ModalWrapper>
+    );
+  }
 
   return (
     <>

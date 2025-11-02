@@ -8,6 +8,7 @@ import React, { createContext, useContext } from "react";
 type ChildRegistrationContextType = {
   control: UseFormReturn<ChildFormValues>["control"];
   setValue: UseFormReturn<ChildFormValues>["setValue"];
+  reset: UseFormReturn<ChildFormValues>["reset"];
   formValues: ChildFormValues;
   errors: FieldErrors<ChildFormValues>;
   isBottomSheetOpen: boolean;

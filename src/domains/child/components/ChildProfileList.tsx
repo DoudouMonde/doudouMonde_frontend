@@ -37,7 +37,7 @@ export function ChildProfileList({ showName }: Props) {
           </li>
         ))}
         {isEditModalOpen && editingChild && (
-          <ChildEditModal selectedChildId={editingChild} />
+          <ChildEditModal selectedChild={editingChild} />
         )}
 
         {sholudShowAddButton && (

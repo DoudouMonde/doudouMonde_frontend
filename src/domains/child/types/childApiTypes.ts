@@ -58,4 +58,6 @@ export interface PostChildRegistrationResponse {
   success: boolean;
 }
 
-// export interface UpdateChildRequest extends PostChildRegistrationRequest {}
+export type childVoidResponse = { description: string };
+
+export type UpdateChildRequest = PostChildRegistrationRequest;

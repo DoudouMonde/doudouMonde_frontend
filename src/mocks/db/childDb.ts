@@ -1,5 +1,8 @@
 import { Gender, Profile } from "@/shared/types";
-import { PostChildRegistrationRequest } from "@/domains/child/types/childApiTypes";
+import {
+  // ChildItemResponse,
+  PostChildRegistrationRequest,
+} from "@/domains/child/types/childApiTypes";
 import { ChildRecord } from "@/domains/child/types/childApiTypes";
 
 const KEY = "__mock_child_db__";
@@ -72,6 +75,15 @@ export const childDb = {
     return rec;
   },
   //update는 dto가 나오고 나서 적을 것
+
+  // update(id: number, patch: Omit<ChildItemResponse, "id">) {
+  //   const idx = store.findIndex((c) => c.id === id);
+  //   if (idx === -1) return null;
+  //   const updated: ChildItemResponse = { id, ...patch };
+  //   store[idx] = updated;
+  //   save();
+  //   return updated;
+  // },
 
   remove(id: number) {
     const before = store.length;

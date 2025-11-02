@@ -2,20 +2,16 @@ import {
   ChildDetailResponse,
   ChildListResponse,
   PostChildRegistrationRequest,
+  UpdateChildRequest,
+  childVoidResponse,
 } from "@/domains/child/types/childApiTypes";
 
-import { PostChildRegistrationResponse } from "@/domains/child/types/childApiTypes";
 import { apiRequester } from "@/shared/apis/axiosInstance";
 import { Profile } from "@/shared/types";
 
 export const childApi = {
-  postChildRegistration: async (
-    data: PostChildRegistrationRequest
-  ): Promise<PostChildRegistrationResponse> => {
-    const res = await apiRequester.post<PostChildRegistrationResponse>(
-      "/v1/child",
-      data
-    );
+  postChildRegistration: async (data: PostChildRegistrationRequest) => {
+    const res = await apiRequester.post<childVoidResponse>("/v1/child", data);
     return res.data;
   },
 
@@ -42,7 +38,21 @@ export const childApi = {
   },
   getChildDetail: async (childId: number) => {
     const res = await apiRequester.get<ChildDetailResponse>(
-      `/vi/child/${childId}`
+      `/v1/child/${childId}`
+    );
+    return res.data;
+  },
+  updateChild: async (childId: number, payload: UpdateChildRequest) => {
+    //response는 확인 후 수정
+    const res = await apiRequester.patch<childVoidResponse>(
+      `/api/v1/child/${childId}`,
+      payload
+    );
+    return res.data;
+  },
+  deleteChild: async (childId: number) => {
+    const res = await apiRequester.delete<childVoidResponse>(
+      `/api/v1/child/${childId}`
     );
     return res.data;
   },

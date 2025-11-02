@@ -48,22 +48,26 @@ export const childHandlers = [
 
   //아이 단건 조회
   //childId를 어떻게 보내지?
-  http.get(`${API}/v1/child/:id`, async ({ params }) => {
-    await delay(300);
-    const id = Number(params);
-    if (Number.isNaN(id)) {
-      return HttpResponse.json(
-        { message: "Invalid id" },
-        {
-          status: 400,
-        }
-      );
+  http.get("*/api/v1/child/:id", async ({ params }) => {
+    await delay(200);
+
+    // 1) id 안전 파싱
+    const raw = (Array.isArray(params.id) ? params.id[0] : params.id) as
+      | string
+      | undefined;
+    const id = raw != null ? parseInt(String(raw), 10) : NaN;
+
+    if (!Number.isFinite(id)) {
+      console.warn("[MSW] invalid id param:", params.id);
+      return HttpResponse.json({ message: "Invalid id" }, { status: 400 });
     }
 
+    // 2) DB 조회
     const item = childDb.get(id);
     if (!item) {
       return HttpResponse.json({ message: "Not found" }, { status: 404 });
     }
+
     return HttpResponse.json(item, { status: 200 });
   }),
 
