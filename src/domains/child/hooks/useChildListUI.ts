@@ -1,24 +1,31 @@
 // /domains/child/hooks/useChildListUI.ts
 import { useMemo, useState } from "react";
 import type { ChildItemResponse } from "@/domains/child/types/childApiTypes";
+import { useDialog } from "@/shared/dialog/useDialog";
 
 export function useChildListUI(children: ChildItemResponse[]) {
+  const { confirm, alert } = useDialog();
+
   const [editingChild, setEditingChild] = useState<ChildItemResponse | null>(
     null
   );
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
   const [avatarTarget, setAvatarTarget] = useState<ChildItemResponse | null>(
     null
   );
-  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [isAvatarPickerOpen, setIsAvatarPickerOpen] = useState(false);
-  const [isConfirmOpen, setConfirmOpen] = useState(false);
+
   const byId = useMemo(
     () => new Map(children.map((c) => [c.id, c])),
     [children]
   );
 
-  //modal
+  const resetAvatarPicker = () => {
+    setIsAvatarPickerOpen(false);
+    setAvatarTarget(null);
+  };
+
   const openEditModal = (childId: number) => {
     resetAvatarPicker();
     const target = byId.get(childId) ?? null;
@@ -32,66 +39,65 @@ export function useChildListUI(children: ChildItemResponse[]) {
     setEditingChild(null);
   };
 
-  //수정 모달에서 저장을 눌렀을 때,
+  // 저장
   const handleEditSave = async () => {
-    //todo : update 요청 보내기
+    // TODO: 실제 update API 호출
+    // await childApi.updateChild(...)
 
-    //저장되었습니다. 모달 띄우기
-    setIsSaveModalOpen(true);
-    //모달 닫기. 모달 띄우기
+    // 저장 완료 알림
+    await alert({
+      title: "저장 완료",
+      message: "아이 정보가 저장되었습니다.",
+      buttonText: "확인",
+    });
+
     closeEditModal();
-    setIsSaveModalOpen(false);
   };
 
-  //수정 모달에서 취소를 눌렀을 때
-  const handleEditCancel = () => {
-    //팝업 띄우기
-    setConfirmOpen(true);
+  // 수정 취소 (확인 모달)
+  const handleEditCancel = async () => {
+    const ok = await confirm({
+      title: "수정 취소",
+      message: "입력한 내용이 저장되지 않습니다. 정말 취소할까요?",
+      confirmText: "취소하기",
+      cancelText: "계속 편집",
+    });
+    if (ok) {
+      closeEditModal();
+    }
   };
 
-  //수정 컨펌 모달에서 취소 확인 눌렀을때
-  const confirmCloseEditModal = () => {
-    setIsEditModalOpen(false);
-    setConfirmOpen(false);
-  };
-
-  //avatar
-  const resetAvatarPicker = () => {
-    setIsAvatarPickerOpen(false);
-    setAvatarTarget(null);
-  };
-
+  // 아바타 선택 열기
   const openAvatarPicker = (childId: number) => {
-    if (!isEditModalOpen) return; // 편집 모달이 열려 있을 때만
+    if (!isEditModalOpen) return;
     const target = byId.get(childId) ?? null;
     setAvatarTarget(target);
     setIsAvatarPickerOpen(!!target);
   };
 
-  //프로필 사진 모달에서 취소 눌렀을 때 -> 모달 창 띄우기
-  const cancelAvatarPicker = () => {
-    setConfirmOpen(true);
+  // 아바타 모달 취소 (확인 모달)
+  const cancelAvatarPicker = async () => {
+    const ok = await confirm({
+      title: "변경 취소",
+      message: "프로필 사진 변경을 취소하시겠습니까?",
+      confirmText: "취소하기",
+      cancelText: "계속 편집",
+    });
+    if (ok) {
+      setIsAvatarPickerOpen(false);
+      setAvatarTarget(null);
+    }
   };
 
-  //모달창에서 취소 확인을 눌렀을 때
-  // ✅ 확인 눌렀을 때 실제 닫기 로직
-  const confirmCloseAvatarPicker = () => {
-    setIsAvatarPickerOpen(false);
-    setAvatarTarget(null);
-    setConfirmOpen(false);
-  };
-
-  //프로필 사진 모달에서 저장 눌렀을 때
+  // 아바타 저장
   const handleAvaterEditSave = async () => {
-    //변경사항 저장하는 api 호출
-    //update api를 만들어야겟군
-    //아바타 피커 모달창 닫기
+    // TODO: update avatar API
     setIsAvatarPickerOpen(false);
   };
 
-  //add child
+  // add child
   const handleAddChildClick = () => {
-    //구현 필요
+    // 구현 필요
   };
 
   return {
@@ -103,6 +109,7 @@ export function useChildListUI(children: ChildItemResponse[]) {
     handleEditSave,
     handleEditCancel,
     setIsEditModalOpen,
+
     // avatar
     avatarTarget,
     isAvatarPickerOpen,
@@ -110,15 +117,7 @@ export function useChildListUI(children: ChildItemResponse[]) {
     cancelAvatarPicker,
     handleAvaterEditSave,
 
-    //confirm
-    confirmCloseAvatarPicker,
-    isConfirmOpen,
-    setConfirmOpen,
-    confirmCloseEditModal,
-
-    //add Child
+    // add child
     handleAddChildClick,
-
-    isSaveModalOpen,
   };
 }

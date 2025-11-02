@@ -5,7 +5,7 @@ import { OneButtonModal } from "@/shared/components/Modal/OneButtonModal";
 import { DialogCtx } from "./dialog.context";
 import type { ConfirmOptions, AlertOptions, DialogState } from "./dialog.types";
 
-function DialogProvider({ children }: { children: ReactNode }) {
+export const DialogProvider = ({ children }: { children: ReactNode }) => {
   const [dialog, setDialog] = useState<DialogState>(null);
 
   const api = useMemo(
@@ -65,6 +65,4 @@ function DialogProvider({ children }: { children: ReactNode }) {
       )}
     </DialogCtx.Provider>
   );
-}
-
-export default DialogProvider; // ✅ 이 파일은 컴포넌트만 export
+};

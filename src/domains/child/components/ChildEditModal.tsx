@@ -6,35 +6,25 @@ import { Controller } from "react-hook-form";
 import { ChildProfileItem } from "./ChildProfileItem";
 import { ModalWrapper } from "@/shared/components/Modal/ModalWrapper";
 import { useChildListContext } from "@/domains/child/contexts/ChildListContext";
-import { ConfirmModal } from "@/shared/components";
 import { ProfileSelectorSection } from "@/domains/child/components/ProfileSelectorSection";
 import { useChildDetailQuery } from "@/domains/child/queries/useChildDetailQuery";
 import { useEffect } from "react";
 import { toFormValues } from "@/domains/child/utils/toFormValues";
-import { OneButtonModal } from "@/shared/components/Modal/OneButtonModal";
 type Props = {
   selectedChild: ChildItemResponse;
 };
-import { useDialog } from "@/shared/dialog/useDialog";
 
 export const ChildEditModal: React.FC<Props> = ({ selectedChild }) => {
   const { data: child, isError } = useChildDetailQuery(selectedChild.id);
   const { control, reset } = useChildRegistrationContext();
   const {
-    setIsEditModalOpen,
-    isSaveModalOpen,
-    isEditModalOpen,
-    handleEditSave,
     isAvatarPickerOpen,
+    cancelAvatarPicker, // ⬅️ 내부에서 confirm 처리
     handleAvaterEditSave,
-    cancelAvatarPicker,
+    handleEditSave, // ⬅️ 내부에서 alert 처리
+    handleEditCancel, // ⬅️ 내부에서 confirm 처리
     closeEditModal,
-    isConfirmOpen,
-    setConfirmOpen,
-    confirmCloseAvatarPicker,
-    handleEditCancel,
   } = useChildListContext();
-  const { confirm, alert } = useDialog();
 
   useEffect(() => {
     if (!child) return;
@@ -93,25 +83,6 @@ export const ChildEditModal: React.FC<Props> = ({ selectedChild }) => {
               onNext={handleEditSave}
             />
           </>
-        )}
-        {isConfirmOpen && isAvatarPickerOpen && (
-          <ConfirmModal
-            isOpen={isConfirmOpen}
-            onClose={() => setConfirmOpen(false)} // 모달 닫기만
-            title="변경 취소"
-            message="프로필 사진 변경을 취소하시겠습니까?"
-            confirmText="취소하기"
-            cancelText="계속 편집"
-            onConfirm={confirmCloseAvatarPicker} // 확인 시 실제 처리
-            onCancel={() => setConfirmOpen(false)}
-            showCancel
-          />
-        )}
-        {isSaveModalOpen && isEditModalOpen && (
-          <OneButtonModal
-            isOpen={isSaveModalOpen}
-            onConfirm={() => setIsEditModalOpen(false)}
-          />
         )}
       </ModalWrapper>
     </>
