@@ -10,7 +10,7 @@ import { ConfirmModal } from "@/shared/components";
 import { ProfileSelectorSection } from "@/domains/child/components/ProfileSelectorSection";
 import { useChildDetailQuery } from "@/domains/child/queries/useChildDetailQuery";
 import { useEffect } from "react";
-
+import { toFormValues } from "@/domains/child/utils/toFormValues";
 type Props = {
   selectedChild: ChildItemResponse;
 };
@@ -29,13 +29,15 @@ export const ChildEditModal: React.FC<Props> = ({ selectedChild }) => {
     confirmCloseAvatarPicker,
   } = useChildListContext();
 
-  // 데이터 도착 시 폼 초기화 (선택)
   useEffect(() => {
-    if (child) {
-      console.log(child);
-      // reset(toFormValues(child)); // 필요하면 초기값 주입
-    }
-  }, [child, reset]);
+    if (!child) return;
+    // 사용자가 이미 수정 중일 때 덮어쓰기 방지하고 싶으면 keep 옵션을 조절
+    reset(toFormValues(child), {
+      keepDirty: false, // true면 사용자가 수정한 값은 유지
+      keepTouched: false,
+      keepErrors: false,
+    });
+  }, [child?.id]); // ✅ child 전체가 아니라 id만 의존(불필요한 reset 방지)
 
   if (isError || !child) {
     return (
