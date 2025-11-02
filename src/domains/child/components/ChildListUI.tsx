@@ -4,25 +4,24 @@ import { ErrorBoundary } from "react-error-boundary";
 import { TopBar } from "@/shared/components/TopBar";
 import { Background } from "@/shared/components/Background";
 import { ChildProfileList } from "@/domains/child/components/ChildProfileList";
-import { ChildEditModal } from "./ChildEditModal";
-import { useChildList } from "@/domains/child/hooks/useChildList";
+
 import {
   MainContainer,
   PageContainer,
   ContentSection,
 } from "@/shared/components/Layout";
 
-function ListFallback() {
+const ListFallback = () => {
   return <p>아이 목록을 불러오는 중...</p>;
-}
+};
 
-function ListErrorFallback({
+const ListErrorFallback = ({
   error,
   resetErrorBoundary,
 }: {
   error: Error;
   resetErrorBoundary: () => void;
-}) {
+}) => {
   return (
     <div>
       <p className="text-red-100">{error.message}</p>
@@ -31,11 +30,9 @@ function ListErrorFallback({
       </button>
     </div>
   );
-}
+};
 
 export const ChildListUI = () => {
-  const { isEditModalOpen, editingChild, closeEditModal } = useChildList();
-
   return (
     <PageContainer>
       <Background />
@@ -45,9 +42,6 @@ export const ChildListUI = () => {
           <ErrorBoundary fallbackRender={ListErrorFallback}>
             <Suspense fallback={<ListFallback />}>
               <ChildProfileList />
-              {isEditModalOpen && editingChild && (
-                <ChildEditModal child={editingChild} onClose={closeEditModal} />
-              )}
             </Suspense>
           </ErrorBoundary>
         </ContentSection>

@@ -1,25 +1,18 @@
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { childApi } from "../apis/childApi";
+// /domains/child/hooks/useChildListData.ts
+import { useChildListQuery } from "@/domains/child/queries";
+import { queryClient } from "@/shared/apis/queryClient";
+import { queryKeys } from "@/shared/apis/queryKeys";
 import type { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 
-const CHILDREN_QK = ["children"];
-
 export function useChildListData() {
-  const qc = useQueryClient();
-
-  const { data } = useSuspenseQuery<ChildItemResponse[]>({
-    queryKey: CHILDREN_QK,
-    queryFn: () => childApi.getChildList(),
-    // suspense: true, // ✅ 로딩은 Suspense로
-    // useErrorBoundary: true, // ✅ 에러는 ErrorBoundary로
-    staleTime: 60_000,
-    gcTime: 5 * 60_000,
+  const { data } = useChildListQuery<ChildItemResponse[]>({
+    select: (d) => d.items, // d: ChildListResponse → items: ChildItemResponse[]
   });
 
-  const invalidate = () => qc.invalidateQueries({ queryKey: CHILDREN_QK });
+  const children: ChildItemResponse[] = data ?? [];
 
-  return {
-    children: data ?? [],
-    invalidate,
-  };
+  const invalidate = () =>
+    queryClient.invalidateQueries({ queryKey: [queryKeys.CHILD_LIST] });
+
+  return { children, invalidate };
 }
