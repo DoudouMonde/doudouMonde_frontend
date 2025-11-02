@@ -43,9 +43,10 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
     <div className="flex fixed inset-0 z-50 justify-center items-center bg-opacity-50 bg-gray-300/40">
       <div className=" w-full max-w-sm bg-gray-200 rounded-[50px]">
         {/* 텍스트 영역 */}
-        <div className="flex flex-col gap-2 items-center px-7 py-8">
+        <div className="flex flex-col gap-1 items-center px-7 py-6">
           <h3 className="text-black title-hak">{title}</h3>
-          <p>{subtitle}</p>
+          {/* <p>{subtitle}</p> */}
+          <p className="pb-2 text-green-100 body-hak-b">{subtitle}</p>
           <p className="body-inter-b text-secondary-100">{message}</p>
         </div>
         {/* 버튼 영역 */}
