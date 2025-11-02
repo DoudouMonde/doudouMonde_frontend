@@ -13,14 +13,12 @@ type Props = {
   child: ChildItemResponse;
   showName?: boolean;
   clickAction: "openEdit" | "openAvatarPicker";
-  isShadow?: boolean;
 };
 
 export function ChildProfileItem({
   child,
   showName = true,
   clickAction = "openEdit",
-  isShadow = false,
 }: Props) {
   const { openEditModal, openAvatarPicker } = useChildListContext();
 

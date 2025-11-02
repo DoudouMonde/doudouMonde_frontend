@@ -1,4 +1,5 @@
 import {
+  ChildDetailResponse,
   ChildListResponse,
   PostChildRegistrationRequest,
 } from "@/domains/child/types/childApiTypes";
@@ -37,6 +38,12 @@ export const childApi = {
       };
       //정확한 정보가 띄워야져야 하면 -> 아예 띄우지 않거나.. 아무 대안이 없다면 메세지를 띄우는 것으로 해결할 수 있음
     }
+    return res.data;
+  },
+  getChildDetail: async (childId: number) => {
+    const res = await apiRequester.get<ChildDetailResponse>(
+      `/vi/child/${childId}`
+    );
     return res.data;
   },
 };

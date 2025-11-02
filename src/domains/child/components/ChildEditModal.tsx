@@ -7,9 +7,6 @@ import { ChildProfileItem } from "./ChildProfileItem";
 import { ModalWrapper } from "@/shared/components/Modal/ModalWrapper";
 import { useChildListContext } from "@/domains/child/contexts/ChildListContext";
 import { ConfirmModal } from "@/shared/components";
-import { GridSelectCard } from "@/shared/components/GridSelectCard";
-import { ProfileValue } from "@/shared/constants/profile";
-import { PROFILE_OPTIONS_UI } from "@/shared/ui/profile/profileOptions";
 import { ProfileSelectorSection } from "@/domains/child/components/ProfileSelectorSection";
 
 type Props = {
@@ -37,7 +34,6 @@ export const ChildEditModal: React.FC<Props> = ({ child }) => {
           key={child.id}
           child={child}
           clickAction="openAvatarPicker"
-          isShadow={true}
         />
 
         {isAvatarPickerOpen ? (
@@ -58,6 +54,7 @@ export const ChildEditModal: React.FC<Props> = ({ child }) => {
               control={control}
               name="name"
               render={({ field, fieldState: { error } }) => (
+                // 여기 디테일 정보
                 <NameSection field={field} error={error} />
               )}
             />
