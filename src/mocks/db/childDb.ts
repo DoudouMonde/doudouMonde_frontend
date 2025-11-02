@@ -4,7 +4,6 @@ import { ChildRecord } from "@/domains/child/types/childApiTypes";
 
 const KEY = "__mock_child_db__";
 
-// / 초기 목업 데이터 정의
 const INITIAL_MOCK_CHILDREN: ChildRecord[] = [
   {
     id: 1,
@@ -40,7 +39,9 @@ function load(): ChildRecord[] {
 function save(data: ChildRecord[]) {
   try {
     localStorage.setItem(KEY, JSON.stringify(data));
-  } catch {}
+  } catch {
+    return;
+  }
 }
 
 let seq = 1000;
@@ -53,11 +54,15 @@ if (store.length === 0) {
   );
   store = INITIAL_MOCK_CHILDREN;
   seq = store.reduce((max, child) => Math.max(max, child.id), 0);
+  save(store);
 }
 
 export const childDb = {
   list() {
     return store;
+  },
+  get(id: number) {
+    return store.find((c) => c.id === id) ?? null;
   },
   create(input: PostChildRegistrationRequest): ChildRecord {
     const id = ++seq;
@@ -65,5 +70,13 @@ export const childDb = {
     store = [rec, ...store];
     save(store);
     return rec;
+  },
+  //update는 dto가 나오고 나서 적을 것
+
+  remove(id: number) {
+    const before = store.length;
+    store = store.filter((c) => c.id !== id);
+    if (store.length != before) save(store);
+    return store.length !== before;
   },
 };
