@@ -43,14 +43,16 @@ export const childApi = {
 
     return res.data;
   },
-  updateChild: async (childId: number, payload: UpdateChildRequest) => {
+  patchChild: async (childId: number, payload: UpdateChildRequest) => {
     //response는 확인 후 수정
     const res = await apiRequester.patch<childVoidResponse>(
       `/api/v1/child/${childId}`,
       payload
     );
+    if (res.status !== 200) throw new Error("아이 정보 수정 실패");
     return res.data;
   },
+
   deleteChild: async (childId: number) => {
     const res = await apiRequester.delete<childVoidResponse>(
       `/api/v1/child/${childId}`

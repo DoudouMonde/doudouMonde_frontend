@@ -1,21 +1,20 @@
-// /domains/child/hooks/useChildListUI.ts
 import { useMemo, useState } from "react";
 import type { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import { useDialog } from "@/shared/dialog/useDialog";
+import { useUpdateChildMutation } from "@/domains/child/queries/useUpdateChildMutation";
+import { UpdateChildRequest } from "@/domains/child/types/childApiTypes";
 
 export function useChildListUI(children: ChildItemResponse[]) {
   const { confirm, alert } = useDialog();
-
+  const updateChild = useUpdateChildMutation();
   const [editingChild, setEditingChild] = useState<ChildItemResponse | null>(
     null
   );
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
   const [avatarTarget, setAvatarTarget] = useState<ChildItemResponse | null>(
     null
   );
   const [isAvatarPickerOpen, setIsAvatarPickerOpen] = useState(false);
-
   const byId = useMemo(
     () => new Map(children.map((c) => [c.id, c])),
     [children]
@@ -40,18 +39,25 @@ export function useChildListUI(children: ChildItemResponse[]) {
   };
 
   // 저장
-  const handleEditSave = async () => {
-    // TODO: 실제 update API 호출
-    // await childApi.updateChild(...)
+  const handleEditSave = async (payload: UpdateChildRequest) => {
+    if (!editingChild) return;
 
-    // 저장 완료 알림
-    await alert({
-      title: "저장 완료",
-      message: "아이 정보가 저장되었습니다.",
-      buttonText: "확인",
-    });
-
-    closeEditModal();
+    try {
+      await updateChild.mutateAsync({ childId: editingChild.id, payload });
+      await alert({
+        title: "저장 완료",
+        message: "아이 정보가 저장되었습니다.",
+        buttonText: "확인",
+      });
+      closeEditModal();
+    } catch (e) {
+      console.error(e);
+      await alert({
+        title: "오류",
+        message: "저장에 실패했습니다. 잠시 후 다시 시도해주세요.",
+        buttonText: "확인",
+      });
+    }
   };
 
   // 수정 취소 (확인 모달)
@@ -90,9 +96,34 @@ export function useChildListUI(children: ChildItemResponse[]) {
   };
 
   // 아바타 저장
-  const handleAvaterEditSave = async () => {
-    // TODO: update avatar API
-    setIsAvatarPickerOpen(false);
+  // 기존
+  // const handleAvaterEditSave = async () => {
+
+  // 수정
+  const handleAvaterEditSave = async (payload: UpdateChildRequest) => {
+    if (!editingChild) return;
+
+    try {
+      await updateChild.mutateAsync({
+        childId: editingChild.id,
+        payload, // ← 전체 필드 포함
+      });
+
+      await alert({
+        title: "저장 완료",
+        message: "프로필 사진이 저장되었습니다.",
+        buttonText: "확인",
+      });
+
+      setIsAvatarPickerOpen(false);
+    } catch (e) {
+      console.error(e);
+      await alert({
+        title: "오류",
+        message: "프로필 저장에 실패했습니다.",
+        buttonText: "확인",
+      });
+    }
   };
 
   // add child

@@ -76,15 +76,14 @@ export const childDb = {
   },
   //update는 dto가 나오고 나서 적을 것
 
-  // update(id: number, patch: Omit<ChildItemResponse, "id">) {
-  //   const idx = store.findIndex((c) => c.id === id);
-  //   if (idx === -1) return null;
-  //   const updated: ChildItemResponse = { id, ...patch };
-  //   store[idx] = updated;
-  //   save();
-  //   return updated;
-  // },
+  update(id: number, patch: Partial<ChildRecord>) {
+    const idx = store.findIndex((c) => c.id === id);
+    if (idx === -1) return null;
 
+    store[idx] = { ...store[idx], ...patch };
+    save(store);
+    return store[idx];
+  },
   remove(id: number) {
     const before = store.length;
     store = store.filter((c) => c.id !== id);

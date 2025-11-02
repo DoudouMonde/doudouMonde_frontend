@@ -13,28 +13,58 @@ import { toFormValues } from "@/domains/child/utils/toFormValues";
 type Props = {
   selectedChild: ChildItemResponse;
 };
+import { UpdateChildRequest } from "@/domains/child/types/childApiTypes";
+import { Gender, Profile } from "@/shared/types";
 
 export const ChildEditModal: React.FC<Props> = ({ selectedChild }) => {
   const { data: child, isError } = useChildDetailQuery(selectedChild.id);
-  const { control, reset } = useChildRegistrationContext();
+  const { control, reset, formValues } = useChildRegistrationContext();
   const {
     isAvatarPickerOpen,
-    cancelAvatarPicker, // ⬅️ 내부에서 confirm 처리
+    cancelAvatarPicker,
     handleAvaterEditSave,
-    handleEditSave, // ⬅️ 내부에서 alert 처리
-    handleEditCancel, // ⬅️ 내부에서 confirm 처리
+    handleEditSave,
+    handleEditCancel,
     closeEditModal,
   } = useChildListContext();
 
   useEffect(() => {
     if (!child) return;
-    // 사용자가 이미 수정 중일 때 덮어쓰기 방지하고 싶으면 keep 옵션을 조절
     reset(toFormValues(child), {
-      keepDirty: false, // true면 사용자가 수정한 값은 유지
+      keepDirty: false,
       keepTouched: false,
       keepErrors: false,
     });
-  }, [child?.id]); // ✅ child 전체가 아니라 id만 의존(불필요한 reset 방지)
+  }, [child?.id]);
+
+  // 공통: 폼값 → UpdateChildRequest 변환
+  const buildPayload = (): UpdateChildRequest => {
+    const yyyy = formValues.birthYear?.padStart(4, "0");
+    const mm = formValues.birthMonth?.padStart(2, "0");
+    const dd = formValues.birthDay?.padStart(2, "0");
+
+    return {
+      name: formValues.name,
+      birthday: yyyy && mm && dd && `${yyyy}-${mm}-${dd}`,
+      gender: formValues.gender as Gender,
+      profile: formValues.selectedProfile as Profile,
+    };
+  };
+
+  // 일반 저장 버튼용 (인수 없는 래퍼)
+  const onClickSave = () => {
+    const payload = buildPayload();
+    void handleEditSave(payload);
+  };
+
+  // 아바타 저장 버튼용 (인수 없는 래퍼)
+  // 프로필 피커가 RHF 값을 바꾸고 있으므로 formValues.selectedProfile이 최신값
+  const onClickAvatarSave = () => {
+    const payload = buildPayload();
+    // 만약 별도 선택값을 강제로 덮어쓰고 싶다면:
+    // payload.profile = pickedProfile as Profile;
+    void handleAvaterEditSave(payload);
+  };
 
   if (isError || !child) {
     return (
@@ -63,7 +93,7 @@ export const ChildEditModal: React.FC<Props> = ({ selectedChild }) => {
               previousText="취소"
               nextText="저장"
               onPrevious={cancelAvatarPicker}
-              onNext={handleAvaterEditSave}
+              onNext={onClickAvatarSave}
             />
           </div>
         ) : (
@@ -80,7 +110,7 @@ export const ChildEditModal: React.FC<Props> = ({ selectedChild }) => {
               previousText="취소"
               nextText="저장"
               onPrevious={handleEditCancel}
-              onNext={handleEditSave}
+              onNext={onClickSave}
             />
           </>
         )}

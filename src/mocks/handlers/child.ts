@@ -71,6 +71,39 @@ export const childHandlers = [
     return HttpResponse.json(item, { status: 200 });
   }),
 
+  // ✅ 아이 수정 (PATCH)
+  http.patch("*/api/v1/child/:id", async ({ params, request }) => {
+    await delay(300); // 네트워크 지연 흉내
+
+    const raw = (Array.isArray(params.id) ? params.id[0] : params.id) as
+      | string
+      | undefined;
+    const id = raw != null ? parseInt(String(raw), 10) : NaN;
+
+    if (!Number.isFinite(id)) {
+      return HttpResponse.json({ message: "Invalid id" }, { status: 400 });
+    }
+
+    const body = await request.json().catch(() => ({}));
+
+    // ✅ 유효성 검사 (필요한 필드만 검사)
+    const parsed = ChildRequestSchema.partial().safeParse(body);
+    if (!parsed.success) {
+      return HttpResponse.json(
+        { message: "Validation error", issues: parsed.error.format() },
+        { status: 400 }
+      );
+    }
+
+    // ✅ DB 업데이트
+    // const updated = childDb.update(id, parsed.data);
+    // if (!updated) {
+    //   return HttpResponse.json({ message: "Not found" }, { status: 404 });
+    // }
+
+    // ✅ 성공 (반환값 없이 성공 표시)
+    return HttpResponse.json({ success: true }, { status: 200 });
+  }),
   //아이 삭제
   http.delete(`${API}/v1/child/:id`, async ({ params }) => {
     await delay(300);
