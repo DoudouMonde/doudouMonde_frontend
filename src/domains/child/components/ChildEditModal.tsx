@@ -15,7 +15,7 @@ type Props = {
 };
 
 export const ChildEditModal: React.FC<Props> = ({ selectedChildId }) => {
-  const { data: child, isLoading } = useChildDetailQuery(selectedChildId.id);
+  const { data: child, isLoading } = useChildDetailQuery(selectedChildId);
   const { control } = useChildRegistrationContext();
   const {
     handleEditSave,

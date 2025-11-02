@@ -48,7 +48,36 @@ export const childHandlers = [
 
   //아이 단건 조회
   //childId를 어떻게 보내지?
-  http.get(`${API}/v1/child/${childId}`, async () => {
+  http.get(`${API}/v1/child/:id`, async ({ params }) => {
     await delay(300);
+    const id = Number(params);
+    if (Number.isNaN(id)) {
+      return HttpResponse.json(
+        { message: "Invalid id" },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    const item = childDb.get(id);
+    if (!item) {
+      return HttpResponse.json({ message: "Not found" }, { status: 404 });
+    }
+    return HttpResponse.json(item, { status: 200 });
+  }),
+
+  //아이 삭제
+  http.delete(`${API}/v1/child/:id`, async ({ params }) => {
+    await delay(300);
+    const id = Number(params);
+    if (Number.isNaN(id)) {
+      return HttpResponse.json({ message: "Invalid id" }, { status: 400 });
+    }
+    const ok = childDb.remove(id);
+    if (!ok) {
+      return HttpResponse.json({ messages: "Not Found" }, { status: 404 });
+    }
+    return HttpResponse.json({ success: true }, { status: 200 });
   }),
 ];
