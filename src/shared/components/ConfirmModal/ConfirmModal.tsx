@@ -4,6 +4,7 @@ interface ConfirmModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
+  subtitle?: string;
   message: string;
   confirmText: string;
   cancelText?: string;
@@ -16,6 +17,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   isOpen,
   onClose,
   title,
+  subtitle,
   message,
   confirmText,
   cancelText = "취소",
@@ -38,26 +40,33 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   };
 
   return (
-    <div className="flex fixed inset-0 z-50 justify-center items-center bg-gray-900 bg-opacity-50">
-      <div className="p-6 mx-4 w-full max-w-sm bg-gray-200 rounded-2xl">
-        <h3 className="mb-2 text-lg font-semibold text-gray-900">{title}</h3>
-        <p className="mb-6 body-inter-r">{message}</p>
+    <div className="flex fixed inset-0 z-50 justify-center items-center bg-opacity-50 bg-gray-300/40">
+      <div className=" w-full max-w-sm bg-gray-200 rounded-[50px]">
+        {/* 텍스트 영역 */}
+        <div className="flex flex-col gap-2 items-center px-7 py-8">
+          <h3 className="text-black title-hak">{title}</h3>
+          <p>{subtitle}</p>
+          <p className="body-inter-b text-secondary-100">{message}</p>
+        </div>
+        {/* 버튼 영역 */}
 
-        <div className="flex gap-3">
-          {showCancel && (
+        <div>
+          <div className="flex">
+            {showCancel && (
+              <button
+                onClick={handleCancel}
+                className="flex-1    py-4 border-r-[0.2px] border-t-[0.2px] border-secondary-100 body-inter-b text-secondary-100"
+              >
+                {cancelText}
+              </button>
+            )}
             <button
-              onClick={handleCancel}
-              className="flex-1 px-4 py-2 bg-gray-100 rounded-lg transition-colors subtitle"
+              onClick={handleConfirm}
+              className="flex-1 text-red-100 border-secondary-100 body-inter-b border-t-[0.2px]"
             >
-              {cancelText}
+              {confirmText}
             </button>
-          )}
-          <button
-            onClick={handleConfirm}
-            className="flex-1 px-4 py-2 text-gray-200 bg-green-200 rounded-lg transition-colors subtitle"
-          >
-            {confirmText}
-          </button>
+          </div>
         </div>
       </div>
     </div>
