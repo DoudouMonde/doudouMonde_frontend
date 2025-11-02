@@ -6,6 +6,7 @@ export function useChildListUI(children: ChildItemResponse[]) {
   const [editingChild, setEditingChild] = useState<ChildItemResponse | null>(
     null
   );
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const [avatarTarget, setAvatarTarget] = useState<ChildItemResponse | null>(
@@ -13,15 +14,14 @@ export function useChildListUI(children: ChildItemResponse[]) {
   );
   const [isAvatarPickerOpen, setIsAvatarPickerOpen] = useState(false);
 
+  const [isConfirmOpen, setConfirmOpen] = useState(false);
+
   const byId = useMemo(
     () => new Map(children.map((c) => [c.id, c])),
     [children]
   );
 
-  const resetAvatarPicker = () => {
-    setIsAvatarPickerOpen(false);
-    setAvatarTarget(null);
-  };
+  //modal
 
   const openEditModal = (childId: number) => {
     resetAvatarPicker();
@@ -36,6 +36,17 @@ export function useChildListUI(children: ChildItemResponse[]) {
     setEditingChild(null);
   };
 
+  const handleEditSave = async () => {
+    closeEditModal();
+  };
+
+  //avatar
+
+  const resetAvatarPicker = () => {
+    setIsAvatarPickerOpen(false);
+    setAvatarTarget(null);
+  };
+
   const openAvatarPicker = (childId: number) => {
     if (!isEditModalOpen) return; // 편집 모달이 열려 있을 때만
     const target = byId.get(childId) ?? null;
@@ -44,15 +55,20 @@ export function useChildListUI(children: ChildItemResponse[]) {
   };
 
   const closeAvatarPicker = () => {
+    setConfirmOpen(true);
+  };
+
+  // ✅ 확인 눌렀을 때 실제 닫기 로직
+  const confirmCloseAvatarPicker = () => {
     setIsAvatarPickerOpen(false);
     setAvatarTarget(null);
   };
 
-  const handleEditSave = async () => {
-    // TODO: PATCH 호출 후 성공 시 모달 닫기/리패치 등
-    closeEditModal();
+  const handleAvaterEditSave = async () => {
+    closeAvatarPicker();
   };
 
+  //add child
   const handleAddChildClick = () => {
     //구현 필요
   };
@@ -69,6 +85,13 @@ export function useChildListUI(children: ChildItemResponse[]) {
     isAvatarPickerOpen,
     openAvatarPicker,
     closeAvatarPicker,
+    handleAvaterEditSave,
+
+    //confirm
+    confirmCloseAvatarPicker,
+    isConfirmOpen,
+    setConfirmOpen,
+
     //add Child
     handleAddChildClick,
   };

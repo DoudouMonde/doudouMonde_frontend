@@ -10,14 +10,14 @@ type LocationConsentModalProps = {
   isLoadingAddress?: boolean;
 };
 
-export function LocationConsentModal({
+export const LocationConsentModal = ({
   open,
   onClose,
   onConsent,
   onManual,
   isLocating = false,
   isLoadingAddress = false,
-}: LocationConsentModalProps) {
+}: LocationConsentModalProps) => {
   const disabled = isLocating || isLoadingAddress;
 
   return (
@@ -79,4 +79,4 @@ export function LocationConsentModal({
       </div>
     </Modal>
   );
-}
+};
