@@ -20,12 +20,10 @@ export const childHandlers = [
       );
     }
 
-    //타입 단언 적용
     const requetsData = parsed.data as PostChildRegistrationRequest;
 
     const created = childDb.create(requetsData);
 
-    // 네 코드에 맞춘 성공 응답
     return HttpResponse.json(
       { childId: created.id, success: true },
       { status: 201 }
@@ -46,5 +44,11 @@ export const childHandlers = [
     const payload = { items: list };
     //4. 응답 반환
     return HttpResponse.json(payload, { status: 200 });
+  }),
+
+  //아이 단건 조회
+  //childId를 어떻게 보내지?
+  http.get(`${API}/v1/child/${childId}`, async () => {
+    await delay(300);
   }),
 ];

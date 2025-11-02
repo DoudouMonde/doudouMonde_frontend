@@ -21,7 +21,6 @@ export const ChildItemResponse = ChildEntity.pick({
   name: true,
   profile: true,
 } satisfies PickChildEntityKeys).extend({});
-//typeof를 공부하자
 export type ChildItemResponse = z.infer<typeof ChildItemResponse>;
 
 //목록 조회
