@@ -34,14 +34,7 @@ function ListErrorFallback({
 }
 
 export const ChildListUI = () => {
-  const {
-    children,
-    isEditModalOpen,
-    editingChild,
-    closeEditModal,
-    openEditModal,
-    // avatar 관련도 필요하면 구조분해
-  } = useChildList();
+  const { isEditModalOpen, editingChild, closeEditModal } = useChildList();
 
   return (
     <PageContainer>
@@ -51,10 +44,7 @@ export const ChildListUI = () => {
         <ContentSection>
           <ErrorBoundary fallbackRender={ListErrorFallback}>
             <Suspense fallback={<ListFallback />}>
-              <ChildProfileList
-                children={children}
-                onEditClick={openEditModal}
-              />
+              <ChildProfileList />
               {isEditModalOpen && editingChild && (
                 <ChildEditModal child={editingChild} onClose={closeEditModal} />
               )}

@@ -11,7 +11,7 @@ export function ChildProfileList({ showName }: Props) {
   const { handleAddChildClick } = useChildListContext();
   const { data: children } = useChildListQuery();
   if (children === undefined) return null;
-  const validChildren = children || [];
+  const validChildren = children.items || [];
   const childCount = validChildren.length;
   const sholudShowAddButton = childCount < 4;
 
