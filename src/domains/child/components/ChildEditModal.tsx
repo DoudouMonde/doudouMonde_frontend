@@ -8,12 +8,14 @@ import { ModalWrapper } from "@/shared/components/Modal/ModalWrapper";
 import { useChildListContext } from "@/domains/child/contexts/ChildListContext";
 import { ConfirmModal } from "@/shared/components";
 import { ProfileSelectorSection } from "@/domains/child/components/ProfileSelectorSection";
+import { useChildDetailQuery } from "@/domains/child/queries/useChildDetailQuery";
 
 type Props = {
-  child: ChildItemResponse;
+  selectedChildId: ChildItemResponse;
 };
 
-export const ChildEditModal: React.FC<Props> = ({ child }) => {
+export const ChildEditModal: React.FC<Props> = ({ selectedChildId }) => {
+  const { data: child, isLoading } = useChildDetailQuery(selectedChildId.id);
   const { control } = useChildRegistrationContext();
   const {
     handleEditSave,
