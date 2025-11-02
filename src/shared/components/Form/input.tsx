@@ -1,7 +1,7 @@
 import React, {
   ChangeEvent,
   FocusEvent,
-  InputHTMLAttributes,
+  // InputHTMLAttributes,
   forwardRef,
 } from "react";
 type FormInputProps = {

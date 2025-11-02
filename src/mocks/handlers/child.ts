@@ -105,16 +105,18 @@ export const childHandlers = [
     return HttpResponse.json({ success: true }, { status: 200 });
   }),
   //아이 삭제
-  http.delete(`${API}/v1/child/:id`, async ({ params }) => {
-    await delay(300);
-    const id = Number(params);
+  http.delete("*/api/v1/child/:id", ({ params }) => {
+    // ✅ params.id는 string
+    const idStr = params.id as string;
+    const id = Number(idStr);
+
     if (Number.isNaN(id)) {
-      return HttpResponse.json({ message: "Invalid id" }, { status: 400 });
+      return HttpResponse.json(
+        { message: "Invalid child id" },
+        { status: 400 }
+      );
     }
-    const ok = childDb.remove(id);
-    if (!ok) {
-      return HttpResponse.json({ messages: "Not Found" }, { status: 404 });
-    }
-    return HttpResponse.json({ success: true }, { status: 200 });
+
+    return new HttpResponse(null, { status: 204 }); // 204 No Content
   }),
 ];
