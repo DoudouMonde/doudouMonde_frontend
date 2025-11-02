@@ -1,18 +1,20 @@
 // GridSelectCard.tsx
 import React from "react";
 import { FormCard } from "@/shared/components/FormCard";
+import type { ReactNode } from "react";
+import { RadioUI } from "@/shared/components/Radio/RadioUI";
 
 type Scalar = string | number;
 
 export type GridOption<T extends Scalar> = {
   value: T;
   label: string;
-  icon?: React.ReactNode; // 아이콘/이미지 JSX
+  icon?: ReactNode;
   disabled?: boolean;
 };
 
 type GridSelectCardProps<T extends Scalar> = {
-  title: string;
+  title?: string;
   subtitle?: string;
   options: GridOption<T>[];
   selected: T | null;
@@ -27,34 +29,52 @@ export function GridSelectCard<T extends Scalar>({
   options,
   selected,
   onChange,
+  className,
   gridClassName,
 }: GridSelectCardProps<T>) {
   return (
-    <FormCard title={title} subtitle={subtitle}>
+    <FormCard title={title} subtitle={subtitle} className={className}>
       {/* 옵션 그리드 */}
-      <div className={gridClassName ?? "grid grid-cols-3 gap-4"}>
-        {options.map(({ value, label, icon, disabled }) => {
+      <div className={gridClassName ?? "grid grid-cols-3 gap-8"}>
+        {options.map(({ value, icon, disabled }) => {
           const isSelected = selected === value;
+
+          const handleSelect = () => {
+            if (!disabled) onChange(value);
+          };
+
+          const handleKeyDown: React.KeyboardEventHandler<HTMLButtonElement> = (
+            e
+          ) => {
+            if (disabled) return;
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              onChange(value);
+            }
+          };
+
           return (
             <button
               key={`${String(value)}`}
               type="button"
-              onClick={() => !disabled && onChange(value)}
+              onClick={handleSelect}
+              onKeyDown={handleKeyDown}
               disabled={disabled}
               className={[
-                "flex flex-col items-center p-3 rounded-lg cursor-pointer transition-colors focus:outline-none",
-                isSelected
-                  ? "bg-blue-100 border-2 border-blue-300"
-                  : "bg-white hover:bg-gray-50 border border-transparent",
-                disabled ? "opacity-50 cursor-not-allowed" : "",
+                // 배경색 변화 제거, 살짝의 보더만
+                "group flex flex-col items-center p-3 rounded-lg transition-colors focus:outline-none",
               ].join(" ")}
               role="radio"
               aria-checked={isSelected}
+              aria-disabled={disabled || undefined}
             >
-              <div className="flex justify-center items-center mb-2 w-16 h-16 bg-gray-200 rounded-full">
+              {/* 아이콘 영역 */}
+              <div className="flex justify-center items-center mb-2 w-16 h-16 bg-gray-200 rounded-full border border-secondary-100">
                 {icon}
               </div>
-              <span className="text-gray-700 body-hak-r">{label}</span>
+
+              {/* 라디오 UI (카드 하단) */}
+              <RadioUI checked={!!isSelected} disabled={!!disabled} />
             </button>
           );
         })}

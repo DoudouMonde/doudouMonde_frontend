@@ -13,12 +13,14 @@ type Props = {
   child: ChildItemResponse;
   showName?: boolean;
   clickAction: "openEdit" | "openAvatarPicker";
+  isShadow?: boolean;
 };
 
 export function ChildProfileItem({
   child,
   showName = true,
   clickAction = "openEdit",
+  isShadow = false,
 }: Props) {
   const { openEditModal, openAvatarPicker } = useChildListContext();
 
@@ -35,6 +37,7 @@ export function ChildProfileItem({
     <div className="flex flex-col gap-4 items-center">
       <div className="relative cursor-pointer" onClick={handleClick}>
         <div className="absolute -inset-1 rounded-full border border-gray-900" />
+
         <div className="flex items-center justify-center rounded-full w-[80px] h-[80px] bg-gray-200 hover:bg-gray-300 transition-colors">
           <SwitchCase
             value={child.profile}

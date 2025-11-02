@@ -6,8 +6,11 @@ import { Controller } from "react-hook-form";
 import { ChildProfileItem } from "./ChildProfileItem";
 import { ModalWrapper } from "@/shared/components/Modal/ModalWrapper";
 import { useChildListContext } from "@/domains/child/contexts/ChildListContext";
-import { ProfileSelectorSection } from "./ProfileSelectorSection";
 import { ConfirmModal } from "@/shared/components";
+import { GridSelectCard } from "@/shared/components/GridSelectCard";
+import { ProfileValue } from "@/shared/constants/profile";
+import { PROFILE_OPTIONS_UI } from "@/shared/ui/profile/profileOptions";
+import { ProfileSelectorSection } from "@/domains/child/components/ProfileSelectorSection";
 
 type Props = {
   child: ChildItemResponse;
@@ -34,19 +37,21 @@ export const ChildEditModal: React.FC<Props> = ({ child }) => {
           key={child.id}
           child={child}
           clickAction="openAvatarPicker"
+          isShadow={true}
         />
 
         {isAvatarPickerOpen ? (
-          <>
-            <p>프로필 사진 변경</p>
+          <div className="flex flex-col items-center">
+            <p className="pt-4 body-hak-b">프로필 사진 변경</p>
             <ProfileSelectorSection control={control} />
+
             <NavigationButtons
               previousText="취소"
               nextText="저장"
               onPrevious={cancelAvatarPicker}
               onNext={handleAvaterEditSave}
             />
-          </>
+          </div>
         ) : (
           <>
             <Controller
