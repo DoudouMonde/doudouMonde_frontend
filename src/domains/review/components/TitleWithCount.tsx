@@ -1,7 +1,7 @@
 import { PlayroomLogo1 } from "@/assets/icons/playroom";
 
 interface TitleWithCountProps {
-  reviewCount: number;
+  reviewCount?: number;
 }
 
 export const TitleWithClount = ({ reviewCount = 0 }: TitleWithCountProps) => {

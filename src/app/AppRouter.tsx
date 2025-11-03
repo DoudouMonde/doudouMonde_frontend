@@ -15,6 +15,7 @@ import {
   ChildAndDateSelectionPage,
   ReviewWritingPage,
   VoiceReviewPage,
+  ReviewCreatePage,
   CharTypeSelectPage,
   CharEmotionSelectPage,
   CharAccSelectPage,
@@ -28,6 +29,7 @@ import {
 import { BottomNavigationLayout } from "@/app/layout";
 import { PATH } from "@/shared/constants";
 import { ChildExamplePage } from "@/domains/child/example/page/ChildExamplePage";
+import { LandingHero } from "@/domains/playroom/features/landing/LandingHero";
 
 const router = createBrowserRouter([
   {
@@ -95,6 +97,11 @@ const router = createBrowserRouter([
     path: "/playroom",
     element: <PlayroomPage />,
     children: [
+      {
+        path: "review-create-page",
+        element: <ReviewCreatePage />,
+      },
+
       {
         path: "select-performance",
         element: <SelectPerformancePage />,

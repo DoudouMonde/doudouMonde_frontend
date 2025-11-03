@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { BottomNavigation } from "@/shared/components";
 import BackIcon from "@/assets/icons/Back";
 
@@ -32,7 +32,10 @@ export function PlayroomLayout({ children }: { children: React.ReactNode }) {
         </div>
       </div>
 
-      <main className="px-6 pb-[72px] w-full relative z-10 overflow-y-auto min-h-screen">{children}</main>
+      <main className="px-6 pb-[72px] w-full relative z-10 overflow-y-auto min-h-screen">
+        {children}
+        
+      </main>
 
       <div className="relative z-10">
         <BottomNavigation />

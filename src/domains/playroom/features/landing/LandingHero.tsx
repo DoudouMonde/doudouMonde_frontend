@@ -1,5 +1,5 @@
 import { PageContainer } from "@/shared/components/Layout";
-import { BookMakeModal } from "@/shared/components/Modal/BookMakeModal";
+// import { BookMakeModal } from "@/shared/components/Modal/BookMakeModal";
 import { ActionButton } from "@/shared/components/Button/ActionButton";
 import {
   StorytownTree0,
@@ -13,45 +13,26 @@ import {
   StorytownTree8,
   StorytownTree9,
 } from "@/assets/icons/playroom/storytown_tree";
+import { useReviewListContext } from "@/domains/review/contexts/ReviewListContext";
+import { useChildListContext } from "@/domains/child/contexts/ChildListContext";
+import { useReviewActionContext } from "@/domains/review/contexts/ReviewActionContext";
 
-const Trees = [
-  StorytownTree0,
-  StorytownTree1,
-  StorytownTree2,
-  StorytownTree3,
-  StorytownTree4,
-  StorytownTree5,
-  StorytownTree6,
-  StorytownTree7,
-  StorytownTree8,
-  StorytownTree9,
-];
+const Trees = [StorytownTree0, StorytownTree1, StorytownTree2, StorytownTree3, StorytownTree4, StorytownTree5, StorytownTree6, StorytownTree7, StorytownTree8, StorytownTree9];
 
-export interface LandingHeroProps {
-  reviewCount: number;
-  childNames: string;
-  onStart: () => void;
-  onSkip: () => void;
-  popup: boolean;
-  onClosePopup: () => void;
-  onPurchase: () => void;
-}
+//TODO: 책 구매 팝업 구현
 
-export const LandingHero: React.FC<LandingHeroProps> = ({
-  reviewCount,
-  childNames,
-  onStart,
-  onSkip,
-  popup,
-  onClosePopup,
-  onPurchase,
-}) => {
+export const LandingHero = () => {
+  const { reviewCount } = useReviewListContext();
+  const { children } = useChildListContext(); //여기서 names만 받아오도록 하는 처리 과정이 있어야 함
+  const { handleStart, handleSkip } = useReviewActionContext();
+
+  const childNames = "서아"; //구현 필요
+
   const Tree = Trees[Math.min(reviewCount, 9)];
+
   return (
     <PageContainer>
-      {popup && (
-        <BookMakeModal onClose={onClosePopup} onPurchase={onPurchase} />
-      )}
+      {/* {popup && <BookMakeModal onClose={onClosePopup} onPurchase={onPurchase} />} */}
       <section className="relative pt-[64px]">
         <figure className="flex z-20 justify-center items-start w-full">
           <Tree className="w-full h-auto object-contain drop-shadow-[0px_0px_5px_rgba(0,0,0.5,0)]" />
@@ -77,8 +58,8 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
               className="animate-breathe w-[150px] h-[190px] sm:w-[193px] sm:h-[248px] object-contain drop-shadow-[0px_0px_10px_rgba(202, 255, 133, 0.1)] flex-shrink-0"
             />
             <nav className="flex flex-col flex-shrink-0 gap-4 items-center pb-8 sm:gap-7 sm:items-end">
-              <ActionButton onClick={onStart}>좋아</ActionButton>
-              <ActionButton onClick={onSkip}>다음에 할래</ActionButton>
+              <ActionButton onClick={handleStart}>좋아</ActionButton>
+              <ActionButton onClick={handleSkip}>다음에 할래</ActionButton>
             </nav>
           </section>
         </article>
