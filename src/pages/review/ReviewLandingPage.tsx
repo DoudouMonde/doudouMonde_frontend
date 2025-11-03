@@ -1,1 +1,3 @@
-export const ReviewLandingPage = () => {};
+export const ReviewLandingPage = () => {
+  return <></>;
+};

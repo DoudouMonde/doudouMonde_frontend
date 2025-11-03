@@ -5,7 +5,9 @@ import { useState } from "react";
 
 export const useReviewList = () => {
   const [reviewList, setReviewList] = useState([]);
-  const [reviewCount, setReviewCount] = useState();
+  const [reviewCount, setReviewCount] = useState<number>(0);
+
+  setReviewCount(8);
 
   return { reviewList, reviewCount };
 };

@@ -1,1 +1,3 @@
-export const EmptyReviewsPage = () => {};
+export const EmptyReviewsPage = () => {
+  return <></>;
+};
