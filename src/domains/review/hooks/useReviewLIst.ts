@@ -1,13 +1,9 @@
-//전체 리뷰 조회 reviewList
-//리뷰 개수 reviewCount
-
 import { useState } from "react";
+import { ReviewItem } from "../types";
 
 export const useReviewList = () => {
-  const [reviewList, setReviewList] = useState([]);
+  const [reviewList, setReviewList] = useState<ReviewItem[]>([]);
   const [reviewCount, setReviewCount] = useState<number>(0);
-
-  setReviewCount(8);
 
   return { reviewList, reviewCount };
 };
