@@ -1,5 +1,4 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
 import { PlayroomLayout } from "@/app/PlayroomLayout";
 import {
   IndexPage,
@@ -94,12 +93,8 @@ const router = createBrowserRouter([
 
   {
     path: "/playroom",
-    element: <PlayroomLayout />,
+    element: <PlayroomPage />,
     children: [
-      {
-        index: true,
-        element: <PlayroomPage />,
-      },
       {
         path: "select-performance",
         element: <SelectPerformancePage />,
