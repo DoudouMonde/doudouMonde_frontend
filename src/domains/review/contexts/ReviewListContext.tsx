@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { useReviewList } from "../hooks/useReviewLIst";
+import { useReviewList } from "../hooks/useReviewList";
 
 export type ReviewListContextType = ReturnType<typeof useReviewList>;
 

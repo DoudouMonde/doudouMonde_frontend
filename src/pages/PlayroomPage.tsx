@@ -1,15 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import { PATH } from "@/shared/constants/paths";
-
-import { LandingHero } from "@/domains/playroom/features/landing/LandingHero";
-import { useReviewCount } from "@/domains/playroom/features/landing/useReviewCount";
-import { useChildNames } from "@/domains/playroom/features/landing/useChildNames";
-import { useBookPopup } from "@/domains/playroom/features/landing/useBookPopup";
+import { ReviewListProvider } from "@/domains/review/contexts/ReviewListProvider";
+import { ReviewCountRouter } from "@/domains/review/components/ReviewCountRouter";
 
 export const PlayroomPage = () => {
-  const { reviewCount } = useReviewContext(); //만들 것임요
-
-  reviewCount == 0 ? <EmptyReviewsPage /> : <ReviewLandingPage />;
+  <ReviewListProvider>
+    <ReviewCountRouter />
+  </ReviewListProvider>;
 };
 
 //기존 코드 LandingHero 페이지로 넘기는 과정
