@@ -22,10 +22,18 @@ export function useChildListUI(children: ChildItemResponse[]) {
     () => new Map(children.map((c) => [c.id, c])),
     [children]
   );
-
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const resetAvatarPicker = () => {
     setIsAvatarPickerOpen(false);
     setAvatarTarget(null);
+  };
+  const handleAddChildClick = () => {
+    setIsCreateModalOpen(true);
+  };
+
+  const closeCreateModal = async () => {
+    // (선택) 변경사항 경고 필요하면 confirm 사용
+    setIsCreateModalOpen(false);
   };
 
   const openEditModal = (childId: number) => {
@@ -129,11 +137,6 @@ export function useChildListUI(children: ChildItemResponse[]) {
     }
   };
 
-  // add child
-  const handleAddChildClick = () => {
-    // 구현 필요
-  };
-
   const handleChildDelete = async (childId?: number) => {
     const targetId = childId ?? editingChild?.id;
     if (!targetId) return;
@@ -188,6 +191,8 @@ export function useChildListUI(children: ChildItemResponse[]) {
 
     // add child
     handleAddChildClick,
+    isCreateModalOpen,
+    closeCreateModal,
 
     //delete child
     handleChildDelete,

@@ -3,8 +3,8 @@ import { ChildDeleteBtn } from "@/domains/child/components/ChildDeleteBtn";
 import React, { useEffect } from "react";
 
 type ModalWrapperProps = {
-  children?: React.ReactNode;
-  selectedChildId: number;
+  children: React.ReactNode;
+  selectedChildId?: number;
   onClose: () => void;
   deleteBtn?: boolean;
 };
