@@ -21,3 +21,4 @@ export * from "./review/ReviewListPage";
 export * from "./performance/PerformanceDetailPage";
 export * from "./review/StoryVillageBookPage";
 export * from "./auth";
+export * from "./review/ReviewCreatePage";
