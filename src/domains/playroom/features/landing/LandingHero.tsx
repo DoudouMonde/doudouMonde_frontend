@@ -1,6 +1,7 @@
 import { PageContainer } from "@/shared/components/Layout";
 // import { BookMakeModal } from "@/shared/components/Modal/BookMakeModal";
 import { ActionButton } from "@/shared/components/Button/ActionButton";
+import { useFunnel } from "@/shared/hooks/useFunnel";
 import {
   StorytownTree0,
   StorytownTree1,
@@ -13,9 +14,6 @@ import {
   StorytownTree8,
   StorytownTree9,
 } from "@/assets/icons/playroom/storytown_tree";
-import { useReviewListContext } from "@/domains/review/contexts/ReviewListContext";
-import { useChildListContext } from "@/domains/child/contexts/ChildListContext";
-import { useReviewActionContext } from "@/domains/review/contexts/ReviewActionContext";
 
 const Trees = [
   StorytownTree0,
@@ -29,6 +27,10 @@ const Trees = [
   StorytownTree8,
   StorytownTree9,
 ];
+import { useReviewListContext } from "@/domains/review/contexts/ReviewListContext";
+import { useChildListContext } from "@/domains/child/contexts/ChildListContext";
+import { useReviewActionContext } from "@/domains/review/contexts/ReviewActionContext";
+import { useState } from "react";
 
 //TODO: 책 구매 팝업 구현
 
@@ -36,10 +38,20 @@ export const LandingHero = () => {
   const { reviewCount } = useReviewListContext();
   const { children } = useChildListContext(); //여기서 names만 받아오도록 하는 처리 과정이 있어야 함
   const { handleStart, handleSkip } = useReviewActionContext();
-
   const childNames = "서아"; //구현 필요
-
   const Tree = Trees[Math.min(reviewCount, 9)];
+
+  //여기서 handleStart를 하는 것이 아니라 이 페이지에서 Funnel 구조로 관리해야겠다.
+  const [newReviewData, setNewReviewData] = useState();
+  const [step, setStep] = useFunnel<
+    | "공연선택"
+    | "아이날짜선택"
+    | "후기작성"
+    | "종류선택"
+    | "표정선택"
+    | "악세사리선택"
+    | "캐릭터이름"
+  >("공연선택");
 
   return (
     <PageContainer>
@@ -70,6 +82,8 @@ export const LandingHero = () => {
             />
             <nav className="flex flex-col flex-shrink-0 gap-4 items-center pb-8 sm:gap-7 sm:items-end">
               <ActionButton onClick={handleStart}>좋아</ActionButton>
+              {/* 여기에 funnel 구조 넣기 */}
+
               <ActionButton onClick={handleSkip}>다음에 할래</ActionButton>
             </nav>
           </section>

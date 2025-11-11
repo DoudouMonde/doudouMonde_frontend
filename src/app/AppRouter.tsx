@@ -96,55 +96,48 @@ const router = createBrowserRouter([
   {
     path: "/playroom",
     element: <PlayroomPage />,
-    children: [
-      {
-        // path: "review-create-page",
-        // element: <ReviewCreatePage />,
-      },
-
-      {
-        path: "select-performance",
-        element: <SelectPerformancePage />,
-      },
-      {
-        path: "child-date-selection",
-        element: <ChildAndDateSelectionPage />,
-      },
-      {
-        path: "review-writing",
-        element: <ReviewWritingPage />,
-      },
-      // {
-      //   path: "voice-review",
-      //   element: <VoiceReviewPage />,
-      // },
-      {
-        path: "character-type-select",
-        element: <CharTypeSelectPage />,
-      },
-      {
-        path: "character-emotion-select",
-        element: <CharEmotionSelectPage />,
-      },
-      {
-        path: "character-acc-select",
-        element: <CharAccSelectPage />,
-      },
-      {
-        path: "character-preview",
-        element: <CharacterPreviewPage />,
-      },
-      {
-        path: "reviews",
-        element: <ReviewListPage />,
-      },
-      {
-        path: "reviews/:reviewId",
-        element: <ReviewDetailPage />,
-      },
-    ],
   },
   { path: "review-create-page", element: <ReviewCreatePage /> },
+  {
+    path: "select-performance",
+    element: <SelectPerformancePage />,
+  },
+  {
+    path: "child-date-selection",
+    element: <ChildAndDateSelectionPage />,
+  },
+  {
+    path: "review-writing",
+    element: <ReviewWritingPage />,
+  },
+  // {
+  //   path: "voice-review",
+  //   element: <VoiceReviewPage />,
+  // },
+  {
+    path: "character-type-select",
+    element: <CharTypeSelectPage />,
+  },
+  {
+    path: "character-emotion-select",
+    element: <CharEmotionSelectPage />,
+  },
+  {
+    path: "character-acc-select",
+    element: <CharAccSelectPage />,
+  },
+  {
+    path: "character-preview",
+    element: <CharacterPreviewPage />,
+  },
+  {
+    path: "reviews",
+    element: <ReviewListPage />,
+  },
+  {
+    path: "reviews/:reviewId",
+    element: <ReviewDetailPage />,
+  },
 ]);
 
 export function AppRouter() {
