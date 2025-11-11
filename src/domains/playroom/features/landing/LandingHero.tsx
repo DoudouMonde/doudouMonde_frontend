@@ -17,7 +17,18 @@ import { useReviewListContext } from "@/domains/review/contexts/ReviewListContex
 import { useChildListContext } from "@/domains/child/contexts/ChildListContext";
 import { useReviewActionContext } from "@/domains/review/contexts/ReviewActionContext";
 
-const Trees = [StorytownTree0, StorytownTree1, StorytownTree2, StorytownTree3, StorytownTree4, StorytownTree5, StorytownTree6, StorytownTree7, StorytownTree8, StorytownTree9];
+const Trees = [
+  StorytownTree0,
+  StorytownTree1,
+  StorytownTree2,
+  StorytownTree3,
+  StorytownTree4,
+  StorytownTree5,
+  StorytownTree6,
+  StorytownTree7,
+  StorytownTree8,
+  StorytownTree9,
+];
 
 //TODO: 책 구매 팝업 구현
 
@@ -33,7 +44,7 @@ export const LandingHero = () => {
   return (
     <PageContainer>
       {/* {popup && <BookMakeModal onClose={onClosePopup} onPurchase={onPurchase} />} */}
-      <section className="relative pt-[64px]">
+      <section className="relative">
         <figure className="flex z-20 justify-center items-start w-full">
           <Tree className="w-full h-auto object-contain drop-shadow-[0px_0px_5px_rgba(0,0,0.5,0)]" />
         </figure>

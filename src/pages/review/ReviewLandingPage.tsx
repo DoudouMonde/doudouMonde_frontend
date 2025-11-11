@@ -1,3 +1,4 @@
+import { AddReviewBtn } from "@/domains/child/components/AddReviewBtn";
 import { TitleWithClount } from "@/domains/review/components/TitleWithCount";
 import { useReviewListContext } from "@/domains/review/contexts/ReviewListContext";
 
@@ -7,6 +8,8 @@ export const ReviewLandingPage = () => {
   return (
     <>
       <TitleWithClount reviewCount={reviewCount} />
+      {/* 리뷰 조회 */}
+      <AddReviewBtn />
     </>
   );
 };

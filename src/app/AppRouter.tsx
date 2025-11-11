@@ -98,8 +98,8 @@ const router = createBrowserRouter([
     element: <PlayroomPage />,
     children: [
       {
-        path: "review-create-page",
-        element: <ReviewCreatePage />,
+        // path: "review-create-page",
+        // element: <ReviewCreatePage />,
       },
 
       {
@@ -144,6 +144,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+  { path: "review-create-page", element: <ReviewCreatePage /> },
 ]);
 
 export function AppRouter() {
