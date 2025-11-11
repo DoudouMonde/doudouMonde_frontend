@@ -1,3 +1,4 @@
-export { default as ReviewAddIcon } from "./ReviewAddIcon";
+export { default as ReviewAddIcon} from "./ReviewAddIcon"
+export { default as NeedFriendDoudou } from "./NeedFriendDoudou";
 export { default as PlayroomLogo1 } from "./PlayroomLogo1";
 export { default as Shadow } from "./Shadow";

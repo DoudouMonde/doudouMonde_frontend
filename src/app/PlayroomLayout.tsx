@@ -32,7 +32,7 @@ export function PlayroomLayout({ children }: { children: React.ReactNode }) {
         </div>
       </div>
 
-      <main className="px-6 pb-[72px] w-full relative z-10 overflow-y-auto min-h-screen">
+      <main className="pb-6 pt-[60px] pb-[72px] w-full relative z-10 overflow-y-auto min-h-screen">
         {children}
         
       </main>
