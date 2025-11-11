@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { PerformanceItem } from "@/domains/performance/types";
-import { Genre } from "@/shared/types";
+import { Genre } from "@/entities/types";
 import { getGenreLabel, getSidoLabel } from "@/shared/services";
 
 interface AutoCarouselProps {

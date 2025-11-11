@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { performanceApi } from "../apis/performanceApi";
 import { queryKeys } from "@/shared/apis/queryKeys";
-import { Trait } from "@/shared/types";
+import { Trait } from "@/entities/types";
 
 export const usePerformancesByTraitQuery = (
   trait: Trait | null,

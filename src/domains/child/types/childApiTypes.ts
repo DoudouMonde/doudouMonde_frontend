@@ -1,5 +1,5 @@
 import { ChildEntity, PickChildEntityKeys } from "@/entities";
-import { Gender, Profile } from "@/shared/types";
+import { Gender, Profile } from "@/entities/types";
 import { z } from "zod";
 
 //공통 베이스 타입

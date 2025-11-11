@@ -1,4 +1,4 @@
-import { CharacterEmotion, CharacterAccessory, CharacterAnimal } from "@/shared/types";
+import { CharacterEmotion, CharacterAccessory, CharacterAnimal } from "@/entities/types";
 
 export type ReviewItem = {
   id: number;

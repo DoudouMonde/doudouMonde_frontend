@@ -1,6 +1,6 @@
 import { Dayjs } from "dayjs";
 import { z } from "zod";
-import { Genre } from "@/shared/types";
+import { Genre } from "@/entities/types";
 
 // Performance entity (DB의 performance 테이블과 매핑)
 export const PerformanceEntity = z.object({

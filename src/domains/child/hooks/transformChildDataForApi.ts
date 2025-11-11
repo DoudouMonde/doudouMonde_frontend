@@ -1,5 +1,5 @@
 import { ChildFormValues } from "../types/childForm";
-import { Gender, Profile } from "@/shared/types";
+import { Gender, Profile } from "@/entities/types";
 
 export const transformChildDataForApi = (data: ChildFormValues) => {
   return {

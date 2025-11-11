@@ -5,7 +5,7 @@ import { PATH } from "@/shared/constants";
 // ❌ 네트워크 호출 훅 : 오프라인 작업을 위해 주석 처리
 // import { useWishlistQuery } from "@/domains/favorites/queries/useWishlistQuery";
 import { getSidoLabel } from "@/shared/services";
-import { Sido } from "@/shared/types";
+import { Sido } from "@/entities/types";
 import { Back, Arrow } from "@/assets/icons";
 import { SearchPerformanceForSelection } from "../SelectPerformancePage/SearchPerformanceForSelection";
 import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";

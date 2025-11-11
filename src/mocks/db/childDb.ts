@@ -1,4 +1,4 @@
-import { Gender, Profile } from "@/shared/types";
+import { Gender, Profile } from "@/entities/types";
 import {
   // ChildItemResponse,
   PostChildRegistrationRequest,

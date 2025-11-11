@@ -1,5 +1,5 @@
 import { neverExpected } from "@/shared/utils";
-import { Sido } from "../types";
+import { Sido } from "@/entities/types/sido";
 
 export const getSidoLabel = (sido: Sido) => {
   switch (sido) {

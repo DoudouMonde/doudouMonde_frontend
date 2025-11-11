@@ -6,7 +6,7 @@ import {
   NearbyFacilityResponse,
 } from "@/domains/performance/types";
 import { apiRequester } from "@/shared/apis/axiosInstance";
-import { Genre, Sido, Trait } from "@/shared/types";
+import { Genre, Sido, Trait } from "@/entities/types";
 
 export const performanceApi = {
   getPerformanceDetail: async (performanceId: number) => {

@@ -15,7 +15,7 @@ import { SearchPerformancesInput } from "@/shared/components";
 import { AutoCarousel } from "@/shared/components/AutoCarousel";
 import { PATH } from "@/shared/constants/paths";
 import { getGenreLabel, getSidoLabel } from "@/shared/services";
-import { Gender, Genre, Profile, Sido, Trait } from "@/shared/types";
+import { Gender, Genre, Profile, Sido, Trait } from "@/entities/types";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 

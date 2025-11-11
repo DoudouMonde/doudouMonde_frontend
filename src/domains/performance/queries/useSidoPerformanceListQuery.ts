@@ -5,7 +5,7 @@ import {
   PerformanceListResponse,
 } from "@/domains/performance/apis";
 import { queryKeys } from "@/shared/apis";
-import { Sido } from "@/shared/types";
+import { Sido } from "@/entities/types";
 
 export function useSidoPerformanceListQuery(
   sido: Sido,

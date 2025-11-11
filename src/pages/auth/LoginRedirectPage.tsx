@@ -1,6 +1,6 @@
 import { apiRequesterWithoutAuth } from "@/shared/apis";
 import { PATH } from "@/shared/constants";
-import { Role } from "@/shared/types";
+import { Role } from "@/entities/types";
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 

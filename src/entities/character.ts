@@ -2,7 +2,7 @@ import {
   CharacterAnimal,
   CharacterAccessory,
   CharacterEmotion,
-} from "@/shared/types";
+} from "@/entities/types";
 
 import { z } from "zod";
 

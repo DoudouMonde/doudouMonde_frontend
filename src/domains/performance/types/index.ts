@@ -1,4 +1,4 @@
-import { Genre, Sido } from "@/shared/types";
+import { Genre, Sido } from "@/entities/types";
 
 // 공연 데이터 타입
 export type PerformanceItem = {

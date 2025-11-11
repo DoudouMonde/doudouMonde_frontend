@@ -5,7 +5,7 @@ import {
   PerformanceListResponse,
 } from "@/domains/performance/apis";
 import { queryKeys } from "@/shared/apis";
-import { Genre } from "@/shared/types";
+import { Genre } from "@/entities/types";
 
 export function useGenrePerformanceListQuery(
   genre: Genre,

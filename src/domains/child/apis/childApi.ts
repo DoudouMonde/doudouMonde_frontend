@@ -7,7 +7,7 @@ import {
 } from "@/domains/child/types/childApiTypes";
 
 import { apiRequester } from "@/shared/apis/axiosInstance";
-import { Profile } from "@/shared/types";
+import { Profile } from "@/entities/types";
 
 export const childApi = {
   postChildRegistration: async (data: PostChildRegistrationRequest) => {

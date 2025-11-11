@@ -1,4 +1,4 @@
-import { Gender, Genre, Profile, Sido, Trait } from "@/shared/types";
+import { Gender, Genre, Profile, Sido, Trait } from "@/entities/types";
 
 export type ChildItem = {
   id: number;

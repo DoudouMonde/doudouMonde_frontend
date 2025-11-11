@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { Gender, Profile } from "@/shared/types";
+import { Gender } from "@/entities/types/gender";
+import { Profile } from "@/entities/types/profile";
 import {
   NAME_ALLOWED_REGEX,
   HANGUL_OR_SPACE_ONLY_REGEX,

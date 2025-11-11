@@ -1,5 +1,5 @@
 import { ChildFormValues } from "@/domains/child/example/models";
-import { Gender, Profile } from "@/shared/types";
+import { Gender, Profile } from "@/entities/types";
 
 export const createNewChild = (): ChildFormValues => {
   return {

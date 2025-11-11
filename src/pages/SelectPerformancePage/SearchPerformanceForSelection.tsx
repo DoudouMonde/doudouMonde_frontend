@@ -2,7 +2,7 @@ import { BabyIcon, BearIcon, RestroomIcon } from "@/assets/icons";
 import { useSearchPerformancesQuery } from "@/domains/performance/queries";
 import { SearchInput } from "@/shared/components/SearchInput";
 import { getSidoLabel } from "@/shared/services";
-import { Sido } from "@/shared/types";
+import { Sido } from "@/entities/types";
 import { useEffect, useRef, useState } from "react";
 
 interface SearchPerformanceForSelectionProps {
