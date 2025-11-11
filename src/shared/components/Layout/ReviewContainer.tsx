@@ -57,13 +57,13 @@ export function ReviewContainer({
 
         {children}
 
-        <div className="bottom-0 left-0 pt-4 w-full">
+        {/* <div className="bottom-0 left-0 pt-4 w-full">
           <NavigationButtons
             onPrevious={handlePrevious}
             onNext={handleNext}
             isNextDisabled={isNextDisabled}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

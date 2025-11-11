@@ -116,7 +116,7 @@ export const ReviewFunnelPage = () => {
                   next();
                 }}
                 nextText={nextText}
-                isNextDisabled={!canProceed}
+                // isNextDisabled={!canProceed}
                 className="mt-4"
               />
             </PlayroomLayout>

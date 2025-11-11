@@ -1,5 +1,5 @@
 // domains/review/components/PerformanceSelect.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getSidoLabel } from "@/shared/services";
 import { Sido } from "@/entities/types";
 import { Back, Arrow } from "@/assets/icons";
@@ -93,9 +93,9 @@ export function PerformanceSelect({
   const useList = wishlist ?? MOCK_WISHLIST;
 
   // 선택이 없으면 false 보장(처음 렌더 시 한 번 내려도 OK)
-  useEffect(() => {
-    if (!selected) onValidityChange?.(false);
-  }, [selected, onValidityChange]);
+  // useEffect(() => {
+  //   if (!selected) onValidityChange?.(false);
+  // }, [selected, onValidityChange]);
 
   const uniquePerformances =
     useList.reduce((acc, item) => {
