@@ -28,11 +28,11 @@ const router = createBrowserRouter([
     element: <IndexPage />,
   },
   {
-    path: "/login",
+    path: PATH.LOGIN,
     element: <LoginPage />,
   },
   {
-    path: "/region-registration",
+    path: PATH.REGION_REGISTRATION,
     element: <RegionRegistrationPage />,
   },
   {
@@ -44,10 +44,10 @@ const router = createBrowserRouter([
     element: <ChildRegistrationPage />,
   },
   /**예시페이지 필요없으면 삭제 */
-  {
-    path: "/child-registration/example",
-    element: <ChildExamplePage />,
-  },
+  // {
+  //   path: "/child-registration/example",
+  //   element: <ChildExamplePage />,
+  // },
   /**예시페이지 끝*/
   {
     path: "/",
@@ -58,19 +58,19 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "favorites",
+        path: PATH.WISHLIST,
         element: <FavoritesPage />,
       },
       {
-        path: "mypage",
+        path: PATH.PROFILE,
         element: <MyPage />,
       },
       {
-        path: "member-info",
+        path: PATH.MEMBER_INFO,
         element: <MemberInfoPage />,
       },
       {
-        path: "child-info",
+        path: PATH.CHILD_INFO,
         element: <ChildInfoPage />,
       },
     ],
@@ -85,14 +85,14 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "/playroom",
+    path: PATH.PLAYROOM,
     element: <PlayroomPage />,
   },
-  { path: "review-start", element: <ReviewStartPage /> },
+  { path: PATH.REVEIW_START, element: <ReviewStartPage /> },
   { path: "review-funnel", element: <ReviewFunnelPage /> },
 
   {
-    path: "reviews",
+    path: PATH.REVIEW_LIST,
     element: <ReviewListPage />,
   },
   {

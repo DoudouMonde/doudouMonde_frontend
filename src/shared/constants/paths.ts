@@ -1,21 +1,15 @@
 export const PATH = {
   HOME: "/home",
   PLAYROOM: "/playroom",
-  SELECT_PERFORMANCE: "/select-performance",
-  CHILD_DATE_SELECTION: "/child-date-selection",
   REVEIW_START: "/review-start",
-  REVIEW_WRITING: "/review-writing",
   REVIEW_FUNNEL: "/review-funnel",
-  VOICE_REVIEW: "/voice-review",
-  CHAR_TYPE: "/character-type-select",
-  CHAR_EMOTION: "/character-emotion-select",
-  CHAR_ACCESSORY: "/character-acc-select",
-  CHAR_PREV: "/character-preview",
   WISHLIST: "/favorites",
   PROFILE: "/mypage",
   MEMBER_INFO: "/member-info",
   CHILD_INFO: "/child-info",
+  REVIEW_LIST: "/reviews",
   STORY_VILLAGE_BOOK: "/story-village-book",
+
   PERFORMANCE_DETAIL: (performanceId: number) =>
     `/performances/${performanceId}` as const,
 
