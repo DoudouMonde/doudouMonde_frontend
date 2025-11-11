@@ -8,13 +8,12 @@ export const useReviewAction = () => {
 
   const addReviewHandler = () => {
     //리뷰 작성 페이지로 이동하기
-    console.log("페이지 이동 클릭");
-    navigate("/playroom/review-create-page");
+    navigate(PATH.REVEIW_START);
   };
 
   //   const { open, closePopup } = useBookPopup(reviewCount, 9);
 
-  const handleStart = () => navigate(PATH.SELECT_PERFORMANCE);
+  const handleStart = () => navigate(PATH.REVIEW_FUNNEL);
   const handleSkip = () => navigate("/playroom/reviews");
   const handlePurchase = () => {
     // closePopup();

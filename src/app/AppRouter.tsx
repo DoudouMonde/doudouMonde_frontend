@@ -25,11 +25,13 @@ import {
   HomePage,
   LoginRedirectPage,
   StoryVillageBookPage,
+  ReviewStartPage,
 } from "@/pages";
 import { BottomNavigationLayout } from "@/app/layout";
 import { PATH } from "@/shared/constants";
 import { ChildExamplePage } from "@/domains/child/example/page/ChildExamplePage";
 import { LandingHero } from "@/domains/playroom/features/landing/LandingHero";
+import { ReviewFunnelPage } from "@/pages/review/ReviewFunnelPage";
 
 const router = createBrowserRouter([
   {
@@ -97,7 +99,8 @@ const router = createBrowserRouter([
     path: "/playroom",
     element: <PlayroomPage />,
   },
-  { path: "review-create-page", element: <ReviewCreatePage /> },
+  { path: "review-start", element: <ReviewStartPage /> },
+  { path: "review-funnel", element: <ReviewFunnelPage /> },
   {
     path: "select-performance",
     element: <SelectPerformancePage />,

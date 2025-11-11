@@ -3,7 +3,7 @@ import { ReviewActionProvider } from "@/domains/review/contexts/ReviewActionProv
 import { PlayroomLayout } from "@/app/PlayroomLayout";
 import { ChildListProvider } from "@/domains/child/contexts/ChildListProvider";
 import { ReviewListProvider } from "@/domains/review/contexts/ReviewListProvider";
-export const ReviewCreatePage = () => {
+export const ReviewStartPage = () => {
   return (
     <>
       <ChildListProvider>
