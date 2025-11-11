@@ -8,14 +8,7 @@ export * from "./FavoritesPage";
 export * from "./MyPage";
 export * from "./member/MemberInfoPage";
 export * from "./child/ChildInfoPage";
-export * from "./character/CharTypeSelectPage";
-export * from "./character/CharEmotionSelectPage";
-export * from "./character/CharAccSelectPage";
-export * from "./character/CharacterPreviewPage";
-export * from "./review/ReviewWritingPage";
-export * from "./review/VoiceReviewPage";
-export * from "./performance/SelectPerformancePage";
-export * from "./review/ChildAndDateSelectionPage";
+
 export * from "./review/ReviewDetailPage";
 export * from "./review/ReviewListPage";
 export * from "./performance/PerformanceDetailPage";

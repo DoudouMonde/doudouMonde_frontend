@@ -1,5 +1,4 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { PlayroomLayout } from "@/app/PlayroomLayout";
 import {
   IndexPage,
   LoginPage,
@@ -11,15 +10,6 @@ import {
   MyPage,
   MemberInfoPage,
   ChildInfoPage,
-  SelectPerformancePage,
-  ChildAndDateSelectionPage,
-  ReviewWritingPage,
-  VoiceReviewPage,
-  ReviewCreatePage,
-  CharTypeSelectPage,
-  CharEmotionSelectPage,
-  CharAccSelectPage,
-  CharacterPreviewPage,
   ReviewDetailPage,
   ReviewListPage,
   HomePage,
@@ -30,7 +20,6 @@ import {
 import { BottomNavigationLayout } from "@/app/layout";
 import { PATH } from "@/shared/constants";
 import { ChildExamplePage } from "@/domains/child/example/page/ChildExamplePage";
-import { LandingHero } from "@/domains/playroom/features/landing/LandingHero";
 import { ReviewFunnelPage } from "@/pages/review/ReviewFunnelPage";
 
 const router = createBrowserRouter([
@@ -101,38 +90,7 @@ const router = createBrowserRouter([
   },
   { path: "review-start", element: <ReviewStartPage /> },
   { path: "review-funnel", element: <ReviewFunnelPage /> },
-  {
-    path: "select-performance",
-    element: <SelectPerformancePage />,
-  },
-  {
-    path: "child-date-selection",
-    element: <ChildAndDateSelectionPage />,
-  },
-  {
-    path: "review-writing",
-    element: <ReviewWritingPage />,
-  },
-  // {
-  //   path: "voice-review",
-  //   element: <VoiceReviewPage />,
-  // },
-  {
-    path: "character-type-select",
-    element: <CharTypeSelectPage />,
-  },
-  {
-    path: "character-emotion-select",
-    element: <CharEmotionSelectPage />,
-  },
-  {
-    path: "character-acc-select",
-    element: <CharAccSelectPage />,
-  },
-  {
-    path: "character-preview",
-    element: <CharacterPreviewPage />,
-  },
+
   {
     path: "reviews",
     element: <ReviewListPage />,
