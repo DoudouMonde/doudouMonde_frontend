@@ -4,7 +4,7 @@ const SvgStorytownTree4 = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
-    viewBox="0 0 357 382"
+    viewBox="0 0 357 302"
     {...props}
   >
     <g filter="url(#storytown_tree_4_svg__a)">

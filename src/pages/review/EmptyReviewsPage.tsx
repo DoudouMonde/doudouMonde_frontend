@@ -6,14 +6,16 @@ import { TitleWithClount } from "@/domains/review/components/TitleWithCount";
 export const EmptyReviewsPage = () => {
   return (
     <>
-    {/* 나무 이미지 삽입 */}
-    <StorytownTree5/>
-       
-      <TitleWithClount />
-      <AddReviewBtn />
-      {/* 두두이미지  */}
-         <NeedFriendDoudou className="w-32"/>
+      {/* 나무 이미지 삽입 */}
+      <StorytownTree5 />
 
+      <TitleWithClount />
+
+      <div className="bg-white flex justify-center items-center py-10 border-t-gray-400 border">
+        {/* 두두이미지  */}
+        <NeedFriendDoudou className="w-48 " />
+      </div>
+      <AddReviewBtn />
     </>
   );
 };
