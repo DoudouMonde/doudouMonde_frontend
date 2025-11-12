@@ -12,11 +12,11 @@ import { useChildListData } from "@/domains/child/hooks/useChildListData";
 
 const USE_MOCK = true;
 
-const { children } = useChildListData();
-
 export const ChildDateSelect: React.FC = () => {
   const [selectedChildren, setSelectedChildren] = useState<number[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+  const { children } = useChildListData();
 
   // 🔌 NETWORK-OFF: 실제 아이 데이터를 API에서 불러오기
   // const { data: childListData, isLoading, error } = useChildListQuery();
