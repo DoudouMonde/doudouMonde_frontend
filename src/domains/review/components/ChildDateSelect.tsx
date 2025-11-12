@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 import Calendar from "@/domains/calendar/components/Calendar";
 import { RadioTrue, RadioFalse } from "@/assets/icons";
-// 🔌 NETWORK-OFF: 백엔드 연결 복구 시 아래 import 주석 해제
-// import { useChildListQuery } from "@/domains/child/queries/useChildListQuery";
+
 import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import { useChildListData } from "@/domains/child/hooks/useChildListData";
-// 🔌 NETWORK-OFF: 로딩 플레이스홀더 사용 안 함
-// import { PlaceholderPage } from "@/shared/components/PlaceholderPage";
 
-const USE_MOCK = true;
+type ChildDateSelectProps = {
+  onChange: (patch: { childrend: string[]; watchDate: Date }) => void;
+  onValidityChange?: (ok: boolean) => void;
+};
 
-export const ChildDateSelect: React.FC = () => {
+export const ChildDateSelect = ({
+  onChange,
+  onValidityChange,
+}: ChildDateSelectProps) => {
   const [selectedChildren, setSelectedChildren] = useState<number[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const { children } = useChildListData();
-
-  // 🔌 NETWORK-OFF: 실제 아이 데이터를 API에서 불러오기
-  // const { data: childListData, isLoading, error } = useChildListQuery();
 
   const handleChildSelect = (childId: number) => {
     setSelectedChildren((prev) =>
@@ -32,32 +32,6 @@ export const ChildDateSelect: React.FC = () => {
     localStorage.setItem("selectedDate", date.toISOString());
     console.log("선택된 날짜:", date);
   };
-
-  // 🔌 NETWORK-OFF: 로딩 상태 처리 주석
-  // if (isLoading) {
-  //   return <PlaceholderPage content="아이 정보를 불러오는 중" />;
-  // }
-
-  // 🔌 NETWORK-OFF: 에러 상태 처리 주석
-  // if (error) {
-  //   return (
-  //     <div className="flex min-h-screen">
-  //       <div className="p-6 w-full bg-gray-200/70 rounded-[40px] mt-20 mb-24">
-  //         <div className="flex justify-center items-center h-64">
-  //           <div className="text-center">
-  //             <p className="mb-4 text-red-500">아이 정보를 불러오는 데 실패했습니다.</p>
-  //             <button
-  //               onClick={() => window.location.reload()}
-  //               className="px-4 py-2 text-white bg-pink-500 rounded-lg transition-colors hover:bg-pink-600"
-  //             >
-  //               다시 시도
-  //             </button>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   // 🔌 NETWORK-OFF: 빈 상태 처리도 목데이터 기준으로만 동작
   if (!children || children.length === 0) {

@@ -6,10 +6,10 @@ type PerformanceSelectProps = {
   onValidityChange?: (ok: boolean) => void;
 };
 
-export function PerformanceSelect({
+export const PerformanceSelect = ({
   onChange,
   onValidityChange,
-}: PerformanceSelectProps) {
+}: PerformanceSelectProps) => {
   const [selectedPerformanceId, setSelectedPerformanceId] = useState<string>();
 
   const handleSelect = (id: number) => {
@@ -29,7 +29,6 @@ export function PerformanceSelect({
         placeholder="공연 이름을 검색하세요."
         onResultClick={handleSelect}
       />
-      <div className="h-6"></div>
     </div>
   );
-}
+};

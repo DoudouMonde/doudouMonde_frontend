@@ -1,5 +1,5 @@
 import { PlayroomLayout } from "@/app/PlayroomLayout";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useFunnel } from "@/shared/hooks/useFunnel";
 import { PerformanceSelect } from "@/domains/review/components/PerformanceSelect";
 import { ChildDateSelect } from "@/domains/review/components/ChildDateSelect";
@@ -47,6 +47,28 @@ export const ReviewFunnelPage = () => {
 
   // 마지막 스텝 문구 바꾸기(선택)
   const nextText = step === "charName" ? "완료" : "다음";
+
+  const stepRefs = {
+    performanceSelect: useRef<PerformanceSelectRef>(null),
+    childDateSelect: useRef<ChildDateSelectRef>(null),
+    photoTextReview: useRef<PhotoTextReviewRef>(null),
+    typeSelect: useRef<TypeSelectRef>(null),
+    emotionSelect: useRef<EmotionSelectRef>(null),
+    accSelect: useRef<AccSelectRef>(null),
+    charName: useRef<CharNameRef>(null),
+  };
+
+  // Next 버튼 클릭 시
+  const handleNext = () => {
+    const currentRef = stepRefs[step];
+    if (currentRef?.current?.getData) {
+      const data = currentRef.current.getData();
+      if (data) {
+        setNewReviewData((prev: any) => ({ ...prev, ...data }));
+      }
+    }
+    next();
+  };
 
   return (
     <>
