@@ -1,9 +1,9 @@
 import { AddReviewBtn } from "@/domains/child/components/AddReviewBtn";
 import { TitleWithClount } from "@/domains/review/components/TitleWithCount";
-import { useReviewListContext } from "@/domains/review/contexts/ReviewListContext";
+import { useReviewList } from "@/domains/review/hooks/useReviewLIst";
 
 export const ReviewLandingPage = () => {
-  const { reviewCount } = useReviewListContext();
+  const { reviewCount } = useReviewList();
 
   return (
     <>

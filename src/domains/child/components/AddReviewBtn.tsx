@@ -1,8 +1,8 @@
 import { ReviewAddIcon } from "@/assets/icons/playroom";
-import { useReviewActionContext } from "@/domains/review/contexts/ReviewActionContext";
+import { useReviewAction } from "@/domains/review/hooks/useReviewActions";
 
 export const AddReviewBtn = () => {
-  const { addReviewHandler } = useReviewActionContext();
+  const { addReviewHandler } = useReviewAction();
 
   return (
     <ReviewAddIcon

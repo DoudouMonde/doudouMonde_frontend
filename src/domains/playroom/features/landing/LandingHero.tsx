@@ -27,17 +27,17 @@ const Trees = [
   StorytownTree8,
   StorytownTree9,
 ];
-import { useReviewListContext } from "@/domains/review/contexts/ReviewListContext";
 // import { useChildListContext } from "@/domains/child/contexts/ChildListContext";
-import { useReviewActionContext } from "@/domains/review/contexts/ReviewActionContext";
 import { useChildListData } from "@/domains/child/hooks/useChildListData";
+import { useReviewList } from "@/domains/review/hooks/useReviewLIst";
+import { useReviewAction } from "@/domains/review/hooks/useReviewActions";
 
 //TODO: 책 구매 팝업 구현
 
 export const LandingHero = () => {
-  const { reviewCount } = useReviewListContext();
+  const { reviewCount } = useReviewList();
   const { children } = useChildListData();
-  const { handleStart, handleSkip } = useReviewActionContext();
+  const { handleStart, handleSkip } = useReviewAction();
   const childNames = "서아"; //구현 필요
   const Tree = Trees[Math.min(reviewCount, 9)];
 
