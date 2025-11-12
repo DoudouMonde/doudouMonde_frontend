@@ -6,17 +6,13 @@ import { RadioTrue, RadioFalse } from "@/assets/icons";
 import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
 import { REVIEW_FLOW } from "@/shared/routes/flow";
+import { useChildListData } from "@/domains/child/hooks/useChildListData";
 // 🔌 NETWORK-OFF: 로딩 플레이스홀더 사용 안 함
 // import { PlaceholderPage } from "@/shared/components/PlaceholderPage";
 
 const USE_MOCK = true;
 
-// 🔧 목데이터
-const defaultMockChildren: ChildItemResponse[] = [
-  { id: 1, name: "아린" } as ChildItemResponse,
-  { id: 2, name: "도윤" } as ChildItemResponse,
-  { id: 3, name: "서아" } as ChildItemResponse,
-];
+const { children } = useChildListData();
 
 export const ChildDateSelect: React.FC = () => {
   const [selectedChildren, setSelectedChildren] = useState<number[]>([]);
@@ -64,12 +60,6 @@ export const ChildDateSelect: React.FC = () => {
   //     </div>
   //   );
   // }
-
-  // 🔌 NETWORK-OFF: API 데이터 대신 목데이터 사용
-  const children: ChildItemResponse[] = USE_MOCK
-    ? defaultMockChildren
-    : // : (childListData?.contents || []); // ← 백엔드 복구 시 주석 해제
-      [];
 
   // 🔌 NETWORK-OFF: 빈 상태 처리도 목데이터 기준으로만 동작
   if (!children || children.length === 0) {

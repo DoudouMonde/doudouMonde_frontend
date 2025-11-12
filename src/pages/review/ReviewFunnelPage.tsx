@@ -42,87 +42,85 @@ export const ReviewFunnelPage = () => {
 
   return (
     <>
-      <ChildListProvider>
-        <ReviewListProvider>
-          <ReviewActionProvider>
-            <PlayroomLayout>
-              <Funnel>
-                <Funnel.Step name="performanceSelect">
-                  <PerformanceSelect
-                    data={newReviewData}
-                    onChange={(patch) =>
-                      setNewReviewData((prev: any) => ({ ...prev, ...patch }))
-                    }
-                    onValidityChange={(ok) => setCanProceed(ok)}
-                  />
-                </Funnel.Step>
-                <Funnel.Step name="childDateSelect">
-                  <ChildDateSelect
-                    data={newReviewData}
-                    onChange={(patch) =>
-                      setNewReviewData((prev: any) => ({ ...prev, ...patch }))
-                    }
-                    onValidityChange={(ok) => setCanProceed(ok)}
-                  />
-                </Funnel.Step>
-                <Funnel.Step name="photoTextReview">
-                  <PhototextReview
-                    data={newReviewData}
-                    onChange={(patch) =>
-                      setNewReviewData((prev: any) => ({ ...prev, ...patch }))
-                    }
-                    onValidityChange={(ok) => setCanProceed(ok)}
-                  />
-                </Funnel.Step>
-                <Funnel.Step name="typeSelect">
-                  <TypeSelect
-                    data={newReviewData}
-                    onChange={(patch) =>
-                      setNewReviewData((prev: any) => ({ ...prev, ...patch }))
-                    }
-                    onValidityChange={(ok) => setCanProceed(ok)}
-                  />
-                </Funnel.Step>
-                <Funnel.Step name="emotionSelect">
-                  <EmotionSelect
-                    data={newReviewData}
-                    onChange={(patch) =>
-                      setNewReviewData((prev: any) => ({ ...prev, ...patch }))
-                    }
-                    onValidityChange={(ok) => setCanProceed(ok)}
-                  />
-                </Funnel.Step>
-                <Funnel.Step name="accSelect">
-                  <AccSelect
-                    data={newReviewData}
-                    onChange={(patch) =>
-                      setNewReviewData((prev: any) => ({ ...prev, ...patch }))
-                    }
-                    onValidityChange={(ok) => setCanProceed(ok)}
-                  />
-                </Funnel.Step>
-                <Funnel.Step name="charName">
-                  <CharName data={newReviewData} />
-                </Funnel.Step>
-              </Funnel>
-              <NavigationButtons
-                onPrevious={prev}
-                onNext={() => {
-                  if (step === "charName") {
-                    // 마지막 스텝 처리(예: 제출)
-                    // submitReview(newReviewData)
-                    return;
+      <ReviewListProvider>
+        <ReviewActionProvider>
+          <PlayroomLayout>
+            <Funnel>
+              <Funnel.Step name="performanceSelect">
+                <PerformanceSelect
+                  data={newReviewData}
+                  onChange={(patch) =>
+                    setNewReviewData((prev: any) => ({ ...prev, ...patch }))
                   }
-                  next();
-                }}
-                nextText={nextText}
-                // isNextDisabled={!canProceed}
-                className="mt-4"
-              />
-            </PlayroomLayout>
-          </ReviewActionProvider>
-        </ReviewListProvider>
-      </ChildListProvider>
+                  onValidityChange={(ok) => setCanProceed(ok)}
+                />
+              </Funnel.Step>
+              <Funnel.Step name="childDateSelect">
+                <ChildDateSelect
+                  data={newReviewData}
+                  onChange={(patch) =>
+                    setNewReviewData((prev: any) => ({ ...prev, ...patch }))
+                  }
+                  onValidityChange={(ok) => setCanProceed(ok)}
+                />
+              </Funnel.Step>
+              <Funnel.Step name="photoTextReview">
+                <PhototextReview
+                  data={newReviewData}
+                  onChange={(patch) =>
+                    setNewReviewData((prev: any) => ({ ...prev, ...patch }))
+                  }
+                  onValidityChange={(ok) => setCanProceed(ok)}
+                />
+              </Funnel.Step>
+              <Funnel.Step name="typeSelect">
+                <TypeSelect
+                  data={newReviewData}
+                  onChange={(patch) =>
+                    setNewReviewData((prev: any) => ({ ...prev, ...patch }))
+                  }
+                  onValidityChange={(ok) => setCanProceed(ok)}
+                />
+              </Funnel.Step>
+              <Funnel.Step name="emotionSelect">
+                <EmotionSelect
+                  data={newReviewData}
+                  onChange={(patch) =>
+                    setNewReviewData((prev: any) => ({ ...prev, ...patch }))
+                  }
+                  onValidityChange={(ok) => setCanProceed(ok)}
+                />
+              </Funnel.Step>
+              <Funnel.Step name="accSelect">
+                <AccSelect
+                  data={newReviewData}
+                  onChange={(patch) =>
+                    setNewReviewData((prev: any) => ({ ...prev, ...patch }))
+                  }
+                  onValidityChange={(ok) => setCanProceed(ok)}
+                />
+              </Funnel.Step>
+              <Funnel.Step name="charName">
+                <CharName data={newReviewData} />
+              </Funnel.Step>
+            </Funnel>
+            <NavigationButtons
+              onPrevious={prev}
+              onNext={() => {
+                if (step === "charName") {
+                  // 마지막 스텝 처리(예: 제출)
+                  // submitReview(newReviewData)
+                  return;
+                }
+                next();
+              }}
+              nextText={nextText}
+              // isNextDisabled={!canProceed}
+              className="mt-4"
+            />
+          </PlayroomLayout>
+        </ReviewActionProvider>
+      </ReviewListProvider>
     </>
   );
 };
