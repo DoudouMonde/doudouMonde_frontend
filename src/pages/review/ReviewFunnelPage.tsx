@@ -55,7 +55,6 @@ export const ReviewFunnelPage = () => {
           <Funnel>
             <Funnel.Step name="performanceSelect">
               <PerformanceSelect
-                data={newReviewData}
                 onChange={(patch) =>
                   setNewReviewData((prev: any) => ({ ...prev, ...patch }))
                 }
@@ -64,7 +63,6 @@ export const ReviewFunnelPage = () => {
             </Funnel.Step>
             <Funnel.Step name="childDateSelect">
               <ChildDateSelect
-                data={newReviewData}
                 onChange={(patch) =>
                   setNewReviewData((prev: any) => ({ ...prev, ...patch }))
                 }
