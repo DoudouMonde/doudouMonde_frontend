@@ -8,7 +8,7 @@ type ReviewContainerProps = {
 export function ReviewContainer({ children, title }: ReviewContainerProps) {
   return (
     <div className="flex ">
-      <div className=" p-6 w-full bg-gray-200/70 rounded-[40px] m-6">
+      <div className=" p-6 w-full bg-white rounded-[40px] m-6">
         <h2 className="title-inter">{title}</h2>
 
         {children}
