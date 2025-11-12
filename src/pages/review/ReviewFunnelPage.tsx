@@ -9,6 +9,7 @@ import { EmotionSelect } from "@/domains/review/components/EmotionSelect";
 import { AccSelect } from "@/domains/review/components/AccSelect";
 import { CharName } from "@/domains/review/components/CharName";
 import { NavigationButtons } from "@/shared/components";
+import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
 
 const STEPS = [
   "performanceSelect",
@@ -19,6 +20,16 @@ const STEPS = [
   "accSelect",
   "charName",
 ] as const;
+
+const STEP_TITLES: Record<Step, string> = {
+  performanceSelect: "공연 선택",
+  childDateSelect: "아이 선택",
+  photoTextReview: "후기 입력",
+  typeSelect: "상상친구 만들기",
+  emotionSelect: "상상친구 만들기",
+  accSelect: "상상친구 만들기",
+  charName: "상상친구 완성!",
+};
 
 type Step = (typeof STEPS)[number];
 
@@ -40,65 +51,67 @@ export const ReviewFunnelPage = () => {
   return (
     <>
       <PlayroomLayout>
-        <Funnel>
-          <Funnel.Step name="performanceSelect">
-            <PerformanceSelect
-              data={newReviewData}
-              onChange={(patch) =>
-                setNewReviewData((prev: any) => ({ ...prev, ...patch }))
-              }
-              onValidityChange={(ok) => setCanProceed(ok)}
-            />
-          </Funnel.Step>
-          <Funnel.Step name="childDateSelect">
-            <ChildDateSelect
-              data={newReviewData}
-              onChange={(patch) =>
-                setNewReviewData((prev: any) => ({ ...prev, ...patch }))
-              }
-              onValidityChange={(ok) => setCanProceed(ok)}
-            />
-          </Funnel.Step>
-          <Funnel.Step name="photoTextReview">
-            <PhototextReview
-              data={newReviewData}
-              onChange={(patch) =>
-                setNewReviewData((prev: any) => ({ ...prev, ...patch }))
-              }
-              onValidityChange={(ok) => setCanProceed(ok)}
-            />
-          </Funnel.Step>
-          <Funnel.Step name="typeSelect">
-            <TypeSelect
-              data={newReviewData}
-              onChange={(patch) =>
-                setNewReviewData((prev: any) => ({ ...prev, ...patch }))
-              }
-              onValidityChange={(ok) => setCanProceed(ok)}
-            />
-          </Funnel.Step>
-          <Funnel.Step name="emotionSelect">
-            <EmotionSelect
-              data={newReviewData}
-              onChange={(patch) =>
-                setNewReviewData((prev: any) => ({ ...prev, ...patch }))
-              }
-              onValidityChange={(ok) => setCanProceed(ok)}
-            />
-          </Funnel.Step>
-          <Funnel.Step name="accSelect">
-            <AccSelect
-              data={newReviewData}
-              onChange={(patch) =>
-                setNewReviewData((prev: any) => ({ ...prev, ...patch }))
-              }
-              onValidityChange={(ok) => setCanProceed(ok)}
-            />
-          </Funnel.Step>
-          <Funnel.Step name="charName">
-            <CharName data={newReviewData} />
-          </Funnel.Step>
-        </Funnel>
+        <ReviewContainer title={STEP_TITLES[step]}>
+          <Funnel>
+            <Funnel.Step name="performanceSelect">
+              <PerformanceSelect
+                data={newReviewData}
+                onChange={(patch) =>
+                  setNewReviewData((prev: any) => ({ ...prev, ...patch }))
+                }
+                onValidityChange={(ok) => setCanProceed(ok)}
+              />
+            </Funnel.Step>
+            <Funnel.Step name="childDateSelect">
+              <ChildDateSelect
+                data={newReviewData}
+                onChange={(patch) =>
+                  setNewReviewData((prev: any) => ({ ...prev, ...patch }))
+                }
+                onValidityChange={(ok) => setCanProceed(ok)}
+              />
+            </Funnel.Step>
+            <Funnel.Step name="photoTextReview">
+              <PhototextReview
+                data={newReviewData}
+                onChange={(patch) =>
+                  setNewReviewData((prev: any) => ({ ...prev, ...patch }))
+                }
+                onValidityChange={(ok) => setCanProceed(ok)}
+              />
+            </Funnel.Step>
+            <Funnel.Step name="typeSelect">
+              <TypeSelect
+                data={newReviewData}
+                onChange={(patch) =>
+                  setNewReviewData((prev: any) => ({ ...prev, ...patch }))
+                }
+                onValidityChange={(ok) => setCanProceed(ok)}
+              />
+            </Funnel.Step>
+            <Funnel.Step name="emotionSelect">
+              <EmotionSelect
+                data={newReviewData}
+                onChange={(patch) =>
+                  setNewReviewData((prev: any) => ({ ...prev, ...patch }))
+                }
+                onValidityChange={(ok) => setCanProceed(ok)}
+              />
+            </Funnel.Step>
+            <Funnel.Step name="accSelect">
+              <AccSelect
+                data={newReviewData}
+                onChange={(patch) =>
+                  setNewReviewData((prev: any) => ({ ...prev, ...patch }))
+                }
+                onValidityChange={(ok) => setCanProceed(ok)}
+              />
+            </Funnel.Step>
+            <Funnel.Step name="charName">
+              <CharName data={newReviewData} />
+            </Funnel.Step>
+          </Funnel>
+        </ReviewContainer>
         <NavigationButtons
           onPrevious={prev}
           onNext={() => {

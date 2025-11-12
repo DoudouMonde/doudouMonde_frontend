@@ -4,8 +4,6 @@ import { RadioTrue, RadioFalse } from "@/assets/icons";
 // 🔌 NETWORK-OFF: 백엔드 연결 복구 시 아래 import 주석 해제
 // import { useChildListQuery } from "@/domains/child/queries/useChildListQuery";
 import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
-import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
-import { REVIEW_FLOW } from "@/shared/routes/flow";
 import { useChildListData } from "@/domains/child/hooks/useChildListData";
 // 🔌 NETWORK-OFF: 로딩 플레이스홀더 사용 안 함
 // import { PlaceholderPage } from "@/shared/components/PlaceholderPage";
@@ -78,7 +76,7 @@ export const ChildDateSelect: React.FC = () => {
   }
 
   return (
-    <ReviewContainer title="아이 선택" flow={REVIEW_FLOW}>
+    <div>
       {/* 아이 선택 섹션 */}
       <article>
         <p className="pt-2 pb-5 text-primary-100 subtitle-b">
@@ -113,6 +111,6 @@ export const ChildDateSelect: React.FC = () => {
           <Calendar onDateChange={handleDateChange} />
         </div>
       </article>
-    </ReviewContainer>
+    </div>
   );
 };

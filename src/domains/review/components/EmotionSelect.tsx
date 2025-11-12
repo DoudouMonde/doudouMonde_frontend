@@ -1,7 +1,5 @@
 import React from "react";
-import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
 import { Desc } from "@/domains/playroom/components/Desc";
-import { REVIEW_FLOW } from "@/shared/routes/flow";
 import { EmotionId } from "@/domains/playroom/constants/animals";
 
 import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
@@ -38,11 +36,7 @@ export const EmotionSelect: React.FC = () => {
   };
 
   return (
-    <ReviewContainer
-      title="상상친구 만들기"
-      flow={REVIEW_FLOW}
-      onNext={handleNext}
-    >
+    <div>
       <Desc
         content={
           <>
@@ -86,6 +80,6 @@ export const EmotionSelect: React.FC = () => {
           })}
         </div>
       </SingleSelectGroup>
-    </ReviewContainer>
+    </div>
   );
 };

@@ -157,7 +157,8 @@ export function PerformanceSelect({
   };
 
   return (
-    <div className="p-6 w-full bg-gray-200/70 rounded-[40px] mt-4 mb-8">
+    <div>
+      {/* <div className="p-6 w-full bg-gray-200/70 rounded-[40px] mt-4 mb-8"> */}
       {/* 선택된 공연 안내 */}
       <div>
         {selectedPerformance ? (

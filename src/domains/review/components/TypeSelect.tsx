@@ -1,5 +1,4 @@
 import React from "react";
-import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
 import { animals } from "@/domains/playroom/constants/animals";
 import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
 import { AnimalId } from "@/domains/playroom/constants/animals";
@@ -7,7 +6,6 @@ import {
   SingleSelectGroup,
   SingleSelectItem,
 } from "@/shared/components/SingleSelect";
-import { REVIEW_FLOW } from "@/shared/routes/flow";
 import { Desc } from "@/domains/playroom/components/Desc";
 import { AnimalOption } from "@/domains/playroom/components/AnimalOption";
 import { useCharaterFlowState } from "@/domains/playroom/hooks/useCharacterFlowState";
@@ -37,11 +35,7 @@ export const TypeSelect: React.FC = () => {
   };
 
   return (
-    <ReviewContainer
-      title="상상친구 만들기"
-      flow={REVIEW_FLOW}
-      onNext={handleNext}
-    >
+    <div>
       <Desc
         content={
           <>
@@ -93,6 +87,6 @@ export const TypeSelect: React.FC = () => {
           })}
         </div>
       </SingleSelectGroup>
-    </ReviewContainer>
+    </div>
   );
 };

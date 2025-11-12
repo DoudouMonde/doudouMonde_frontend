@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useCharaterFlowState } from "@/domains/playroom/hooks/useCharacterFlowState";
 import { accessories } from "@/domains/playroom/constants/animals";
 import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
-import { REVIEW_FLOW } from "@/shared/routes/flow";
 import { Desc } from "@/domains/playroom/components/Desc";
 import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
 import { useForm } from "react-hook-form";
@@ -64,12 +63,7 @@ export const CharName: React.FC = () => {
   };
 
   return (
-    <ReviewContainer
-      title="상상친구 완성!"
-      flow={REVIEW_FLOW}
-      onNext={handleSubmit(onSubmit)}
-      isNextDisabled={isNextDisabled || !isValid}
-    >
+    <div>
       {/* Header */}
       <Desc
         content={
@@ -115,6 +109,6 @@ export const CharName: React.FC = () => {
           })}
         />
       </section>
-    </ReviewContainer>
+    </div>
   );
 };

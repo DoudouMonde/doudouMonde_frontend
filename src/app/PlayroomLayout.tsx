@@ -25,16 +25,19 @@ export function PlayroomLayout({ children }: { children: React.ReactNode }) {
       {/* 상단 바 */}
       <div className="fixed top-0 right-0 left-0 z-20 px-6 pt-4 pb-2 h-[60px] bg-gray-200/70 shadow">
         <div className="flex justify-between items-center">
-          <button onClick={handleBackClick} className="flex items-center w-10 h-10" aria-label="이전으로 이동">
+          <button
+            onClick={handleBackClick}
+            className="flex items-center w-10 h-10"
+            aria-label="이전으로 이동"
+          >
             <BackIcon className="w-5 h-5 text-gray-700" />
           </button>
           <div className="flex-1"></div>
         </div>
       </div>
 
-      <main className="pb-6 pt-[60px] pb-[72px] w-full relative z-10 overflow-y-auto min-h-screen">
+      <main className="pt-[60px] pb-[72px] w-full relative z-10 overflow-y-auto min-h-screen">
         {children}
-        
       </main>
 
       <div className="relative z-10">

@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import { useReviewStore } from "@/stores/reviewStore";
-import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
 import { ReviewPerformanceInfo } from "@/shared/components/Review/ReviewPerformanceInfo";
 import { PhotoGridUploader } from "@/shared/components/Review/UploadPhoto";
 import { ReviewMemoTextarea } from "@/shared/components/Review/ReviewMemoTextare";
-import { REVIEW_FLOW } from "@/shared/routes/flow";
 
 export const PhototextReview = () => {
   // const navigate = useNavigate();
@@ -60,7 +58,7 @@ export const PhototextReview = () => {
   };
 
   return (
-    <ReviewContainer title="후기 입력" flow={REVIEW_FLOW}>
+    <div>
       {/* 공연명, 관람날짜 */}
       <ReviewPerformanceInfo
         title={selectedPerformance?.title ?? null}
@@ -91,6 +89,6 @@ export const PhototextReview = () => {
         placeholder="오랫동안 추억할 수 있게 간단한 메모를 남겨주세요."
         maxLength={300}
       />
-    </ReviewContainer>
+    </div>
   );
 };

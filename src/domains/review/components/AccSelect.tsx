@@ -1,7 +1,5 @@
 import React from "react";
 import { AccessoryId } from "@/domains/playroom/constants/animals";
-import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
-import { REVIEW_FLOW } from "@/shared/routes/flow";
 import { Desc } from "@/domains/playroom/components/Desc";
 import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
 import { SingleSelectGroup } from "@/shared/components";
@@ -36,11 +34,7 @@ export const AccSelect: React.FC = () => {
   };
 
   return (
-    <ReviewContainer
-      title="상상친구 만들기"
-      flow={REVIEW_FLOW}
-      onNext={handleNext}
-    >
+    <div>
       <Desc
         content={
           <>
@@ -85,6 +79,6 @@ export const AccSelect: React.FC = () => {
           })}
         </div>
       </SingleSelectGroup>
-    </ReviewContainer>
+    </div>
   );
 };
