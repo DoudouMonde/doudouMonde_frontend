@@ -357,33 +357,6 @@ export function PerformanceSelect({
           </div>
         )}
       </div>
-
-      {/* 하단 네비게이션 */}
-      <div className="flex justify-between mt-6">
-        {onPrev ? (
-          <button
-            type="button"
-            onClick={onPrev}
-            className="px-4 py-2 text-gray-700 bg-gray-100 rounded-xl"
-          >
-            이전
-          </button>
-        ) : (
-          <span />
-        )}
-        <button
-          type="button"
-          onClick={() => selectedPerformance && onNext()}
-          disabled={!selectedPerformance}
-          className={`px-5 py-2 rounded-xl font-semibold ${
-            selectedPerformance
-              ? "text-white bg-green-400"
-              : "text-gray-400 bg-gray-200 cursor-not-allowed"
-          }`}
-        >
-          다음
-        </button>
-      </div>
     </div>
   );
 }

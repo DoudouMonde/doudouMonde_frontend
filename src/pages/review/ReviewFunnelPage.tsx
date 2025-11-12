@@ -111,21 +111,22 @@ export const ReviewFunnelPage = () => {
               <CharName data={newReviewData} />
             </Funnel.Step>
           </Funnel>
+
+          <NavigationButtons
+            onPrevious={prev}
+            onNext={() => {
+              if (step === "charName") {
+                // 마지막 스텝 처리(예: 제출)
+                // submitReview(newReviewData)
+                return;
+              }
+              next();
+            }}
+            nextText={nextText}
+            // isNextDisabled={!canProceed}
+            className="mt-4"
+          />
         </ReviewContainer>
-        <NavigationButtons
-          onPrevious={prev}
-          onNext={() => {
-            if (step === "charName") {
-              // 마지막 스텝 처리(예: 제출)
-              // submitReview(newReviewData)
-              return;
-            }
-            next();
-          }}
-          nextText={nextText}
-          // isNextDisabled={!canProceed}
-          className="mt-4"
-        />
       </PlayroomLayout>
     </>
   );
