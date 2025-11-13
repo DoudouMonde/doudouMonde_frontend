@@ -10,6 +10,11 @@ import { AccSelect } from "@/domains/review/components/AccSelect";
 import { CharName } from "@/domains/review/components/CharName";
 import { NavigationButtons } from "@/shared/components";
 import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
+import {
+  CharacterType,
+  CharacterEmotion,
+  CharacterAccessories,
+} from "@/domains/review/types";
 
 const STEPS = [
   "performanceSelect",
@@ -33,9 +38,31 @@ const STEP_TITLES: Record<Step, string> = {
 
 type Step = (typeof STEPS)[number];
 
+type PerformanceSelectData = { performanceId: string };
+type ChildDateSelectData = {
+  childrend: string[];
+  watchDate: string; // Date → string
+};
+
+type PhotoTextReviewData = { reviewText: string };
+type TypeSelectData = { typeOption: CharacterType };
+type EmotionSelectData = { emotionOption: CharacterEmotion };
+type AccSelectData = { accOption: CharacterAccessories };
+type CharNameData = { charName: String };
+
+export type NewReviewData = Partial<
+  PerformanceSelectData &
+    ChildDateSelectData &
+    PhotoTextReviewData &
+    TypeSelectData &
+    EmotionSelectData &
+    AccSelectData &
+    CharNameData
+>;
+
 export const ReviewFunnelPage = () => {
   //여기서 handleStart를 하는 것이 아니라 이 페이지에서 Funnel 구조로 관리해야겠다.
-  const [newReviewData, setNewReviewData] = useState();
+  const [newReviewData, setNewReviewData] = useState<NewReviewData>({});
 
   const [Funnel, setStep, { next, prev, step }] = useFunnel<Step>(
     "performanceSelect",
@@ -55,16 +82,22 @@ export const ReviewFunnelPage = () => {
           <Funnel>
             <Funnel.Step name="performanceSelect">
               <PerformanceSelect
-                onChange={(patch) =>
-                  setNewReviewData((prev: any) => ({ ...prev, ...patch }))
+                onChange={(patch: PerformanceSelectData) =>
+                  setNewReviewData((prev: NewReviewData) => ({
+                    ...prev,
+                    ...patch,
+                  }))
                 }
                 onValidityChange={(ok) => setCanProceed(ok)}
               />
             </Funnel.Step>
             <Funnel.Step name="childDateSelect">
               <ChildDateSelect
-                onChange={(patch) =>
-                  setNewReviewData((prev: any) => ({ ...prev, ...patch }))
+                onChange={(patch: ChildDateSelectData) =>
+                  setNewReviewData((prev: NewReviewData) => ({
+                    ...prev,
+                    ...patch,
+                  }))
                 }
                 onValidityChange={(ok) => setCanProceed(ok)}
               />

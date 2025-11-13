@@ -4,9 +4,10 @@ import { RadioTrue, RadioFalse } from "@/assets/icons";
 
 import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import { useChildListData } from "@/domains/child/hooks/useChildListData";
+import { id } from "zod/locales";
 
 type ChildDateSelectProps = {
-  onChange: (patch: { childrend: string[]; watchDate: Date }) => void;
+  onChange: (patch: { childrend: string[]; watchDate: string }) => void;
   onValidityChange?: (ok: boolean) => void;
 };
 
@@ -20,19 +21,35 @@ export const ChildDateSelect = ({
   const { children } = useChildListData();
 
   const handleChildSelect = (childId: number) => {
-    setSelectedChildren((prev) =>
-      prev.includes(childId)
+    setSelectedChildren((prev) => {
+      const updated = prev.includes(childId)
         ? prev.filter((id) => id !== childId)
-        : [...prev, childId]
-    );
+        : [...prev, childId];
+
+      if (selectedDate) {
+        onChange({
+          childrend: updated.map(String), // number[] → string[]
+          watchDate: selectedDate.toISOString(), // Date → ISO string
+        });
+      }
+
+      onValidityChange?.(updated.length > 0 && !!selectedDate);
+
+      return updated;
+    });
   };
 
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
-    localStorage.setItem("selectedDate", date.toISOString());
-    console.log("선택된 날짜:", date);
-  };
 
+    if (selectedChildren.length > 0) {
+      onChange({
+        childrend: selectedChildren.map(String),
+        watchDate: date.toISOString(), // 문자열로 전달
+      });
+      onValidityChange?.(true);
+    }
+  };
   // 🔌 NETWORK-OFF: 빈 상태 처리도 목데이터 기준으로만 동작
   if (!children || children.length === 0) {
     return (
