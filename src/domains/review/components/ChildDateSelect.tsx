@@ -21,35 +21,31 @@ export const ChildDateSelect = ({
   const { children } = useChildListData();
 
   const handleChildSelect = (childId: number) => {
-    setSelectedChildren((prev) => {
-      const updated = prev.includes(childId)
-        ? prev.filter((id) => id !== childId)
-        : [...prev, childId];
+    const updated = selectedChildren.includes(childId)
+      ? selectedChildren.filter((id) => id !== childId)
+      : [...selectedChildren, childId];
 
-      if (selectedDate) {
-        onChange({
-          childrend: updated.map(String), // number[] → string[]
-          watchDate: selectedDate.toISOString(), // Date → ISO string
-        });
-      }
+    setSelectedChildren(updated);
 
-      onValidityChange?.(updated.length > 0 && !!selectedDate);
-
-      return updated;
+    onChange({
+      childrend: updated.map(String), // number[] → string[]
+      watchDate: selectedDate ? selectedDate.toISOString() : "", // Date → string (없으면 "")
     });
+
+    onValidityChange?.(updated.length > 0 && !!selectedDate);
   };
 
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
 
-    if (selectedChildren.length > 0) {
-      onChange({
-        childrend: selectedChildren.map(String),
-        watchDate: date.toISOString(), // 문자열로 전달
-      });
-      onValidityChange?.(true);
-    }
+    onChange({
+      childrend: selectedChildren.map(String),
+      watchDate: date.toISOString(),
+    });
+
+    onValidityChange?.(selectedChildren.length > 0);
   };
+
   // 🔌 NETWORK-OFF: 빈 상태 처리도 목데이터 기준으로만 동작
   if (!children || children.length === 0) {
     return (

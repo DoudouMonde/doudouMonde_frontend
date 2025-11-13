@@ -1,49 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useReviewStore } from "@/stores/reviewStore";
 import { ReviewPerformanceInfo } from "@/shared/components/Review/ReviewPerformanceInfo";
 import { PhotoGridUploader } from "@/shared/components/Review/UploadPhoto";
 import { ReviewMemoTextarea } from "@/shared/components/Review/ReviewMemoTextare";
 
-export const PhototextReview = () => {
-  // const navigate = useNavigate();
-  const {
-    reviewText,
-    uploadedImages,
-    selectedDate,
-    selectedPerformance,
-    setReviewText,
-    setUploadedImages,
-    setSelectedDate,
-    setSelectedPerformance,
-  } = useReviewStore();
+type PhototextReviewProps = {
+  onChange: (patch: { photo: File; reviewText: String }) => void;
+  onValidityChange?: (ok: boolean) => void;
+};
 
-  // localStorage에서 선택된 날짜, 아이들, 공연 정보 불러오기
-  useEffect(() => {
-    const savedDate = localStorage.getItem("selectedDate");
-    if (savedDate) {
-      const date = new Date(savedDate);
-      setSelectedDate(date.toLocaleDateString("ko-KR"));
-    }
-
-    const savedPerformance = localStorage.getItem("selectedPerformance");
-    if (savedPerformance) {
-      try {
-        const performanceData = JSON.parse(savedPerformance);
-        // SelectPerformancePage에서 저장한 데이터를 reviewStore의 PerformanceData 형태로 변환
-        setSelectedPerformance({
-          id: performanceData.id,
-          title: performanceData.title,
-        });
-        console.log("저장된 공연 데이터:", performanceData);
-        console.log("변환된 공연 데이터:", {
-          id: performanceData.id,
-          title: performanceData.title,
-        });
-      } catch (error) {
-        console.error("공연 데이터 파싱 오류:", error);
-      }
-    }
-  }, [setSelectedDate, setSelectedPerformance]);
+export const PhototextReview = (data, onChange, onValidityChange) => {
+  const [uploadedImages, setUploadedImages] = useState();
+  const [reviewText, setReviewText] = useState();
 
   const handleImageUpload = (index: number, file: File) => {
     const newImages = [...uploadedImages];
@@ -56,6 +24,9 @@ export const PhototextReview = () => {
     newImages[index] = null;
     setUploadedImages(newImages);
   };
+
+  //data에서 선택한 공연, 날짜 불러오기 
+  String selectedPerformance = 
 
   return (
     <div>

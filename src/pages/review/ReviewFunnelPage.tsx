@@ -44,7 +44,10 @@ type ChildDateSelectData = {
   watchDate: string; // Date → string
 };
 
-type PhotoTextReviewData = { reviewText: string };
+type PhotoTextReviewData = {
+  reviewText: string;
+  uploadedImages: (File | null)[];
+};
 type TypeSelectData = { typeOption: CharacterType };
 type EmotionSelectData = { emotionOption: CharacterEmotion };
 type AccSelectData = { accOption: CharacterAccessories };
@@ -105,8 +108,8 @@ export const ReviewFunnelPage = () => {
             <Funnel.Step name="photoTextReview">
               <PhototextReview
                 data={newReviewData}
-                onChange={(patch) =>
-                  setNewReviewData((prev: any) => ({ ...prev, ...patch }))
+                onChange={(patch: PhotoTextReviewData) =>
+                  setNewReviewData((prev) => ({ ...prev, ...patch }))
                 }
                 onValidityChange={(ok) => setCanProceed(ok)}
               />
