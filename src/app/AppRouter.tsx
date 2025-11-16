@@ -19,7 +19,6 @@ import {
 } from "@/pages";
 import { BottomNavigationLayout } from "@/app/layout";
 import { PATH } from "@/shared/constants";
-import { ChildExamplePage } from "@/domains/child/example/page/ChildExamplePage";
 import { ReviewFunnelPage } from "@/pages/review/ReviewFunnelPage";
 
 const router = createBrowserRouter([

@@ -4,7 +4,6 @@ import { RadioTrue, RadioFalse } from "@/assets/icons";
 
 import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import { useChildListData } from "@/domains/child/hooks/useChildListData";
-import { id } from "zod/locales";
 
 type ChildDateSelectProps = {
   onChange: (patch: { childrend: string[]; watchDate: string }) => void;

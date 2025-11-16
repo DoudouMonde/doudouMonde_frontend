@@ -1,5 +1,5 @@
 import { PlayroomLayout } from "@/app/PlayroomLayout";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useFunnel } from "@/shared/hooks/useFunnel";
 import { PerformanceSelect } from "@/domains/review/components/PerformanceSelect";
 import { ChildDateSelect } from "@/domains/review/components/ChildDateSelect";
@@ -38,20 +38,20 @@ const STEP_TITLES: Record<Step, string> = {
 
 type Step = (typeof STEPS)[number];
 
-type PerformanceSelectData = { performanceId: string };
+type PerformanceSelectData = { performanceId: string; performanceName: string };
 type ChildDateSelectData = {
   childrend: string[];
-  watchDate: string; // Date → string
+  watchDate: string;
 };
 
-type PhotoTextReviewData = {
+export type PhotoTextReviewData = {
   reviewText: string;
   uploadedImages: (File | null)[];
 };
 type TypeSelectData = { typeOption: CharacterType };
 type EmotionSelectData = { emotionOption: CharacterEmotion };
 type AccSelectData = { accOption: CharacterAccessories };
-type CharNameData = { charName: String };
+type CharNameData = { charName: string };
 
 export type NewReviewData = Partial<
   PerformanceSelectData &

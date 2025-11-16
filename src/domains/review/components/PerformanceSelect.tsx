@@ -2,7 +2,7 @@ import { SearchPerformancesInput } from "@/shared/components";
 import { useState } from "react";
 
 type PerformanceSelectProps = {
-  onChange: (patch: { performanceId: string }) => void;
+  onChange: (patch: { performanceId: string; performanceName: string }) => void;
   onValidityChange?: (ok: boolean) => void;
 };
 
@@ -10,12 +10,18 @@ export const PerformanceSelect = ({
   onChange,
   onValidityChange,
 }: PerformanceSelectProps) => {
-  const [selectedPerformanceId, setSelectedPerformanceId] = useState<string>();
+  const [selectedPerformanceName, setSelectedPerformanceName] =
+    useState<string>("");
 
   const handleSelect = (id: number) => {
-    const stringId = id.toString();
-    setSelectedPerformanceId(stringId);
-    onChange({ performanceId: stringId });
+    // const stringId = id.toString();
+    const stringId = "1234";
+    setSelectedPerformanceName("목업데이터");
+    onChange({
+      performanceId: stringId,
+      performanceName: selectedPerformanceName,
+    });
+
     onValidityChange?.(!!id);
   };
 

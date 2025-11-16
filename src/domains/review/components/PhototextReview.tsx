@@ -1,17 +1,50 @@
 import React, { useEffect, useState } from "react";
-import { useReviewStore } from "@/stores/reviewStore";
 import { ReviewPerformanceInfo } from "@/shared/components/Review/ReviewPerformanceInfo";
 import { PhotoGridUploader } from "@/shared/components/Review/UploadPhoto";
 import { ReviewMemoTextarea } from "@/shared/components/Review/ReviewMemoTextare";
+import { NewReviewData } from "@/pages/review/ReviewFunnelPage";
 
 type PhototextReviewProps = {
-  onChange: (patch: { photo: File; reviewText: String }) => void;
+  data: NewReviewData;
+  onChange: (patch: {
+    uploadedImages: (File | null)[];
+    reviewText: string;
+  }) => void;
   onValidityChange?: (ok: boolean) => void;
 };
 
-export const PhototextReview = (data, onChange, onValidityChange) => {
-  const [uploadedImages, setUploadedImages] = useState();
-  const [reviewText, setReviewText] = useState();
+export const PhototextReview = ({
+  data,
+  onChange,
+  onValidityChange,
+}: PhototextReviewProps) => {
+  const [uploadedImages, setUploadedImages] = useState<(File | null)[]>(
+    data.uploadedImages ?? [null, null, null, null] // 기본 4칸
+  );
+  const [reviewText, setReviewText] = useState<string>(data.reviewText ?? "");
+  // ✅ data가 바뀌면 (다시 돌아왔을 때 등) 로컬 상태도 동기화
+  useEffect(() => {
+    if (data.uploadedImages) {
+      setUploadedImages(data.uploadedImages);
+    }
+    if (data.reviewText !== undefined) {
+      setReviewText(data.reviewText);
+    }
+  }, [data.uploadedImages, data.reviewText]);
+
+  // ✅ 로컬 상태가 바뀔 때마다 부모에 patch 전달 + 유효성도 함께 올리기
+  useEffect(() => {
+    onChange({
+      reviewText,
+      uploadedImages,
+    });
+
+    if (onValidityChange) {
+      const hasText = reviewText.trim().length > 0;
+      const hasImage = uploadedImages.some((img) => img !== null);
+      onValidityChange(hasText || hasImage); // 예: 텍스트 또는 사진 하나 이상 있으면 OK
+    }
+  }, [reviewText, uploadedImages, onChange, onValidityChange]);
 
   const handleImageUpload = (index: number, file: File) => {
     const newImages = [...uploadedImages];
@@ -25,14 +58,15 @@ export const PhototextReview = (data, onChange, onValidityChange) => {
     setUploadedImages(newImages);
   };
 
-  //data에서 선택한 공연, 날짜 불러오기 
-  String selectedPerformance = 
+  //data에서 선택한 공연, 날짜 불러오기
+  const selectedPerformance = data.performanceName ?? null;
+  const selectedDate = data.watchDate ?? null;
 
   return (
     <div>
       {/* 공연명, 관람날짜 */}
       <ReviewPerformanceInfo
-        title={selectedPerformance?.title ?? null}
+        title={selectedPerformance ?? null}
         date={selectedDate ?? null}
       />
 
