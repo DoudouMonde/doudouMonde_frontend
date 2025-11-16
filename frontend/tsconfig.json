@@ -23,7 +23,8 @@
 
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@doudoumonde/shared": ["../packages/shared/src/index.ts"]
     }
   },
   "include": ["src", "svg.d.ts"]

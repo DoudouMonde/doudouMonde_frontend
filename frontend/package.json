@@ -12,6 +12,7 @@
     "svgr": "npx @svgr/cli -d src/assets/icons --ignore-existing --typescript --no-dimensions public/assets/icons"
   },
   "dependencies": {
+    "@doudoumonde/shared": "workspace:*",
     "@hookform/resolvers": "^5.2.2",
     "@tanstack/react-query": "^5.51.23",
     "@tanstack/react-query-devtools": "^5.51.21",
