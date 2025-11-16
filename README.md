@@ -30,52 +30,52 @@ doudouMonde/
 
 ```bash
 # 루트에서 모든 워크스페이스의 의존성 설치
-npm install
+yarn install
 ```
 
 ### 2. 개발 서버 실행
 
 ```bash
 # 프론트엔드
-npm run dev:frontend
+yarn dev:frontend
 
 # 백엔드
-npm run dev:backend
+yarn dev:backend
 
 # 모바일
-npm run dev:mobile
+yarn dev:mobile
 ```
 
 ### 3. 빌드
 
 ```bash
 # 프론트엔드 빌드
-npm run build:frontend
+yarn build:frontend
 
 # 백엔드 빌드
-npm run build:backend
+yarn build:backend
 ```
 
 ### 4. 테스트
 
 ```bash
 # 모든 워크스페이스 테스트 실행
-npm run test
+yarn test
 
-# 특정 워크스페이스 테스트
-npm run test --workspace=frontend
-npm run test --workspace=backend
-npm run test --workspace=packages/shared
+# 특정 워크스페이스에서 직접 실행
+yarn workspace doudoumonde-frontend test
+yarn workspace doudouMonde_backend test
+yarn workspace @doudoumonde/shared test
 ```
 
 ### 5. 코드 포맷팅
 
 ```bash
 # 모든 파일 포맷팅
-npm run format
+yarn format
 
 # 포맷팅 체크
-npm run format:check
+yarn format:check
 ```
 
 ## 공유 패키지 사용 방법

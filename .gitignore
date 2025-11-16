@@ -2,6 +2,10 @@
 node_modules/
 .pnp
 .pnp.js
+.yarn
+
+# Lock files (yarn 사용)
+package-lock.json
 
 # Build outputs
 dist/
