@@ -34,30 +34,20 @@ const STEP_TITLES: Record<Step, string> = {
 
 type Step = (typeof STEPS)[number];
 
-type PerformanceSelectData = { performanceId: string; performanceName: string };
-type ChildDateSelectData = {
-  children: string[];
-  watchDate: string;
+export type NewReviewData = {
+  performanceId?: number;
+  performanceName?: string; 
+  //아마 childrenId 배열도 필요할 듯(api용)
+  children?: string[];
+  watchDate?: string; 
+  reviewText?: string;
+  uploadedImages?: (File | null)[];
+  typeOption?: CharacterType;
+  emotionOption?: CharacterEmotion;
+  accOption?: CharacterAccessories;
+  charName?: string;
 };
 
-export type PhotoTextReviewData = {
-  reviewText: string;
-  uploadedImages: (File | null)[];
-};
-type TypeSelectData = { typeOption: CharacterType };
-type EmotionSelectData = { emotionOption: CharacterEmotion };
-type AccSelectData = { accOption: CharacterAccessories };
-type CharNameData = { charName: string };
-
-export type NewReviewData = Partial<
-  PerformanceSelectData &
-    ChildDateSelectData &
-    PhotoTextReviewData &
-    TypeSelectData &
-    EmotionSelectData &
-    AccSelectData &
-    CharNameData
->;
 
 export const ReviewFunnelPage = () => {
   //여기서 handleStart를 하는 것이 아니라 이 페이지에서 Funnel 구조로 관리해야겠다.
@@ -78,8 +68,8 @@ export const ReviewFunnelPage = () => {
           <Funnel>
             <Funnel.Step name="performanceSelect">
               <PerformanceSelect
-                onChange={(patch: PerformanceSelectData) =>
-                  setNewReviewData((prev: NewReviewData) => ({
+                onChange={(patch) =>
+                  setNewReviewData((prev) => ({
                     ...prev,
                     ...patch,
                   }))

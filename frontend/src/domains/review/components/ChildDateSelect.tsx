@@ -28,8 +28,7 @@ export const ChildDateSelect = ({
     
     //중복선택
     const exists = selectedChildren.includes(childId);
-
-    // // 토글 로직
+    //토글 로직
     const updated = exists
       ? selectedChildren.filter((id) => id !== childId)
       : [...selectedChildren, childId];
@@ -40,8 +39,6 @@ export const ChildDateSelect = ({
         });
 
         onValidityChange?.(updated.length > 0 && !!selectedDate);
-        
-
   };
 
   const handleDateChange = (date: Date) => {
