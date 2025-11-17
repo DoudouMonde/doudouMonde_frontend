@@ -22,22 +22,15 @@ type TypeSelectProps ={
   onValidityChange?: (ok: boolean) => void;
 }
 
-// AnimalId -> CharacterType 매핑 (예시)
-const animalIdToCharacterType = (id: AnimalId): CharacterType => {
-  switch(id) {
-    case "chick": return CharacterType.CHICK;
-    case "cat": return CharacterType.CAT;
-    case "dino": return CharacterType.DINO;
-    case "rabbit": return CharacterType.RABBIT;
-    case "dog": return CharacterType.DOG;
-    default: return CharacterType.DOG; // 기본값
-  }
+
+const getCharacterType = (id: AnimalId): CharacterType => {
+  return animals.find(a => a.id === id)?.characterType ?? CharacterType.CHICK;
 };
 
 export const TypeSelect = ( {data, onChange, onValidityChange} : TypeSelectProps) => {
 
     const initialAnimal = animals.find(
-      (a) => animalIdToCharacterType(a.id) === data.typeOption
+      (a) => getCharacterType(a.id) === data.typeOption
     )?.id ?? animals[0].id;
 
     const [selectedAnimal, setSelectedAnimal] = React.useState<AnimalId>(initialAnimal);
@@ -46,7 +39,7 @@ export const TypeSelect = ( {data, onChange, onValidityChange} : TypeSelectProps
     const handleSelect = (value: string | number) => {
       const animalId = value as AnimalId ;
       setSelectedAnimal(animalId);
-                onChange({typeOption: animalIdToCharacterType(animalId)});
+                onChange({typeOption: getCharacterType(animalId)});
 
           onValidityChange?.(true);
     }

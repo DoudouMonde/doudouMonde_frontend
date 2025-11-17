@@ -29,6 +29,8 @@ import {
   RoundGlass,
   WizardHat,
 } from "@/assets/icons/playroom/accessories";
+import { CharacterType } from "@/domains/review/types";
+
 
 export type AnimalId = "chick" | "cat" | "dino" | "dog" | "rabbit";
 export type EmotionId =
@@ -51,12 +53,13 @@ export const animals: Array<{
   name: string;
   headIcon: React.ComponentType<{ className?: string }>;
   bodyIcon: React.ComponentType<{ className?: string }>;
+  characterType: CharacterType;
 }> = [
-  { id: "chick", name: "병아리", headIcon: ChickPre, bodyIcon: ChickBody },
-  { id: "cat", name: "고양이", headIcon: CatPre, bodyIcon: CatBody },
-  { id: "dino", name: "공룡", headIcon: DinoPre, bodyIcon: DinoBody },
-  { id: "dog", name: "강아지", headIcon: DogPre, bodyIcon: DogBody },
-  { id: "rabbit", name: "토끼", headIcon: RabbitPre, bodyIcon: RabbitBody },
+  { id: "chick", name: "병아리", headIcon: ChickPre, bodyIcon: ChickBody, characterType: CharacterType.CHICK  },
+  { id: "cat", name: "고양이", headIcon: CatPre, bodyIcon: CatBody, characterType: CharacterType.CAT },
+  { id: "dino", name: "공룡", headIcon: DinoPre, bodyIcon: DinoBody, characterType: CharacterType.DINO },
+  { id: "dog", name: "강아지", headIcon: DogPre, bodyIcon: DogBody, characterType: CharacterType.DOG },
+  { id: "rabbit", name: "토끼", headIcon: RabbitPre, bodyIcon: RabbitBody, characterType:CharacterType.RABBIT },
 ];
 
 export const emotions: Array<{
