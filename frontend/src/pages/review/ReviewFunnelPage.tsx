@@ -13,6 +13,7 @@ import { ReviewContainer } from '@/shared/components/Layout/ReviewContainer';
 import { CharacterType, CharacterEmotion, CharacterAccessories } from '@/domains/review/types';
 import { STEP_FIELDS } from '@/domains/review/utils/stepConfig';
 import { pickStepData } from '@/domains/review/utils/stepConfig';
+import { AccessoryId, AnimalId, EmotionId } from '@/domains/playroom/constants/animals';
 
 const STEPS = [
   'performanceSelect',
@@ -44,9 +45,9 @@ export type NewReviewData = {
   watchDate?: string; 
   reviewText?: string;
   uploadedImages?: (File | null)[];
-  typeOption?: CharacterType;
-  emotionOption?: CharacterEmotion;
-  accOption?: CharacterAccessories;
+  typeOption?: AnimalId; //api 보낼 때는 id -> type으로 변환해서
+  emotionOption?: EmotionId;
+  accOption?: AccessoryId;
   charName?: string;
 };
 

@@ -10,27 +10,23 @@ import { Desc } from "@/domains/playroom/components/Desc";
 import { AnimalOption } from "@/domains/playroom/components/AnimalOption";
 import { STEP_FIELDS, StepField } from "../utils/stepConfig";
 import { NewReviewData } from "@/pages/review/ReviewFunnelPage";
-import { CharacterType } from "../types";
 
 type TypeData = StepField<NewReviewData, typeof STEP_FIELDS.typeSelect>;
 
 type TypeSelectProps ={
   data: TypeData,
   onChange: (patch :{
-    typeOption : CharacterType;
+    typeOption : AnimalId;
   }) => void;
   onValidityChange?: (ok: boolean) => void;
 }
 
 
-const getCharacterType = (id: AnimalId): CharacterType => {
-  return animals.find(a => a.id === id)?.characterType ?? CharacterType.CHICK;
-};
 
 export const TypeSelect = ( {data, onChange, onValidityChange} : TypeSelectProps) => {
 
     const initialAnimal = animals.find(
-      (a) => getCharacterType(a.id) === data.typeOption
+      (a) => (a.id) === data.typeOption
     )?.id ?? animals[0].id;
 
     const [selectedAnimal, setSelectedAnimal] = React.useState<AnimalId>(initialAnimal);
@@ -39,7 +35,7 @@ export const TypeSelect = ( {data, onChange, onValidityChange} : TypeSelectProps
     const handleSelect = (value: string | number) => {
       const animalId = value as AnimalId ;
       setSelectedAnimal(animalId);
-                onChange({typeOption: getCharacterType(animalId)});
+                onChange({typeOption: (animalId)});
 
           onValidityChange?.(true);
     }

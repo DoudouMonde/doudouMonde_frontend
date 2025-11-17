@@ -29,7 +29,8 @@ import {
   RoundGlass,
   WizardHat,
 } from "@/assets/icons/playroom/accessories";
-import { CharacterType } from "@/domains/review/types";
+import { CharacterAccessories, CharacterType } from "@/domains/review/types";
+import { CharacterEmotion } from "@doudoumonde/shared/schemas";
 
 
 export type AnimalId = "chick" | "cat" | "dino" | "dog" | "rabbit";
@@ -66,23 +67,25 @@ export const emotions: Array<{
   id: EmotionId;
   name: string;
   icon: React.ComponentType<{ className?: string }>;
+  characterEmotion : CharacterEmotion,
 }> = [
-  { id: "happy", name: "행복했어요", icon: EmojiHappy },
-  { id: "onemore", name: "또보고싶어요", icon: EmojiOnemore },
-  { id: "surprised", name: "놀랐어요", icon: EmojiSurprised },
-  { id: "sad", name: "슬펐어요", icon: EmojiSad },
-  { id: "bored", name: "지루했어요", icon: EmojiBored },
-  { id: "curious", name: "궁금해요", icon: EmojiCurious },
+  { id: "happy", name: "행복했어요", icon: EmojiHappy, characterEmotion: CharacterEmotion.HAPPY },
+  { id: "onemore", name: "또보고싶어요", icon: EmojiOnemore, characterEmotion: CharacterEmotion.ONEMORE },
+  { id: "surprised", name: "놀랐어요", icon: EmojiSurprised, characterEmotion: CharacterEmotion.SURPRISED },
+  { id: "sad", name: "슬펐어요", icon: EmojiSad , characterEmotion: CharacterEmotion.SAD},
+  { id: "bored", name: "지루했어요", icon: EmojiBored, characterEmotion: CharacterEmotion.BORED },
+  { id: "curious", name: "궁금해요", icon: EmojiCurious, characterEmotion: CharacterEmotion.CURIOUS },
 ];
 export const accessories: Array<{
   id: AccessoryId;
   name: string;
   icon: React.ComponentType<{ className?: string }>;
+  characterAccessories: CharacterAccessories,
 }> = [
-  { id: "crown", name: "왕관", icon: Crwon },
-  { id: "flower", name: "꽃", icon: Flower },
-  { id: "cap", name: "모자", icon: Hat },
-  { id: "ribbon", name: "리본", icon: Ribbon },
-  { id: "glasses", name: "둥근안경", icon: RoundGlass },
-  { id: "wizhat", name: "마법사모자", icon: WizardHat },
+  { id: "crown", name: "왕관", icon: Crwon, characterAccessories: CharacterAccessories.CROWN },
+  { id: "flower", name: "꽃", icon: Flower, characterAccessories: CharacterAccessories.FLOWER },
+  { id: "cap", name: "모자", icon: Hat , characterAccessories: CharacterAccessories.CAP},
+  { id: "ribbon", name: "리본", icon: Ribbon, characterAccessories: CharacterAccessories.RIBBON },
+  { id: "glasses", name: "둥근안경", icon: RoundGlass, characterAccessories: CharacterAccessories.GLASSES },
+  { id: "wizhat", name: "마법사모자", icon: WizardHat, characterAccessories: CharacterAccessories.WIZHAT },
 ];

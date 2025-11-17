@@ -11,50 +11,28 @@ import { RadioTrue, RadioFalse } from "@/assets/icons";
 import { emotions } from "@/domains/playroom/constants/animals";
 import { STEP_FIELDS, StepField } from "../utils/stepConfig";
 import { NewReviewData } from "@/pages/review/ReviewFunnelPage";
-import { CharacterEmotion, CharacterType } from "../types";
 
 type EmotionData = StepField<NewReviewData, typeof STEP_FIELDS.emotionSelect >;
 
 type TypeSelectProps ={
   data: EmotionData,
   onChange: (patch :{
-    emotionOption : CharacterEmotion;
+    emotionOption : EmotionId;
   }) => void;
   onValidityChange?: (ok: boolean) => void;
 }
 
-const emotionIdToCharacterEmotion = (id: EmotionId): CharacterEmotion => {
-  switch(id) {
-    case "happy": return CharacterEmotion.HAPPY;
-    case "onemore": return CharacterEmotion.ONEMORE
-    case "surprised": return CharacterEmotion.SURPRISED;
-    case "sad": return CharacterEmotion.SAD;
-    case "bored": return CharacterEmotion.BORED;
-     case "curious": return CharacterEmotion.CURIOUS;
-    // default: return CharacterType.DOG; // 기본값
-  }
-};
-const characterTypeToAnimalId = (type: CharacterType): AnimalId => {
-  switch (type) {
-    case CharacterType.CHICK: return "chick";
-    case CharacterType.CAT: return "cat";
-    case CharacterType.DINO: return "dino";
-    case CharacterType.RABBIT: return "rabbit";
-    case CharacterType.DOG: return "dog";
-    default: return "chick";
-  }
-};
 
 export const EmotionSelect= ({data, onChange, onValidityChange} : TypeSelectProps) => {
 
       const initialEmotion = emotions.find(
 
-              (a) => emotionIdToCharacterEmotion(a.id) === data.emotionOption
+              (a) => (a.id) === data.emotionOption
          )?.id ?? emotions[0].id;
 
       // const selectedAnimal = data.typeOption ?? CharacterType.CHICK;
-      const selectedAnimal : AnimalId = characterTypeToAnimalId(
-  data.typeOption ?? CharacterType.CHICK
+      const selectedAnimal : AnimalId = (
+  data.typeOption ?? animals[0].id
 );
       const [selectedEmotion, setSelectedEmotion] = React.useState<EmotionId>(initialEmotion);
       const [isAnimating, setIsAnimating] = useState(false);
@@ -62,7 +40,7 @@ export const EmotionSelect= ({data, onChange, onValidityChange} : TypeSelectProp
       const handleSelect = (value: string | number) => {
         const emotionId = value as EmotionId ;
         setSelectedEmotion(emotionId);
-                  onChange({emotionOption: emotionIdToCharacterEmotion(emotionId)});
+                  onChange({emotionOption: (emotionId)});
   
             onValidityChange?.(true);
       }

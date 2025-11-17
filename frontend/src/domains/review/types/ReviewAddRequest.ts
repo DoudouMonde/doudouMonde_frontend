@@ -30,8 +30,8 @@ export enum CharacterEmotion {
 export enum CharacterAccessories {
   CROWN = "CROWN",
   FLOWER = "FLOWER",
-  HAT = "HAT",
+  CAP = "CAP",
   RIBBON = "RIBBON",
-  ROUND_GLASS = "ROUND_GLASS",
-  WIZARD_HAT = "WIZARD_HAT",
+  GLASSES = "GLASSES",
+  WIZHAT = "WIZHAT",
 }
