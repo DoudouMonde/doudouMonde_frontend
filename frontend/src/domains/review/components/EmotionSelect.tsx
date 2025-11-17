@@ -14,7 +14,7 @@ import { NewReviewData } from "@/pages/review/ReviewFunnelPage";
 
 type EmotionData = StepField<NewReviewData, typeof STEP_FIELDS.emotionSelect >;
 
-type TypeSelectProps ={
+type EmotionSelectProps ={
   data: EmotionData,
   onChange: (patch :{
     emotionOption : EmotionId;
@@ -23,7 +23,7 @@ type TypeSelectProps ={
 }
 
 
-export const EmotionSelect= ({data, onChange, onValidityChange} : TypeSelectProps) => {
+export const EmotionSelect= ({data, onChange, onValidityChange} : EmotionSelectProps) => {
 
       const initialEmotion = emotions.find(
 

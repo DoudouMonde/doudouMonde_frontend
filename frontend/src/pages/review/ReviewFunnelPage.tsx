@@ -10,7 +10,6 @@ import { AccSelect } from '@/domains/review/components/AccSelect';
 import { CharName } from '@/domains/review/components/CharName';
 import { NavigationButtons } from '@/shared/components';
 import { ReviewContainer } from '@/shared/components/Layout/ReviewContainer';
-import { CharacterType, CharacterEmotion, CharacterAccessories } from '@/domains/review/types';
 import { STEP_FIELDS } from '@/domains/review/utils/stepConfig';
 import { pickStepData } from '@/domains/review/utils/stepConfig';
 import { AccessoryId, AnimalId, EmotionId } from '@/domains/playroom/constants/animals';
@@ -124,14 +123,15 @@ export const ReviewFunnelPage = () => {
               />
             </Funnel.Step>
             <Funnel.Step name="charName">
-              <CharName data={newReviewData} />
+              <CharName  data={pickStepData(newReviewData, STEP_FIELDS.charName)} 
+              onChange={(patch) => setNewReviewData((prev: any) => ({ ...prev, ...patch }))}/>
             </Funnel.Step>
           </Funnel>
 
           <NavigationButtons
             onPrevious={prev}
             onNext={() => {
-            console.log("📌 현재 저장된 newReviewData:", newReviewData);
+            // console.log("📌 현재 저장된 newReviewData:", newReviewData);
 
               if (step === 'charName') {
                 // 마지막 스텝 처리(예: 제출)
