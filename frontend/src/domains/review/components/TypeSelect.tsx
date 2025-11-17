@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { animals } from "@/domains/playroom/constants/animals";
 import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
 import { AnimalId } from "@/domains/playroom/constants/animals";
@@ -8,7 +8,6 @@ import {
 } from "@/shared/components/SingleSelect";
 import { Desc } from "@/domains/playroom/components/Desc";
 import { AnimalOption } from "@/domains/playroom/components/AnimalOption";
-import { useCharaterFlowState } from "@/domains/playroom/hooks/useCharacterFlowState";
 import { STEP_FIELDS, StepField } from "../utils/stepConfig";
 import { NewReviewData } from "@/pages/review/ReviewFunnelPage";
 import { CharacterType } from "../types";
@@ -42,25 +41,21 @@ export const TypeSelect = ( {data, onChange, onValidityChange} : TypeSelectProps
     )?.id ?? animals[0].id;
 
     const [selectedAnimal, setSelectedAnimal] = React.useState<AnimalId>(initialAnimal);
+    const [isAnimating, setIsAnimating] = useState(false);
 
     const handleSelect = (value: string | number) => {
       const animalId = value as AnimalId ;
-      // animalId: AnimalId
       setSelectedAnimal(animalId);
                 onChange({typeOption: animalIdToCharacterType(animalId)});
 
           onValidityChange?.(true);
     }
 
-    const {
-    // selectedValue: selectedAnimal,
-    // setSelectedValue: setSelectedAnimal,
-    isAnimating,
-  } = useCharaterFlowState<AnimalId>({
-    stepName: "animal",
-    storageKey: "selectedAnimal", //session storage 키 추가
-    initialValue: initialAnimal,
-  });
+    useEffect(() => {
+      setIsAnimating(true);
+      const timer = setTimeout(() => setIsAnimating(false), 600);
+      return () => clearTimeout(timer);
+    }, [initialAnimal]);
 
 
   return (

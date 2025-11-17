@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Desc } from "@/domains/playroom/components/Desc";
-import { EmotionId } from "@/domains/playroom/constants/animals";
+import { AnimalId, animals, EmotionId } from "@/domains/playroom/constants/animals";
 
 import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
 import {
@@ -9,31 +9,69 @@ import {
 } from "@/shared/components/SingleSelect";
 import { RadioTrue, RadioFalse } from "@/assets/icons";
 import { emotions } from "@/domains/playroom/constants/animals";
-import { useCharaterFlowState } from "@/domains/playroom/hooks/useCharacterFlowState";
-import { useNavigate } from "react-router-dom";
-import { PATH } from "@/shared/constants";
+import { STEP_FIELDS, StepField } from "../utils/stepConfig";
+import { NewReviewData } from "@/pages/review/ReviewFunnelPage";
+import { CharacterEmotion, CharacterType } from "../types";
 
-export const EmotionSelect: React.FC = () => {
-  const navigate = useNavigate();
+type EmotionData = StepField<NewReviewData, typeof STEP_FIELDS.emotionSelect >;
 
-  const {
-    selectedAnimal,
-    selectedValue: selectedEmotion,
-    setSelectedValue: setSelectedEmotion,
-    isAnimating,
-  } = useCharaterFlowState<EmotionId>({
-    stepName: "emotion",
-    storageKey: "selectedEmotion",
-    initialValue: emotions[0].id,
-  });
+type TypeSelectProps ={
+  data: EmotionData,
+  onChange: (patch :{
+    emotionOption : CharacterEmotion;
+  }) => void;
+  onValidityChange?: (ok: boolean) => void;
+}
 
-  const handleNext = () => {
-    navigate(PATH.CHAR_ACCESSORY, {
-      state: {
-        emotion: selectedEmotion,
-      },
-    });
-  };
+const emotionIdToCharacterEmotion = (id: EmotionId): CharacterEmotion => {
+  switch(id) {
+    case "happy": return CharacterEmotion.HAPPY;
+    case "onemore": return CharacterEmotion.ONEMORE
+    case "surprised": return CharacterEmotion.SURPRISED;
+    case "sad": return CharacterEmotion.SAD;
+    case "bored": return CharacterEmotion.BORED;
+     case "curious": return CharacterEmotion.CURIOUS;
+    // default: return CharacterType.DOG; // 기본값
+  }
+};
+const characterTypeToAnimalId = (type: CharacterType): AnimalId => {
+  switch (type) {
+    case CharacterType.CHICK: return "chick";
+    case CharacterType.CAT: return "cat";
+    case CharacterType.DINO: return "dino";
+    case CharacterType.RABBIT: return "rabbit";
+    case CharacterType.DOG: return "dog";
+    default: return "chick";
+  }
+};
+
+export const EmotionSelect= ({data, onChange, onValidityChange} : TypeSelectProps) => {
+
+      const initialEmotion = emotions.find(
+
+              (a) => emotionIdToCharacterEmotion(a.id) === data.emotionOption
+         )?.id ?? emotions[0].id;
+
+      // const selectedAnimal = data.typeOption ?? CharacterType.CHICK;
+      const selectedAnimal : AnimalId = characterTypeToAnimalId(
+  data.typeOption ?? CharacterType.CHICK
+);
+      const [selectedEmotion, setSelectedEmotion] = React.useState<EmotionId>(initialEmotion);
+      const [isAnimating, setIsAnimating] = useState(false);
+  
+      const handleSelect = (value: string | number) => {
+        const emotionId = value as EmotionId ;
+        setSelectedEmotion(emotionId);
+                  onChange({emotionOption: emotionIdToCharacterEmotion(emotionId)});
+  
+            onValidityChange?.(true);
+      }
+  
+      useEffect(() => {
+        setIsAnimating(true);
+        const timer = setTimeout(() => setIsAnimating(false), 600);
+        return () => clearTimeout(timer);
+      }, [initialEmotion]);
 
   return (
     <div>
@@ -44,7 +82,6 @@ export const EmotionSelect: React.FC = () => {
           </>
         }
       />
-
       <AnimalPreview
         step="emotion"
         isAnimating={isAnimating}
@@ -55,7 +92,7 @@ export const EmotionSelect: React.FC = () => {
 
       <SingleSelectGroup
         selectedValue={selectedEmotion}
-        onChange={(value) => setSelectedEmotion(value as EmotionId)}
+        onChange={handleSelect}
       >
         <div className="grid grid-cols-3 gap-3 mb-4">
           {emotions.map((emo) => {

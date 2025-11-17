@@ -20,8 +20,8 @@ export enum CharacterType {
 
 export enum CharacterEmotion {
   HAPPY = "HAPPY",
-  EXITED = "EXITED",
-  SURPRISE = "SURPRISE",
+  ONEMORE = "ONEMORE",
+  SURPRISED = "SURPRISED",
   SAD = "SAD",
   BORED = "BORED",
   CURIOUS = "CURIOUS",
