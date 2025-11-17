@@ -11,6 +11,8 @@ import { CharName } from '@/domains/review/components/CharName';
 import { NavigationButtons } from '@/shared/components';
 import { ReviewContainer } from '@/shared/components/Layout/ReviewContainer';
 import { CharacterType, CharacterEmotion, CharacterAccessories } from '@/domains/review/types';
+import { STEP_FIELDS } from '@/domains/review/utils/stepConfig';
+import { pickStepData } from '@/domains/review/utils/stepConfig';
 
 const STEPS = [
   'performanceSelect',
@@ -68,6 +70,7 @@ export const ReviewFunnelPage = () => {
           <Funnel>
             <Funnel.Step name="performanceSelect">
               <PerformanceSelect
+              data={{performanceId: newReviewData.performanceId ?? 0, performanceName: newReviewData.performanceName ?? ""}}
                 onChange={(patch) =>
                   setNewReviewData((prev) => ({
                     ...prev,
@@ -79,10 +82,9 @@ export const ReviewFunnelPage = () => {
             </Funnel.Step>
             <Funnel.Step name="childDateSelect">
               <ChildDateSelect
-                data={{
-                  children: newReviewData.children ?? [],
-                  watchDate : newReviewData.watchDate ?? "",
-                }}
+                data={
+                  pickStepData(newReviewData, STEP_FIELDS.childDateSelect)
+                }
                 onChange={(patch) =>
                   setNewReviewData((prev) => ({
                     ...prev,
@@ -94,8 +96,15 @@ export const ReviewFunnelPage = () => {
             </Funnel.Step>
             <Funnel.Step name="photoTextReview">
               <PhototextReview
-                data={newReviewData}
-                onChange={(patch: PhotoTextReviewData) => setNewReviewData((prev) => ({ ...prev, ...patch }))}
+                data={{
+                  performanceName: newReviewData.performanceName,
+                  children: newReviewData.children,
+                  watchDate: newReviewData.watchDate,
+                  reviewText: newReviewData.reviewText?? "",
+                  uploadedImages: newReviewData.uploadedImages ?? [],
+
+                }}
+                onChange={(patch) => setNewReviewData((prev) => ({ ...prev, ...patch }))}
                 onValidityChange={(ok) => setCanProceed(ok)}
               />
             </Funnel.Step>

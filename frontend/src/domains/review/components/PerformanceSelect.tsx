@@ -2,11 +2,17 @@ import { PerformanceItem } from '@/domains/performance/types';
 import { SearchPerformancesInput } from '@/shared/components';
 
 type PerformanceSelectProps = {
+  data: {
+    performanceId : number;
+    performanceName : string;
+  }
   onChange: (patch: { performanceId: number; performanceName: string }) => void;
   onValidityChange?: (ok: boolean) => void;
 };
 
-export const PerformanceSelect = ({ onChange, onValidityChange }: PerformanceSelectProps) => {
+export const PerformanceSelect = ({ data, onChange, onValidityChange }: PerformanceSelectProps) => {
+
+  //data 활용해서 넣는 건 검색 구현하고 나서...
 
   const handleSelect = (performance: PerformanceItem) => {
     onChange({
@@ -14,7 +20,7 @@ export const PerformanceSelect = ({ onChange, onValidityChange }: PerformanceSel
       performanceName: performance.performanceName,
     });
 
-    onValidityChange?.(!!id);
+    onValidityChange?.(!!performance);
   };
 
   return (

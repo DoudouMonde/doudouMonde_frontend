@@ -5,7 +5,14 @@ import { ReviewMemoTextarea } from "@/shared/components/Review/ReviewMemoTextare
 import { NewReviewData } from "@/pages/review/ReviewFunnelPage";
 
 type PhototextReviewProps = {
-  data: NewReviewData;
+  data: {
+                      performanceName: string,
+                  children: string[],
+                  watchDate: string,
+                  reviewText: string,
+                  uploadedImages: File[],
+
+  }
   onChange: (patch: {
     uploadedImages: (File | null)[];
     reviewText: string;
@@ -17,7 +24,7 @@ export const PhototextReview = ({
   data,
   onChange,
   onValidityChange,
-}: PhototextReviewProps) => {
+}:PhototextReviewProps ) => {
   const [uploadedImages, setUploadedImages] = useState<(File | null)[]>(
     data.uploadedImages ?? [null, null, null, null] // 기본 4칸
   );

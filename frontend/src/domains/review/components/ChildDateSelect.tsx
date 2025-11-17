@@ -3,12 +3,13 @@ import Calendar from "@/domains/calendar/components/Calendar";
 import { RadioTrue, RadioFalse } from "@/assets/icons";
 import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import { useChildListData } from "@/domains/child/hooks/useChildListData";
+import { STEP_FIELDS, StepField } from "../utils/stepConfig";
+import { NewReviewData } from "@/pages/review/ReviewFunnelPage";
+
+type ChildDateData = StepField<NewReviewData, typeof STEP_FIELDS.childDateSelect>;
 
 type ChildDateSelectProps = {
-  data: {
-    children: string[];
-    watchDate: string;
-  }
+  data: ChildDateData;
   onChange: (patch: { children: string[]; watchDate: string }) => void;
   onValidityChange?: (ok: boolean) => void;
 };
@@ -20,7 +21,7 @@ export const ChildDateSelect = ({
 }: ChildDateSelectProps) => {
     const { children } = useChildListData();
 
-  const selectedChildren = data.children.map(Number);
+  const selectedChildren = (data.children ?? []).map(Number);
   const selectedDate = data.watchDate ? new Date(data.watchDate) :null;
 
 
@@ -35,7 +36,7 @@ export const ChildDateSelect = ({
 
       onChange({
           children: updated.map(String),
-          watchDate: data.watchDate,
+          watchDate: data.watchDate ?? "",
         });
 
         onValidityChange?.(updated.length > 0 && !!selectedDate);
@@ -43,11 +44,11 @@ export const ChildDateSelect = ({
 
   const handleDateChange = (date: Date) => {
     onChange({
-      children: data.children,
+      children: data.children ?? [],
       watchDate: date.toISOString(),
     });
 
-    onValidityChange?.(data.children.length > 0 && !!date);
+    onValidityChange?.((data.children ?? []).length > 0 && !!date);
   };
 
 
