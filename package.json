@@ -17,9 +17,15 @@
     "test": "yarn workspaces run test",
     "lint": "yarn workspaces run lint",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\""
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "swagger:generate": "yarn workspace doudouMonde_backend swagger:generate",
+    "openapi:generate": "yarn swagger:generate && openapi-ts",
+    "zod:generate": "ts-node scripts/generate-zod-schemas.ts",
+    "api:generate": "yarn swagger:generate && openapi-ts && yarn zod:generate"
   },
   "devDependencies": {
+    "@hey-api/openapi-ts": "^0.60.0",
+    "openapi-typescript-zod": "^4.0.0",
     "prettier": "^3.4.2",
     "typescript": "^5.8.3"
   },

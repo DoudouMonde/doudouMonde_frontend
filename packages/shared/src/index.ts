@@ -7,9 +7,12 @@
 // Axios 설정
 export * from './config/axios';
 
-// Zod Schema
+// Zod Schema (수동 정의)
 export * from './schemas';
 
-// DTO 타입
+// DTO 타입 (수동 정의)
 export * from './dtos';
+
+// OpenAPI로부터 자동 생성된 타입과 스키마
+export * from './generated';
 
