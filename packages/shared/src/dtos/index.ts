@@ -47,3 +47,6 @@ export const createPaginatedResponse = <T>(
   };
 };
 
+// Performance DTOs
+export * from './performance-item-response';
+
