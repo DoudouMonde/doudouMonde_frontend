@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { CalendarProps, CalendarDate } from "../types";
 
+
+
 const Calendar: React.FC<CalendarProps> = ({
+  selectedDate,
   className = "",
   onDateChange,
 }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  // const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const handlePreviousMonth = () => {
     const newDate = new Date(currentDate);
@@ -67,7 +70,7 @@ const Calendar: React.FC<CalendarProps> = ({
       return;
     }
 
-    setSelectedDate(date);
+    // setSelectedDate(date);
     onDateChange?.(date);
   };
 

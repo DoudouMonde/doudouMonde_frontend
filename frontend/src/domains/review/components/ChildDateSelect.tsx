@@ -38,13 +38,13 @@ export const ChildDateSelect = ({
       : [...selectedChildren, childId];
 
     setSelectedChildren(updated);
-    // setSelectedChildren( [...selectedChildren, childId]);
     // updateAll(updated, selectedDate);
   };
 
   const handleDateChange = (date: Date) => {
+    console.log("date:",date)
     setSelectedDate(date);
-    updateAll(selectedChildren, date);
+    // updateAll(selectedChildren, date);
   };
 
   if (!children || children.length === 0) {
@@ -94,7 +94,7 @@ export const ChildDateSelect = ({
       <article className="pt-4">
         <p className="pt-2 pb-5 text-primary-100 subtitle-b">언제 봤나요?</p>
         <div className="flex justify-center">
-          <Calendar onDateChange={handleDateChange} />
+          <Calendar onDateChange={handleDateChange} selectedDate={selectedDate}/>
         </div>
       </article>
     </div>
