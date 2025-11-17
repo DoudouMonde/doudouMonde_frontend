@@ -1,4 +1,4 @@
-import { ChildEntity, PickChildEntityKeys } from "@/entities";
+import { ChildEntity, PickChildEntityKeys } from "@doudoumonde/shared/schemas";
 import { z } from "zod";
 
 /**

@@ -1,5 +1,5 @@
-import { z } from "zod";
-import { MemberRole, SocialType } from "@/entities/types";
+import { z } from 'zod';
+import { MemberRole, SocialType } from '@doudoumonde/shared/schemas';
 
 // Member entity (DB의 members 테이블과 매핑)
 export const MemberEntity = z.object({

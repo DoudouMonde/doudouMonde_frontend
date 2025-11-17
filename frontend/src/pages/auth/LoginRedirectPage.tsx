@@ -1,12 +1,12 @@
-import { apiRequesterWithoutAuth } from "@/shared/apis";
-import { PATH } from "@/shared/constants";
-import { Role } from "@/entities/types";
-import { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { apiRequesterWithoutAuth } from '@/shared/apis';
+import { PATH } from '@/shared/constants';
+import { Role } from '@doudoumonde/shared/schemas';
+import { useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 export const LoginRedirectPage = () => {
   const [searchParams] = useSearchParams();
-  const token = searchParams.get("token");
+  const token = searchParams.get('token');
   const navigate = useNavigate();
 
   useEffect(function getRoleAndRoutePage() {
@@ -16,13 +16,13 @@ export const LoginRedirectPage = () => {
         const response = await apiRequesterWithoutAuth.get<{
           role: Role;
           token: string;
-        }>("/v1/auth", {
+        }>('/v1/auth', {
           params: {
             token,
           },
         });
         // 2. 권한에 따라 페이지를 이동시킨다.
-        localStorage.setItem("token", response.data.token);
+        localStorage.setItem('token', response.data.token);
         if (response.data.role === Role.TEMP) {
           navigate(PATH.CHILD_REGISTRATION, { replace: true });
         } else {
@@ -31,7 +31,7 @@ export const LoginRedirectPage = () => {
 
         return response.data.role;
       } catch (error) {
-        console.error("권한을 가져오는 중 에러가 발생했습니다.", error);
+        console.error('권한을 가져오는 중 에러가 발생했습니다.', error);
       }
     };
     getRole();

@@ -1,4 +1,4 @@
-import { Gender, Profile } from "@/entities/types";
+import { Gender, Profile } from '@doudoumonde/shared/schemas';
 
 export type ChildFormShape = {
   name: string;

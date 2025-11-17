@@ -1,28 +1,23 @@
-import { BabyIcon, BearIcon, RestroomIcon } from "@/assets/icons";
-import { useSearchPerformancesQuery } from "@/domains/performance/queries";
-import { SearchInput } from "@/shared/components/SearchInput";
-import { getSidoLabel } from "@/shared/services";
-import { Sido } from "@/entities/types";
-import { useEffect, useRef, useState } from "react";
+import { BabyIcon, BearIcon, RestroomIcon } from '@/assets/icons';
+import { useSearchPerformancesQuery } from '@/domains/performance/queries';
+import { SearchInput } from '@/shared/components/SearchInput';
+import { getSidoLabel } from '@/shared/services';
+import { Sido } from '@doudoumonde/shared/schemas';
+import { useEffect, useRef, useState } from 'react';
 
 interface SearchPerformanceForSelectionProps {
   placeholder?: string;
-  onResultClick?: (performance: {
-    id: number;
-    title: string;
-    posterUrl: string;
-    location: string;
-  }) => void;
+  onResultClick?: (performance: { id: number; title: string; posterUrl: string; location: string }) => void;
   className?: string;
 }
 
 export const SearchPerformanceForSelection = ({
-  placeholder = "공연 검색...",
+  placeholder = '공연 검색...',
   onResultClick,
-  className = "",
+  className = '',
 }: SearchPerformanceForSelectionProps) => {
   // 검색 관련 상태
-  const [searchText, setSearchText] = useState<string>("");
+  const [searchText, setSearchText] = useState<string>('');
   const [showSearchResults, setShowSearchResults] = useState<boolean>(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const { data: searchData } = useSearchPerformancesQuery(searchText, 0);
@@ -44,14 +39,13 @@ export const SearchPerformanceForSelection = ({
     hasPlayRoom: boolean;
   }) => {
     setShowSearchResults(false);
-    setSearchText("");
+    setSearchText('');
 
     if (onResultClick) {
       onResultClick({
         id: performance.performanceId,
         title: performance.performanceName,
-        posterUrl:
-          performance.posterUrl || "/assets/images/playroom/backgroundImg.png",
+        posterUrl: performance.posterUrl || '/assets/images/playroom/backgroundImg.png',
         location: getSidoLabel(performance.sido as Sido),
       });
     }
@@ -60,27 +54,20 @@ export const SearchPerformanceForSelection = ({
   // 외부 클릭 시 검색 결과 숨기기
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        searchContainerRef.current &&
-        !searchContainerRef.current.contains(event.target as Node)
-      ) {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
         setShowSearchResults(false);
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
   return (
     <div className={`relative ${className}`} ref={searchContainerRef}>
-      <SearchInput
-        placeholder={placeholder}
-        onSearch={handleSearchChange}
-        value={searchText}
-      />
+      <SearchInput placeholder={placeholder} onSearch={handleSearchChange} value={searchText} />
 
       {/* 검색 결과 드롭다운 */}
       {showSearchResults && (
@@ -95,15 +82,11 @@ export const SearchPerformanceForSelection = ({
                 >
                   <div className="flex gap-4 items-center">
                     <img
-                      src={
-                        performance.posterUrl ||
-                        "/assets/images/playroom/backgroundImg.png"
-                      }
+                      src={performance.posterUrl || '/assets/images/playroom/backgroundImg.png'}
                       alt={performance.performanceName}
                       className="object-cover flex-shrink-0 w-14 rounded-lg shadow-md h-18"
                       onError={(e) => {
-                        e.currentTarget.src =
-                          "/assets/images/playroom/backgroundImg.png";
+                        e.currentTarget.src = '/assets/images/playroom/backgroundImg.png';
                       }}
                     />
                     <div className="flex-1 min-w-0">
@@ -134,18 +117,8 @@ export const SearchPerformanceForSelection = ({
                       </div>
                     </div>
                     <div className="text-pink-500">
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </div>
                   </div>
@@ -157,12 +130,8 @@ export const SearchPerformanceForSelection = ({
               <div className="flex justify-center items-center mx-auto mb-4 w-16 h-16 bg-gray-100 rounded-full">
                 <span className="text-2xl">🔍</span>
               </div>
-              <p className="mb-1 font-medium text-gray-500">
-                검색 결과가 없습니다
-              </p>
-              <p className="text-sm text-gray-400">
-                다른 키워드로 검색해보세요
-              </p>
+              <p className="mb-1 font-medium text-gray-500">검색 결과가 없습니다</p>
+              <p className="text-sm text-gray-400">다른 키워드로 검색해보세요</p>
             </div>
           )}
         </div>

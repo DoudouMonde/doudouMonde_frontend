@@ -1,10 +1,6 @@
-import {
-  CharacterAnimal,
-  CharacterAccessory,
-  CharacterEmotion,
-} from "@/entities/types";
+import { CharacterAnimal, CharacterAccessory, CharacterEmotion } from '@doudoumonde/shared/schemas';
 
-import { z } from "zod";
+import { z } from 'zod';
 
 // Character entity (DB의 character 테이블과 매핑)
 export const CharacterEntity = z.object({

@@ -1,4 +1,4 @@
-import { CharacterEmotion, CharacterAccessory, CharacterAnimal } from "@/entities/types";
+import { CharacterEmotion, CharacterAccessory, CharacterAnimal } from '@doudoumonde/shared/schemas';
 
 export type ReviewItem = {
   id: number;

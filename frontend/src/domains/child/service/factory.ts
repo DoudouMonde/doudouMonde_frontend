@@ -1,12 +1,11 @@
-import { Gender } from "@/entities";
-import { ChildFormValues } from "../models/ChildFormValues";
-import { Profile } from "@/entities/types";
+import { Gender, Profile } from '@doudoumonde/shared/schemas';
+import { ChildFormValues } from '../models/ChildFormValues';
 
-export const createNewChild =() : ChildFormValues => {
-    return{
-        name:"",
-        birthday:"",
-        gender: Gender.MALE,
-        profile: Profile.DOG,
-    }
-}
+export const createNewChild = (): ChildFormValues => {
+  return {
+    name: '',
+    birthday: '',
+    gender: Gender.MALE,
+    profile: Profile.DOG,
+  };
+};

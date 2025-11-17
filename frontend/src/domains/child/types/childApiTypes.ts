@@ -1,6 +1,6 @@
-import { ChildEntity, PickChildEntityKeys } from "@/entities";
-import { Gender, Profile } from "@/entities/types";
-import { z } from "zod";
+import { ChildEntity, PickChildEntityKeys } from '@doudoumonde/shared/schemas';
+import { Gender, Profile } from '@doudoumonde/shared/schemas';
+import { z } from 'zod';
 
 //공통 베이스 타입
 // export interface ChildBase {
