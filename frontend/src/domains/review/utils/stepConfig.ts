@@ -11,9 +11,9 @@ export const STEP_FIELDS = {
     "uploadedImages"
   ],
   typeSelect: ["typeOption"],
-  emotionSelect: ["emotionOption"],
-  accSelect: ["accOption"],
-  charName: ["charName"],
+  emotionSelect: ["typeOption", "emotionOption"],
+  accSelect: ["typeOption", "emotionOption", "accOption"],
+  charName: ["performanceName",  "watchDate", "typeOption", "emotionOption", "accOption", "charName"],
 } as const;
 
 // Helper

@@ -9,30 +9,59 @@ import {
 import { Desc } from "@/domains/playroom/components/Desc";
 import { AnimalOption } from "@/domains/playroom/components/AnimalOption";
 import { useCharaterFlowState } from "@/domains/playroom/hooks/useCharacterFlowState";
-import { PATH } from "@/shared/constants";
-import { useNavigate } from "react-router-dom";
+import { STEP_FIELDS, StepField } from "../utils/stepConfig";
+import { NewReviewData } from "@/pages/review/ReviewFunnelPage";
+import { CharacterType } from "../types";
 
-export const TypeSelect: React.FC = () => {
-  const navigate = useNavigate(); //useNavigate 초기화
+type TypeData = StepField<NewReviewData, typeof STEP_FIELDS.typeSelect>;
 
-  const {
-    selectedValue: selectedAnimal,
-    setSelectedValue: setSelectedAnimal,
+type TypeSelectProps ={
+  data: TypeData,
+  onChange: (patch :{
+    typeOption : CharacterType;
+  }) => void;
+  onValidityChange?: (ok: boolean) => void;
+}
+
+// AnimalId -> CharacterType 매핑 (예시)
+const animalIdToCharacterType = (id: AnimalId): CharacterType => {
+  switch(id) {
+    case "chick": return CharacterType.CHICK;
+    case "cat": return CharacterType.CAT;
+    case "dino": return CharacterType.DINO;
+    case "rabbit": return CharacterType.RABBIT;
+    case "dog": return CharacterType.DOG;
+    default: return CharacterType.DOG; // 기본값
+  }
+};
+
+export const TypeSelect = ( {data, onChange, onValidityChange} : TypeSelectProps) => {
+
+    const initialAnimal = animals.find(
+      (a) => animalIdToCharacterType(a.id) === data.typeOption
+    )?.id ?? animals[0].id;
+
+    const [selectedAnimal, setSelectedAnimal] = React.useState<AnimalId>(initialAnimal);
+
+    const handleSelect = (value: string | number) => {
+      const animalId = value as AnimalId ;
+      // animalId: AnimalId
+      setSelectedAnimal(animalId);
+                onChange({typeOption: animalIdToCharacterType(animalId)});
+
+          onValidityChange?.(true);
+    }
+
+    const {
+    // selectedValue: selectedAnimal,
+    // setSelectedValue: setSelectedAnimal,
     isAnimating,
   } = useCharaterFlowState<AnimalId>({
     stepName: "animal",
     storageKey: "selectedAnimal", //session storage 키 추가
-    initialValue: animals[0].id,
+    initialValue: initialAnimal,
   });
 
-  //다음 페이지로 이동하고 현재 선택 값을 state로 전달
-  const handleNext = () => {
-    navigate(PATH.CHAR_EMOTION, {
-      state: {
-        animal: selectedAnimal,
-      },
-    });
-  };
 
   return (
     <div>
@@ -55,7 +84,7 @@ export const TypeSelect: React.FC = () => {
 
       <SingleSelectGroup
         selectedValue={selectedAnimal}
-        onChange={(value) => setSelectedAnimal(value as AnimalId)}
+        onChange={handleSelect}
       >
         <div className="grid grid-cols-3 gap-4 mb-4 sm:gap-6 md:gap-8 lg:gap-12">
           {animals.slice(0, 3).map((animal) => {

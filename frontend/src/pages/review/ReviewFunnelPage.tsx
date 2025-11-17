@@ -103,21 +103,21 @@ export const ReviewFunnelPage = () => {
             </Funnel.Step>
             <Funnel.Step name="typeSelect">
               <TypeSelect
-                data={newReviewData}
+                data={pickStepData(newReviewData, STEP_FIELDS.typeSelect)}
                 onChange={(patch) => setNewReviewData((prev: any) => ({ ...prev, ...patch }))}
                 onValidityChange={(ok) => setCanProceed(ok)}
               />
             </Funnel.Step>
             <Funnel.Step name="emotionSelect">
               <EmotionSelect
-                data={newReviewData}
+                data={pickStepData(newReviewData, STEP_FIELDS.emotionSelect)}
                 onChange={(patch) => setNewReviewData((prev: any) => ({ ...prev, ...patch }))}
                 onValidityChange={(ok) => setCanProceed(ok)}
               />
             </Funnel.Step>
             <Funnel.Step name="accSelect">
               <AccSelect
-                data={newReviewData}
+                data={pickStepData(newReviewData, STEP_FIELDS.accSelect)}
                 onChange={(patch) => setNewReviewData((prev: any) => ({ ...prev, ...patch }))}
                 onValidityChange={(ok) => setCanProceed(ok)}
               />
