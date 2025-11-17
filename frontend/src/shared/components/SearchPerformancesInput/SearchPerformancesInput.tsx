@@ -7,10 +7,11 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PerformanceItemResponse } from '@doudoumonde/shared/dtos';
 import { Role } from '@doudoumonde/shared/schemas';
+import { PerformanceItem } from "@/domains/performance/types";
 
 interface SearchPerformancesInputProps {
   placeholder?: string;
-  onResultClick?: (performanceId: number) => void;
+  onResultClick?: (performance: PerformanceItem) => void;
   className?: string;
 }
 
@@ -41,14 +42,14 @@ export const SearchPerformancesInput = ({
   //   posterUrl: '',
   // };
   // console.log(performance);
-  const handleSearchResultClick = (performanceId: number) => {
+  const handleSearchResultClick = (performance : PerformanceItem) => {
     setShowSearchResults(false);
     setSearchText('');
 
     if (onResultClick) {
-      onResultClick(performanceId);
+      onResultClick(performance);
     } else {
-      navigate(PATH.PERFORMANCE_DETAIL(performanceId));
+      navigate(PATH.PERFORMANCE_DETAIL(performance.performanceId));
     }
   };
 
@@ -79,7 +80,7 @@ export const SearchPerformancesInput = ({
                 <li
                   key={performance.performanceId}
                   className="px-4 py-3 bg-gray-200 border-b border-gray-100 transition-colors cursor-pointer hover:bg-gray-50 last:border-b-0"
-                  onClick={() => handleSearchResultClick(performance.performanceId)}
+                  onClick={() => handleSearchResultClick(performance)}
                 >
                   <div className="flex gap-3 items-center">
                     <img

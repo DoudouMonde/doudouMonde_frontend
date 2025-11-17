@@ -1,21 +1,17 @@
+import { PerformanceItem } from '@/domains/performance/types';
 import { SearchPerformancesInput } from '@/shared/components';
-import { useState } from 'react';
 
 type PerformanceSelectProps = {
-  onChange: (patch: { performanceId: string; performanceName: string }) => void;
+  onChange: (patch: { performanceId: number; performanceName: string }) => void;
   onValidityChange?: (ok: boolean) => void;
 };
 
 export const PerformanceSelect = ({ onChange, onValidityChange }: PerformanceSelectProps) => {
-  const [selectedPerformanceName, setSelectedPerformanceName] = useState<string>('');
 
-  const handleSelect = (performance: Performance) => {
-    // const stringId = id.toString();
-    const stringId = '1234';
-    setSelectedPerformanceName('목업데이터');
+  const handleSelect = (performance: PerformanceItem) => {
     onChange({
-      performanceId: stringId,
-      performanceName: selectedPerformanceName,
+      performanceId: performance.performanceId,
+      performanceName: performance.performanceName,
     });
 
     onValidityChange?.(!!id);
