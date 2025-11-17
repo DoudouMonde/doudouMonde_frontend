@@ -96,14 +96,7 @@ export const ReviewFunnelPage = () => {
             </Funnel.Step>
             <Funnel.Step name="photoTextReview">
               <PhototextReview
-                data={{
-                  performanceName: newReviewData.performanceName,
-                  children: newReviewData.children,
-                  watchDate: newReviewData.watchDate,
-                  reviewText: newReviewData.reviewText?? "",
-                  uploadedImages: newReviewData.uploadedImages ?? [],
-
-                }}
+                data={pickStepData(newReviewData, STEP_FIELDS.photoTextReview)}
                 onChange={(patch) => setNewReviewData((prev) => ({ ...prev, ...patch }))}
                 onValidityChange={(ok) => setCanProceed(ok)}
               />
@@ -137,7 +130,7 @@ export const ReviewFunnelPage = () => {
           <NavigationButtons
             onPrevious={prev}
             onNext={() => {
-console.log("📌 현재 저장된 newReviewData:", newReviewData);
+            console.log("📌 현재 저장된 newReviewData:", newReviewData);
 
               if (step === 'charName') {
                 // 마지막 스텝 처리(예: 제출)
