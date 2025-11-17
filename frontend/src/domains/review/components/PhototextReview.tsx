@@ -23,28 +23,28 @@ export const PhototextReview = ({
   );
   const [reviewText, setReviewText] = useState<string>(data.reviewText ?? "");
   // ✅ data가 바뀌면 (다시 돌아왔을 때 등) 로컬 상태도 동기화
-  useEffect(() => {
-    if (data.uploadedImages) {
-      setUploadedImages(data.uploadedImages);
-    }
-    if (data.reviewText !== undefined) {
-      setReviewText(data.reviewText);
-    }
-  }, [data.uploadedImages, data.reviewText]);
+  // useEffect(() => {
+  //   if (data.uploadedImages) {
+  //     setUploadedImages(data.uploadedImages);
+  //   }
+  //   if (data.reviewText !== undefined) {
+  //     setReviewText(data.reviewText);
+  //   }
+  // }, [data.uploadedImages, data.reviewText]);
 
   // ✅ 로컬 상태가 바뀔 때마다 부모에 patch 전달 + 유효성도 함께 올리기
-  useEffect(() => {
-    onChange({
-      reviewText,
-      uploadedImages,
-    });
+  // useEffect(() => {
+  //   onChange({
+  //     reviewText,
+  //     uploadedImages,
+  //   });
 
-    if (onValidityChange) {
-      const hasText = reviewText.trim().length > 0;
-      const hasImage = uploadedImages.some((img) => img !== null);
-      onValidityChange(hasText || hasImage); // 예: 텍스트 또는 사진 하나 이상 있으면 OK
-    }
-  }, [reviewText, uploadedImages, onChange, onValidityChange]);
+  //   if (onValidityChange) {
+  //     const hasText = reviewText.trim().length > 0;
+  //     const hasImage = uploadedImages.some((img) => img !== null);
+  //     onValidityChange(hasText || hasImage); // 예: 텍스트 또는 사진 하나 이상 있으면 OK
+  //   }
+  // }, [reviewText, uploadedImages, onChange, onValidityChange]);
 
   const handleImageUpload = (index: number, file: File) => {
     const newImages = [...uploadedImages];

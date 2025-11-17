@@ -1,5 +1,5 @@
 import { PlayroomLayout } from '@/app/PlayroomLayout';
-import { useState } from 'react';
+import { Children, useState } from 'react';
 import { useFunnel } from '@/shared/hooks/useFunnel';
 import { PerformanceSelect } from '@/domains/review/components/PerformanceSelect';
 import { ChildDateSelect } from '@/domains/review/components/ChildDateSelect';
@@ -36,7 +36,7 @@ type Step = (typeof STEPS)[number];
 
 type PerformanceSelectData = { performanceId: string; performanceName: string };
 type ChildDateSelectData = {
-  childrend: string[];
+  children: string[];
   watchDate: string;
 };
 
@@ -89,8 +89,12 @@ export const ReviewFunnelPage = () => {
             </Funnel.Step>
             <Funnel.Step name="childDateSelect">
               <ChildDateSelect
-                onChange={(patch: ChildDateSelectData) =>
-                  setNewReviewData((prev: NewReviewData) => ({
+                data={{
+                  children: newReviewData.children ?? [],
+                  watchDate : newReviewData.watchDate ?? "",
+                }}
+                onChange={(patch) =>
+                  setNewReviewData((prev) => ({
                     ...prev,
                     ...patch,
                   }))
@@ -134,6 +138,8 @@ export const ReviewFunnelPage = () => {
           <NavigationButtons
             onPrevious={prev}
             onNext={() => {
+console.log("📌 현재 저장된 newReviewData:", newReviewData);
+
               if (step === 'charName') {
                 // 마지막 스텝 처리(예: 제출)
                 // submitReview(newReviewData)

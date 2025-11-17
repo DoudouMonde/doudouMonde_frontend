@@ -1,31 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Calendar from "@/domains/calendar/components/Calendar";
 import { RadioTrue, RadioFalse } from "@/assets/icons";
 import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import { useChildListData } from "@/domains/child/hooks/useChildListData";
 
 type ChildDateSelectProps = {
+  data: {
+    children: string[];
+    watchDate: string;
+  }
   onChange: (patch: { children: string[]; watchDate: string }) => void;
   onValidityChange?: (ok: boolean) => void;
 };
 
 export const ChildDateSelect = ({
+  data,
   onChange,
   onValidityChange,
 }: ChildDateSelectProps) => {
-  const [selectedChildren, setSelectedChildren] = useState<number[]>([]);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const { children } = useChildListData();
 
-  const { children } = useChildListData();
+  const selectedChildren = data.children.map(Number);
+  const selectedDate = data.watchDate ? new Date(data.watchDate) :null;
 
-  const updateAll = (childrenIds: number[], date: Date | null) => {
-    onChange({
-      children: childrenIds.map(String), 
-      watchDate: date ? date.toISOString() : "",
-    });
-
-    onValidityChange?.(childrenIds.length > 0 && !!date);
-  };
 
   const handleChildSelect = (childId: number) => {
     
@@ -37,15 +34,25 @@ export const ChildDateSelect = ({
       ? selectedChildren.filter((id) => id !== childId)
       : [...selectedChildren, childId];
 
-    setSelectedChildren(updated);
-    // updateAll(updated, selectedDate);
+      onChange({
+          children: updated.map(String),
+          watchDate: data.watchDate,
+        });
+
+        onValidityChange?.(updated.length > 0 && !!selectedDate);
+        
+
   };
 
   const handleDateChange = (date: Date) => {
-    console.log("date:",date)
-    setSelectedDate(date);
-    // updateAll(selectedChildren, date);
+    onChange({
+      children: data.children,
+      watchDate: date.toISOString(),
+    });
+
+    onValidityChange?.(data.children.length > 0 && !!date);
   };
+
 
   if (!children || children.length === 0) {
     return (
