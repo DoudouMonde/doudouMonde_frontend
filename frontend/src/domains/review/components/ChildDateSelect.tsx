@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import Calendar from "@/domains/calendar/components/Calendar";
 import { RadioTrue, RadioFalse } from "@/assets/icons";
-
 import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import { useChildListData } from "@/domains/child/hooks/useChildListData";
 
 type ChildDateSelectProps = {
-  onChange: (patch: { childrend: string[]; watchDate: string }) => void;
+  onChange: (patch: { children: string[]; watchDate: string }) => void;
   onValidityChange?: (ok: boolean) => void;
 };
 
@@ -19,33 +18,35 @@ export const ChildDateSelect = ({
 
   const { children } = useChildListData();
 
+  const updateAll = (childrenIds: number[], date: Date | null) => {
+    onChange({
+      children: childrenIds.map(String), 
+      watchDate: date ? date.toISOString() : "",
+    });
+
+    onValidityChange?.(childrenIds.length > 0 && !!date);
+  };
+
   const handleChildSelect = (childId: number) => {
-    const updated = selectedChildren.includes(childId)
+    
+    //중복선택
+    const exists = selectedChildren.includes(childId);
+
+    // // 토글 로직
+    const updated = exists
       ? selectedChildren.filter((id) => id !== childId)
       : [...selectedChildren, childId];
 
     setSelectedChildren(updated);
-
-    onChange({
-      childrend: updated.map(String), // number[] → string[]
-      watchDate: selectedDate ? selectedDate.toISOString() : "", // Date → string (없으면 "")
-    });
-
-    onValidityChange?.(updated.length > 0 && !!selectedDate);
+    // setSelectedChildren( [...selectedChildren, childId]);
+    // updateAll(updated, selectedDate);
   };
 
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
-
-    onChange({
-      childrend: selectedChildren.map(String),
-      watchDate: date.toISOString(),
-    });
-
-    onValidityChange?.(selectedChildren.length > 0);
+    updateAll(selectedChildren, date);
   };
 
-  // 🔌 NETWORK-OFF: 빈 상태 처리도 목데이터 기준으로만 동작
   if (!children || children.length === 0) {
     return (
       <div className="flex min-h-screen">
@@ -65,9 +66,7 @@ export const ChildDateSelect = ({
     <div>
       {/* 아이 선택 섹션 */}
       <article>
-        <p className="pt-2 pb-5 text-primary-100 subtitle-b">
-          누구와 함께 봤나요?
-        </p>
+        <p className="pt-2 pb-5 text-primary-100 subtitle-b">누구와 함께 봤나요?</p>
         <div className="space-y-3">
           {children.map((child: ChildItemResponse) => (
             <div
@@ -77,6 +76,7 @@ export const ChildDateSelect = ({
             >
               <div className="flex gap-4 items-center">
                 {selectedChildren.includes(child.id) ? (
+                  
                   <RadioTrue className="w-6 h-6" />
                 ) : (
                   <RadioFalse className="w-6 h-6" />
