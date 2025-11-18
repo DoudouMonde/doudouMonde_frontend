@@ -14,6 +14,7 @@ import { STEP_FIELDS } from '@/domains/review/utils/stepConfig';
 import { pickStepData } from '@/domains/review/utils/stepConfig';
 import { AccessoryId, AnimalId, EmotionId } from '@/domains/playroom/constants/animals';
 import { reviewApi } from '@/domains/review/apis/reviewApi';
+import { mapNewReviewDataToRequest } from '@/domains/review/mappers/reviewMapper';
 
 const STEPS = [
   'performanceSelect',
@@ -132,10 +133,10 @@ export const ReviewFunnelPage = () => {
           <NavigationButtons
             onPrevious={prev}
             onNext={() => {
-            console.log("📌 현재 저장된 newReviewData:", newReviewData);
+            // console.log("📌 현재 저장된 newReviewData:", newReviewData);
 
               if (step === 'charName') {
-                reviewApi.addReview(newReviewData)
+                reviewApi.addReview(mapNewReviewDataToRequest(newReviewData))
                 return;
               }
               next();
