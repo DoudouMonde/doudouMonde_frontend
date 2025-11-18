@@ -1,3 +1,2 @@
-export * from "./ReviewAddRequest";
-export * from "./ReviewResponse";
+export * from "./characterTypes";
 export * from "./domain";

@@ -7,7 +7,7 @@ import {
   CharacterType,
   CharacterEmotion,
   CharacterAccessories,
-} from "@/domains/review/types/ReviewAddRequest";
+} from "@/domains/review/types/characterTypes";
 import {
   ChickBody,
   CatBody,

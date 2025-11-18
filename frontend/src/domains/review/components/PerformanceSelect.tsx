@@ -1,24 +1,26 @@
+import { PerformanceItem } from '@/domains/performance/types';
 import { SearchPerformancesInput } from '@/shared/components';
-import { useState } from 'react';
 
 type PerformanceSelectProps = {
-  onChange: (patch: { performanceId: string; performanceName: string }) => void;
+  data: {
+    performanceId : number;
+    performanceName : string;
+  }
+  onChange: (patch: { performanceId: number; performanceName: string }) => void;
   onValidityChange?: (ok: boolean) => void;
 };
 
-export const PerformanceSelect = ({ onChange, onValidityChange }: PerformanceSelectProps) => {
-  const [selectedPerformanceName, setSelectedPerformanceName] = useState<string>('');
+export const PerformanceSelect = ({ data, onChange, onValidityChange }: PerformanceSelectProps) => {
 
-  const handleSelect = (performance: Performance) => {
-    // const stringId = id.toString();
-    const stringId = '1234';
-    setSelectedPerformanceName('목업데이터');
+  //data 활용해서 넣는 건 검색 구현하고 나서...
+
+  const handleSelect = (performance: PerformanceItem) => {
     onChange({
-      performanceId: stringId,
-      performanceName: selectedPerformanceName,
+      performanceId: performance.performanceId,
+      performanceName: performance.performanceName,
     });
 
-    onValidityChange?.(!!id);
+    onValidityChange?.(!!performance);
   };
 
   return (
