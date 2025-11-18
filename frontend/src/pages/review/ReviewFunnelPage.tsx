@@ -1,5 +1,5 @@
 import { PlayroomLayout } from '@/app/PlayroomLayout';
-import { Children, useState } from 'react';
+import { useState } from 'react';
 import { useFunnel } from '@/shared/hooks/useFunnel';
 import { PerformanceSelect } from '@/domains/review/components/PerformanceSelect';
 import { ChildDateSelect } from '@/domains/review/components/ChildDateSelect';
@@ -15,6 +15,8 @@ import { pickStepData } from '@/domains/review/utils/stepConfig';
 import { AccessoryId, AnimalId, EmotionId } from '@/domains/playroom/constants/animals';
 import { reviewApi } from '@/domains/review/apis/reviewApi';
 import { mapNewReviewDataToRequest } from '@/domains/review/mappers/reviewMapper';
+import { useNavigate } from 'react-router-dom';
+import { PostReviewResponse } from '@/domains/review/types/reviewApiTypes';
 
 const STEPS = [
   'performanceSelect',
@@ -54,15 +56,11 @@ export type NewReviewData = {
 
 
 export const ReviewFunnelPage = () => {
-  //여기서 handleStart를 하는 것이 아니라 이 페이지에서 Funnel 구조로 관리해야겠다.
+  const navigate = useNavigate();
+
   const [newReviewData, setNewReviewData] = useState<NewReviewData>({});
-
   const [Funnel, setStep, { next, prev, step }] = useFunnel<Step>('performanceSelect', STEPS);
-
-  // ✅ 현재 스텝의 "다음 가능 여부" 상태 (각 스텝에서 올려줌)
   const [canProceed, setCanProceed] = useState<boolean>(false);
-
-  // 마지막 스텝 문구 바꾸기(선택)
   const nextText = step === 'charName' ? '완료' : '다음';
 
   return (
@@ -132,16 +130,22 @@ export const ReviewFunnelPage = () => {
 
           <NavigationButtons
             onPrevious={prev}
-            onNext={() => {
-            // console.log("📌 현재 저장된 newReviewData:", newReviewData);
+            onNext={async () => { // 👈 여기에 async 키워드를 추가합니다.
+                // console.log("📌 현재 저장된 newReviewData:", newReviewData);
 
-              if (step === 'charName') {
-                //api 등록
-                // reviewApi.addReview(mapNewReviewDataToRequest(newReviewData))
-                // 디테일 페이지로 이동하기
-                return;
-              }
-              next();
+                if (step === 'charName') {
+                    try {
+                        const requestData = mapNewReviewDataToRequest(newReviewData);
+                        const response: PostReviewResponse = await reviewApi.postReview(requestData);
+                        navigate(`/reviews/${response.id}`);
+                        
+                        return;
+                    } catch (error) {
+                        console.error("리뷰 등록 실패:", error);
+                        // API 호출 실패 시 사용자에게 알림을 주거나 다른 페이지로 리다이렉트하는 로직을 추가합니다.
+                    }
+                }
+                next();
             }}
             nextText={nextText}
             // isNextDisabled={!canProceed}

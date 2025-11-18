@@ -6,7 +6,7 @@ import {
   CharacterType,
   CharacterEmotion,
   CharacterAccessories,
-} from "@/domains/review/types/ReviewAddRequest";
+} from "@/domains/review/types/characterTypes";
 import { ReviewResponse } from "@/domains/review/types/ReviewResponse";
 import { reviewApi } from "@/domains/review/apis/reviewApi";
 import {

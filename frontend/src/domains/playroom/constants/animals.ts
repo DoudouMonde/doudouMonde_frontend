@@ -29,8 +29,7 @@ import {
   RoundGlass,
   WizardHat,
 } from "@/assets/icons/playroom/accessories";
-import { CharacterAccessories, CharacterType } from "@/domains/review/types";
-import { CharacterEmotion } from "@doudoumonde/shared/schemas";
+import { CharacterAccessories, CharacterType, CharacterEmotion } from "@/domains/review/types";
 
 
 export type AnimalId = "chick" | "cat" | "dino" | "dog" | "rabbit";
