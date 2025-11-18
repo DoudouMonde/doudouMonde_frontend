@@ -6,9 +6,6 @@ import { SingleSelectGroup } from "@/shared/components";
 import { accessories } from "@/domains/playroom/constants/animals";
 import { SingleSelectItem } from "@/shared/components";
 import { RadioFalse, RadioTrue } from "@/assets/icons";
-import { useCharaterFlowState } from "@/domains/playroom/hooks/useCharacterFlowState";
-import { useNavigate } from "react-router-dom";
-import { PATH } from "@/shared/constants";
 import { STEP_FIELDS, StepField } from "../utils/stepConfig";
 import { NewReviewData } from "@/pages/review/ReviewFunnelPage";
 
@@ -25,14 +22,14 @@ type AccSelectProps ={
 export const AccSelect = ({data, onChange, onValidityChange} : AccSelectProps) => {
 
   
-        const initialAcc = accessories.find(
-  
-                (a) => (a.id) === data.accOption
-           )?.id ?? accessories[0].id;
-  
-           //이전에 선택했던 항목들 불러오기
-        const selectedAnimal : AnimalId = (
-    data.typeOption ?? animals[0].id
+    const initialAcc = accessories.find(
+
+            (a) => (a.id) === data.accOption
+      )?.id ?? accessories[0].id;
+
+      //이전에 선택했던 항목들 불러오기
+    const selectedAnimal : AnimalId = (
+data.typeOption ?? animals[0].id
   );
 
           const selectedEmotion : EmotionId = (
