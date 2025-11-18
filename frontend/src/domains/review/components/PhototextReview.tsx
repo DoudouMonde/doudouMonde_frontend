@@ -22,9 +22,9 @@ export const PhototextReview = ({
   onChange,
   onValidityChange,
 }:PhototextReviewProps ) => {
+  
   const uploadedImages = data.uploadedImages ?? [null, null, null, null] // 기본 4칸
   const [localText, setLocalText] = useState( data.reviewText ?? "");
-  
   
   //data에서 선택한 공연, 날짜 불러오기
   const selectedPerformance = data.performanceName ?? null;

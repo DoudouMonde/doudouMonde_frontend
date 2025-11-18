@@ -7,6 +7,7 @@ import { clampByWeight } from "@/domains/playroom/utils/textWeight";
 import { FriendNameInput } from "@/domains/playroom/components/FriendNameInput";
 import { STEP_FIELDS, StepField } from "../utils/stepConfig";
 import { NewReviewData } from "@/pages/review/ReviewFunnelPage";
+import { ReviewPerformanceInfo } from "@/shared/components/Review/ReviewPerformanceInfo";
 
 type FormValues = {
   name: string;
@@ -20,6 +21,10 @@ type CharNameProps = {
 }
 
 export const CharName = ({data, onChange} : CharNameProps) => {
+
+    //data에서 선택한 공연, 날짜 불러오기
+  const selectedPerformance = data.performanceName ?? null;
+  const selectedDate = data.watchDate ?? null;
 
   //이전에 선택했던 캐릭터 불러오기
   const selectedAnimal : AnimalId = (
@@ -68,7 +73,6 @@ export const CharName = ({data, onChange} : CharNameProps) => {
 
   return (
     <div>
-      {/* Header */}
       <Desc
         content={
           <>
@@ -85,8 +89,11 @@ export const CharName = ({data, onChange} : CharNameProps) => {
         selectedEmotion={selectedEmotion}
         selectedAcc={selectedAcc}
       />
+        <ReviewPerformanceInfo
+        title={selectedPerformance?? null}
+        date={selectedDate ?? null}
+      />
 
-      <hr className="my-4 mb-6 border-secondary-100/30" />
       <section aria-labelledby="friend-name-heading">
         <p id="friend-name-heading" className="mb-4 Inter">
           상상친구 이름 지어주기
