@@ -4,7 +4,7 @@ import { ReviewResponse } from "../types/ReviewResponse";
 
 export const reviewApi = {
   // 리뷰 등록 (FormData)
-  addReview: async (formData: FormData) => {
+  addPhotoReview: async (formData: FormData) => {
     console.log("=== API 요청 시작 ===");
     console.log("요청 URL:", "/v1/reviews");
     console.log("전체 URL:", `${apiRequester.defaults.baseURL}/v1/reviews`);
@@ -29,7 +29,7 @@ export const reviewApi = {
   },
 
   // 리뷰 등록 (JSON)
-  addReviewJson: async (reviewData: ReviewAddRequest) => {
+  addReview: async (reviewData: ReviewAddRequest) => {
     console.log("API 요청 URL:", "/v1/reviews/json");
     console.log("API 요청 데이터:", reviewData);
 

@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { animals } from "@/domains/playroom/constants/animals";
 import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
 import { AnimalId } from "@/domains/playroom/constants/animals";
@@ -10,6 +9,7 @@ import { Desc } from "@/domains/playroom/components/Desc";
 import { AnimalOption } from "@/domains/playroom/components/AnimalOption";
 import { STEP_FIELDS, StepField } from "../utils/stepConfig";
 import { NewReviewData } from "@/pages/review/ReviewFunnelPage";
+import { useSelectOption } from "../hooks/useCharacterOption";
 
 type TypeData = StepField<NewReviewData, typeof STEP_FIELDS.typeSelect>;
 
@@ -25,26 +25,13 @@ type TypeSelectProps ={
 
 export const TypeSelect = ( {data, onChange, onValidityChange} : TypeSelectProps) => {
 
-    const initialAnimal = animals.find(
-      (a) => (a.id) === data.typeOption
-    )?.id ?? animals[0].id;
 
-    const [selectedAnimal, setSelectedAnimal] = React.useState<AnimalId>(initialAnimal);
-    const [isAnimating, setIsAnimating] = useState(false);
-
-    const handleSelect = (value: string | number) => {
-      const animalId = value as AnimalId ;
-      setSelectedAnimal(animalId);
-                onChange({typeOption: (animalId)});
-
-          onValidityChange?.(true);
-    }
-
-    useEffect(() => {
-      setIsAnimating(true);
-      const timer = setTimeout(() => setIsAnimating(false), 600);
-      return () => clearTimeout(timer);
-    }, [initialAnimal]);
+    const {selected, handleSelect, isAnimating} = useSelectOption({
+      list: animals,
+      currentValue: data.typeOption,
+      onChange: (id) => onChange({typeOption: id}),
+      onValidityChange,
+    })
 
 
   return (
@@ -62,17 +49,17 @@ export const TypeSelect = ( {data, onChange, onValidityChange} : TypeSelectProps
       <AnimalPreview
         step="animal"
         isAnimating={isAnimating}
-        selectedAnimal={selectedAnimal}
+        selectedAnimal={selected}
       />
       <hr className="my-4 mb-7 border-secondary-100/30" />
 
       <SingleSelectGroup
-        selectedValue={selectedAnimal}
+        selectedValue={selected}
         onChange={handleSelect}
       >
         <div className="grid grid-cols-3 gap-4 mb-4 sm:gap-6 md:gap-8 lg:gap-12">
           {animals.slice(0, 3).map((animal) => {
-            const active = selectedAnimal === animal.id;
+            const active = selected === animal.id;
             return (
               <SingleSelectItem key={animal.id} value={animal.id}>
                 <AnimalOption
@@ -87,7 +74,7 @@ export const TypeSelect = ( {data, onChange, onValidityChange} : TypeSelectProps
 
         <div className="flex gap-4 justify-center sm:gap-6 md:gap-8 lg:gap-12">
           {animals.slice(3, 5).map((animal) => {
-            const active = selectedAnimal === animal.id;
+            const active = selected === animal.id;
             return (
               <SingleSelectItem key={animal.id} value={animal.id}>
                 <AnimalOption

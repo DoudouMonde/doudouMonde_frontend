@@ -136,7 +136,7 @@ export const ReviewFunnelPage = () => {
             // console.log("📌 현재 저장된 newReviewData:", newReviewData);
 
               if (step === 'charName') {
-                reviewApi.addReview(mapNewReviewDataToRequest(newReviewData))
+                // reviewApi.addReview(mapNewReviewDataToRequest(newReviewData))
                 return;
               }
               next();
