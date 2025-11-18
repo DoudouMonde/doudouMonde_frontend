@@ -13,6 +13,7 @@ import { ReviewContainer } from '@/shared/components/Layout/ReviewContainer';
 import { STEP_FIELDS } from '@/domains/review/utils/stepConfig';
 import { pickStepData } from '@/domains/review/utils/stepConfig';
 import { AccessoryId, AnimalId, EmotionId } from '@/domains/playroom/constants/animals';
+import { reviewApi } from '@/domains/review/apis/reviewApi';
 
 const STEPS = [
   'performanceSelect',
@@ -131,11 +132,10 @@ export const ReviewFunnelPage = () => {
           <NavigationButtons
             onPrevious={prev}
             onNext={() => {
-            // console.log("📌 현재 저장된 newReviewData:", newReviewData);
+            console.log("📌 현재 저장된 newReviewData:", newReviewData);
 
               if (step === 'charName') {
-                // 마지막 스텝 처리(예: 제출)
-                // submitReview(newReviewData)
+                reviewApi.addReview(newReviewData)
                 return;
               }
               next();
