@@ -9,7 +9,7 @@ export const signupApi = {
     console.log(
       "🌍 전체 URL:",
       `${
-        process.env.NODE_ENV === "development"
+        import.meta.env.DEV
           ? "https://api.doudoumonde.com"
           : ""
       }/api/v1/auth/signup`
