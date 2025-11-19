@@ -21,6 +21,13 @@ export class PerformanceItemResponse {
     example: '서울특별시',
   })
   sido: string;
+
+  @ApiProperty({
+    description: '포스터 URL',
+    type: String,
+    example: 'https://example.com/poster/les-miserables.jpg',
+  })
+  posterUrl: string;
 }
 
 export class PerformanceListResponse {

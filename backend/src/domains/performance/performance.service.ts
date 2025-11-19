@@ -16,7 +16,7 @@ export class PerformanceService {
     const skip = (page - 1) * pageSize;
 
     const [performances, total] = await this.performanceRepository.findAndCount({
-      select: ['id', 'name', 'sido'],
+      select: ['id', 'name', 'sido', 'posterUrl'],
       skip,
       take: pageSize,
     });
@@ -25,6 +25,7 @@ export class PerformanceService {
       id: performance.id,
       name: performance.name,
       sido: performance.sido,
+      posterUrl: performance.posterUrl,
     }));
 
     const totalPages = Math.ceil(total / pageSize);
