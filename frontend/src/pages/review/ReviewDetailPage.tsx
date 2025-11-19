@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Calendar, PlayingCardsIcon, UserIcon } from "@/assets/icons";
 import {
   CharacterType,
   CharacterEmotion,
   CharacterAccessories,
 } from "@/domains/review/types/characterTypes";
+import { ReviewMetaInfo } from "@/domains/review/components/ReviewMetaInfo";
+import { StorytownTree1 } from "@/assets/icons/playroom/storytown_tree";
+import { PlayroomLayout } from "@/app/PlayroomLayout";
+import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
+import { ReviewDetailResponse } from "@/domains/review/types/reviewApiTypes";
+import { useReviewList } from "@/domains/review/hooks/useReviewLIst";
+import { ReviewTree } from "@/domains/playroom/components/ReviewTree";
 
 const mockData: ReviewDetailResponse = {
   id: "1",
@@ -13,19 +19,17 @@ const mockData: ReviewDetailResponse = {
   watchDate: "2024-03-14",
   content:
     "배우들의 연기가 너무 훌륭했고, 몰입감 있는 무대 연출이 인상적이었습니다.",
-  imageUrls: ["https://example.com/review1_img1.jpg"],
+  imageUrls: [
+    "https://picsum.photos/id/1015/600/400",
+    "https://picsum.photos/id/1025/600/400",
+    "https://picsum.photos/id/1035/600/400",
+    "https://picsum.photos/id/1045/600/400",
+  ],
   characterName: "Hamlet",
   characterAnimal: CharacterType.CAT,
   characterEmotion: CharacterEmotion.HAPPY,
   characterAccessory: CharacterAccessories.FLOWER,
 };
-import { ReviewMetaInfo } from "@/domains/review/components/ReviewMetaInfo";
-
-import { StorytownTree1 } from "@/assets/icons/playroom/storytown_tree";
-import { PlayroomLayout } from "@/app/PlayroomLayout";
-import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
-import { ReviewDetailResponse } from "@/domains/review/types/reviewApiTypes";
-import { reviewApi } from "@/domains/review/apis/reviewApi";
 
 export const ReviewDetailPage = () => {
   const navigate = useNavigate();
@@ -38,7 +42,6 @@ export const ReviewDetailPage = () => {
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [reviewCount, setReviewCount] = useState(0);
 
   //실제 api
   // useEffect(() => {
@@ -71,6 +74,7 @@ export const ReviewDetailPage = () => {
   // }, [reviewId]);
   useEffect(() => {
     setReviewData(mockData);
+    setIsLoading(false);
   }, []);
 
   if (isLoading) {
@@ -104,9 +108,9 @@ export const ReviewDetailPage = () => {
   return (
     <PlayroomLayout>
       {/* 스크롤 가능한 콘텐츠 */}
-      <div className="flex relative z-10">
-        <StorytownTree1 />
-        <div className="absolute inset-x-0 bottom-0 -mb-10 flex justify-center">
+      <section className="flex relative z-10">
+        <ReviewTree />
+        <figure className="absolute inset-x-0 bottom-0 -mb-10 flex justify-center">
           <AnimalPreview
             step="accessory"
             isAnimating={false}
@@ -115,67 +119,34 @@ export const ReviewDetailPage = () => {
             selectedEmotion={reviewData.characterEmotion}
             selectedAcc={reviewData.characterAccessory}
           />
-        </div>
-      </div>
+        </figure>
+      </section>
 
       {/* 회색 배경 콘텐츠 영역 */}
-      <div className="relative -z-50  bg-gray-200 backdrop-blur-sm py-6 w-full ">
-        <ReviewMetaInfo reviewData={reviewData} />
-        <hr className="mb-6 border-secondary-100/30" />
-
+      <article className="relative -z-50  bg-gray-200 backdrop-blur-sm py-6 w-full ">
+        <header>
+          <ReviewMetaInfo reviewData={reviewData} />
+          <hr className="mb-6 border-secondary-100/30" />
+        </header>
         {/* 리뷰 내용 */}
-        <div className="mb-4">
-          <p className="title-inter body-hak-b">기록장</p>
-        </div>
-        <div>
-          {/* 등록된 사진 갤러리 */}
-          <div className="">
-            {/* 더미 이미지 데이터 */}
-            {(() => {
-              const dummyImages = [
-                "/assets/images/playroom/backgroundImg.png",
-                "/assets/images/playroom/backgroundImg.png",
-                "/assets/images/playroom/backgroundImg.png",
-                "/assets/images/playroom/backgroundImg.png",
-              ];
-
-              const displayImages =
-                reviewData.imageUrls.length > 0
-                  ? reviewData.imageUrls
-                  : dummyImages;
-
-              return (
-                <div className="overflow-x-auto no-scrollbar">
-                  <div
-                    className="flex gap-4 pb-2"
-                    style={{ width: "max-content" }}
-                  >
-                    {displayImages.map((imageUrl, index) => (
-                      <div
-                        key={index}
-                        className="relative w-32 h-32 bg-white/60 backdrop-blur-sm rounded-[16px] overflow-hidden flex-shrink-0"
-                      >
-                        <img
-                          src={imageUrl}
-                          alt={`리뷰 사진 ${index + 1}`}
-                          className="object-cover w-full h-full"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })()}
+        <section className="px-6">
+          <p className="title-inter body-hak-b mb-4">기록장</p>
+          <div className="grid grid-cols-2 gap-2">
+            {reviewData.imageUrls.slice(0, 4).map((img, idx) => (
+              <img
+                key={idx}
+                src={img}
+                alt={`review-image-${idx}`}
+                className="w-full aspect-square object-cover rounded-lg"
+              />
+            ))}
+            {/* 텍스트 후기 */}
+            <div className="py-4 ">
+              <p className="text-black body-hak-r ">{reviewData.content}</p>
+            </div>
           </div>
-
-          {/* 텍스트 후기 */}
-          <div className="p-4">
-            <p className="text-gray-900-100 body-inter-r">
-              {reviewData.content}
-            </p>
-          </div>
-        </div>
-      </div>
+        </section>
+      </article>
     </PlayroomLayout>
   );
 };

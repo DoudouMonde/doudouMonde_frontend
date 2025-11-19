@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Desc } from "@/domains/playroom/components/Desc";
-import { AnimalId, animals, EmotionId } from "@/domains/playroom/constants/animals";
+import {
+  AnimalId,
+  animals,
+  EmotionId,
+} from "@/domains/playroom/constants/animals";
 
 import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
 import {
@@ -13,28 +17,28 @@ import { STEP_FIELDS, StepField } from "../utils/stepConfig";
 import { NewReviewData } from "@/pages/review/ReviewFunnelPage";
 import { useSelectOption } from "../hooks/useCharacterOption";
 
-type EmotionData = StepField<NewReviewData, typeof STEP_FIELDS.emotionSelect >;
+type EmotionData = StepField<NewReviewData, typeof STEP_FIELDS.emotionSelect>;
 
-type EmotionSelectProps ={
-  data: EmotionData,
-  onChange: (patch :{
-    emotionOption : EmotionId;
-  }) => void;
+type EmotionSelectProps = {
+  data: EmotionData;
+  onChange: (patch: { emotionOption: EmotionId }) => void;
   onValidityChange?: (ok: boolean) => void;
-}
+};
 
+export const EmotionSelect = ({
+  data,
+  onChange,
+  onValidityChange,
+}: EmotionSelectProps) => {
+  const selectedAnimal: AnimalId = data.typeOption ?? animals[0].id;
 
-export const EmotionSelect= ({data, onChange, onValidityChange} : EmotionSelectProps) => {
+  const { selected, handleSelect, isAnimating } = useSelectOption({
+    list: emotions,
+    currentValue: data.emotionOption,
+    onChange: (id) => onChange({ emotionOption: id }),
+    onValidityChange,
+  });
 
-      const selectedAnimal : AnimalId = (data.typeOption ?? animals[0].id);
-
-      const {selected, handleSelect, isAnimating} = useSelectOption({
-        list: emotions,
-        currentValue: data.emotionOption,
-        onChange: (id) => onChange({emotionOption: id}),
-        onValidityChange,
-      })
-      
   return (
     <div>
       <Desc
@@ -52,10 +56,7 @@ export const EmotionSelect= ({data, onChange, onValidityChange} : EmotionSelectP
       />
       <hr className="my-4 mb-7 border-secondary-100/30" />
 
-      <SingleSelectGroup
-        selectedValue={selected}
-        onChange={handleSelect}
-      >
+      <SingleSelectGroup selectedValue={selected} onChange={handleSelect}>
         <div className="grid grid-cols-3 gap-3 mb-4">
           {emotions.map((emo) => {
             const Icon = emo.icon;
