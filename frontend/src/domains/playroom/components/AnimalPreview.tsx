@@ -20,6 +20,7 @@ export interface AnimalPreviewProps {
   selectedEmotion?: EmotionId;
   selectedAcc?: AccessoryId;
   isAnimating: boolean;
+  isShadow?: boolean;
 }
 
 export const AnimalPreview = ({
@@ -28,6 +29,7 @@ export const AnimalPreview = ({
   selectedEmotion,
   selectedAcc,
   isAnimating,
+  isShadow = true,
 }: AnimalPreviewProps) => {
   const emotion = selectedEmotion ?? "";
   const accessory = selectedAcc ?? "";
@@ -65,7 +67,9 @@ export const AnimalPreview = ({
       <div className="flex justify-center">
         <FinalCharacterComponent className={finalClassName} />
       </div>
-      <Shadow className="w-[147px] h-[40px] mt-[-40px] relative z-10" />
+      {isShadow ?? (
+        <Shadow className="w-[147px] h-[40px] mt-[-40px] relative z-10" />
+      )}
     </div>
   );
 };
