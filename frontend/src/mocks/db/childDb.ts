@@ -1,33 +1,32 @@
-import { Gender, Profile } from '@doudoumonde/shared/schemas';
+import { Gender, Profile } from "@/entities/types";
 import {
   // ChildItemResponse,
   PostChildRegistrationRequest,
-} from '@/domains/child/types/childApiTypes';
-import { ChildDetailResponse } from '@/domains/child/types/childApiTypes';
+} from "@/domains/child/types/childApiTypes";
+import { ChildDetailResponse } from "@/domains/child/types/childApiTypes";
 
-
-const KEY = '__mock_child_db__';
+const KEY = "__mock_child_db__";
 
 const INITIAL_MOCK_CHILDREN: ChildDetailResponse[] = [
   {
     id: 1,
-    name: '도윤 (Mock)',
+    name: "도윤 (Mock)",
     profile: Profile.CAT,
-    birthday: '2020-05-15',
+    birthday: "2020-05-15",
     gender: Gender.MALE,
   },
   {
     id: 2,
-    name: '서아 (Mock)',
+    name: "서아 (Mock)",
     profile: Profile.RABBIT,
-    birthday: '2021-08-22',
+    birthday: "2021-08-22",
     gender: Gender.FEMALE,
   },
   {
     id: 3,
-    name: '하준 (Mock)',
+    name: "하준 (Mock)",
     profile: Profile.DOG,
-    birthday: '2019-11-01',
+    birthday: "2019-11-01",
     gender: Gender.MALE,
   },
 ];
@@ -53,7 +52,9 @@ let store: ChildDetailResponse[] = load();
 
 //localstorage가 없을 때 Mock 데이터를 불러오도록 한다.
 if (store.length === 0) {
-  console.log('Mock DB :localStorage가 비어 있어 초기 Mock 데이터로 대체합니다.');
+  console.log(
+    "Mock DB :localStorage가 비어 있어 초기 Mock 데이터로 대체합니다."
+  );
   store = INITIAL_MOCK_CHILDREN;
   seq = store.reduce((max, child) => Math.max(max, child.id), 0);
   save(store);

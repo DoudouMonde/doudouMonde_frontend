@@ -6,47 +6,46 @@ import {
 
 export interface CharacterInfo {
   characterName: string;
-  characterType: CharacterType;
+  characterAnimal: CharacterType;
   characterEmotion: CharacterEmotion;
-  characterAccessories: CharacterAccessories;
+  characterAccessory: CharacterAccessories;
 }
 
-export interface PostReviewRequest extends CharacterInfo{
-  seenPerformanceId: number;
+export interface PostReviewRequest extends CharacterInfo {
+  performanceId: number;
   performanceName: string;
-  watchDate?: string;
+  imageUrls: string[];
+  watchDate: string;
   content: string;
-  // audioUrl?: string;
 }
 
 export interface PostReviewResponse {
-    id : number;
+  id: number;
 }
 
-export interface ReviewDetailResponse extends CharacterInfo{
-  reviewId: number;
-  performanceName: string;
+export interface ReviewDetailResponse extends CharacterInfo {
+  id: number;
   watchDate: string;
   content: string;
-  imageUrls: string[];
-  // audioUrl: string | null;
-  //아이도 불러와야 함
-}
-//리스트 조회
-//공연id, 공연제목, watchDate, 캐릭터 모양
-
-export type ReviewRecord = ReviewDetailResponse;
-
-
-export interface ReviewListRecord{
-  seenPerformanceId: number;
   performanceName: string;
-  watchDate: string;
-  characterType: CharacterType;
-  characterEmotion: CharacterEmotion;
-  characterAccessories: CharacterAccessories;
+  imageUrls: string[];
 }
 
-export interface ReviewListResponse  {
-   items: ReviewListRecord[];
+export interface ReviewListRecord {
+  id: number;
+  watchDate: string;
+  tree: string;
+  performance: {
+    name: string;
+    posterUrl: string;
+  };
+  character: {
+    animal: CharacterType;
+    emotion: CharacterEmotion;
+    accessory: CharacterAccessories;
+  };
+}
+
+export interface ReviewListResponse {
+  items: ReviewListRecord[];
 }
