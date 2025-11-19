@@ -18,7 +18,6 @@ export interface ChildDetailResponse extends ChildItemResponse {
   gender: Gender;
 }
 
-export type ChildRecord = ChildDetailResponse;
 
 export const ChildListResponse = z.object({
   items: z.array(ChildItemResponse),

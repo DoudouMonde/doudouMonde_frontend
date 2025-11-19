@@ -13,7 +13,6 @@ export const reviewApi = {
     }
   },
 
-
   // 리뷰 등록 (JSON)
   postReview: async (reviewData: PostReviewRequest) : Promise<PostReviewResponse> => {
     const response = await apiRequester.post("/v1/reviews/json", reviewData);
