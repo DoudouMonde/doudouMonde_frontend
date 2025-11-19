@@ -6,11 +6,9 @@ import {
   CharacterAccessories,
 } from "@/domains/review/types/characterTypes";
 import { ReviewMetaInfo } from "@/domains/review/components/ReviewMetaInfo";
-import { StorytownTree1 } from "@/assets/icons/playroom/storytown_tree";
 import { PlayroomLayout } from "@/app/PlayroomLayout";
 import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
 import { ReviewDetailResponse } from "@/domains/review/types/reviewApiTypes";
-import { useReviewList } from "@/domains/review/hooks/useReviewLIst";
 import { ReviewTree } from "@/domains/playroom/components/ReviewTree";
 
 const mockData: ReviewDetailResponse = {
@@ -130,7 +128,17 @@ export const ReviewDetailPage = () => {
         </header>
         {/* 리뷰 내용 */}
         <section className="px-6">
-          <p className="title-inter body-hak-b mb-4">기록장</p>
+          <div className="flex justify-between  mb-4">
+            <p className="title-inter body-hak-b">기록장</p>
+            <div className="flex text-gray-900 subtitle-b gap-2">
+              <button className="bg-yellow-200 rounded-[10px] w-20 py-1">
+                수정
+              </button>
+              <button className="bg-tertiary-100 rounded-[10px] w-20  py-1">
+                삭제
+              </button>
+            </div>
+          </div>
           <div className="grid grid-cols-2 gap-2">
             {reviewData.imageUrls.slice(0, 4).map((img, idx) => (
               <img
