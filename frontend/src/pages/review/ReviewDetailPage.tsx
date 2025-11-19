@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Calendar, PlayingCardsIcon } from "@/assets/icons";
+import { Calendar, PlayingCardsIcon, UserIcon } from "@/assets/icons";
 import {
   CharacterType,
   CharacterEmotion,
@@ -19,6 +19,7 @@ const mockData: ReviewDetailResponse = {
   characterEmotion: CharacterEmotion.HAPPY,
   characterAccessory: CharacterAccessories.FLOWER,
 };
+import { ReviewMetaInfo } from "@/domains/review/components/ReviewMetaInfo";
 
 import { StorytownTree1 } from "@/assets/icons/playroom/storytown_tree";
 import { PlayroomLayout } from "@/app/PlayroomLayout";
@@ -118,27 +119,8 @@ export const ReviewDetailPage = () => {
       </div>
 
       {/* 회색 배경 콘텐츠 영역 */}
-      <div className="relative -z-50  bg-gray-200 backdrop-blur-sm p-6 w-full">
-        <div className="flex justify-center mt-5 mb-5">
-          <div className="flex flex-col gap-2 w-auto min-w-20">
-            <p className="flex justify-center title-hak">
-              {reviewData.characterName}
-            </p>
-            <div className="flex flex-col gap-2 p-4">
-              <div className="flex gap-1 items-center">
-                <PlayingCardsIcon className="w-[13px] h-[13px]" />
-                <p className="body-hak-r">{reviewData.performanceName}</p>
-              </div>
-              <div className="flex gap-1 items-center">
-                <Calendar className="w-[13px] h-[13px] flex-shrink-0" />
-                <p className="whitespace-nowrap body-hak-r">
-                  {new Date(reviewData.watchDate).toISOString().split("T")[0] ||
-                    "날짜 정보 없음"}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="relative -z-50  bg-gray-200 backdrop-blur-sm py-6 w-full ">
+        <ReviewMetaInfo reviewData={reviewData} />
         <hr className="mb-6 border-secondary-100/30" />
 
         {/* 리뷰 내용 */}
