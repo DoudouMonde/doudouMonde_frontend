@@ -2,7 +2,12 @@ import React from "react";
 type SvgComponentType = React.ComponentType<{ className?: string }>;
 
 import { Shadow } from "@/assets/icons/playroom";
-import { animals } from "@/domains/playroom/constants/animals";
+import {
+  AccessoryId,
+  AnimalId,
+  animals,
+  EmotionId,
+} from "@/domains/playroom/constants/animals";
 import { ChickBody } from "@/assets/icons/playroom/type_body";
 import {
   getEmotionCharacter,
@@ -11,9 +16,9 @@ import {
 
 export interface AnimalPreviewProps {
   step: "animal" | "emotion" | "accessory";
-  selectedAnimal: string;
-  selectedEmotion?: string;
-  selectedAcc?: string;
+  selectedAnimal: AnimalId;
+  selectedEmotion?: EmotionId;
+  selectedAcc?: AccessoryId;
   isAnimating: boolean;
 }
 
@@ -27,7 +32,7 @@ export const AnimalPreview = ({
   const emotion = selectedEmotion ?? "";
   const accessory = selectedAcc ?? "";
 
-  let FinalCharacterComponent: SvgComponentType;
+  let FinalCharacterComponent: SvgComponentType = ChickBody;
 
   if (step === "accessory") {
     const AccessoryCharacter = getAccessoryCharacter(
@@ -39,16 +44,17 @@ export const AnimalPreview = ({
       FinalCharacterComponent = AccessoryCharacter;
     } else {
       const EmotionCharacter = getEmotionCharacter(selectedAnimal, emotion);
-      FinalCharacterComponent = EmotionCharacter ?? ChickBody;
+      FinalCharacterComponent = EmotionCharacter ?? FinalCharacterComponent;
     }
   } else if (step === "emotion") {
     const EmotionCharacter = getEmotionCharacter(selectedAnimal, emotion);
-    FinalCharacterComponent = EmotionCharacter ?? ChickBody;
+    FinalCharacterComponent = EmotionCharacter ?? FinalCharacterComponent;
   } else {
     const selectedAnimalData = animals.find(
       (animal) => animal.id === selectedAnimal
     );
-    FinalCharacterComponent = selectedAnimalData?.bodyIcon || ChickBody;
+    FinalCharacterComponent =
+      selectedAnimalData?.bodyIcon || FinalCharacterComponent;
   }
   const finalClassName = `w-[350px] h-[250px] relative z-20 ${
     isAnimating ? "animate-gentle-bounce" : ""

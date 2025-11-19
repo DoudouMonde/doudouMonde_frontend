@@ -17,7 +17,7 @@ const mockData: ReviewDetailResponse = {
   characterName: "Hamlet",
   characterAnimal: CharacterType.CAT,
   characterEmotion: CharacterEmotion.HAPPY,
-  characterAccessory: CharacterAccessories.CAP,
+  characterAccessory: CharacterAccessories.FLOWER,
 };
 
 import { StorytownTree1 } from "@/assets/icons/playroom/storytown_tree";
