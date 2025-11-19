@@ -1,14 +1,18 @@
-
+import { ReviewDetailResponse } from "@/domains/review/types/reviewApiTypes";
 
 const KEY = '__mock_review_db__';
 
-const INITIAL_MOCK_CHILDREN: ChildRecord[] = [
+const INITIAL_MOCK_REVIEW: ReviewDetailResponse[] = [
   {
-    id: 1,
-    name: '도윤 (Mock)',
-    profile: Profile.CAT,
-    birthday: '2020-05-15',
-    gender: Gender.MALE,
+    reviewId: number,
+    performanceName: string,
+    watchDate: string,
+    content: string,
+    imageUrls: string[];
+      characterName: string;
+      characterType: CharacterType;
+      characterEmotion: CharacterEmotion;
+      characterAccessories: CharacterAccessories;
   },
   {
     id: 2,
