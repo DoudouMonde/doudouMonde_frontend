@@ -80,8 +80,12 @@ export const reviewDb = {
     get(id:number) {
         return store.find((c) => c.reviewId === id) ?? null;
     },
-    create(input : PostReviewRequest) : PostReviewResponse {
-        const id = ++ seq;
-        
+    create(input : PostReviewRequest) : ReviewDetailResponse {
+        const id = ++seq;
+        const rec : ReviewDetailResponse = {id, ...input};
+        store = [rec, ...store];
+        save(store);
+        return rec;
+
     }
 }
