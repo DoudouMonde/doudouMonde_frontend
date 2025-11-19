@@ -1,23 +1,23 @@
-import { KoreanLogo } from '@/assets/icons';
-import ChildProfile from '@/domains/child/components/ChildProfile';
-import { useChildListQuery } from '@/domains/child/queries';
-import { ChildItem } from '@/domains/child/types';
-import PerformanceCard from '@/domains/performance/components/PerformanceCard';
+import { KoreanLogo } from "@/assets/icons";
+import ChildProfile from "@/domains/child/components/ChildProfile";
+import { useChildListQuery } from "@/domains/child/queries";
+import { ChildItem } from "@/domains/child/types";
+import PerformanceCard from "@/domains/performance/components/PerformanceCard";
 import {
   useGenrePerformanceListQuery,
   useNewGenrePerformanceListQuery,
   useRewardPerformanceListQuery,
   useSidoPerformanceListQuery,
   usePerformancesByTraitQuery,
-} from '@/domains/performance/queries';
+} from "@/domains/performance/queries";
 
-import { SearchPerformancesInput } from '@/shared/components';
-import { AutoCarousel } from '@/shared/components/AutoCarousel';
-import { PATH } from '@/shared/constants/paths';
-import { getGenreLabel, getSidoLabel } from '@/shared/services';
-import { Gender, Genre, Profile, Sido, Trait } from '@doudoumonde/shared/schemas';
-import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { SearchPerformancesInput } from "@/shared/components";
+import { AutoCarousel } from "@/shared/components/AutoCarousel";
+import { PATH } from "@/shared/constants/paths";
+import { getGenreLabel, getSidoLabel } from "@/shared/services";
+import { Gender, Genre, Profile, Sido, Trait } from "@/entities/types";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const HomePage = () => {
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ export const HomePage = () => {
   const [selectedTrait, setSelectedTrait] = useState<Trait | null>(null);
 
   // 아이 조회 디버깅 로그
-  console.log('👶 아이 조회 상태:', {
+  console.log("👶 아이 조회 상태:", {
     children,
     childrenLoading,
     childrenError,
@@ -45,23 +45,28 @@ export const HomePage = () => {
 
   // 기본 추천 제목
   const getRecommendationTitle = () => {
-    return `${selectedChild?.name}에게 딱 맞는 ${getGenreLabel(selectedChild?.genre ?? Genre.PLAY)}공연`;
+    return `${selectedChild?.name}에게 딱 맞는 ${getGenreLabel(
+      selectedChild?.genre ?? Genre.PLAY
+    )}공연`;
   };
 
   // 성향 라벨 매핑
   const getTraitLabel = (trait: Trait) => {
     const traitLabels: Record<Trait, string> = {
-      [Trait.MUSIC_LOVER]: '음악을 좋아해요',
-      [Trait.DANCE_LOVER]: '춤을 좋아해요',
-      [Trait.SHORT_ATTENTION]: '집중력이 짧아요',
-      [Trait.SOUND_SENSITIVE]: '소리에 민감해요',
-      [Trait.ACTIVE]: '활동적이에요',
+      [Trait.MUSIC_LOVER]: "음악을 좋아해요",
+      [Trait.DANCE_LOVER]: "춤을 좋아해요",
+      [Trait.SHORT_ATTENTION]: "집중력이 짧아요",
+      [Trait.SOUND_SENSITIVE]: "소리에 민감해요",
+      [Trait.ACTIVE]: "활동적이에요",
     };
     return traitLabels[trait] || trait;
   };
 
   // 사용 가능한 성향들 (하드코딩된 예시) - 안정화
-  const availableTraits = useMemo(() => [Trait.SHORT_ATTENTION, Trait.DANCE_LOVER], []);
+  const availableTraits = useMemo(
+    () => [Trait.SHORT_ATTENTION, Trait.DANCE_LOVER],
+    []
+  );
 
   // 아이가 변경될 때마다 기본 성향을 첫 번째로 리셋하여 목록을 바로 갱신
   useEffect(() => {
@@ -71,12 +76,10 @@ export const HomePage = () => {
     }
   }, [selectedChild, availableTraits]);
 
-  const { data: { contents: genrePerformanceList } = { contents: [] } } = useGenrePerformanceListQuery(
-    selectedChild?.genre ?? Genre.PLAY,
-    {
+  const { data: { contents: genrePerformanceList } = { contents: [] } } =
+    useGenrePerformanceListQuery(selectedChild?.genre ?? Genre.PLAY, {
       enabled: !!selectedChild,
-    },
-  );
+    });
 
   // 성향별 공연 쿼리
   const {
@@ -84,21 +87,18 @@ export const HomePage = () => {
     isLoading: traitLoading,
     error: traitError,
   } = usePerformancesByTraitQuery(selectedTrait, selectedChild?.id || null);
-  const { data: { contents: sidoPerformanceList } = { contents: [] } } = useSidoPerformanceListQuery(
-    selectedChild?.sido ?? Sido.SEOUL,
-    {
+  const { data: { contents: sidoPerformanceList } = { contents: [] } } =
+    useSidoPerformanceListQuery(selectedChild?.sido ?? Sido.SEOUL, {
       enabled: !!selectedChild,
-    },
-  );
+    });
 
-  const { data: { contents: rewardPerformanceList } = { contents: [] } } = useRewardPerformanceListQuery();
+  const { data: { contents: rewardPerformanceList } = { contents: [] } } =
+    useRewardPerformanceListQuery();
 
-  const { data: { contents: newGenrePerformanceList } = { contents: [] } } = useNewGenrePerformanceListQuery(
-    selectedChild?.id || null,
-    {
+  const { data: { contents: newGenrePerformanceList } = { contents: [] } } =
+    useNewGenrePerformanceListQuery(selectedChild?.id || null, {
       enabled: !!selectedChild,
-    },
-  );
+    });
 
   // 성향별 공연 데이터 가져오기
 
@@ -118,7 +118,7 @@ export const HomePage = () => {
       };
       setSelectedChild(convertedChild);
     },
-    [children],
+    [children]
   );
 
   // 로딩 상태 처리
@@ -134,8 +134,12 @@ export const HomePage = () => {
   if (childrenError) {
     return (
       <div className="flex flex-col justify-center items-center p-0 m-0 w-full h-full">
-        <div className="text-lg text-red-500">아이 정보를 불러올 수 없습니다.</div>
-        <div className="mt-2 text-sm text-gray-500">에러: {childrenError.message}</div>
+        <div className="text-lg text-red-500">
+          아이 정보를 불러올 수 없습니다.
+        </div>
+        <div className="mt-2 text-sm text-gray-500">
+          에러: {childrenError.message}
+        </div>
       </div>
     );
   }
@@ -170,7 +174,9 @@ export const HomePage = () => {
       {/* 아이 선택 */}
       <main className="flex flex-col flex-1 gap-4 pt-16 w-full">
         <section className="flex flex-col gap-3">
-          <h2 className="px-3 py-4 text-gray-900 title-inter-b">{getRecommendationTitle()}</h2>
+          <h2 className="px-3 py-4 text-gray-900 title-inter-b">
+            {getRecommendationTitle()}
+          </h2>
           <AutoCarousel
             genre={selectedChild?.genre ?? Genre.PLAY}
             performances={genrePerformanceList.slice(0, 6)}
@@ -202,7 +208,9 @@ export const HomePage = () => {
           <div className="flex flex-col gap-12 w-full">
             {/* 성향에 딱 맞는 공연 섹션 */}
             <section className="flex flex-col gap-2">
-              <h2 className="py-2 text-gray-900 title-inter-b">성향에 딱 맞는 공연이에요</h2>
+              <h2 className="py-2 text-gray-900 title-inter-b">
+                성향에 딱 맞는 공연이에요
+              </h2>
 
               {/* 성향 버튼들 */}
               {/* <div className="flex flex-wrap gap-3">
@@ -229,21 +237,34 @@ export const HomePage = () => {
                   {traitLoading ? (
                     <div className="flex gap-4">
                       {Array.from({ length: 3 }).map((_, index) => (
-                        <div key={index} className="w-48 h-32 bg-green-100 rounded-lg animate-pulse" />
+                        <div
+                          key={index}
+                          className="w-48 h-32 bg-green-100 rounded-lg animate-pulse"
+                        />
                       ))}
                     </div>
                   ) : traitError ? (
-                    <div className="text-gray-500">{getTraitLabel(selectedTrait)} 공연을 불러올 수 없습니다.</div>
+                    <div className="text-gray-500">
+                      {getTraitLabel(selectedTrait)} 공연을 불러올 수 없습니다.
+                    </div>
                   ) : traitPerformanceList.length > 0 ? (
                     <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
                       {traitPerformanceList.map((performance) => (
-                        <li key={performance.performanceId} className="flex-shrink-0">
-                          <PerformanceCard performance={performance} onClick={handlePerformancePress} />
+                        <li
+                          key={performance.performanceId}
+                          className="flex-shrink-0"
+                        >
+                          <PerformanceCard
+                            performance={performance}
+                            onClick={handlePerformancePress}
+                          />
                         </li>
                       ))}
                     </ul>
                   ) : (
-                    <div className="text-gray-500">{getTraitLabel(selectedTrait)}에 맞는 공연이 없습니다.</div>
+                    <div className="text-gray-500">
+                      {getTraitLabel(selectedTrait)}에 맞는 공연이 없습니다.
+                    </div>
                   )}
                 </div>
               )}
@@ -267,7 +288,9 @@ export const HomePage = () => {
 
             {/*  새로운 장르 공연 섹션 */}
             <section className="flex flex-col gap-2">
-              <h2 className="py-2 text-gray-900 title-inter-b">{selectedChild?.name}을 위한 새로운 장르 공연</h2>
+              <h2 className="py-2 text-gray-900 title-inter-b">
+                {selectedChild?.name}을 위한 새로운 장르 공연
+              </h2>
               <ul className="flex overflow-x-auto flex-row gap-4 hide-scrollbar">
                 {newGenrePerformanceList.map((newGenrePerformance) => (
                   <PerformanceCard

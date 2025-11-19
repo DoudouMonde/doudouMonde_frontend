@@ -20,7 +20,7 @@
       "@domains/*": ["src/domains/*"],
       "@global/*": ["src/global/*"],
       "@doudoumonde/shared": ["../packages/shared/src/index.ts"],
-      "@doudoumonde/shared/schemas": ["../packages/shared/src/schemas/index.ts"],
+      // "@doudoumonde/shared/schemas": ["../packages/shared/src/schemas/index.ts"],
       "@doudoumonde/shared/generated": ["../packages/shared/src/generated/index.ts"],
       "@doudoumonde/shared/dtos": ["../packages/shared/src/dtos/index.ts"]
     },

@@ -1,20 +1,20 @@
-import { ChildItemResponse } from '@/domains/child/types/childApiTypes';
-import { useChildRegistrationContext } from '../contexts/ChildRegistrationContext';
-import { NameSection } from './NameSection';
-import { NavigationButtons } from '@/shared/components';
-import { Controller } from 'react-hook-form';
-import { ChildProfileItem } from './ChildProfileItem';
-import { ModalWrapper } from '@/shared/components/Modal/ModalWrapper';
-import { useChildListContext } from '@/domains/child/contexts/ChildListContext';
-import { ProfileSelectorSection } from '@/domains/child/components/ProfileSelectorSection';
-import { useChildDetailQuery } from '@/domains/child/queries/useChildDetailQuery';
-import { useEffect } from 'react';
-import { toFormValues } from '@/domains/child/utils/toFormValues';
+import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
+import { useChildRegistrationContext } from "../contexts/ChildRegistrationContext";
+import { NameSection } from "./NameSection";
+import { NavigationButtons } from "@/shared/components";
+import { Controller } from "react-hook-form";
+import { ChildProfileItem } from "./ChildProfileItem";
+import { ModalWrapper } from "@/shared/components/Modal/ModalWrapper";
+import { useChildListContext } from "@/domains/child/contexts/ChildListContext";
+import { ProfileSelectorSection } from "@/domains/child/components/ProfileSelectorSection";
+import { useChildDetailQuery } from "@/domains/child/queries/useChildDetailQuery";
+import { useEffect } from "react";
+import { toFormValues } from "@/domains/child/utils/toFormValues";
 type Props = {
   selectedChild: ChildItemResponse;
 };
-import { UpdateChildRequest } from '@/domains/child/types/childApiTypes';
-import { Gender, Profile } from '@doudoumonde/shared/schemas';
+import { UpdateChildRequest } from "@/domains/child/types/childApiTypes";
+import { Gender, Profile } from "@/entities/types";
 
 export const ChildEditModal: React.FC<Props> = ({ selectedChild }) => {
   const { data: child, isError } = useChildDetailQuery(selectedChild.id);
@@ -39,9 +39,9 @@ export const ChildEditModal: React.FC<Props> = ({ selectedChild }) => {
 
   // 공통: 폼값 → UpdateChildRequest 변환
   const buildPayload = (): UpdateChildRequest => {
-    const yyyy = formValues.birthYear?.padStart(4, '0');
-    const mm = formValues.birthMonth?.padStart(2, '0');
-    const dd = formValues.birthDay?.padStart(2, '0');
+    const yyyy = formValues.birthYear?.padStart(4, "0");
+    const mm = formValues.birthMonth?.padStart(2, "0");
+    const dd = formValues.birthDay?.padStart(2, "0");
 
     return {
       name: formValues.name,
@@ -76,8 +76,17 @@ export const ChildEditModal: React.FC<Props> = ({ selectedChild }) => {
 
   return (
     <>
-      <ModalWrapper onClose={closeEditModal} deleteBtn={true} selectedChildId={child.id}>
-        <ChildProfileItem showName={false} key={child.id} child={child} clickAction="openAvatarPicker" />
+      <ModalWrapper
+        onClose={closeEditModal}
+        deleteBtn={true}
+        selectedChildId={child.id}
+      >
+        <ChildProfileItem
+          showName={false}
+          key={child.id}
+          child={child}
+          clickAction="openAvatarPicker"
+        />
 
         {isAvatarPickerOpen ? (
           <div className="flex flex-col items-center">
@@ -101,7 +110,12 @@ export const ChildEditModal: React.FC<Props> = ({ selectedChild }) => {
                 <NameSection field={field} error={error} />
               )}
             />
-            <NavigationButtons previousText="이전" nextText="저장" onPrevious={handleEditCancel} onNext={onClickSave} />
+            <NavigationButtons
+              previousText="이전"
+              nextText="저장"
+              onPrevious={handleEditCancel}
+              onNext={onClickSave}
+            />
           </>
         )}
       </ModalWrapper>

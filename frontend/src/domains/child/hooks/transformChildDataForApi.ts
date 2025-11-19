@@ -1,12 +1,15 @@
-import { ChildFormValues } from '../types/childForm';
-import { Gender, Profile } from '@doudoumonde/shared/schemas';
+import { ChildFormValues } from "../types/childForm";
+import { Gender, Profile } from "@/entities/types";
 
 export const transformChildDataForApi = (data: ChildFormValues) => {
   return {
     name: data.name.trim(),
-    birthday: `${data.birthYear}-${data.birthMonth.padStart(2, '0')}-${data.birthDay.padStart(2, '0')}`,
-    gender: Gender[data.gender as keyof typeof Gender] || 'MALE',
-    profile: Profile[data.selectedProfile as keyof typeof Profile] || 'CAT',
+    birthday: `${data.birthYear}-${data.birthMonth.padStart(
+      2,
+      "0"
+    )}-${data.birthDay.padStart(2, "0")}`,
+    gender: Gender[data.gender as keyof typeof Gender] || "MALE",
+    profile: Profile[data.selectedProfile as keyof typeof Profile] || "CAT",
     // traits: data.selectedTraits.map(
     //   (t) => TRAIT_MAPPING[t as keyof typeof TRAIT_MAPPING] || t
     // ),

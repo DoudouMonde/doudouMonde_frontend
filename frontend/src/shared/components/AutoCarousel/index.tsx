@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { PerformanceItem } from '@/domains/performance/types';
-import { Genre } from '@doudoumonde/shared/schemas';
-import { getGenreLabel, getSidoLabel } from '@/shared/services';
+import React, { useState, useEffect, useRef } from "react";
+import { PerformanceItem } from "@/domains/performance/types";
+import { Genre } from "@/entities/types";
+import { getGenreLabel, getSidoLabel } from "@/shared/services";
 
 interface AutoCarouselProps {
   performances: PerformanceItem[];
@@ -117,7 +117,11 @@ export const AutoCarousel: React.FC<AutoCarouselProps> = ({
       <div className="overflow-hidden relative px-16 w-full">
         <ul
           ref={scrollContainerRef}
-          className={`flex gap-4 w-full ${isTransitioning ? 'transition-transform duration-500 ease-in-out' : ''}`}
+          className={`flex gap-4 w-full ${
+            isTransitioning
+              ? "transition-transform duration-500 ease-in-out"
+              : ""
+          }`}
           onMouseLeave={handleMouseLeave}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
@@ -143,7 +147,8 @@ export const AutoCarousel: React.FC<AutoCarouselProps> = ({
                   className="absolute inset-0"
                   style={{
                     opacity: 0.5,
-                    background: 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgb(0, 0,0, 1) 76%)',
+                    background:
+                      "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgb(0, 0,0, 1) 76%)",
                   }}
                 />
 
@@ -159,7 +164,9 @@ export const AutoCarousel: React.FC<AutoCarouselProps> = ({
                 {/* 공연 정보 */}
                 <div className="absolute right-4 left-4 bottom-12 text-gray-100">
                   <div className="flex flex-col gap-3">
-                    <h3 className="text-gray-100 title-inter max-w-[160px]">{performance.performanceName}</h3>
+                    <h3 className="text-gray-100 title-inter max-w-[160px]">
+                      {performance.performanceName}
+                    </h3>
                     <p className="text-gray-100 subtitle-b">
                       {getGenreLabel(genre)} · {getSidoLabel(performance.sido)}
                     </p>
@@ -179,7 +186,7 @@ export const AutoCarousel: React.FC<AutoCarouselProps> = ({
               key={index}
               onClick={() => handleIndicatorClick(index)}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentIndex - 1 ? 'bg-gray-900 w-6' : 'bg-gray-200'
+                index === currentIndex - 1 ? "bg-gray-900 w-6" : "bg-gray-200"
               }`}
               aria-label={`${index + 1}번째 슬라이드로 이동`}
             />

@@ -1,5 +1,4 @@
-import { Gender, Genre, Profile, Sido, Trait } from '@doudoumonde/shared/schemas';
-
+import { Gender, Profile, Sido, Genre, Trait } from "@/entities/types";
 export type ChildItem = {
   id: number;
   name: string;

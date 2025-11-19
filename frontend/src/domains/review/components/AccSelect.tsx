@@ -1,5 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { AccessoryId, AnimalId, animals, EmotionId, emotions } from "@/domains/playroom/constants/animals";
+import {
+  AccessoryId,
+  AnimalId,
+  animals,
+  EmotionId,
+  emotions,
+} from "@/domains/playroom/constants/animals";
 import { Desc } from "@/domains/playroom/components/Desc";
 import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
 import { SingleSelectGroup } from "@/shared/components";
@@ -10,32 +15,28 @@ import { STEP_FIELDS, StepField } from "../utils/stepConfig";
 import { NewReviewData } from "@/pages/review/ReviewFunnelPage";
 import { useSelectOption } from "../hooks/useCharacterOption";
 
-type AccData = StepField<NewReviewData, typeof STEP_FIELDS.accSelect >;
+type AccData = StepField<NewReviewData, typeof STEP_FIELDS.accSelect>;
 
-type AccSelectProps ={
-  data: AccData,
-  onChange: (patch :{
-    accOption : AccessoryId;
-  }) => void;
+type AccSelectProps = {
+  data: AccData;
+  onChange: (patch: { accOption: AccessoryId }) => void;
   onValidityChange?: (ok: boolean) => void;
-}
+};
 
-export const AccSelect = ({data, onChange, onValidityChange} : AccSelectProps) => {
+export const AccSelect = ({
+  data,
+  onChange,
+  onValidityChange,
+}: AccSelectProps) => {
+  const selectedAnimal: AnimalId = data.typeOption ?? animals[0].id;
+  const selectedEmotion: EmotionId = data.emotionOption ?? emotions[0].id;
 
-
-    const selectedAnimal : AnimalId = (data.typeOption ?? animals[0].id);
-
-    const selectedEmotion : EmotionId = (data.emotionOption ?? emotions[0].id);
-     
-
-    const {selected, handleSelect, isAnimating} = useSelectOption({
-      list: accessories,
-      currentValue: data.accOption,
-      onChange: (id) => onChange({accOption: id}),
-      onValidityChange,
-    })
-
-  
+  const { selected, handleSelect, isAnimating } = useSelectOption({
+    list: accessories,
+    currentValue: data.accOption,
+    onChange: (id) => onChange({ accOption: id }),
+    onValidityChange,
+  });
 
   return (
     <div>
@@ -56,10 +57,7 @@ export const AccSelect = ({data, onChange, onValidityChange} : AccSelectProps) =
       />
       <hr className="my-4 mb-7 border-secondary-100/30" />
 
-      <SingleSelectGroup
-        selectedValue={selected}
-        onChange={handleSelect}
-      >
+      <SingleSelectGroup selectedValue={selected} onChange={handleSelect}>
         <div className="grid grid-cols-3 gap-3 mb-4">
           {accessories.map((acc) => {
             const Icon = acc.icon;

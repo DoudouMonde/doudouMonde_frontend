@@ -20,11 +20,11 @@ export interface PostReviewRequest extends CharacterInfo {
 }
 
 export interface PostReviewResponse {
-  id: number;
+  id: string;
 }
 
 export interface ReviewDetailResponse extends CharacterInfo {
-  id: number;
+  id: string;
   watchDate: string;
   content: string;
   performanceName: string;
@@ -32,7 +32,7 @@ export interface ReviewDetailResponse extends CharacterInfo {
 }
 
 export interface ReviewListRecord {
-  id: number;
+  id: string;
   watchDate: string;
   tree: string;
   performance: {

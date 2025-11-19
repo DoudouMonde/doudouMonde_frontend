@@ -31,7 +31,7 @@ export interface PostChildRegistrationRequest {
 }
 
 export interface PostChildRegistrationResponse {
-  id: number;
+  id: string;
   success: boolean;
 }
 

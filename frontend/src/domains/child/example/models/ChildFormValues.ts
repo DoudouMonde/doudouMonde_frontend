@@ -1,11 +1,12 @@
-import { ChildEntity, PickChildEntityKeys } from "@doudoumonde/shared/schemas";
+import { ChildEntity, PickChildEntityKeys } from "@/entities";
+
 import { z } from "zod";
 
 /**
  * FeedBack: Entity를 사용하는 것이 좋음 => 단일 원천을 유지하는 것이 좋음(DB보고 미리 만들어놨음)
  */
 
-//pick() 메서드를 사용하여 ChildEntity에서 필요한 속성들만 선택하여 새로운 스키마를 만든다. 
+//pick() 메서드를 사용하여 ChildEntity에서 필요한 속성들만 선택하여 새로운 스키마를 만든다.
 export const ChildFormValues = ChildEntity.pick({
   name: true,
   birthday: true,

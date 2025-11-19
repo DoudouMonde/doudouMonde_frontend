@@ -1,4 +1,4 @@
-import { Genre, Sido } from '@doudoumonde/shared/schemas';
+import { Genre, Sido } from "@/entities/types";
 
 // 공연 데이터 타입
 export type PerformanceItem = {
@@ -40,7 +40,7 @@ export type PerformanceDetail = {
   hasPublicParking: boolean;
 };
 
-export type TabType = 'transport' | 'seats' | 'content';
+export type TabType = "transport" | "seats" | "content";
 // 인근 정보 타입
 export type NearbyPlace = {
   name: string;
