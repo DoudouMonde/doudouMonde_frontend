@@ -1,6 +1,7 @@
 import { Genre } from '@/entities/genre';
 import { BaseModel } from '@/entities/base-model.entity';
 import { Column, Entity } from 'typeorm';
+import { Sido } from '@/entities/sido.enum';
 
 @Entity()
 export class Performance extends BaseModel {
@@ -39,4 +40,7 @@ export class Performance extends BaseModel {
 
   @Column({ type: 'varchar', length: 255 })
   reward: string;
+
+  @Column({ type: 'varchar', length: 255 })
+  sido: Sido;
 }
