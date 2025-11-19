@@ -105,7 +105,7 @@ apiRequester.interceptors.response.use(
       // 현재 페이지가 로그인 페이지가 아닌 경우에만 리다이렉트
       if (
         window.location.pathname !== "/login" &&
-        process.env.NODE_ENV === "production"
+        import.meta.env.PROD
       ) {
         console.log("🔄 로그인 페이지로 리다이렉트합니다.");
         window.location.href = "/login";
