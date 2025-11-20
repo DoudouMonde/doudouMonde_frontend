@@ -16,12 +16,14 @@ export const ReviewDetailPage = () => {
   const { reviewId } = useParams<{ reviewId: string }>();
   const { reviewData, isLoading, error } = useReviewDetail(reviewId);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { alertModal, openAlert, closeAlert } = useAlert();
 
   const handleDeleteClick = () => {
     setIsModalOpen(true);
   };
-
-  const { alertModal, openAlert, closeAlert } = useAlert();
+  const handleEditClick = () => {
+    navigate(`/reviews/${reviewId}/edit`);
+  };
 
   const handleConfirmDelete = async () => {
     try {
@@ -100,7 +102,7 @@ export const ReviewDetailPage = () => {
 
       {/* 회색 배경 콘텐츠 영역 */}
       <article className="relative -z-50  bg-gray-200 backdrop-blur-sm py-6 w-full ">
-        <header>
+        <header className="flex justify-center">
           <ReviewMetaInfo reviewData={reviewData} />
           <hr className="mb-6 border-secondary-100/30" />
         </header>
@@ -109,7 +111,10 @@ export const ReviewDetailPage = () => {
           <div className="flex justify-between  mb-4">
             <p className="title-inter body-hak-b">기록장</p>
             <div className="flex text-gray-900 subtitle-b gap-2">
-              <button className="bg-yellow-200 rounded-[10px] w-20 py-1">
+              <button
+                className="bg-yellow-200 rounded-[10px] w-20 py-1"
+                onClick={handleEditClick}
+              >
                 수정
               </button>
               <button

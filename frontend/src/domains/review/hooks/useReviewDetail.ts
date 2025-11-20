@@ -29,9 +29,7 @@ export const useReviewDetail = (reviewId: string | undefined) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [reviewData, setReviewData] = useState<ReviewDetailResponse | null>(
-    mockData
-  );
+  const [reviewData, setReviewData] = useState<ReviewDetailResponse>(mockData);
 
   //   useEffect(() => {
   //     const fetchReviewDetail = async () => {
@@ -61,6 +59,7 @@ export const useReviewDetail = (reviewId: string | undefined) => {
   //     fetchReviewDetail();
   //   }, [reviewId]);
   useEffect(() => {
+    setReviewData(mockData);
     setIsLoading(false);
   }, [reviewId]);
 

@@ -1,4 +1,4 @@
-import { ReviewAddIcon } from "@/assets/icons/playroom";
+import { ReviewAddIcon } from "@/assets/icons";
 import { useReviewAction } from "@/domains/review/hooks/useReviewActions";
 
 export const AddReviewBtn = () => {

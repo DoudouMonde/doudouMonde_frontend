@@ -16,7 +16,7 @@ import {
 
 export interface AnimalPreviewProps {
   step: "animal" | "emotion" | "accessory";
-  size?: "small" | "normal";
+  size?: "small" | "middle" | "big";
   selectedAnimal: AnimalId;
   selectedEmotion?: EmotionId;
   selectedAcc?: AccessoryId;
@@ -26,7 +26,7 @@ export interface AnimalPreviewProps {
 
 export const AnimalPreview = ({
   step,
-  size = "normal",
+  size = "big",
   selectedAnimal,
   selectedEmotion,
   selectedAcc,
@@ -60,9 +60,9 @@ export const AnimalPreview = ({
     FinalCharacterComponent =
       selectedAnimalData?.bodyIcon || FinalCharacterComponent;
   }
-
-  const sizeClass =
-    size === "small" ? "w-[100px] h-[90px]" : "w-[350px] h-[250px]";
+  let sizeClass = "w-[350px] h-[250px]";
+  if (size === "small") sizeClass = "w-[100px] h-[90px]";
+  else if (size === "middle") sizeClass = "w-[150px] h-[150px]";
 
   const finalClassName = `${sizeClass} relative z-20 ${
     isAnimating ? "animate-gentle-bounce" : ""

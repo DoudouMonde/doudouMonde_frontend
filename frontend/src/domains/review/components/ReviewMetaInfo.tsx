@@ -3,16 +3,23 @@ import { ReviewDetailResponse } from "../types/reviewApiTypes";
 
 type ReveiwMetaInfo = {
   reviewData: ReviewDetailResponse;
+  charName?: boolean;
 };
 
-export const ReviewMetaInfo = ({ reviewData }: ReveiwMetaInfo) => {
+export const ReviewMetaInfo = ({
+  reviewData,
+  charName = true,
+}: ReveiwMetaInfo) => {
   return (
-    <div className="flex justify-center mt-5 mb-5">
+    <div className="flex  mt-5 mb-5">
       <div className="flex flex-col w-auto min-w-20">
-        <p className="flex justify-center title-hak">
-          {reviewData.characterName}
-        </p>
-        <div className="flex flex-col gap-2 p-4 ">
+        {charName && (
+          <p className="flex justify-center title-hak mb-3">
+            {reviewData.characterName}
+          </p>
+        )}
+
+        <div className="flex flex-col gap-2 ">
           <div className="flex gap-1 items-center">
             <PlayingCardsIcon className="w-[13px] h-[13px]" />
             <p className="body-hak-r">{reviewData.performanceName}</p>

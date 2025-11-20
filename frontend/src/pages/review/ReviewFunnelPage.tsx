@@ -49,7 +49,7 @@ export type NewReviewData = {
   performanceName?: string;
   //아마 childrenId 배열도 필요할 듯(api용)
   children?: string[];
-  watchDate: string;
+  watchDate?: string;
   reviewText?: string;
   uploadedImages?: (File | null)[];
   typeOption?: AnimalId; //api 보낼 때는 id -> type으로 변환해서

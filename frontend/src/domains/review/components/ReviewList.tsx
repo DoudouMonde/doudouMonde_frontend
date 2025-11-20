@@ -7,12 +7,12 @@ export const ReviewList = () => {
   const { reviewList } = useReviewList();
 
   return (
-    <>
+    <div>
       {reviewList.items.map((reivew: ReviewListRecord) => (
         <ReviewItem key={reivew.id} review={reivew} />
       ))}
 
       <AddReviewBtn />
-    </>
+    </div>
   );
 };
