@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { ReviewListResponse } from "../types/reviewApiTypes";
+import {
+  ReviewDetailResponse,
+  ReviewListResponse,
+} from "../types/reviewApiTypes";
 import {
   CharacterAccessories,
   CharacterEmotion,
@@ -9,13 +12,13 @@ import { reviewApi } from "../apis/reviewApi";
 
 export const useReviewList = () => {
   const initialReviewList: ReviewListResponse = { items: [] };
-
+  //리뷰 리스트 불러오기
   const [reviewList, setReviewList] =
     useState<ReviewListResponse>(mockReviewList);
-
+  //리뷰 개수 불러오기
   const [reviewCount, setReviewCount] = useState<number>(1);
 
-  //실제 api 호출 -> 백엔드 연결하면 주석 해제
+  //리뷰 리스트, 개수 api 호출 -> 백엔드 연결하면 주석 해제
   // useEffect(() => {
   //   const fetchReview = async () => {
   //     try {
@@ -30,6 +33,11 @@ export const useReviewList = () => {
   //   };
   //   fetchReview();
   // }, []);
+
+  //리뷰 상세 불러오기
+  const [reviewData, setReviewData] = useState<ReviewDetailResponse | null>(
+    null
+  );
 
   return { reviewList, reviewCount };
 };
