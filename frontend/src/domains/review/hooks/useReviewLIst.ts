@@ -1,16 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReviewListResponse } from "../types/reviewApiTypes";
 import {
   CharacterAccessories,
   CharacterEmotion,
   CharacterType,
 } from "../types";
+import { reviewApi } from "../apis/reviewApi";
+
 export const useReviewList = () => {
+  const initialReviewList: ReviewListResponse = { items: [] };
+
   const [reviewList, setReviewList] =
     useState<ReviewListResponse>(mockReviewList);
+
   const [reviewCount, setReviewCount] = useState<number>(1);
-  // const [reviewCount, setReviewCount] = useState<number>(0);
-  //임시로 리뷰 개수 넣기
+
+  //실제 api 호출 -> 백엔드 연결하면 주석 해제
+  // useEffect(() => {
+  //   const fetchReview = async () => {
+  //     try {
+  //       const data: ReviewListResponse = await reviewApi.getMemberReviews();
+  //       setReviewList(data);
+  //       setReviewCount(data.items.length);
+  //     } catch (error) {
+  //       console.log("리뷰 목록을 불러오는 중 오류 발생 :", error);
+  //       setReviewList(initialReviewList);
+  //     } finally {
+  //     }
+  //   };
+  //   fetchReview();
+  // }, []);
 
   return { reviewList, reviewCount };
 };

@@ -1,5 +1,10 @@
 import { apiRequester } from "@/shared/apis/axiosInstance";
-import { PostReviewRequest, PostReviewResponse, ReviewDetailResponse } from "../types/reviewApiTypes";
+import {
+  PostReviewRequest,
+  PostReviewResponse,
+  ReviewDetailResponse,
+  ReviewListResponse,
+} from "../types/reviewApiTypes";
 
 export const reviewApi = {
   // 리뷰 등록 (FormData)
@@ -8,13 +13,14 @@ export const reviewApi = {
       const response = await apiRequester.post("/v1/reviews", formData);
       return response.data;
     } catch (error) {
-
       throw error;
     }
   },
 
   // 리뷰 등록 (JSON)
-  postReview: async (reviewData: PostReviewRequest) : Promise<PostReviewResponse> => {
+  postReview: async (
+    reviewData: PostReviewRequest
+  ): Promise<PostReviewResponse> => {
     const response = await apiRequester.post("/v1/reviews/json", reviewData);
     return response.data;
   },
@@ -41,8 +47,7 @@ export const reviewApi = {
   },
 
   // 멤버의 모든 리뷰 조회
-  getMemberReviews: async (): Promise<ReviewDetailResponse[]> => {
-
+  getMemberReviews: async (): Promise<ReviewListResponse> => {
     const response = await apiRequester.get("/v1/member/reviews");
     return response.data;
   },

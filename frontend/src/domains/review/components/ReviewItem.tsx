@@ -1,31 +1,21 @@
 import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
-import {
-  CharacterAccessories,
-  CharacterEmotion,
-  CharacterType,
-} from "../types";
-import { ReviewListRecord } from "../types/reviewApiTypes";
 
-const mockData: ReviewListRecord = {
-  id: "1",
-  watchDate: "2024-03-14",
-  //   tree: string;
-  performance: {
-    name: "햄릿",
-    posterUrl: "https://picsum.photos/id/1015/400/400",
-  },
-  character: {
-    animal: CharacterType.CAT,
-    emotion: CharacterEmotion.HAPPY,
-    accessory: CharacterAccessories.FLOWER,
-  },
-};
+import { ReviewListRecord } from "../types/reviewApiTypes";
+import { useNavigate } from "react-router-dom";
 
 export const ReviewItem = ({ review }: { review: ReviewListRecord }) => {
-  const displayReview = review || mockData;
+  const displayReview = review;
+  const navigate = useNavigate();
+
+  const handleClick = (reviewId: number) => {
+    navigate(`/reviews/${reviewId}`);
+  };
 
   return (
-    <article className="rounded-3xl border border-gray-400 p-3 relative mb-4">
+    <article
+      className="rounded-3xl border border-gray-400 p-3 relative mb-4 cursor-pointer transition-all duration-300 hover:shadow-md hover:border-secondary-100/50 hover:bg-red-100"
+      onClick={() => handleClick(Number(review.id))}
+    >
       <div className="flex  gap-4">
         <figure className="flex items-center">
           <img

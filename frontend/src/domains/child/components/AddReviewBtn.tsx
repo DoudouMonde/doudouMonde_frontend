@@ -6,7 +6,7 @@ export const AddReviewBtn = () => {
 
   return (
     <ReviewAddIcon
-      className="w-16 flex fixed right-4 bottom-20"
+      className="w-16 flex fixed right-4 bottom-20 z-30 "
       onClick={addReviewHandler}
     />
   );
