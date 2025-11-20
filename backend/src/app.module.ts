@@ -24,15 +24,16 @@ import { ENV_KEYS } from '@/shared/constants';
         password: configService.get<string>(ENV_KEYS.DB_PASSWORD),
         database: configService.get<string>(ENV_KEYS.DB_DATABASE),
         entities: [__dirname + '/**/*.entity.{js,ts}'],
-        synchronize:
-          configService.get<string>(ENV_KEYS.TYPEORM_SYNCHRONIZE) === 'true' ||
-          configService.get<string>(ENV_KEYS.NODE_ENV) === 'development',
+        synchronize: true,
         logging:
           configService.get<string>(ENV_KEYS.TYPEORM_LOGGING) === 'true' ||
           configService.get<string>(ENV_KEYS.NODE_ENV) === 'development',
-        ssl: {
-          rejectUnauthorized: false, //TODO: 개발 환경에서만 사용
-        },
+        ssl:
+          configService.get<string>(ENV_KEYS.NODE_ENV) === 'production'
+            ? {
+                rejectUnauthorized: false,
+              }
+            : false,
       }),
     }),
 
