@@ -5,7 +5,9 @@ import { BaseModel } from '@/entities/base-model.entity';
 @Entity()
 export class Member extends BaseModel {
   @Column({
+    type: 'varchar',
     enum: SocialType,
+    nullable: false,
   })
   socialType: SocialType;
 
