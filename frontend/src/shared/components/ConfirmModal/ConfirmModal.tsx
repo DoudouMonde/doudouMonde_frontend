@@ -43,11 +43,13 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
     <div className="flex fixed inset-0 z-50 justify-center items-center bg-opacity-50 bg-gray-300/40">
       <div className=" w-full max-w-sm bg-gray-200 rounded-[50px]">
         {/* 텍스트 영역 */}
-        <div className="flex flex-col gap-1 items-center px-7 py-6">
+        <div className="flex flex-col gap-1 items-center px-7 py-10">
           <h3 className="text-black title-hak">{title}</h3>
           {/* <p>{subtitle}</p> */}
-          <p className="pb-2 text-green-100 body-hak-b">{subtitle}</p>
-          <p className="body-inter-b text-secondary-100">{message}</p>
+          <p className="pb-2 text-green-100 body-hak-b ">{subtitle}</p>
+          <p className="body-inter-b text-secondary-100 whitespace-pre-line text-center">
+            {message}
+          </p>
         </div>
         {/* 버튼 영역 */}
 
@@ -56,14 +58,14 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
             {showCancel && (
               <button
                 onClick={handleCancel}
-                className="flex-1    py-4 border-r-[0.2px] border-t-[0.2px] border-secondary-100 body-inter-b text-secondary-100"
+                className="flex-1 py-4 border-r-[0.2px] border-t-[0.2px] border-secondary-100/50 body-inter-b text-secondary-100"
               >
                 {cancelText}
               </button>
             )}
             <button
               onClick={handleConfirm}
-              className="flex-1 text-red-100 border-secondary-100 body-inter-b border-t-[0.2px]"
+              className="flex-1  text-red-100 border-secondary-100/50 body-inter-b border-t-[0.2px] "
             >
               {confirmText}
             </button>

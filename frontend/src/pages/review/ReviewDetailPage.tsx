@@ -4,12 +4,25 @@ import { PlayroomLayout } from "@/app/PlayroomLayout";
 import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
 import { ReviewTree } from "@/domains/playroom/components/ReviewTree";
 import { useReviewDetail } from "@/domains/review/hooks/useReviewDetail";
+import { ConfirmModal } from "@/shared/components";
+import { useState } from "react";
 
 export const ReviewDetailPage = () => {
   const navigate = useNavigate();
-  //review id 가져오기
   const { reviewId } = useParams<{ reviewId: string }>();
   const { reviewData, isLoading, error } = useReviewDetail(reviewId);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleDeleteClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleConfirmDelete = () => {};
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+  // const handleEdit = () => navigate(PATH);
 
   if (isLoading) {
     return (
@@ -70,7 +83,10 @@ export const ReviewDetailPage = () => {
               <button className="bg-yellow-200 rounded-[10px] w-20 py-1">
                 수정
               </button>
-              <button className="bg-tertiary-100 rounded-[10px] w-20  py-1">
+              <button
+                className="bg-tertiary-100 rounded-[10px] w-20 py-1"
+                onClick={handleDeleteClick}
+              >
                 삭제
               </button>
             </div>
@@ -91,6 +107,17 @@ export const ReviewDetailPage = () => {
           </div>
         </section>
       </article>
+      {isModalOpen && (
+        <ConfirmModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          title="기록장을 정말 삭제하시겠어요?"
+          message="삭제한 시 상상친구와 공연기록이 모두
+          영구적으로 사라집니다."
+          confirmText="삭제"
+          onConfirm={handleConfirmDelete}
+        />
+      )}
     </PlayroomLayout>
   );
 };
