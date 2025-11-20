@@ -13,7 +13,7 @@ type Props = {
   selected: boolean;
 };
 
-export const ChildProfileUI = ({ child, selected }: Props) => {
+export const ReviewChildProfileItem = ({ child, selected }: Props) => {
   return (
     <div className="flex flex-col items-center">
       <div className="relative cursor-pointer">

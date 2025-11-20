@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from "react";
 import Calendar from "@/domains/calendar/components/Calendar";
-import { RadioTrue, RadioFalse } from "@/assets/icons";
 import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import { useChildListData } from "@/domains/child/hooks/useChildListData";
 import { STEP_FIELDS, StepField } from "../utils/stepConfig";
 import { NewReviewData } from "@/pages/review/ReviewFunnelPage";
-import { ChildProfileItem } from "@/domains/child/components/ChildProfileItem";
-import { ChildProfileUI } from "@/domains/review/components/ReviewChildProfileUI";
+import { ReviewChildProfileItem } from "./ReviewChildProfileItem";
 
 type ChildDateData = StepField<
   NewReviewData,
@@ -85,9 +82,9 @@ export const ChildDateSelect = ({
             >
               <div className="flex ">
                 {selectedChildren.includes(child.id) ? (
-                  <ChildProfileUI child={child} selected={true} />
+                  <ReviewChildProfileItem child={child} selected={true} />
                 ) : (
-                  <ChildProfileUI child={child} selected={false} />
+                  <ReviewChildProfileItem child={child} selected={false} />
                 )}
                 <div className="flex-1 min-w-0"></div>
               </div>
