@@ -45,13 +45,8 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Checkout full repo for Docker build
-        uses: actions/checkout@v4
-        with:
-          path: /tmp/repo
-
       - name: Docker 이미지 생성
-        run: docker build -t doudoumonde-dev-server /tmp/repo/backend
+        run: docker build -t doudoumonde-dev-server -f Dockerfile .
 
       - name: Docker 이미지에 Tag 붙이기
         run: docker tag doudoumonde-dev-server ${{ steps.login-ecr.outputs.registry }}/doudoumonde-dev-server:latest
