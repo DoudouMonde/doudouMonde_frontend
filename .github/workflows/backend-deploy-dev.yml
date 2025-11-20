@@ -1,13 +1,19 @@
-name: Deploy To EC2
+name: Build DEVELOP Backend
 
 on:
   push:
     branches:
       - develop
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-deploy-dev.yml'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
     steps:
       - name: Github Repository 파일 불러오기
         uses: actions/checkout@v4
@@ -15,7 +21,7 @@ jobs:
       - name: Node 설치
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: 의존성(라이브러리) 설치
         run: yarn install
@@ -39,8 +45,13 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: Checkout full repo for Docker build
+        uses: actions/checkout@v4
+        with:
+          path: /tmp/repo
+
       - name: Docker 이미지 생성
-        run: docker build -t doudoumonde-dev-server .
+        run: docker build -t doudoumonde-dev-server /tmp/repo/backend
 
       - name: Docker 이미지에 Tag 붙이기
         run: docker tag doudoumonde-dev-server ${{ steps.login-ecr.outputs.registry }}/doudoumonde-dev-server:latest
