@@ -10,7 +10,7 @@ import { ENV_KEYS } from '@/shared/constants';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: [process.env.NODE_ENV ? `.${process.env.NODE_ENV}.env` : null, '.env'].filter(Boolean) as string[],
+      envFilePath: '.env',
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
@@ -24,16 +24,15 @@ import { ENV_KEYS } from '@/shared/constants';
         password: configService.get<string>(ENV_KEYS.DB_PASSWORD),
         database: configService.get<string>(ENV_KEYS.DB_DATABASE),
         entities: [__dirname + '/**/*.entity.{js,ts}'],
-        synchronize: true,
+        synchronize:
+          configService.get<string>(ENV_KEYS.TYPEORM_SYNCHRONIZE) === 'true' ||
+          configService.get<string>(ENV_KEYS.NODE_ENV) === 'development',
         logging:
           configService.get<string>(ENV_KEYS.TYPEORM_LOGGING) === 'true' ||
           configService.get<string>(ENV_KEYS.NODE_ENV) === 'development',
-        ssl:
-          configService.get<string>(ENV_KEYS.NODE_ENV) === 'production'
-            ? {
-                rejectUnauthorized: false, //TODO: 개발 환경에서만 사용
-              }
-            : false,
+        ssl: {
+          rejectUnauthorized: false, //TODO: 개발 환경에서만 사용
+        },
       }),
     }),
 
