@@ -34,7 +34,7 @@ export interface ReviewDetailResponse extends CharacterInfo {
 export interface ReviewListRecord {
   id: string;
   watchDate: string;
-  tree: string;
+  // tree: string;
   performance: {
     name: string;
     posterUrl: string;
