@@ -1,8 +1,5 @@
-//addReviewHandler
-
 import { useNavigate } from "react-router-dom";
 import { PATH } from "@/shared/constants";
-import { ConfirmModal } from "@/shared/components";
 
 export const useReviewAction = () => {
   const navigate = useNavigate();
@@ -23,13 +20,3 @@ export const useReviewAction = () => {
 
   return { addReviewHandler, handleStart, handleSkip, handlePurchase };
 };
-// isOpen: boolean;
-// onClose: () => void;
-// title: string;
-// subtitle?: string;
-// message: string;
-// confirmText: string;
-// cancelText?: string;
-// onConfirm: () => void;
-// onCancel?: () => void;
-// showCancel?: boolean;

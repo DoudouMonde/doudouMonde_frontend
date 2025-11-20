@@ -6,6 +6,10 @@ import { ReviewTree } from "@/domains/playroom/components/ReviewTree";
 import { useReviewDetail } from "@/domains/review/hooks/useReviewDetail";
 import { ConfirmModal } from "@/shared/components";
 import { useState } from "react";
+import { reviewApi } from "@/domains/review/apis/reviewApi";
+import { PATH } from "@/shared/constants";
+import { OneButtonModal } from "@/shared/components/Modal/OneButtonModal";
+import { useAlert } from "@/shared/hooks/useAlert";
 
 export const ReviewDetailPage = () => {
   const navigate = useNavigate();
@@ -17,7 +21,32 @@ export const ReviewDetailPage = () => {
     setIsModalOpen(true);
   };
 
-  const handleConfirmDelete = () => {};
+  const { alertModal, openAlert, closeAlert } = useAlert();
+
+  const handleConfirmDelete = async () => {
+    try {
+      await reviewApi.deleteReview(Number(reviewId));
+      //삭제가 완료되었다는 모달 띄우기
+      openAlert({
+        title: "삭제 완료",
+        message: "리뷰가 삭제되었습니다.",
+        buttonText: "확인",
+        onConfirm: () => navigate(PATH.REVIEW_LIST),
+      });
+      handleCloseModal();
+      //리뷰 리스트 화면으로 이동하기
+      navigate(PATH.REVIEW_LIST);
+    } catch (error) {
+      console.log("리뷰 삭제 중 오류: ", error);
+      //삭제 중 오류가 발생했다는 모달 띄우기
+      openAlert({
+        title: "오류 발생",
+        message: "잠시 후 다시 시도해주세요.",
+        buttonText: "확인",
+        onConfirm: () => {},
+      });
+    }
+  };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -116,6 +145,16 @@ export const ReviewDetailPage = () => {
           영구적으로 사라집니다."
           confirmText="삭제"
           onConfirm={handleConfirmDelete}
+        />
+      )}
+
+      {alertModal && (
+        <OneButtonModal
+          isOpen={alertModal.isOpen}
+          title={alertModal.title}
+          message={alertModal.message}
+          buttonText={alertModal.buttonText}
+          onConfirm={alertModal.onConfirm}
         />
       )}
     </PlayroomLayout>

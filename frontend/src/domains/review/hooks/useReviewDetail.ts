@@ -5,7 +5,6 @@ import {
   CharacterType,
 } from "../types";
 import { ReviewDetailResponse } from "../types/reviewApiTypes";
-import { reviewApi } from "../apis/reviewApi";
 
 const mockData: ReviewDetailResponse = {
   id: "1",
