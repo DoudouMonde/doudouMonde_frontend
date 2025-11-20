@@ -16,16 +16,18 @@ export const ReviewEditPage = () => {
   const { reviewId } = useParams<{ reviewId: string }>();
   const { reviewData, isLoading, error } = useReviewDetail(reviewId);
   const [characterName, setCharacterName] = useState("");
+  const [selectedDate, setSelectedDate] = useState<string>();
   const { children } = useChildListData();
 
   const selectedChildren = reviewData; //아이 정보 불러오기
-  const selectedDate = "";
+  //   const selectedDate = reviewData.watchDate;
+  setSelectedDate(reviewData.watchDate);
 
   useEffect(() => {
     if (reviewData?.characterName) {
       setCharacterName(reviewData.characterName);
     }
-  }, [reviewData]);
+  }, []);
 
   const handleDateChange = (date: Date) => {};
 
@@ -118,7 +120,7 @@ export const ReviewEditPage = () => {
           </div>
         </section>
 
-        <NavigationButtons />
+        <NavigationButtons nextText={"저장"} />
 
         <button
           type="button"
