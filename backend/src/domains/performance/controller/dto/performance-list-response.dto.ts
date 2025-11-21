@@ -1,3 +1,4 @@
+import { Sido } from '@/entities/sido.enum';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class PerformanceItemResponse {
@@ -17,10 +18,10 @@ export class PerformanceItemResponse {
 
   @ApiProperty({
     description: '지역 (시도)',
-    type: String,
-    example: '서울특별시',
+    enum: Sido,
+    example: Sido.SEOUL,
   })
-  sido: string;
+  sido: Sido;
 
   @ApiProperty({
     description: '포스터 URL',
