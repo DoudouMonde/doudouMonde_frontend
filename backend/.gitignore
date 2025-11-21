@@ -67,3 +67,5 @@ node_modules
 
 db
 postgres_data
+
+migrations

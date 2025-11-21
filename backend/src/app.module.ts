@@ -6,6 +6,7 @@ import { PerformanceModule } from './domains/performance/performance.module';
 import { ReviewModule } from './domains/review/review.module';
 import { AuthModule } from '@/domains/auth/auth.module';
 import { ENV_KEYS } from '@/shared/constants';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 @Module({
   imports: [
@@ -23,8 +24,9 @@ import { ENV_KEYS } from '@/shared/constants';
         username: configService.get<string>(ENV_KEYS.DB_USERNAME),
         password: configService.get<string>(ENV_KEYS.DB_PASSWORD),
         database: configService.get<string>(ENV_KEYS.DB_DATABASE),
+        namingStrategy: new SnakeNamingStrategy(),
         entities: [__dirname + '/**/*.entity.{js,ts}'],
-        synchronize: true,
+        synchronize: false, //절대 true로 바꿔서는 안됨
         logging:
           configService.get<string>(ENV_KEYS.TYPEORM_LOGGING) === 'true' ||
           configService.get<string>(ENV_KEYS.NODE_ENV) === 'development',
