@@ -5,8 +5,8 @@ on:
     branches:
       - develop
     paths:
-      - 'backend/**'
-      - '.github/workflows/backend-deploy-dev.yml'
+      - "backend/**"
+      - ".github/workflows/backend-deploy-dev.yml"
 
 jobs:
   deploy:
@@ -66,4 +66,4 @@ jobs:
             docker rm doudoumonde-dev-server || true
             docker system prune -af --volumes || true
             docker pull ${{ steps.login-ecr.outputs.registry }}/doudoumonde-dev-server:latest
-            docker run -d --name doudoumonde-dev-server -p 3000:3000 ${{ steps.login-ecr.outputs.registry }}/doudoumonde-dev-server:latest
+            docker run -d --name doudoumonde-dev-server -p 3000:8000 ${{ steps.login-ecr.outputs.registry }}/doudoumonde-dev-server:latest
