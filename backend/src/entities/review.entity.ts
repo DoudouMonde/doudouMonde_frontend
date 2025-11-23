@@ -17,10 +17,6 @@ export class Review extends BaseModel {
   @Column({ type: 'text' })
   content: string;
 
-  //오디오URL
-  @Column({ type: 'text' })
-  audioUrl: string;
-
   @ManyToOne(() => Member, (member) => member.id)
   member: Member;
 

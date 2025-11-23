@@ -28,7 +28,6 @@ export class ReviewService {
   async createReview(
     createReviewRequest: CreateReviewRequest,
     memberId: number,
-    audio?: Express.Multer.File,
     images?: Express.Multer.File[],
   ): Promise<Review> {
     // Member 조회 및 검증
@@ -56,17 +55,10 @@ export class ReviewService {
     });
     await this.characterRepository.save(character);
 
-    // 오디오 파일 S3 업로드
-    let audioUrl = '';
-    if (audio) {
-      audioUrl = await this.s3Service.uploadFile(audio, 'reviews/audio');
-    }
-
     // Review 생성
     const review = this.reviewRepository.create({
       watchDate: new Date(createReviewRequest.watchDate),
       content: createReviewRequest.content ?? '',
-      audioUrl,
       member,
       performance,
       character,
@@ -138,7 +130,6 @@ export class ReviewService {
       id: review.id,
       watchDate: review.watchDate,
       content: review.content,
-      audioUrl: review.audioUrl,
       characterAnimal: review.character.animal,
       characterEmotion: review.character.emotion,
       characterAccessory: review.character.accessory,
@@ -150,7 +141,6 @@ export class ReviewService {
     reviewId: number,
     updateReviewRequest: UpdateReviewRequest,
     memberId: number,
-    audio?: Express.Multer.File,
     images?: Express.Multer.File[],
   ): Promise<Review> {
     const review: Review | null = await this.reviewRepository.findOne({
@@ -160,16 +150,6 @@ export class ReviewService {
 
     if (!review) {
       throw new BusinessException(ErrorCode.REVIEW_NOT_FOUND);
-    }
-
-    // 오디오 파일 업데이트 (새 파일이 있으면 기존 파일 삭제 후 업로드)
-    if (audio) {
-      // 기존 오디오 파일 삭제
-      if (review.audioUrl) {
-        await this.s3Service.deleteFile(review.audioUrl);
-      }
-      // 새 오디오 파일 업로드
-      review.audioUrl = await this.s3Service.uploadFile(audio, 'reviews/audio');
     }
 
     // Review 업데이트
@@ -222,11 +202,6 @@ export class ReviewService {
 
     if (!review) {
       throw new BusinessException(ErrorCode.REVIEW_NOT_FOUND);
-    }
-
-    // S3에서 오디오 파일 삭제
-    if (review.audioUrl) {
-      await this.s3Service.deleteFile(review.audioUrl);
     }
 
     // S3에서 이미지 파일 삭제

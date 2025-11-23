@@ -25,13 +25,6 @@ export class ReviewDetailResponse {
   content: string | null;
 
   @ApiProperty({
-    description: '오디오 URL',
-    example: 'https://s3.amazonaws.com/bucket/audio.mp3',
-    type: String,
-  })
-  audioUrl: string;
-
-  @ApiProperty({
     description: '캐릭터 동물 타입',
     enum: CharacterAnimal,
     example: CharacterAnimal.DOG,

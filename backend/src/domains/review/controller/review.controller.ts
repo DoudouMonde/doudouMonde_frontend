@@ -64,12 +64,7 @@ export class ReviewController {
     summary: '리뷰 생성',
   })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(
-    FileFieldsInterceptor([
-      { name: 'audio', maxCount: 1 },
-      { name: 'images', maxCount: 10 },
-    ]),
-  )
+  @UseInterceptors(FileFieldsInterceptor([{ name: 'images', maxCount: 4 }]))
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: '리뷰 생성 성공',
@@ -88,10 +83,9 @@ export class ReviewController {
     description: '이미 리뷰를 작성한 공연입니다 (RE002)',
   })
   async createReview(
-    @Body() createReviewRequest: CreateReviewRequest,
+    @Body() data: CreateReviewRequest,
     @UploadedFiles()
     files: {
-      audio?: Express.Multer.File[];
       images?: Express.Multer.File[];
     },
     @Res({ passthrough: true }) res: Response,
@@ -99,16 +93,11 @@ export class ReviewController {
     const memberId = 1; // TODO: 인증된 사용자 ID로 대체
 
     // 관람날짜가 오늘 이후이면 BadRequestException 발생
-    if (new Date(createReviewRequest.watchDate) > new Date()) {
+    if (new Date(data.watchDate) > new Date()) {
       throw new BusinessException(ErrorCode.ERROR_DATE_BEFORE_TODAY);
     }
 
-    const review = await this.reviewService.createReview(
-      createReviewRequest,
-      memberId,
-      files?.audio?.[0],
-      files?.images,
-    );
+    const review = await this.reviewService.createReview(data, memberId, files?.images);
 
     res.setHeader('Location', `/reviews/${review.id}`);
     return DoudouMondeApiResponse.success(HttpStatus.CREATED);
@@ -149,7 +138,7 @@ export class ReviewController {
       throw new BusinessException(ErrorCode.ERROR_DATE_BEFORE_TODAY);
     }
 
-    await this.reviewService.updateReview(reviewId, updateReviewRequest, memberId, files?.audio?.[0], files?.images);
+    await this.reviewService.updateReview(reviewId, updateReviewRequest, memberId, files?.images);
     return DoudouMondeApiResponse.success(HttpStatus.NO_CONTENT);
   }
 
