@@ -2,11 +2,12 @@ import { Character } from './character.entity';
 import { Member } from './member.entity';
 import { Performance } from './performance.entity';
 import { BaseModel } from './base-model.entity';
-import { Column, Entity, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
 
 @Entity()
 export class Review extends BaseModel {
-  @ManyToOne(() => Performance, (performance) => performance.id)
+  @ManyToOne(() => Performance)
+  @JoinColumn({ name: 'performance_id' })
   performance: Performance;
 
   //관람날짜
@@ -17,9 +18,11 @@ export class Review extends BaseModel {
   @Column({ type: 'text' })
   content: string;
 
-  @ManyToOne(() => Member, (member) => member.id)
+  @ManyToOne(() => Member)
+  @JoinColumn({ name: 'member_id' })
   member: Member;
 
-  @OneToOne(() => Character, (character) => character.id)
+  @OneToOne(() => Character)
+  @JoinColumn({ name: 'character_id' })
   character: Character;
 }

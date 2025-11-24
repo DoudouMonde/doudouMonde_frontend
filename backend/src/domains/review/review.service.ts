@@ -113,6 +113,9 @@ export class ReviewService {
       relations: ['character', 'performance'],
     });
 
+    console.log('id', id);
+    console.log('review', review);
+
     if (!review) {
       throw new BusinessException(ErrorCode.REVIEW_NOT_FOUND);
     }
