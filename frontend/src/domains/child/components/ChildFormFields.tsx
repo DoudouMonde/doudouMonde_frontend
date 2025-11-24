@@ -78,6 +78,8 @@ export const ChildFormFields = () => {
         rules={{ required: "프로필 사진은 필수 선택입니다." }}
         render={({ field }) => (
           <GridSelectCard<ProfileValue>
+            title="프로필 사진 선택"
+            subtitle="아이의 프로필로 사용할 귀여운 캐릭터를 골라주세요."
             options={PROFILE_OPTIONS_UI}
             selected={field.value}
             onChange={field.onChange}

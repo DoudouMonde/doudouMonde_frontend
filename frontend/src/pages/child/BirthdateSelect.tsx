@@ -66,7 +66,7 @@ export function BirthdateSelect({
 
   return (
     <div className={className}>
-      <p className="mb-2 body-hak-b">{label}</p>
+      <p className="mb-2 body-inter-b">{label}</p>
       <div className="flex gap-2">
         <SelectField
           value={year}
