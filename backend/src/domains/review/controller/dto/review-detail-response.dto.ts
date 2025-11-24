@@ -51,4 +51,11 @@ export class ReviewDetailResponse {
     type: [String],
   })
   images: string[];
+
+  @ApiProperty({
+    description: '함께 본 아이 ID 배열',
+    example: [1, 2],
+    type: [Number],
+  })
+  childIds: number[];
 }

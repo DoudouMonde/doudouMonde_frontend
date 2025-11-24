@@ -139,10 +139,11 @@ export class ReviewService {
       relations: ['character', 'performance'],
     });
 
-    console.log('id', id);
-    console.log('review', review);
-
     if (!review) {
+      throw new BusinessException(ErrorCode.REVIEW_NOT_FOUND);
+    }
+
+    if (!review.character) {
       throw new BusinessException(ErrorCode.REVIEW_NOT_FOUND);
     }
 
@@ -155,6 +156,13 @@ export class ReviewService {
     // TODO: S3에서 presigned URL 생성
     const imageUrls = reviewImages.map((img) => `https://s3.example.com/${img.objectKey}`);
 
+    // 함께 본 아이들 조회
+    const childReviews: ChildReview[] = await this.childReviewRepository.find({
+      where: { review: { id } },
+      relations: ['child'],
+    });
+    const childIds = childReviews.map((childReview) => childReview.child.id);
+
     return {
       id: review.id,
       watchDate: review.watchDate,
@@ -163,6 +171,7 @@ export class ReviewService {
       characterEmotion: review.character.emotion,
       characterAccessory: review.character.accessory,
       images: imageUrls,
+      childIds,
     };
   }
 
