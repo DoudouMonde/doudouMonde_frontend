@@ -242,6 +242,9 @@ export class ReviewService {
       throw new BusinessException(ErrorCode.REVIEW_NOT_FOUND);
     }
 
+    // Character ID 저장 (Review 삭제 후 사용)
+    const characterId = review.character?.id;
+
     // S3에서 이미지 파일 삭제
     const reviewImages: ReviewImage[] = await this.reviewImageRepository.find({
       where: { review: { id: reviewId } },
@@ -254,11 +257,16 @@ export class ReviewService {
     // 관련 이미지 DB에서 삭제
     await this.reviewImageRepository.delete({ review: { id: reviewId } });
 
-    // Character 삭제
-    await this.characterRepository.delete(review.character.id);
+    // 함께 본 아이 관계 삭제
+    await this.childReviewRepository.delete({ review: { id: reviewId } });
 
-    // Review 삭제
+    // Review 삭제 (Character 참조를 제거하기 위해 먼저 삭제)
     await this.reviewRepository.delete(reviewId);
+
+    // Character 삭제 (Review 삭제 후 가능)
+    if (characterId) {
+      await this.characterRepository.delete(characterId);
+    }
   }
 
   private async validateDuplicateReview(memberId: number, performanceId: number): Promise<void> {
