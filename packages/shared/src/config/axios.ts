@@ -3,7 +3,7 @@ import axios, {
   AxiosRequestConfig,
   InternalAxiosRequestConfig,
   isAxiosError,
-} from 'axios';
+} from "axios";
 
 export interface AxiosConfig {
   baseURL: string;
@@ -26,12 +26,12 @@ export const createAxiosInstance = (config: AxiosConfig): AxiosInstance => {
  * 기본 요청 헤더 설정 함수
  */
 export const setRequestDefaultHeader = (
-  requestConfig: AxiosRequestConfig,
+  requestConfig: AxiosRequestConfig
 ): InternalAxiosRequestConfig => {
   const config = requestConfig;
   config.headers = {
     ...config.headers,
-    'Content-Type': 'application/json;charset=utf-8',
+    "Content-Type": "application/json;charset=utf-8",
   };
 
   return config as InternalAxiosRequestConfig;
@@ -42,7 +42,7 @@ export const setRequestDefaultHeader = (
  */
 export const requesterErrorHandling = (error: Error): void => {
   if (isAxiosError(error)) {
-    console.error('Axios Error:', {
+    console.error("Axios Error:", {
       message: error.message,
       status: error.response?.status,
       statusText: error.response?.statusText,
@@ -51,7 +51,7 @@ export const requesterErrorHandling = (error: Error): void => {
       method: error.config?.method,
     });
   } else {
-    console.error('Error:', error);
+    console.error("Error:", error);
   }
 };
 
@@ -62,10 +62,12 @@ export const requesterErrorHandling = (error: Error): void => {
  */
 export const createAuthInterceptor = (
   getToken: () => string | null,
-  onUnauthorized?: () => void,
+  onUnauthorized?: () => void
 ) => {
   return {
-    request: (request: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+    request: (
+      request: InternalAxiosRequestConfig
+    ): InternalAxiosRequestConfig => {
       const token = getToken();
       if (token) {
         request.headers.Authorization = `Bearer ${token}`;
@@ -91,4 +93,3 @@ export const createAuthInterceptor = (
     },
   };
 };
-
