@@ -5,3 +5,4 @@ export enum Profile {
   RABBIT = "RABBIT",
   CHICK = "CHICK",
 }
+

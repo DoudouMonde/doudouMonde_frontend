@@ -24,7 +24,7 @@ export const childApi = {
     if (!result.success) {
       console.error(result.error);
       //error를 던지기
-      throw new Error("Invalid ChildListResponse");
+      // throw new Error('Invalid ChildListResponse');
       //모니터링로그를 남기는 코드 -> sentry를 추가해봐
 
       //UI를 어떻게 띄울지 고민

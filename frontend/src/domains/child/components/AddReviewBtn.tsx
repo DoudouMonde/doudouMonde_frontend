@@ -1,4 +1,4 @@
-import { ReviewAddIcon } from "@/assets/icons/playroom";
+import { ReviewAddIcon } from "@/assets/icons";
 import { useReviewAction } from "@/domains/review/hooks/useReviewActions";
 
 export const AddReviewBtn = () => {
@@ -6,7 +6,7 @@ export const AddReviewBtn = () => {
 
   return (
     <ReviewAddIcon
-      className="w-16 flex fixed right-4 bottom-20"
+      className="w-16 flex fixed right-4 bottom-20 z-30 "
       onClick={addReviewHandler}
     />
   );

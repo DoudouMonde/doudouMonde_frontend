@@ -20,6 +20,7 @@ import {
 import { BottomNavigationLayout } from "@/app/layout";
 import { PATH } from "@/shared/constants";
 import { ReviewFunnelPage } from "@/pages/review/ReviewFunnelPage";
+import { ReviewEditPage } from "@/pages/review/ReviewEditPage";
 
 const router = createBrowserRouter([
   {
@@ -97,6 +98,10 @@ const router = createBrowserRouter([
   {
     path: "reviews/:reviewId",
     element: <ReviewDetailPage />,
+  },
+  {
+    path: "reviews/:reviewId/edit",
+    element: <ReviewEditPage />,
   },
 ]);
 

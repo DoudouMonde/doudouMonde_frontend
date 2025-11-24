@@ -5,3 +5,4 @@ export enum CharacterAnimal {
   CHICK = "CHICK",
   RABBIT = "RABBIT",
 }
+

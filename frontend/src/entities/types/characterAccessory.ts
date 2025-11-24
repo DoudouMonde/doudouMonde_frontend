@@ -6,3 +6,4 @@ export enum CharacterAccessory {
   CROWN = "CROWN",
   WIZARD_HAT = "WIZARD_HAT",
 }
+

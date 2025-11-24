@@ -14,7 +14,7 @@ type Props = {
   selectedChild: ChildItemResponse;
 };
 import { UpdateChildRequest } from "@/domains/child/types/childApiTypes";
-import { Gender, Profile } from"@/entities/types";
+import { Gender, Profile } from "@/entities/types";
 
 export const ChildEditModal: React.FC<Props> = ({ selectedChild }) => {
   const { data: child, isError } = useChildDetailQuery(selectedChild.id);

@@ -6,3 +6,4 @@ export enum CharacterEmotion {
   CURIOUS = "CURIOUS",
   ONEMORE = "ONEMORE",
 }
+

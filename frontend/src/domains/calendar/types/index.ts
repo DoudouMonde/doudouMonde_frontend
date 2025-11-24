@@ -1,4 +1,5 @@
 export interface CalendarProps {
+  selectedDate?: Date | null;
   className?: string;
   onDateChange?: (date: Date) => void;
 }

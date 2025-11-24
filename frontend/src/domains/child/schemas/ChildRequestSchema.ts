@@ -1,6 +1,5 @@
 import { z } from "zod";
-import { Gender } from "@/entities/types/gender";
-import { Profile } from "@/entities/types/profile";
+import { Gender, Profile } from "@/entities/types";
 
 const genderValues = Object.values(Gender) as [string, ...string[]];
 const profileValues = Object.values(Profile) as [string, ...string[]];

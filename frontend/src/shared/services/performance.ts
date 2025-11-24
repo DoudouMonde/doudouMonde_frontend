@@ -1,4 +1,4 @@
-import { Genre } from "@/entities/types/genre";
+import { Genre } from "@/entities/types";
 
 export const getGenreLabel = (genre: Genre) => {
   // COMPOSITE("복합"),

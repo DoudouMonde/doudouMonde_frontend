@@ -22,3 +22,4 @@ export type CharacterEntity = z.infer<typeof CharacterEntity>;
 export type PickCharacterEntityKeys = {
   [K in keyof CharacterEntity]?: true;
 };
+

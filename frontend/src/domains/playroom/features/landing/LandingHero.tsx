@@ -2,51 +2,24 @@ import { PageContainer } from "@/shared/components/Layout";
 // import { BookMakeModal } from "@/shared/components/Modal/BookMakeModal";
 import { ActionButton } from "@/shared/components/Button/ActionButton";
 
-import {
-  StorytownTree0,
-  StorytownTree1,
-  StorytownTree2,
-  StorytownTree3,
-  StorytownTree4,
-  StorytownTree5,
-  StorytownTree6,
-  StorytownTree7,
-  StorytownTree8,
-  StorytownTree9,
-} from "@/assets/icons/playroom/storytown_tree";
-
-const Trees = [
-  StorytownTree0,
-  StorytownTree1,
-  StorytownTree2,
-  StorytownTree3,
-  StorytownTree4,
-  StorytownTree5,
-  StorytownTree6,
-  StorytownTree7,
-  StorytownTree8,
-  StorytownTree9,
-];
 // import { useChildListContext } from "@/domains/child/contexts/ChildListContext";
 import { useChildListData } from "@/domains/child/hooks/useChildListData";
-import { useReviewList } from "@/domains/review/hooks/useReviewLIst";
 import { useReviewAction } from "@/domains/review/hooks/useReviewActions";
+import { ReviewTree } from "../../components/ReviewTree";
 
 //TODO: 책 구매 팝업 구현
 
 export const LandingHero = () => {
-  const { reviewCount } = useReviewList();
   const { children } = useChildListData();
   const { handleStart, handleSkip } = useReviewAction();
   const childNames = "서아"; //구현 필요
-  const Tree = Trees[Math.min(reviewCount, 9)];
 
   return (
     <PageContainer>
       {/* {popup && <BookMakeModal onClose={onClosePopup} onPurchase={onPurchase} />} */}
       <section className="relative">
         <figure className="flex z-20 justify-center items-start w-full">
-          <Tree className="w-full h-auto object-contain drop-shadow-[0px_0px_5px_rgba(0,0,0.5,0)]" />
+          <ReviewTree />
         </figure>
 
         <article className="flex z-20 flex-col gap-0 justify-center items-center mx-auto mt-4">

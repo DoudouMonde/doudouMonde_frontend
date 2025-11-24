@@ -1,37 +1,42 @@
-import React from "react";
-import { AccessoryId } from "@/domains/playroom/constants/animals";
+import {
+  AccessoryId,
+  AnimalId,
+  animals,
+  EmotionId,
+  emotions,
+} from "@/domains/playroom/constants/animals";
 import { Desc } from "@/domains/playroom/components/Desc";
 import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
 import { SingleSelectGroup } from "@/shared/components";
 import { accessories } from "@/domains/playroom/constants/animals";
 import { SingleSelectItem } from "@/shared/components";
 import { RadioFalse, RadioTrue } from "@/assets/icons";
-import { useCharaterFlowState } from "@/domains/playroom/hooks/useCharacterFlowState";
-import { useNavigate } from "react-router-dom";
-import { PATH } from "@/shared/constants";
+import { STEP_FIELDS, StepField } from "../utils/stepConfig";
+import { NewReviewData } from "@/pages/review/ReviewFunnelPage";
+import { useSelectOption } from "../hooks/useCharacterOption";
 
-export const AccSelect: React.FC = () => {
-  const navigate = useNavigate();
+type AccData = StepField<NewReviewData, typeof STEP_FIELDS.accSelect>;
 
-  const {
-    selectedAnimal,
-    selectedEmotion,
-    selectedValue: selectedAccessory,
-    setSelectedValue: setSelectedAccessory,
-    isAnimating,
-  } = useCharaterFlowState<AccessoryId>({
-    stepName: "accessory",
-    storageKey: "selectedAcc",
-    initialValue: accessories[0].id,
+type AccSelectProps = {
+  data: AccData;
+  onChange: (patch: { accOption: AccessoryId }) => void;
+  onValidityChange?: (ok: boolean) => void;
+};
+
+export const AccSelect = ({
+  data,
+  onChange,
+  onValidityChange,
+}: AccSelectProps) => {
+  const selectedAnimal: AnimalId = data.typeOption ?? animals[0].id;
+  const selectedEmotion: EmotionId = data.emotionOption ?? emotions[0].id;
+
+  const { selected, handleSelect, isAnimating } = useSelectOption({
+    list: accessories,
+    currentValue: data.accOption,
+    onChange: (id) => onChange({ accOption: id }),
+    onValidityChange,
   });
-
-  const handleNext = () => {
-    navigate(PATH.CHAR_PREV, {
-      state: {
-        emotion: selectedEmotion,
-      },
-    });
-  };
 
   return (
     <div>
@@ -48,18 +53,15 @@ export const AccSelect: React.FC = () => {
         isAnimating={isAnimating}
         selectedAnimal={selectedAnimal}
         selectedEmotion={selectedEmotion}
-        selectedAcc={selectedAccessory}
+        selectedAcc={selected}
       />
       <hr className="my-4 mb-7 border-secondary-100/30" />
 
-      <SingleSelectGroup
-        selectedValue={selectedAccessory}
-        onChange={(value) => setSelectedAccessory(value as AccessoryId)}
-      >
+      <SingleSelectGroup selectedValue={selected} onChange={handleSelect}>
         <div className="grid grid-cols-3 gap-3 mb-4">
           {accessories.map((acc) => {
             const Icon = acc.icon;
-            const active = selectedAccessory === acc.id;
+            const active = selected === acc.id;
             return (
               <SingleSelectItem key={acc.id} value={acc.id}>
                 <div className="transition-all duration-200 cursor-pointer">

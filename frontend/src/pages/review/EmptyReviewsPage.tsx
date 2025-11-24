@@ -8,9 +8,7 @@ export const EmptyReviewsPage = () => {
     <>
       {/* 나무 이미지 삽입 */}
       <StorytownTree5 />
-
       <TitleWithClount />
-
       <div className="bg-white flex justify-center items-center py-10 border-t-gray-400 border">
         {/* 두두이미지  */}
         <NeedFriendDoudou className="w-48 " />

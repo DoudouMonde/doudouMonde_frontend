@@ -6,9 +6,15 @@ import * as GlassesCharacters from "@/assets/icons/playroom/storytown/character/
 import * as RibbonCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/ribbon";
 import * as WizhatCharacters from "@/assets/icons/playroom/storytown/character/emotion+acc/wizhat";
 
+const toPascalCase = (value: string) => {
+  if (!value) return "";
+  const lower = value.toLowerCase(); // CAT → cat
+  return lower.charAt(0).toUpperCase() + lower.slice(1); // cat → Cat
+};
+
 export const getEmotionCharacter = (animal: string, emotion: string) => {
-  const animalName = animal.charAt(0).toUpperCase() + animal.slice(1);
-  const emotionName = emotion.charAt(0).toUpperCase() + emotion.slice(1);
+  const animalName = toPascalCase(animal);
+  const emotionName = toPascalCase(emotion);
   const componentName = `${animalName}${emotionName}`;
 
   const mappedComponentName = componentName.replace("Onemore", "Onemore");
@@ -22,22 +28,21 @@ export const getEmotionCharacter = (animal: string, emotion: string) => {
 };
 
 const accessoryModules = {
-  crown: CrownCharacters,
-  cap: CapCharacters,
-  flower: FlowerCharacters,
-  glasses: GlassesCharacters,
-  ribbon: RibbonCharacters,
-  wizhat: WizhatCharacters,
+  CROWN: CrownCharacters,
+  CAP: CapCharacters,
+  FLOWER: FlowerCharacters,
+  GLASSES: GlassesCharacters,
+  RIBBON: RibbonCharacters,
+  WIZHAT: WizhatCharacters,
 };
-
 export const getAccessoryCharacter = (
   animal: string,
   emotion: string,
   accessory: string
 ) => {
-  const animalName = animal.charAt(0).toUpperCase() + animal.slice(1);
-  const emotionName = emotion.charAt(0).toUpperCase() + emotion.slice(1);
-  const accessoryName = accessory.charAt(0).toUpperCase() + accessory.slice(1);
+  const animalName = toPascalCase(animal);
+  const emotionName = toPascalCase(emotion);
+  const accessoryName = toPascalCase(accessory);
   const componentName = `${animalName}${emotionName}${accessoryName}`;
 
   let characterModule = (accessoryModules as any)[accessory];

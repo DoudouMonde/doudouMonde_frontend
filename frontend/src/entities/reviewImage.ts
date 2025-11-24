@@ -17,3 +17,4 @@ export type ReviewImageEntity = z.infer<typeof ReviewImageEntity>;
 export type PickReviewImageEntityKeys = {
   [K in keyof ReviewImageEntity]?: true;
 };
+

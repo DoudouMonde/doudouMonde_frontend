@@ -35,7 +35,7 @@ export const OneButtonModal: React.FC<oneButtonModalProps> = ({
           <div className="flex">
             <button
               onClick={handleConfirm}
-              className="flex-1    py-4 border-r-[0.2px] border-t-[0.2px] border-secondary-100 body-inter-b text-secondary-100"
+              className="flex-1    py-4 border-r-[0.2px] border-t-[0.2px] border-secondary-100/50 body-inter-b text-secondary-100"
             >
               {buttonText}
             </button>

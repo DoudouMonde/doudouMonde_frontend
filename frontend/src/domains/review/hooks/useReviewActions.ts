@@ -1,5 +1,3 @@
-//addReviewHandler
-
 import { useNavigate } from "react-router-dom";
 import { PATH } from "@/shared/constants";
 
