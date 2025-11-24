@@ -1,6 +1,6 @@
 import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import { useChildRegistrationContext } from "../contexts/ChildRegistrationContext";
-import { NameSection } from "./NameSection";
+// import { NameSection } from "./NameSection";
 import { NavigationButtons } from "@/shared/components";
 import { Controller } from "react-hook-form";
 import { ChildProfileItem } from "./ChildProfileItem";
