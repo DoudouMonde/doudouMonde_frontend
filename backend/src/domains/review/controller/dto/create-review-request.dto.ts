@@ -37,6 +37,7 @@ export class CreateReviewRequest {
     description: '캐릭터 동물 타입',
     enum: CharacterAnimal,
     example: CharacterAnimal.DOG,
+    required: true,
   })
   @IsEnum(CharacterAnimal, {
     message: `characterAnimal 은(는) ${Object.values(CharacterAnimal).join(', ')} 중 하나여야 합니다.`,
@@ -48,6 +49,7 @@ export class CreateReviewRequest {
     description: '캐릭터 감정',
     enum: CharacterEmotion,
     example: CharacterEmotion.HAPPY,
+    required: true,
   })
   @IsEnum(CharacterEmotion, {
     message: `characterEmotion 은(는) ${Object.values(CharacterEmotion).join(', ')} 중 하나여야 합니다.`,
@@ -59,6 +61,7 @@ export class CreateReviewRequest {
     description: '캐릭터 악세서리',
     enum: CharacterAccessory,
     example: CharacterAccessory.RIBBON,
+    required: true,
   })
   @IsEnum(CharacterAccessory, {
     message: `characterAccessory 은(는) ${Object.values(CharacterAccessory).join(', ')} 중 하나여야 합니다.`,
