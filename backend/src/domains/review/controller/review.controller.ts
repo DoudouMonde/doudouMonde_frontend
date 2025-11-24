@@ -127,7 +127,6 @@ export class ReviewController {
     @Body() updateReviewRequest: UpdateReviewRequest,
     @UploadedFiles()
     files: {
-      audio?: Express.Multer.File[];
       images?: Express.Multer.File[];
     },
   ): Promise<DoudouMondeApiResponse<void>> {
