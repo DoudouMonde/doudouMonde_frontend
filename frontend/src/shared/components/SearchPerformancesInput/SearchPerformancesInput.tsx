@@ -32,12 +32,12 @@ export const SearchPerformancesInput = ({
     setShowSearchResults(value.length > 0);
   };
 
-  const handleSearchResultClick = (performanceId: number) => {
+  const handleSearchResultClick = (performance) => {
     setShowSearchResults(false);
     setSearchText("");
 
     if (onResultClick) {
-      onResultClick(performanceId);
+      onResultClick(performance.id);
     } else {
       navigate(PATH.PERFORMANCE_DETAIL(performanceId));
     }
@@ -78,7 +78,7 @@ export const SearchPerformancesInput = ({
                   key={performance.performanceId}
                   className="px-4 py-3 bg-gray-200 border-b border-gray-100 transition-colors cursor-pointer hover:bg-gray-50 last:border-b-0"
                   onClick={() =>
-                    handleSearchResultClick(performance.performanceId)
+                    handleSearchResultClick(performance)
                   }
                 >
                   <div className="flex gap-3 items-center">
