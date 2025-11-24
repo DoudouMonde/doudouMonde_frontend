@@ -19,6 +19,7 @@ export const ChildForm = () => {
     setIsBottomSheetOpen,
     handleAddAnotherChild,
     handleComplete,
+    isFormValid,
   } = useChildRegistrationContext();
 
   return (
@@ -29,7 +30,7 @@ export const ChildForm = () => {
         <form onSubmit={handleSave}>
           <ContentSection>
             <ChildFormFields />
-            <SaveButton text={"등록하기"} />
+            <SaveButton text={"등록하기"} disabled={!isFormValid} />
           </ContentSection>
         </form>
       </MainContainer>
