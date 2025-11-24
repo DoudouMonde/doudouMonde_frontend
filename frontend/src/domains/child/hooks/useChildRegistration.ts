@@ -22,9 +22,7 @@ export const useChildRegistration = () => {
 
   const { isDuplicateName, addChildName, isLimitReached, maxChildren } =
     useChildNameManager();
-
   const childFormSchema = createChildFormSchema(isDuplicateName);
-
   const formMethods = useForm<ChildFormValues>({
     resolver: zodResolver(childFormSchema),
     defaultValues: {
@@ -126,5 +124,6 @@ export const useChildRegistration = () => {
     handleSave,
     isLimitReached,
     maxChildren,
+    isFormValid: formMethods.formState.isValid,
   };
 };

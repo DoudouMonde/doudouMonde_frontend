@@ -10,3 +10,4 @@ export * from "./sido"
 export * from "./social-type"
 export * from "./social-type"
 export * from "./trait"
+

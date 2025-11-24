@@ -18,9 +18,18 @@ export default defineConfig({
     host: "0.0.0.0",
   },
   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-      "@doudoumonde/shared": path.resolve(__dirname, "../packages/shared/src/index.ts"),
-    },
+    alias: [
+      {
+        find: "@",
+        replacement: path.resolve(__dirname, "./src"),
+      },
+      {
+        find: "@doudoumonde/shared",
+        replacement: path.resolve(__dirname, "../packages/shared/src"),
+      },
+    ],
+  },
+  optimizeDeps: {
+    include: ["@doudoumonde/shared"],
   },
 });

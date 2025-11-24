@@ -9,3 +9,4 @@ export enum Genre {
   CIRCUS_MAGIC = "CIRCUS_MAGIC",
   DANCE = "DANCE",
 }
+

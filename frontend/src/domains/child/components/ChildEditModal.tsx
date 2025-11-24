@@ -1,6 +1,6 @@
 import { ChildItemResponse } from "@/domains/child/types/childApiTypes";
 import { useChildRegistrationContext } from "../contexts/ChildRegistrationContext";
-import { NameSection } from "./NameSection";
+// import { NameSection } from "./NameSection";
 import { NavigationButtons } from "@/shared/components";
 import { Controller } from "react-hook-form";
 import { ChildProfileItem } from "./ChildProfileItem";
@@ -14,7 +14,7 @@ type Props = {
   selectedChild: ChildItemResponse;
 };
 import { UpdateChildRequest } from "@/domains/child/types/childApiTypes";
-import { Gender, Profile } from"@/entities/types";
+import { Gender, Profile } from "@/entities/types";
 
 export const ChildEditModal: React.FC<Props> = ({ selectedChild }) => {
   const { data: child, isError } = useChildDetailQuery(selectedChild.id);

@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import { ReviewPerformanceInfo } from "@/shared/components/Review/ReviewPerformanceInfo";
 import { PhotoGridUploader } from "@/shared/components/Review/UploadPhoto";
 import { ReviewMemoTextarea } from "@/shared/components/Review/ReviewMemoTextare";
+import { STEP_FIELDS, StepField } from "../utils/stepConfig";
 import { NewReviewData } from "@/pages/review/ReviewFunnelPage";
 
+type PhototextData = StepField<NewReviewData, typeof STEP_FIELDS.photoTextReview>;
+
 type PhototextReviewProps = {
-  data: NewReviewData;
+  data: PhototextData,
   onChange: (patch: {
     uploadedImages: (File | null)[];
     reviewText: string;
@@ -13,54 +16,54 @@ type PhototextReviewProps = {
   onValidityChange?: (ok: boolean) => void;
 };
 
+
 export const PhototextReview = ({
   data,
   onChange,
   onValidityChange,
-}: PhototextReviewProps) => {
-  const [uploadedImages, setUploadedImages] = useState<(File | null)[]>(
-    data.uploadedImages ?? [null, null, null, null] // 기본 4칸
-  );
-  const [reviewText, setReviewText] = useState<string>(data.reviewText ?? "");
-  // ✅ data가 바뀌면 (다시 돌아왔을 때 등) 로컬 상태도 동기화
-  useEffect(() => {
-    if (data.uploadedImages) {
-      setUploadedImages(data.uploadedImages);
-    }
-    if (data.reviewText !== undefined) {
-      setReviewText(data.reviewText);
-    }
-  }, [data.uploadedImages, data.reviewText]);
-
-  // ✅ 로컬 상태가 바뀔 때마다 부모에 patch 전달 + 유효성도 함께 올리기
-  useEffect(() => {
-    onChange({
-      reviewText,
-      uploadedImages,
-    });
-
-    if (onValidityChange) {
-      const hasText = reviewText.trim().length > 0;
-      const hasImage = uploadedImages.some((img) => img !== null);
-      onValidityChange(hasText || hasImage); // 예: 텍스트 또는 사진 하나 이상 있으면 OK
-    }
-  }, [reviewText, uploadedImages, onChange, onValidityChange]);
+}:PhototextReviewProps ) => {
+  
+  const uploadedImages = data.uploadedImages ?? [null, null, null, null] // 기본 4칸
+  const [localText, setLocalText] = useState( data.reviewText ?? "");
+  
+  //data에서 선택한 공연, 날짜 불러오기
+  const selectedPerformance = data.performanceName ?? null;
+  const selectedDate = data.watchDate ?? null;
 
   const handleImageUpload = (index: number, file: File) => {
     const newImages = [...uploadedImages];
     newImages[index] = file;
-    setUploadedImages(newImages);
+
+    onChange({
+      uploadedImages: newImages,
+      reviewText : localText,
+    })
+    onValidityChange?.(true);
   };
 
   const handleImageRemove = (index: number) => {
     const newImages = [...uploadedImages];
     newImages[index] = null;
-    setUploadedImages(newImages);
+
+    onChange({
+      uploadedImages: newImages,
+      reviewText : localText,
+    })
+    onValidityChange?.(true);
   };
 
-  //data에서 선택한 공연, 날짜 불러오기
-  const selectedPerformance = data.performanceName ?? null;
-  const selectedDate = data.watchDate ?? null;
+  //먼저 로컬에서만 상태 갱신
+  const handleTextChange = (next: string) => {
+      setLocalText(next);
+  }
+//blur 시점에 부모로 전달
+  const handleTextBlur =() => {
+        onChange({
+      uploadedImages,
+      reviewText: localText,
+    })
+  }
+
 
   return (
     <div>
@@ -88,8 +91,9 @@ export const PhototextReview = ({
 
       {/* 후기 텍스트 섹션 */}
       <ReviewMemoTextarea
-        value={reviewText}
-        onChange={(next) => setReviewText(next)}
+        value={localText}
+        onChange={handleTextChange}
+        onBlur={handleTextBlur}
         label="메모"
         placeholder="오랫동안 추억할 수 있게 간단한 메모를 남겨주세요."
         maxLength={300}

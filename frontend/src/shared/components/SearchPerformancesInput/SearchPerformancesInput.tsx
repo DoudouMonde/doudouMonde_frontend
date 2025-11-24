@@ -5,10 +5,11 @@ import { PATH } from "@/shared/constants/paths";
 import { getSidoLabel } from "@/shared/services";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { PerformanceItem } from "@/domains/performance/types";
 
 interface SearchPerformancesInputProps {
   placeholder?: string;
-  onResultClick?: (performanceId: number) => void;
+  onResultClick?: (performance: PerformanceItem) => void;
   className?: string;
 }
 
@@ -32,14 +33,14 @@ export const SearchPerformancesInput = ({
     setShowSearchResults(value.length > 0);
   };
 
-  const handleSearchResultClick = (performanceId: number) => {
+  const handleSearchResultClick = (performance) => {
     setShowSearchResults(false);
     setSearchText("");
 
     if (onResultClick) {
-      onResultClick(performanceId);
+      onResultClick(performance.id);
     } else {
-      navigate(PATH.PERFORMANCE_DETAIL(performanceId));
+      navigate(PATH.PERFORMANCE_DETAIL(performance.performanceId));
     }
   };
 
@@ -77,9 +78,7 @@ export const SearchPerformancesInput = ({
                 <li
                   key={performance.performanceId}
                   className="px-4 py-3 bg-gray-200 border-b border-gray-100 transition-colors cursor-pointer hover:bg-gray-50 last:border-b-0"
-                  onClick={() =>
-                    handleSearchResultClick(performance.performanceId)
-                  }
+                  onClick={() => handleSearchResultClick(performance)}
                 >
                   <div className="flex gap-3 items-center">
                     <img

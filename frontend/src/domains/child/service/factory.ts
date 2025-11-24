@@ -1,12 +1,11 @@
-import { Gender } from "@/entities";
+import { Gender, Profile } from "@/entities/types";
 import { ChildFormValues } from "../models/ChildFormValues";
-import { Profile } from "@/entities/types";
 
-export const createNewChild =() : ChildFormValues => {
-    return{
-        name:"",
-        birthday:"",
-        gender: Gender.MALE,
-        profile: Profile.DOG,
-    }
-}
+export const createNewChild = (): ChildFormValues => {
+  return {
+    name: "",
+    birthday: "",
+    gender: Gender.MALE,
+    profile: Profile.DOG,
+  };
+};

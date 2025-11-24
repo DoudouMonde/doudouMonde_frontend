@@ -25,6 +25,17 @@ async function bootstrap() {
     .setTitle('DoudouMonde API')
     .setDescription('DoudouMonde 백엔드 API 문서')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'Authorization',
+        description: 'JWT 토큰',
+        in: 'header',
+      },
+      'accessToken',
+    )
     .addTag('members', '회원 관리')
     .addTag('children', '아이 관리')
     .addTag('performances', '공연 관리')
@@ -34,6 +45,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api/docs', app, document);
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 8000);
 }
 bootstrap();

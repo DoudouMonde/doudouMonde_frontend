@@ -1,4 +1,9 @@
-import { CharacterEmotion, CharacterAccessory, CharacterAnimal } from "@/entities/types";
+import {
+  CharacterType,
+  CharacterEmotion,
+  CharacterAccessories,
+} from "./characterTypes";
+
 
 export type ReviewItem = {
   id: number;
@@ -6,7 +11,7 @@ export type ReviewItem = {
   watchDate: string;
   content: string;
   characterName: string;
-  characterAnimal: CharacterAnimal;
+  characterAnimal: CharacterType;
   characterEmotion: CharacterEmotion;
-  characterAccessory?: CharacterAccessory;
+  characterAccessory?: CharacterAccessories;
 };

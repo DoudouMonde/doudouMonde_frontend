@@ -57,6 +57,7 @@ export default {
           100: "#ECECEB",
           200: "#F9FAFB",
           300: "#8C8C8C",
+          400: "#F9FAFB",
           900: "#212427",
         },
         white: "#FFFFFF",

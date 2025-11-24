@@ -10,11 +10,17 @@ import { AccSelect } from "@/domains/review/components/AccSelect";
 import { CharName } from "@/domains/review/components/CharName";
 import { NavigationButtons } from "@/shared/components";
 import { ReviewContainer } from "@/shared/components/Layout/ReviewContainer";
+import { STEP_FIELDS } from "@/domains/review/utils/stepConfig";
+import { pickStepData } from "@/domains/review/utils/stepConfig";
 import {
-  CharacterType,
-  CharacterEmotion,
-  CharacterAccessories,
-} from "@/domains/review/types";
+  AccessoryId,
+  AnimalId,
+  EmotionId,
+} from "@/domains/playroom/constants/animals";
+import { reviewApi } from "@/domains/review/apis/reviewApi";
+import { mapNewReviewDataToRequest } from "@/domains/review/mappers/reviewMapper";
+import { useNavigate } from "react-router-dom";
+import { PostReviewResponse } from "@/domains/review/types/reviewApiTypes";
 
 const STEPS = [
   "performanceSelect",
@@ -38,44 +44,29 @@ const STEP_TITLES: Record<Step, string> = {
 
 type Step = (typeof STEPS)[number];
 
-type PerformanceSelectData = { performanceId: string; performanceName: string };
-type ChildDateSelectData = {
-  childrend: string[];
-  watchDate: string;
+export type NewReviewData = {
+  performanceId?: number;
+  performanceName?: string;
+  //아마 childrenId 배열도 필요할 듯(api용)
+  children?: string[];
+  watchDate?: string;
+  reviewText?: string;
+  uploadedImages?: (File | null)[];
+  typeOption?: AnimalId; //api 보낼 때는 id -> type으로 변환해서
+  emotionOption?: EmotionId;
+  accOption?: AccessoryId;
+  charName?: string;
 };
-
-export type PhotoTextReviewData = {
-  reviewText: string;
-  uploadedImages: (File | null)[];
-};
-type TypeSelectData = { typeOption: CharacterType };
-type EmotionSelectData = { emotionOption: CharacterEmotion };
-type AccSelectData = { accOption: CharacterAccessories };
-type CharNameData = { charName: string };
-
-export type NewReviewData = Partial<
-  PerformanceSelectData &
-    ChildDateSelectData &
-    PhotoTextReviewData &
-    TypeSelectData &
-    EmotionSelectData &
-    AccSelectData &
-    CharNameData
->;
 
 export const ReviewFunnelPage = () => {
-  //여기서 handleStart를 하는 것이 아니라 이 페이지에서 Funnel 구조로 관리해야겠다.
-  const [newReviewData, setNewReviewData] = useState<NewReviewData>({});
+  const navigate = useNavigate();
 
+  const [newReviewData, setNewReviewData] = useState<NewReviewData>({});
   const [Funnel, setStep, { next, prev, step }] = useFunnel<Step>(
     "performanceSelect",
     STEPS
   );
-
-  // ✅ 현재 스텝의 "다음 가능 여부" 상태 (각 스텝에서 올려줌)
   const [canProceed, setCanProceed] = useState<boolean>(false);
-
-  // 마지막 스텝 문구 바꾸기(선택)
   const nextText = step === "charName" ? "완료" : "다음";
 
   return (
@@ -85,8 +76,12 @@ export const ReviewFunnelPage = () => {
           <Funnel>
             <Funnel.Step name="performanceSelect">
               <PerformanceSelect
-                onChange={(patch: PerformanceSelectData) =>
-                  setNewReviewData((prev: NewReviewData) => ({
+                data={{
+                  performanceId: newReviewData.performanceId ?? 0,
+                  performanceName: newReviewData.performanceName ?? "",
+                }}
+                onChange={(patch) =>
+                  setNewReviewData((prev) => ({
                     ...prev,
                     ...patch,
                   }))
@@ -96,8 +91,9 @@ export const ReviewFunnelPage = () => {
             </Funnel.Step>
             <Funnel.Step name="childDateSelect">
               <ChildDateSelect
-                onChange={(patch: ChildDateSelectData) =>
-                  setNewReviewData((prev: NewReviewData) => ({
+                data={pickStepData(newReviewData, STEP_FIELDS.childDateSelect)}
+                onChange={(patch) =>
+                  setNewReviewData((prev) => ({
                     ...prev,
                     ...patch,
                   }))
@@ -107,8 +103,8 @@ export const ReviewFunnelPage = () => {
             </Funnel.Step>
             <Funnel.Step name="photoTextReview">
               <PhototextReview
-                data={newReviewData}
-                onChange={(patch: PhotoTextReviewData) =>
+                data={pickStepData(newReviewData, STEP_FIELDS.photoTextReview)}
+                onChange={(patch) =>
                   setNewReviewData((prev) => ({ ...prev, ...patch }))
                 }
                 onValidityChange={(ok) => setCanProceed(ok)}
@@ -116,7 +112,7 @@ export const ReviewFunnelPage = () => {
             </Funnel.Step>
             <Funnel.Step name="typeSelect">
               <TypeSelect
-                data={newReviewData}
+                data={pickStepData(newReviewData, STEP_FIELDS.typeSelect)}
                 onChange={(patch) =>
                   setNewReviewData((prev: any) => ({ ...prev, ...patch }))
                 }
@@ -125,7 +121,7 @@ export const ReviewFunnelPage = () => {
             </Funnel.Step>
             <Funnel.Step name="emotionSelect">
               <EmotionSelect
-                data={newReviewData}
+                data={pickStepData(newReviewData, STEP_FIELDS.emotionSelect)}
                 onChange={(patch) =>
                   setNewReviewData((prev: any) => ({ ...prev, ...patch }))
                 }
@@ -134,7 +130,7 @@ export const ReviewFunnelPage = () => {
             </Funnel.Step>
             <Funnel.Step name="accSelect">
               <AccSelect
-                data={newReviewData}
+                data={pickStepData(newReviewData, STEP_FIELDS.accSelect)}
                 onChange={(patch) =>
                   setNewReviewData((prev: any) => ({ ...prev, ...patch }))
                 }
@@ -142,17 +138,33 @@ export const ReviewFunnelPage = () => {
               />
             </Funnel.Step>
             <Funnel.Step name="charName">
-              <CharName data={newReviewData} />
+              <CharName
+                data={pickStepData(newReviewData, STEP_FIELDS.charName)}
+                onChange={(patch) =>
+                  setNewReviewData((prev: any) => ({ ...prev, ...patch }))
+                }
+              />
             </Funnel.Step>
           </Funnel>
 
           <NavigationButtons
             onPrevious={prev}
-            onNext={() => {
+            onNext={async () => {
+              // 👈 여기에 async 키워드를 추가합니다.
+              // console.log("📌 현재 저장된 newReviewData:", newReviewData);
+
               if (step === "charName") {
-                // 마지막 스텝 처리(예: 제출)
-                // submitReview(newReviewData)
-                return;
+                try {
+                  const requestData = mapNewReviewDataToRequest(newReviewData);
+                  const response: PostReviewResponse =
+                    await reviewApi.postReview(requestData);
+                  navigate(`/reviews/${response.id}`);
+
+                  return;
+                } catch (error) {
+                  console.error("리뷰 등록 실패:", error);
+                  // API 호출 실패 시 사용자에게 알림을 주거나 다른 페이지로 리다이렉트하는 로직을 추가합니다.
+                }
               }
               next();
             }}

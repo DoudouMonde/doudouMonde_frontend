@@ -5,3 +5,4 @@ export enum Trait {
   ACTIVE = "ACTIVE",
   SHORT_ATTENTION = "SHORT_ATTENTION",
 }
+

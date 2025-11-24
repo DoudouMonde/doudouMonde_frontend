@@ -11,12 +11,15 @@ import { Profile } from "@/entities/types";
 
 export const childApi = {
   postChildRegistration: async (data: PostChildRegistrationRequest) => {
-    const res = await apiRequester.post<childVoidResponse>("/v1/child", data);
+    const res = await apiRequester.post<childVoidResponse>(
+      "/v1/children",
+      data
+    );
     return res.data;
   },
 
   getChildList: async () => {
-    const res = await apiRequester.get<ChildListResponse>("/v1/child");
+    const res = await apiRequester.get<ChildListResponse>("/v1/children");
 
     //safeParse를 통해 에러를 제어할 수 있음
     const result = ChildListResponse.safeParse(res.data); //data가 childListResponse 와 일치하는지 확인
@@ -24,7 +27,7 @@ export const childApi = {
     if (!result.success) {
       console.error(result.error);
       //error를 던지기
-      throw new Error("Invalid ChildListResponse");
+      // throw new Error('Invalid ChildListResponse');
       //모니터링로그를 남기는 코드 -> sentry를 추가해봐
 
       //UI를 어떻게 띄울지 고민
@@ -38,7 +41,7 @@ export const childApi = {
   },
   getChildDetail: async (childId: number) => {
     const res = await apiRequester.get<ChildDetailResponse>(
-      `/v1/child/${childId}`
+      `/v1/children/${childId}`
     );
 
     return res.data;
@@ -46,7 +49,7 @@ export const childApi = {
   patchChild: async (childId: number, payload: UpdateChildRequest) => {
     //response는 확인 후 수정
     const res = await apiRequester.patch<childVoidResponse>(
-      `/v1/child/${childId}`,
+      `/v1/children/${childId}`,
       payload
     );
     if (res.status !== 200) throw new Error("아이 정보 수정 실패");
@@ -55,7 +58,7 @@ export const childApi = {
 
   deleteChild: async (childId: number) => {
     const res = await apiRequester.delete<childVoidResponse>(
-      `/v1/child/${childId}`
+      `/v1/children/${childId}`
     );
     // 백엔드가 204를 주면 data가 없을 수도 있음
     if (res.status !== 200 && res.status !== 204) {

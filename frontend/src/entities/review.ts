@@ -24,3 +24,4 @@ export type ReviewEntity = z.infer<typeof ReviewEntity>;
 export type PickReviewEntityKeys = {
   [K in keyof ReviewEntity]?: true;
 };
+

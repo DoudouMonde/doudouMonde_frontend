@@ -9,6 +9,7 @@
     "skipLibCheck": true,
 
     "moduleResolution": "bundler",
+    "resolvePackageJsonExports": true,
     "allowImportingTsExtensions": true,
     "moduleDetection": "force",
     "noEmit": true,
@@ -24,8 +25,20 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@doudoumonde/shared": ["../packages/shared/src/index.ts"]
+      "@/generated/*": ["generated/*"],
+      "@doudoumonde/shared": ["../packages/shared/src/index.ts"],
+      // "@doudoumonde/shared/schemas": ["../packages/shared/src/schemas/index.ts"],
+      "@doudoumonde/shared/generated": [
+        "../packages/shared/src/generated/index.ts"
+      ],
+      "@doudoumonde/shared/dtos": ["../packages/shared/src/dtos/index.ts"]
+      // "@doudoumonde/shared/schemas/gender": ["../packages/shared/src/schemas/types/gender.enum.ts"],
+      // "@doudoumonde/shared/schemas/profile": ["../packages/shared/src/schemas/types/profile.enum.ts"],
+      // "@doudoumonde/shared/schemas/genre": ["../packages/shared/src/schemas/types/genre.enum.ts"],
+      // "@doudoumonde/shared/schemas/sido": ["../packages/shared/src/schemas/types/sido.enum.ts"],
+      // "@doudoumonde/shared/schemas/role": ["../packages/shared/src/schemas/types/role.enum.ts"],
+      // "@doudoumonde/shared/schemas/trait": ["../packages/shared/src/schemas/types/trait.enum.ts"]
     }
   },
-  "include": ["src", "svg.d.ts"]
+  "include": ["src", "svg.d.ts", "openapi-ts.config.ts"]
 }

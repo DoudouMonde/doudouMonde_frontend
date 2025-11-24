@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Desc } from "@/domains/playroom/components/Desc";
-import { EmotionId } from "@/domains/playroom/constants/animals";
+import {
+  AnimalId,
+  animals,
+  EmotionId,
+} from "@/domains/playroom/constants/animals";
 
 import { AnimalPreview } from "@/domains/playroom/components/AnimalPreview";
 import {
@@ -9,31 +13,31 @@ import {
 } from "@/shared/components/SingleSelect";
 import { RadioTrue, RadioFalse } from "@/assets/icons";
 import { emotions } from "@/domains/playroom/constants/animals";
-import { useCharaterFlowState } from "@/domains/playroom/hooks/useCharacterFlowState";
-import { useNavigate } from "react-router-dom";
-import { PATH } from "@/shared/constants";
+import { STEP_FIELDS, StepField } from "../utils/stepConfig";
+import { NewReviewData } from "@/pages/review/ReviewFunnelPage";
+import { useSelectOption } from "../hooks/useCharacterOption";
 
-export const EmotionSelect: React.FC = () => {
-  const navigate = useNavigate();
+type EmotionData = StepField<NewReviewData, typeof STEP_FIELDS.emotionSelect>;
 
-  const {
-    selectedAnimal,
-    selectedValue: selectedEmotion,
-    setSelectedValue: setSelectedEmotion,
-    isAnimating,
-  } = useCharaterFlowState<EmotionId>({
-    stepName: "emotion",
-    storageKey: "selectedEmotion",
-    initialValue: emotions[0].id,
+type EmotionSelectProps = {
+  data: EmotionData;
+  onChange: (patch: { emotionOption: EmotionId }) => void;
+  onValidityChange?: (ok: boolean) => void;
+};
+
+export const EmotionSelect = ({
+  data,
+  onChange,
+  onValidityChange,
+}: EmotionSelectProps) => {
+  const selectedAnimal: AnimalId = data.typeOption ?? animals[0].id;
+
+  const { selected, handleSelect, isAnimating } = useSelectOption({
+    list: emotions,
+    currentValue: data.emotionOption,
+    onChange: (id) => onChange({ emotionOption: id }),
+    onValidityChange,
   });
-
-  const handleNext = () => {
-    navigate(PATH.CHAR_ACCESSORY, {
-      state: {
-        emotion: selectedEmotion,
-      },
-    });
-  };
 
   return (
     <div>
@@ -44,23 +48,19 @@ export const EmotionSelect: React.FC = () => {
           </>
         }
       />
-
       <AnimalPreview
         step="emotion"
         isAnimating={isAnimating}
         selectedAnimal={selectedAnimal}
-        selectedEmotion={selectedEmotion}
+        selectedEmotion={selected}
       />
       <hr className="my-4 mb-7 border-secondary-100/30" />
 
-      <SingleSelectGroup
-        selectedValue={selectedEmotion}
-        onChange={(value) => setSelectedEmotion(value as EmotionId)}
-      >
+      <SingleSelectGroup selectedValue={selected} onChange={handleSelect}>
         <div className="grid grid-cols-3 gap-3 mb-4">
           {emotions.map((emo) => {
             const Icon = emo.icon;
-            const active = selectedEmotion === emo.id;
+            const active = selected === emo.id;
             return (
               <SingleSelectItem key={emo.id} value={emo.id}>
                 <div className="transition-all duration-200 cursor-pointer">

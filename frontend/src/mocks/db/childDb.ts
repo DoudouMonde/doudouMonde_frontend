@@ -3,11 +3,11 @@ import {
   // ChildItemResponse,
   PostChildRegistrationRequest,
 } from "@/domains/child/types/childApiTypes";
-import { ChildRecord } from "@/domains/child/types/childApiTypes";
+import { ChildDetailResponse } from "@/domains/child/types/childApiTypes";
 
 const KEY = "__mock_child_db__";
 
-const INITIAL_MOCK_CHILDREN: ChildRecord[] = [
+const INITIAL_MOCK_CHILDREN: ChildDetailResponse[] = [
   {
     id: 1,
     name: "도윤 (Mock)",
@@ -31,15 +31,15 @@ const INITIAL_MOCK_CHILDREN: ChildRecord[] = [
   },
 ];
 
-function load(): ChildRecord[] {
+function load(): ChildDetailResponse[] {
   try {
     const raw = localStorage.getItem(KEY);
-    return raw ? (JSON.parse(raw) as ChildRecord[]) : [];
+    return raw ? (JSON.parse(raw) as ChildDetailResponse[]) : [];
   } catch {
     return [];
   }
 }
-function save(data: ChildRecord[]) {
+function save(data: ChildDetailResponse[]) {
   try {
     localStorage.setItem(KEY, JSON.stringify(data));
   } catch {
@@ -48,7 +48,7 @@ function save(data: ChildRecord[]) {
 }
 
 let seq = 1000;
-let store: ChildRecord[] = load();
+let store: ChildDetailResponse[] = load();
 
 //localstorage가 없을 때 Mock 데이터를 불러오도록 한다.
 if (store.length === 0) {
@@ -67,16 +67,16 @@ export const childDb = {
   get(id: number) {
     return store.find((c) => c.id === id) ?? null;
   },
-  create(input: PostChildRegistrationRequest): ChildRecord {
+  create(input: PostChildRegistrationRequest): ChildDetailResponse {
     const id = ++seq;
-    const rec: ChildRecord = { id, ...input };
+    const rec: ChildDetailResponse = { id, ...input };
     store = [rec, ...store];
     save(store);
     return rec;
   },
   //update는 dto가 나오고 나서 적을 것
 
-  update(id: number, patch: Partial<ChildRecord>) {
+  update(id: number, patch: Partial<ChildDetailResponse>) {
     const idx = store.findIndex((c) => c.id === id);
     if (idx === -1) return null;
 

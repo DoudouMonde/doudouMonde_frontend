@@ -1,26 +1,9 @@
 //1. Context가 제공할 값의 타입 정의
-
-import { FieldErrors, UseFormReturn } from "react-hook-form";
-import { ChildFormValues } from "../types/childForm";
-import React, { createContext, useContext } from "react";
+import { createContext, useContext } from "react";
+import { useChildRegistration } from "@/domains/child/hooks/useChildRegistration";
 
 //1. Context가 제공할 값의 타입 정의
-type ChildRegistrationContextType = {
-  control: UseFormReturn<ChildFormValues>["control"];
-  setValue: UseFormReturn<ChildFormValues>["setValue"];
-  reset: UseFormReturn<ChildFormValues>["reset"];
-  formValues: ChildFormValues;
-  errors: FieldErrors<ChildFormValues>;
-  isBottomSheetOpen: boolean;
-  setIsBottomSheetOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleSave: (e?: React.BaseSyntheticEvent) => Promise<void>;
-  handleComplete: () => void;
-  handleAddAnotherChild: () => void;
-  isDuplicateName: (value: string) => boolean;
-  isLimitReached: boolean;
-  maxChildren: number;
-};
-
+type ChildRegistrationContextType = ReturnType<typeof useChildRegistration>;
 //2. Context 생성
 export const ChildRegistrationContext =
   createContext<ChildRegistrationContextType | null>(null);

@@ -69,7 +69,7 @@ export function GridSelectCard<T extends Scalar>({
               aria-disabled={disabled || undefined}
             >
               {/* 아이콘 영역 */}
-              <div className="flex justify-center items-center mb-2 w-16 h-16 bg-gray-200 rounded-full border border-secondary-100">
+              <div className="flex justify-center items-center mb-2 w-20 h-20 rounded-full">
                 {icon}
               </div>
 

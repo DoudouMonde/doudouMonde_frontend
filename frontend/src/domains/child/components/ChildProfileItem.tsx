@@ -12,7 +12,7 @@ import { useChildListContext } from "@/domains/child/contexts/ChildListContext";
 type Props = {
   child: ChildItemResponse;
   showName?: boolean;
-  clickAction: "openEdit" | "openAvatarPicker";
+  clickAction: "openEdit" | "openAvatarPicker" | "none";
 };
 
 export function ChildProfileItem({

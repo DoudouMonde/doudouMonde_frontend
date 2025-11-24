@@ -20,12 +20,16 @@ export const FormCard = ({
   dense = false,
 }: FormCardProps) => {
   // dense flase 상태는 아이 정보 수정 모달에서 했음
-  const pad = dense ? "pt-4 pr-5 pb-5 pl-5 gap-4" : "pt-5 pb-7 gap-5";
+  const pad = dense ? "  gap-4" : "gap-5";
 
   return (
     <fieldset
       disabled={disabled}
-      className={["w-full h-auto rounded-[20px] ", "relative", className]
+      className={[
+        "w-full h-auto rounded-[20px] bg-gray-200 p-5 ",
+        "relative",
+        className,
+      ]
         .filter(Boolean)
         .join(" ")}
     >
@@ -33,8 +37,8 @@ export const FormCard = ({
         <legend
           className={[
             "float-left",
-            "pt-7 pl-7",
-            "bg-white",
+            " pb-5",
+
             "text-base font-semibold",
             legendClassName,
           ]

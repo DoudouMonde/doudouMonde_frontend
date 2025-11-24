@@ -25,7 +25,7 @@ export function GenderSelect({
   return (
     <div className="flex flex-col gap-2">
       <SelectField
-        label={<span className="body-hak-b">{label}</span>}
+        label={<span className="body-inter-b">{label}</span>}
         value={value}
         onChange={onChange}
         placeholder="성별을 선택해주세요"

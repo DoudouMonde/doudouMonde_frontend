@@ -23,7 +23,7 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
   ({ title, type = "text", value, onChange, placeholder }, ref) => {
     return (
       <div className="flex flex-col gap-2">
-        {title && <p className="body-hak-b">{title}</p>}
+        {title && <p className="body-inter-b">{title}</p>}
         <input
           ref={ref}
           type={type}
