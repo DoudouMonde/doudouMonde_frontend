@@ -1,4 +1,5 @@
 export * from './child.entity';
+export * from './child-review.entity';
 export * from './member.entity';
 export * from './profile.enum';
 export * from './gender.enum';

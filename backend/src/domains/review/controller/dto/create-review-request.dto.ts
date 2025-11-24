@@ -1,6 +1,6 @@
 import { CharacterAccessory, CharacterAnimal, CharacterEmotion } from '@/entities';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsDateString, IsEnum, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsDateString, IsEnum, IsOptional, IsNumber, IsArray } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class CreateReviewRequest {
@@ -68,4 +68,13 @@ export class CreateReviewRequest {
   })
   @IsNotEmpty({ message: `characterAccessory 은(는) 필수 입력 항목입니다.` })
   characterAccessory: CharacterAccessory;
+
+  @ApiProperty({
+    description: '함께 본 아이 ID 배열',
+    example: [1, 2],
+    type: [Number],
+    required: false,
+  })
+  @IsArray({ message: `childIds 은(는) 배열이어야 합니다.` })
+  childIds: number[];
 }

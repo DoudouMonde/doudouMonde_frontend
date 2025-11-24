@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BusinessException, ErrorCode } from '@/global';
-import { Review, Member, Performance, Character, ReviewImage } from '@/entities';
+import { Review, Member, Performance, Character, ReviewImage, Child } from '@/entities';
+import { ChildReview } from '@/entities/child-review.entity';
 import { CreateReviewRequest } from './controller/dto/create-review-request.dto';
 import { UpdateReviewRequest } from './controller/dto/update-review-request.dto';
 import { ReviewListResponse } from './controller/dto/review-list-response.dto';
@@ -22,6 +23,10 @@ export class ReviewService {
     private readonly characterRepository: Repository<Character>,
     @InjectRepository(ReviewImage)
     private readonly reviewImageRepository: Repository<ReviewImage>,
+    @InjectRepository(Child)
+    private readonly childRepository: Repository<Child>,
+    @InjectRepository(ChildReview)
+    private readonly childReviewRepository: Repository<ChildReview>,
     private readonly s3Service: S3Service,
   ) {}
 
@@ -65,6 +70,27 @@ export class ReviewService {
     });
 
     const savedReview: Review = await this.reviewRepository.save(review);
+
+    // 함께 본 아이들 연결
+    if (createReviewRequest.childIds && createReviewRequest.childIds.length > 0) {
+      // 아이들 조회 및 검증
+      const children: Child[] = await this.childRepository.find({
+        where: createReviewRequest.childIds.map((id) => ({ id })),
+      });
+
+      if (children.length !== createReviewRequest.childIds.length) {
+        throw new BusinessException(ErrorCode.CHILD_NOT_FOUND);
+      }
+
+      // ChildReview 관계 생성
+      const childReviews: ChildReview[] = children.map((child) =>
+        this.childReviewRepository.create({
+          child,
+          review: savedReview,
+        }),
+      );
+      await this.childReviewRepository.save(childReviews);
+    }
 
     // 이미지 파일 S3 업로드 및 저장
     if (images && images.length > 0) {
