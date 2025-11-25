@@ -8,7 +8,7 @@ import { CreateReviewRequest } from './controller/dto/create-review-request.dto'
 import { UpdateReviewRequest } from './controller/dto/update-review-request.dto';
 import { ReviewListResponse } from './controller/dto/review-list-response.dto';
 import { ReviewDetailResponse } from './controller/dto/review-detail-response.dto';
-import { S3Service } from '@/common/services/s3.service';
+import { S3StorageService } from '@/supports/s3-storage.service';
 
 @Injectable()
 export class ReviewService {
@@ -27,7 +27,7 @@ export class ReviewService {
     private readonly childRepository: Repository<Child>,
     @InjectRepository(ChildReview)
     private readonly childReviewRepository: Repository<ChildReview>,
-    private readonly s3Service: S3Service,
+    private readonly s3StorageService: S3StorageService,
   ) {}
 
   async createReview(
@@ -94,7 +94,7 @@ export class ReviewService {
 
     // 이미지 파일 S3 업로드 및 저장
     if (images && images.length > 0) {
-      const imageUrls = await this.s3Service.uploadFiles(images, 'reviews/images');
+      const imageUrls = await this.s3StorageService.uploadFiles(images, 'reviews/images');
       const reviewImages: ReviewImage[] = imageUrls.map((imageUrl: string, index: number) =>
         this.reviewImageRepository.create({
           objectKey: imageUrl,
@@ -211,14 +211,14 @@ export class ReviewService {
       });
       if (existingImages.length > 0) {
         const existingImageUrls = existingImages.map((img) => img.objectKey);
-        await this.s3Service.deleteFiles(existingImageUrls);
+        // await this.s3StorageService.deleteFiles(existingImageUrls);
       }
 
       // 기존 이미지 DB에서 삭제
       await this.reviewImageRepository.delete({ review: { id: reviewId } });
 
       // 새 이미지 S3 업로드 및 저장
-      const imageUrls = await this.s3Service.uploadFiles(images, 'reviews/images');
+      const imageUrls = await this.s3StorageService.uploadFiles(images, 'reviews/images');
       const reviewImages: ReviewImage[] = imageUrls.map((imageUrl: string, index: number) =>
         this.reviewImageRepository.create({
           objectKey: imageUrl,
@@ -246,27 +246,27 @@ export class ReviewService {
     const characterId = review.character?.id;
 
     // S3에서 이미지 파일 삭제
-    const reviewImages: ReviewImage[] = await this.reviewImageRepository.find({
-      where: { review: { id: reviewId } },
-    });
-    if (reviewImages.length > 0) {
-      const imageUrls = reviewImages.map((img) => img.objectKey);
-      await this.s3Service.deleteFiles(imageUrls);
-    }
+    // const reviewImages: ReviewImage[] = await this.reviewImageRepository.find({
+    //   where: { review: { id: reviewId } },
+    // });
+    // if (reviewImages.length > 0) {
+    //   const imageUrls = reviewImages.map((img) => img.objectKey);
+    //   await this.s3StorageService.deleteFiles(imageUrls);
+    // }
 
-    // 관련 이미지 DB에서 삭제
-    await this.reviewImageRepository.delete({ review: { id: reviewId } });
+    // // 관련 이미지 DB에서 삭제
+    // await this.reviewImageRepository.delete({ review: { id: reviewId } });
 
-    // 함께 본 아이 관계 삭제
-    await this.childReviewRepository.delete({ review: { id: reviewId } });
+    // // 함께 본 아이 관계 삭제
+    // await this.childReviewRepository.delete({ review: { id: reviewId } });
 
-    // Review 삭제 (Character 참조를 제거하기 위해 먼저 삭제)
-    await this.reviewRepository.delete(reviewId);
+    // // Review 삭제 (Character 참조를 제거하기 위해 먼저 삭제)
+    // await this.reviewRepository.delete(reviewId);
 
-    // Character 삭제 (Review 삭제 후 가능)
-    if (characterId) {
-      await this.characterRepository.delete(characterId);
-    }
+    // // Character 삭제 (Review 삭제 후 가능)
+    // if (characterId) {
+    //   await this.characterRepository.delete(characterId);
+    // }
   }
 
   private async validateDuplicateReview(memberId: number, performanceId: number): Promise<void> {

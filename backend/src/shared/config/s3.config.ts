@@ -15,7 +15,7 @@ export class S3Config {
     this.regionName = this.configService.get<string>(ENV_KEYS.AWS_REGION) || '';
     this.accessKey = this.configService.get<string>(ENV_KEYS.AWS_ACCESS_KEY) || '';
     this.secretKey = this.configService.get<string>(ENV_KEYS.AWS_SECRET_KEY) || '';
-    this.bucketName = this.configService.get<string>(ENV_KEYS.AWS_BUCKET) || '';
+    this.bucketName = this.configService.get<string>(ENV_KEYS.AWS_S3_BUCKET) || '';
   }
 
   getEndpoint(): string {

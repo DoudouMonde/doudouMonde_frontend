@@ -22,9 +22,9 @@ export class S3StorageService implements FileService {
         accessKeyId: this.s3Config.getAccessKey(),
         secretAccessKey: this.s3Config.getSecretKey(),
       },
+      forcePathStyle: true, // path-style URL 사용 (버킷 이름에 점이 있거나 특정 엔드포인트 요구 시 필요)
       ...(this.endpoint && {
         endpoint: this.endpoint,
-        forcePathStyle: true,
       }),
     };
 
@@ -44,10 +44,17 @@ export class S3StorageService implements FileService {
 
     await this.s3Client.send(command);
 
-    // endpoint가 있으면 해당 endpoint 사용, 없으면 기본 S3 URL 사용
+    // forcePathStyle를 사용하므로 path-style URL 형식 사용
     if (this.endpoint) {
+      // endpoint가 있으면 path-style 형식: endpoint/bucket/key
       return `${this.endpoint}/${this.bucketName}/${fileName}`;
     }
-    return `https://${this.bucketName}.s3.${this.region}.amazonaws.com/${fileName}`;
+    // endpoint가 없으면 기본 S3 path-style URL 형식: s3.region.amazonaws.com/bucket/key
+    return `https://s3.${this.region}.amazonaws.com/${this.bucketName}/${fileName}`;
+  }
+
+  async uploadFiles(files: Express.Multer.File[], folder: string): Promise<string[]> {
+    const uploadPromises = files.map((file) => this.uploadFile(file, folder));
+    return Promise.all(uploadPromises);
   }
 }
